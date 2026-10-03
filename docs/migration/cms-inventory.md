@@ -42,7 +42,7 @@ Blog Posts has 28 staged records and 7 live records, with 22 staged archived fla
 
 ## Page use and field definitions
 
-The page-use register below identifies where each collection's role belongs in the observed site. It combines matching public content, public section roles and schema reference relationships. Reference-only collections feed the listed pages through their parent collection. A path ending in `/*` means the six audited post pages listed in the main inventory.
+The page-use register below identifies where each collection's role belongs in the observed site. It combines matching public content, public section roles and schema reference relationships. Reference-only collections feed the listed pages through their parent collection. Being referenced by another collection does not make a collection reference-only: SY Playground Characters and SY Playground Guests also supply the birthday-party page's Character List and Add-ons lists directly, while SY Playground Calendars supplies the play-center calendar. A path ending in `/*` means the six audited post pages listed in the main inventory.
 
 These are migration mappings, not an export of Webflow Designer bindings. The Data API returns content and schemas but not collection-list filters, sort settings or list limits. The main inventory records each rendered list count and section order. Preserve that public result when replacing the lists; verify the relevant reference screenshots. Do not assume that a rendered count is the whole collection or a configured limit.
 
@@ -124,7 +124,7 @@ Referenced by: SY Activities.
 
 | Field | API slug | Type / choices / target | Required |
 | --- | --- | --- | --- |
-| Days | `days` | Option: Tue, Thu, Mo, Wed, Fri, Mo-Fri, Mo-Sat | no |
+| Days | `days` | Option: `Tue, Thu`; `Mo, Wed, Fri`; `Mo-Fri`; `Mo-Sat` | no |
 | Activities | `activities-2` | MultiReference → SY Activities | no |
 | Color | `color` | Color | no |
 | Program Page | `program-page` | Link | no |
@@ -499,4 +499,3 @@ Page use: `/school-year/programs/indoor-outdoor-play-center`.
 | Start Date | `effective-from` | DateTime | no |
 | Name | `name` | PlainText | yes |
 | Slug | `slug` | PlainText | yes |
-

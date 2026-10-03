@@ -1950,6 +1950,9 @@
       "url": "https://assets.slater.app/slater/11822/28045.js?v=69601",
       "sha256": "4c44d35e3ead47c059b3789ac2c969eb2387a7c4a9423383bcaf3dbf0b2932da",
       "bytes": 151966,
+      "codeIsExcerpt": true,
+      "excerptNote": "Only the Swiper initialization is retained in code. sha256 and bytes describe the complete remote file, including the bundled library.",
+      "bundledLibrary": {"name": "Swiper", "version": "11.1.15", "versionSource": "Remote file license header"},
       "code": "$(\".swiper-slider_component\").each((function(){new Swiper($(this).find(\".swiper\")[0],{slidesPerView:\"auto\",speed:500,keyboard:{enabled:!0,onlyInViewport:!0},freeMode:!1,slideToClickedSlide:!0,followFinger:!0,loop:!1,slideActiveClass:\"is-active\",slideDuplicateActiveClass:\"is-active\",pagination:{el:$(this).find(\".swiper-bullet-wrapper\")[0],bulletActiveClass:\"is-active\",bulletClass:\"swiper-bullet\",bulletElement:\"button\",clickable:!0},navigation:{nextEl:$(this).find(\".swiper-next\")[0],prevEl:$(this).find(\".swiper-prev\")[0],disabledClass:\"is-disabled\"}})}));"
     },
     {

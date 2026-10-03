@@ -109,31 +109,43 @@ export async function captureReferences(resume = false, refreshPath) {
   if (refreshPath) {
     refreshPath = pagePath(refreshPath);
     if (!resume || !routes.includes(refreshPath)) throw new Error('Use --resume --path with an existing sitemap or policy path.');
-    manifest.pages = manifest.pages.filter((item) => item.path !== refreshPath);
   }
+  manifest.expectedCaptures = routes.length * viewports.length;
   const browser = await launchBrowser();
   try {
     for (const route of routes) {
-      const captures = await Promise.all(viewports.map(async (viewport) => {
-        const file = imageName(route, viewport.width);
-        if (manifest.pages.some((item) => item.path === route && item.viewport.width === viewport.width)) {
-          await readFile(path.join(referenceDir, file));
-          return null;
-        }
-        const details = await screenshot(browser, `${liveOrigin}${route}`, viewport, path.join(referenceDir, file));
-        return {path: route, file, ...details};
-      }));
-      if (!captures.some(Boolean)) continue;
-      manifest.pages.push(...captures.filter(Boolean));
-      // A partial manifest survives a network failure. It never claims completion.
-      manifest.expectedCaptures = routes.length * viewports.length;
-      manifest.completedCaptures = manifest.pages.length;
-      manifest.complete = manifest.completedCaptures === manifest.expectedCaptures;
-      await writeFile(path.join(referenceDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+      await captureRoute(manifest, route,
+        (viewport, file) => screenshot(browser, `${liveOrigin}${route}`, viewport, path.join(referenceDir, file)),
+        {refresh: route === refreshPath});
       console.log(`${manifest.pages.length}/106 ${route}`);
     }
   } finally {
     await browser.close();
+  }
+}
+
+// Persist invalidation before overwriting an image, then commit each successful
+// viewport before starting the next. A failed or interrupted capture is retried.
+export async function captureRoute(manifest, route, capture, {refresh = false, directory = referenceDir} = {}) {
+  const save = async () => {
+    manifest.completedCaptures = manifest.pages.length;
+    manifest.complete = manifest.completedCaptures === manifest.expectedCaptures;
+    await mkdir(directory, {recursive: true});
+    await writeFile(path.join(directory, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+  };
+  if (refresh) {
+    manifest.pages = manifest.pages.filter((item) => item.path !== route);
+    await save();
+  }
+  for (const viewport of viewports) {
+    const file = imageName(route, viewport.width);
+    if (manifest.pages.some((item) => item.path === route && item.viewport.width === viewport.width)) {
+      await readFile(path.join(directory, file));
+      continue;
+    }
+    const details = await capture(viewport, file);
+    manifest.pages.push({path: route, file, ...details});
+    await save();
   }
 }
 
