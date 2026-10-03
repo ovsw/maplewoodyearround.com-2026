@@ -1,0 +1,500 @@
+{
+  "source": "https://www.maplewoodyearround.com",
+  "method": "Real viewport captures at actual scroll offsets; no layout or opacity changes.",
+  "states": [
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-1-1440.png",
+      "section": ".section_header83",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1072,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:00.933Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-2-1440.png",
+      "section": ".section_header83",
+      "position": 0.5,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 2072,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:03.066Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-3-1440.png",
+      "section": ".section_header83",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 3072,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:05.215Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-1-1440.png",
+      "section": ".section_layout515",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 4088,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:07.205Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-2-1440.png",
+      "section": ".section_layout515",
+      "position": 0.3333333333333333,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 5088,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:09.178Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-3-1440.png",
+      "section": ".section_layout515",
+      "position": 0.6666666666666666,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 6088,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:11.162Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-4-1440.png",
+      "section": ".section_layout515",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 7088,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:13.151Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-bus-1-1440.png",
+      "section": ".section_transportation_contact14",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 11640,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:15.064Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-bus-2-1440.png",
+      "section": ".section_transportation_contact14",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 11765,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:16.962Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-1-1440.png",
+      "section": ".section_layout412",
+      "position": -0.9,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 11865,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:20.323Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-2-1440.png",
+      "section": ".section_layout412",
+      "position": -0.4,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 12365,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:22.251Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-3-1440.png",
+      "section": ".section_layout412",
+      "position": 0,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 12765,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:42:24.175Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-1-390.png",
+      "section": ".section_header83",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 908,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:34.967Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-2-390.png",
+      "section": ".section_header83",
+      "position": 0.5,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1752,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:36.860Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-video-zoom-3-390.png",
+      "section": ".section_header83",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 2596,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:38.741Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-1-390.png",
+      "section": ".section_layout515",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 3452,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:40.585Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-2-390.png",
+      "section": ".section_layout515",
+      "position": 0.3333333333333333,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 4368,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:42.435Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-3-390.png",
+      "section": ".section_layout515",
+      "position": 0.6666666666666666,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 5285,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:44.282Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-image-text-4-390.png",
+      "section": ".section_layout515",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 6201,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:46.133Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-bus-1-390.png",
+      "section": ".section_transportation_contact14",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 10745,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:47.964Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-bus-2-390.png",
+      "section": ".section_transportation_contact14",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 11338,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:49.807Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-1-390.png",
+      "section": ".section_layout412",
+      "position": -0.9,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 11423,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:53.075Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-2-390.png",
+      "section": ".section_layout412",
+      "position": -0.4,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 11845,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:54.913Z"
+    },
+    {
+      "path": "/",
+      "file": "states/home-year-round-3-390.png",
+      "section": ".section_layout412",
+      "position": 0,
+      "positionUnit": "viewport offset before section",
+      "scrollY": 12182,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:42:56.773Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-1-1440.png",
+      "section": ".section_header83",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1896,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:06.192Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-2-1440.png",
+      "section": ".section_header83",
+      "position": 0.5,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 2896,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:08.344Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-3-1440.png",
+      "section": ".section_header83",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 3896,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:10.512Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-1-390.png",
+      "section": ".section_header83",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1793,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:20.105Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-2-390.png",
+      "section": ".section_header83",
+      "position": 0.5,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 2637,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:21.995Z"
+    },
+    {
+      "path": "/school-year",
+      "file": "states/school-year-video-zoom-3-390.png",
+      "section": ".section_header83",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 3481,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:23.880Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-1-1440.png",
+      "section": ".layout486_component",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 664,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:31.284Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-2-1440.png",
+      "section": ".layout486_component",
+      "position": 0.3,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 798,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:33.146Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-3-1440.png",
+      "section": ".layout486_component",
+      "position": 0.6,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 933,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:35.000Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-4-1440.png",
+      "section": ".layout486_component",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1112,
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "capturedAt": "2026-10-03T06:43:36.853Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-1-390.png",
+      "section": ".layout486_component",
+      "position": 0,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 614,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:44.662Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-2-390.png",
+      "section": ".layout486_component",
+      "position": 0.3,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1103,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:46.477Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-3-390.png",
+      "section": ".layout486_component",
+      "position": 0.6,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 1592,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:48.295Z"
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "states/hot-lunch-steps-4-390.png",
+      "section": ".layout486_component",
+      "position": 1,
+      "positionUnit": "section scroll fraction",
+      "scrollY": 2244,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "capturedAt": "2026-10-03T06:43:50.111Z"
+    }
+  ]
+}
