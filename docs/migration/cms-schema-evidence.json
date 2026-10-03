@@ -1,0 +1,2802 @@
+{
+  "capturedAt": "2026-10-03T10:56:23.798Z",
+  "siteId": "673ebf0eedfc15a41bedc0c3",
+  "method": "Read-only Webflow Data API v2. Collection schemas and every staged item page were read. Only schemas, aggregate counts and public-page matches are retained. Draft/archived flags and lastPublished counts overlap; activePublished excludes draft and archived items. PublishedAtLeastOnce is not a live-endpoint count. Public page matching uses unique published field text (18+ characters) or asset URLs; it proves content presence, not Designer bindings. ReferencedBy comes from schema collectionId validations. Designer filters, sorting and limits are not exposed by these endpoints. Live totals were fetched separately from each collection's /items/live pagination.total. Page-use mappings combine public section roles, matching content and schema references, and must not be treated as a Designer binding export.",
+  "collections": [
+    {
+      "id": "67758e2e0ab4f3d12b953dfe",
+      "name": "SC Facilities",
+      "slug": "summer-camp-facilities",
+      "fields": [
+        {
+          "id": "8f3fe53813d38fa2c77b503c5597b983",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "2fccbe74fb79ff4df27a292c5d0f80a0",
+          "slug": "category-multi",
+          "name": "Category",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "67763bcf5bf181b36576a225"
+          }
+        },
+        {
+          "id": "39741cca0167b982c829bc5a72d20c05",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "996ecda8fd7213c2ee4dce1ad94c0dde",
+          "slug": "published",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "f0275abee7546c0bfea51d412cc4547a",
+          "slug": "indoor-outdoor",
+          "name": "Indoor/Outdoor",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Indoor",
+                "id": "e58f8752d8519c43bb37cbce65b7da01"
+              },
+              {
+                "name": "Outdoor",
+                "id": "d5f7aa772ccd842ffdbf3744d8efb9f5"
+              }
+            ]
+          }
+        },
+        {
+          "id": "e4b00b049e1468f64daca7989b4f9340",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "81f0c2097ee38d55b56e66d46d37317f",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "375177ea0748269d0eefe5e1e9cc23dd",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 33,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 33,
+        "activePublished": 33,
+        "neverPublished": 0,
+        "live": 33
+      },
+      "publicPageMatches": [
+        "/summer-camp/activities",
+        "/summer-camp/facilities"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/facilities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67763bcf5bf181b36576a225",
+      "name": "SC Facility Categories",
+      "slug": "summer-camp-facilty-categories",
+      "fields": [
+        {
+          "id": "dd6e2a8fe58494556c66b88652e781b2",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "3d52a4d7cb55cd5e9bd98003c105f818",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 5,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 5,
+        "activePublished": 5,
+        "neverPublished": 0,
+        "live": 5
+      },
+      "publicPageMatches": [
+        "/summer-camp/facilities"
+      ],
+      "referencedBy": [
+        "SC Facilities"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/facilities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67764143b1fd5f9d2cf1db79",
+      "name": "Seasons",
+      "slug": "seasons",
+      "fields": [
+        {
+          "id": "19e7a4b53af763486f727701fa6132a6",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "0834f24f67ff201f126935d47194fb84",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 2,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 2,
+        "activePublished": 2,
+        "neverPublished": 0,
+        "live": 2
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "Parent Dashboard Cards"
+      ],
+      "pageUse": {
+        "paths": [
+          "/parent-dashboard"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "6778db5d201503e26fdd5043",
+      "name": "SY Activities",
+      "slug": "school-year-activities",
+      "fields": [
+        {
+          "id": "bcd25ea0c0f71a083ecfc96d7b9ee5f3",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "ab388cb47849a37e685b9871410f1e88",
+          "slug": "availability",
+          "name": "Availability",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Mo-Fri",
+                "id": "49d74ae476f451b9de30f6bfe739897b"
+              },
+              {
+                "name": "Mo-Sat",
+                "id": "e3a567c786f7ddeb3b6d1a598cbc6b39"
+              },
+              {
+                "name": "Schedule AM",
+                "id": "4d1bd38685e4bdc83dd14d9dbbcde307"
+              },
+              {
+                "name": "Schedule PM",
+                "id": "a92061dda29de5cf58f9bcd1770bf52c"
+              },
+              {
+                "name": "School Vacation",
+                "id": "6ffbbef66ab6524cefff92aca5bd8425"
+              }
+            ]
+          }
+        },
+        {
+          "id": "035f3a7307b80a73a0bb497c62dfd7fd",
+          "slug": "programs",
+          "name": "Programs",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "6778db8fb567d06d3525c12f"
+          }
+        },
+        {
+          "id": "c65a066da338633745907a7d1d87443f",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "d840c23c271fc05a741dbdb1e86f361f",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "b3a848fb0593be9df6fc5497e3f23cac",
+          "slug": "is-playground-2",
+          "name": "Is Playground?",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "9a3ff7feedfbb54c842c3233e197426a",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "6c08d73d3a438b75b7c48f6b2171544b",
+          "slug": "indoor-outdoor-special",
+          "name": "Type",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Indoor",
+                "id": "c3d31b0e5a7a537709bd084f3e721fa2"
+              },
+              {
+                "name": "Outdoor",
+                "id": "05c7e07952bffa5d63e5eeb8f4f4a658"
+              },
+              {
+                "name": "Special",
+                "id": "82894824c3084ee53e2dac72965d998e"
+              }
+            ]
+          }
+        },
+        {
+          "id": "5266aeb4d8d4c159d94e226a6c73e89f",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "096f4710d8132843f122f5c9446d21a8",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 91,
+        "draft": 1,
+        "archived": 0,
+        "publishedAtLeastOnce": 90,
+        "activePublished": 90,
+        "neverPublished": 1,
+        "live": 90
+      },
+      "publicPageMatches": [
+        "/summer-camp",
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/enrichment-classes/flying-solo",
+        "/school-year/programs/birthday-parties",
+        "/school-year/programs/vacation-program",
+        "/school-year/facilities",
+        "/school-year/programs/enrichment-classes/gymnastics-class",
+        "/school-year/programs/enrichment-classes/sports-enrichment-class",
+        "/school-year/programs/enrichment-classes/arts-class",
+        "/summer-camp/activities",
+        "/summer-camp/facilities",
+        "/summer-camp/programs/1st-7th-grade",
+        "/summer-camp/programs/teen-leadership-cit"
+      ],
+      "referencedBy": [
+        "SY Programs"
+      ],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/birthday-parties",
+          "/school-year/programs/vacation-program",
+          "/school-year/programs/enrichment-classes/flying-solo",
+          "/school-year/programs/enrichment-classes/gymnastics-class",
+          "/school-year/programs/enrichment-classes/sports-enrichment-class",
+          "/school-year/programs/enrichment-classes/arts-class"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "6778db8fb567d06d3525c12f",
+      "name": "SY Programs",
+      "slug": "programs",
+      "fields": [
+        {
+          "id": "4ec68e44086bdd6b07d98dfab15cbd75",
+          "slug": "days",
+          "name": "Days",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Tue, Thu",
+                "id": "f633b40963624c97e1bdee8f442d4d98"
+              },
+              {
+                "name": "Mo, Wed, Fri",
+                "id": "086e33bb578d47f3997ac01f74bb2d00"
+              },
+              {
+                "name": "Mo-Fri",
+                "id": "e0447d17d92a3e1bf0a9785ce64dcc2f"
+              },
+              {
+                "name": "Mo-Sat",
+                "id": "cbb429cb4617db4b214cecf835fa1028"
+              }
+            ]
+          }
+        },
+        {
+          "id": "0599c493a796727c02810f7b0110c1b5",
+          "slug": "activities-2",
+          "name": "Activities",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "6778db5d201503e26fdd5043"
+          }
+        },
+        {
+          "id": "1788d9aff45b6fd576a4ace00b2526b0",
+          "slug": "color",
+          "name": "Color",
+          "type": "Color",
+          "required": false
+        },
+        {
+          "id": "0a21f202032b2601884aea86f7e9187f",
+          "slug": "program-page",
+          "name": "Program Page",
+          "type": "Link",
+          "required": false
+        },
+        {
+          "id": "4ba417479a9fac41ebfe9025412c33ee",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "2b329f05ac0ed2f15fc0e5ab990aabce",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "371b019fb2236166d9c5c3dc711fef13",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 14,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 14,
+        "activePublished": 14,
+        "neverPublished": 0,
+        "live": 14
+      },
+      "publicPageMatches": [
+        "/",
+        "/director-lee",
+        "/summer-camp",
+        "/summer-camp/dates-and-rates",
+        "/school-year",
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/preschool-program",
+        "/school-year/programs",
+        "/school-year/programs/enrichment-classes/flying-solo",
+        "/school-year/staff-roster",
+        "/maplewood-seasons",
+        "/school-year/programs/birthday-parties",
+        "/school-year/programs/vacation-program",
+        "/summer-camp/staff-roster",
+        "/school-year/facilities",
+        "/summer-camp/my-hot-lunchbox",
+        "/summer-camp/bus-transportation",
+        "/our-values",
+        "/leadership",
+        "/school-year/programs/enrichment-classes",
+        "/school-year/programs/enrichment-classes/gymnastics-class",
+        "/school-year/programs/enrichment-classes/sports-enrichment-class",
+        "/school-year/programs/enrichment-classes/arts-class",
+        "/summer-camp/activities",
+        "/contact",
+        "/staff",
+        "/staff-opportunities",
+        "/faqs",
+        "/parent-dashboard",
+        "/history",
+        "/summer-camp/programs",
+        "/news",
+        "/summer-camp/summer-group-schedules",
+        "/maplewood-main-calendar",
+        "/summer-camp/facilities",
+        "/summer-camp/programs/preschool-and-kindergarten",
+        "/summer-camp/programs/1st-7th-grade",
+        "/summer-camp/programs/teen-leadership-cit",
+        "/summer-camp/swim-instruction",
+        "/summer-camp/schedule-a-tour",
+        "/school-year/schedule-a-tour",
+        "/summer-camp/changes-notification-form",
+        "/summer-camp/camper-daily-photos",
+        "/summer-camp/summer-camp-welcome-letters",
+        "/post/early-bird-enrollment",
+        "/post/enrichment-classes",
+        "/post/great-gift-ideas",
+        "/post/meet-you-at-the-playground-copy",
+        "/post/new-monthly-memberships",
+        "/post/we-know-how-to-throw-a-party",
+        "/privacy-policy",
+        "/terms-and-conditions",
+        "/cookie-policy"
+      ],
+      "referencedBy": [
+        "SY Activities"
+      ],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs",
+          "/school-year/programs/enrichment-classes",
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/birthday-parties",
+          "/school-year/programs/vacation-program"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677bf3e50115c12d4461f782",
+      "name": "Testimonials",
+      "slug": "summer-camp-testimonials",
+      "fields": [
+        {
+          "id": "92401c77c30b298687bf560d32210c74",
+          "slug": "author-name",
+          "name": "Author Name",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "85c5bde0e6aabcd26490cd0d8fa2957e",
+          "slug": "testimonial-text",
+          "name": "Testimonial Text",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "75a1f2d6a978d87d19ef7863f24bbee2",
+          "slug": "plural-parents-vs-parent",
+          "name": "Plural (Parents vs. Parent)",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "b882ad210afcf6fab5b404f5c8800372",
+          "slug": "location",
+          "name": "Location",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "a3a0f977c3e6bc7ae68cca36561055cd",
+          "slug": "season",
+          "name": "Season",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Summer Camp",
+                "id": "f7071400db53159e643cedd4527d2cbf"
+              },
+              {
+                "name": "School-Year",
+                "id": "6e76215f8fc486929d4f99391a416d43"
+              }
+            ]
+          }
+        },
+        {
+          "id": "47687bd705cdf1a12f0e9b24e6526e97",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "084982c7faed971f8c6f0f95ea64b9c0",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "457a18c621af885de469eac94556d944",
+          "slug": "name",
+          "name": "ID number",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "c9bfac75f76e8abcc1c1531673d52a6b",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 47,
+        "draft": 1,
+        "archived": 0,
+        "publishedAtLeastOnce": 47,
+        "activePublished": 46,
+        "neverPublished": 0,
+        "live": 46
+      },
+      "publicPageMatches": [
+        "/",
+        "/summer-camp",
+        "/school-year",
+        "/school-year/programs/preschool-program"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/",
+          "/summer-camp",
+          "/school-year",
+          "/school-year/programs/preschool-program"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677d49d61db2a021fe854a5a",
+      "name": "Blog Posts",
+      "slug": "post",
+      "fields": [
+        {
+          "id": "5845ea336db43ef6c17fbf9d6fcd1fe0",
+          "slug": "post-date",
+          "name": "Post Date",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "id": "48853585bd0edf160d73c07d199f3927",
+          "slug": "post-body",
+          "name": "Post Body",
+          "type": "RichText",
+          "required": false
+        },
+        {
+          "id": "c30c6555f5708f8873f196ef37390719",
+          "slug": "post-summary",
+          "name": "Post Summary",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "081d6eed9529ad506379b8bac557872a",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "9c5f28609c1fb0f30563124b5df94ed6",
+          "slug": "author",
+          "name": "Author",
+          "type": "Reference",
+          "required": true,
+          "validations": {
+            "collectionId": "677d4a43bdd5e435fdb5d075"
+          }
+        },
+        {
+          "id": "910dcc89e279b9692d7f748420d94efc",
+          "slug": "category",
+          "name": "Category",
+          "type": "Reference",
+          "required": true,
+          "validations": {
+            "collectionId": "677d50e45555320612d9f3b9"
+          }
+        },
+        {
+          "id": "b55e482247e2de6b5ec094e7e43233a7",
+          "slug": "seo-title",
+          "name": "SEO Title",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "33dff1c930a290ab87f5eb5250bf07a0",
+          "slug": "seo-description",
+          "name": "SEO Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "246d0514b46127105d98034df1edccff",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "3cb6552a33ece7532087b5f151ff8f90",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 28,
+        "draft": 1,
+        "archived": 22,
+        "publishedAtLeastOnce": 7,
+        "activePublished": 6,
+        "neverPublished": 21,
+        "live": 7
+      },
+      "publicPageMatches": [
+        "/",
+        "/school-year",
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/birthday-parties",
+        "/news",
+        "/post/enrichment-classes",
+        "/post/great-gift-ideas",
+        "/post/meet-you-at-the-playground-copy",
+        "/post/new-monthly-memberships",
+        "/post/we-know-how-to-throw-a-party"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/",
+          "/news",
+          "/post/*"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677d4a43bdd5e435fdb5d075",
+      "name": "Blog Authors",
+      "slug": "blog-authors",
+      "fields": [
+        {
+          "id": "d33b6ae30742294bdb427da565207a4b",
+          "slug": "role",
+          "name": "Role",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "b82aeb54a9ccee91688d6737cd93929a",
+          "slug": "picture",
+          "name": "Picture",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "3ef31610447c2be7934f431f3aa2dfaf",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "8c5e9404cb6783b3b02e807823e3912d",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 4,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 4,
+        "activePublished": 4,
+        "neverPublished": 0,
+        "live": 4
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "Blog Posts"
+      ],
+      "pageUse": {
+        "paths": [
+          "/post/*"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677d50e45555320612d9f3b9",
+      "name": "Blog Categories",
+      "slug": "blog-categories",
+      "fields": [
+        {
+          "id": "974d15dad668aa12c0a8304d83199b0e",
+          "slug": "color",
+          "name": "Color",
+          "type": "Color",
+          "required": false
+        },
+        {
+          "id": "ffd78f73dd0e5cda973167e8fb649ce1",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "02d44a749b0cfbd2d76ca2b7dddf2566",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 5,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 5,
+        "activePublished": 5,
+        "neverPublished": 0,
+        "live": 5
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "Blog Posts"
+      ],
+      "pageUse": {
+        "paths": [
+          "/news",
+          "/post/*"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677fb8025883d61a620d56db",
+      "name": "SC Activity Categories",
+      "slug": "sc-activities-categories",
+      "fields": [
+        {
+          "id": "7d7c9824eeff083b7383290eb3630a17",
+          "slug": "activities",
+          "name": "Activities",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "677fb80f7129b9488d3d6c63"
+          }
+        },
+        {
+          "id": "46a00a437e4829911d7272fb3927c6d1",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "7c3da186a876b919fd3f964b8e641fb9",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 7,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 7,
+        "activePublished": 7,
+        "neverPublished": 0,
+        "live": 7
+      },
+      "publicPageMatches": [
+        "/summer-camp/activities"
+      ],
+      "referencedBy": [
+        "SC Activities"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/activities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "677fb80f7129b9488d3d6c63",
+      "name": "SC Activities",
+      "slug": "sc-activities",
+      "fields": [
+        {
+          "id": "e0baa7231c580dc6badd8aa316db47a4",
+          "slug": "category",
+          "name": "Category",
+          "type": "Reference",
+          "required": false,
+          "validations": {
+            "collectionId": "677fb8025883d61a620d56db"
+          }
+        },
+        {
+          "id": "538305e24e4ff519c01f7477ee4ca442",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "426300c91313c0d463ece61d64b4f6bc",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "679f6b263d3c55bdf74d1cbfbc20d823",
+          "slug": "published",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "62a591107a228846ae09dc85a87dc648",
+          "slug": "sc-groups-ages",
+          "name": "SC Groups",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "678931a85d758f1afe696917"
+          }
+        },
+        {
+          "id": "8bc835bbfbb5c6f703dd4e4de583c588",
+          "slug": "entering-grade-from-group",
+          "name": "Entering Grade (from Group)",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "be13ce248884a32c777114ea6fca23e2",
+          "slug": "group-text",
+          "name": "Group text",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "24e81ee3a8b6437d0027942626e00543",
+          "slug": "order-2",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "1bd2f53798b9d3e4312cd7dadd45a1a4",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "927f8dfd4765c4bc7bf1be92af23b250",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 60,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 60,
+        "activePublished": 60,
+        "neverPublished": 0,
+        "live": 60
+      },
+      "publicPageMatches": [
+        "/summer-camp/activities",
+        "/summer-camp/programs/preschool-and-kindergarten",
+        "/summer-camp/programs/1st-7th-grade",
+        "/summer-camp/programs/teen-leadership-cit"
+      ],
+      "referencedBy": [
+        "SC Activity Categories",
+        "SC Groups"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/activities",
+          "/summer-camp/programs/preschool-and-kindergarten",
+          "/summer-camp/programs/1st-7th-grade",
+          "/summer-camp/programs/teen-leadership-cit"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67892daa6590c1ccfad847e6",
+      "name": "SC Staff Members",
+      "slug": "summer-camp-staff-members",
+      "fields": [
+        {
+          "id": "61820c100e2cb36af5a2cd5e34316060",
+          "slug": "photo",
+          "name": "Photo",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "41f811cb7c284eb41f5207d31ff89c3a",
+          "slug": "role-title-position",
+          "name": "Role/Title/Position",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "873b9faf36ef33352419a922d043c6e8",
+          "slug": "years-at-maplewood",
+          "name": "Years at Maplewood",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "e1e37a3cf7e49435e241414b8cb074c9",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "27f2e8a679b600f02a41451d065201da",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "c2770e59deaa3087de42b47d63853bec",
+          "slug": "year-round-staff-member",
+          "name": "Year-Round Staff Member",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "8d0e883b839281271acc492f4f650594",
+          "slug": "former-camper",
+          "name": "Former Camper",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "ce5e5177ddda6b4bb01de7bc537fc095",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "acf7da5cb0b564f0bc06ff754e7b3c21",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 29,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 29,
+        "activePublished": 29,
+        "neverPublished": 0,
+        "live": 29
+      },
+      "publicPageMatches": [
+        "/summer-camp/staff-roster",
+        "/leadership",
+        "/staff"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/staff-roster",
+          "/leadership",
+          "/staff"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67892ea79e316d41bba6d35b",
+      "name": "SY Staff Members",
+      "slug": "school-year-staff-member",
+      "fields": [
+        {
+          "id": "11ec12e3c19c62deeae5fade1ee09607",
+          "slug": "photo",
+          "name": "Photo",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "7abd5a27724eaa22c5ccfab479ed6181",
+          "slug": "role-title-position",
+          "name": "Role/Title/Position",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "43ffbe35b22d41f773e25d6266a9f6ac",
+          "slug": "degrees-training",
+          "name": "Degrees/Training",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "850069299bb67c9421bf3b0521cccf7f",
+          "slug": "years-at-maplewood",
+          "name": "Years at Maplewood",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "4ce9789153e58e76c7af0955294bdcf3",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "a691eae0bbac975006115b322add2e41",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "c019173d97d58aa92ca12c4e5ea0cf1b",
+          "slug": "does-sy-tours",
+          "name": "Does SY Tours",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "4e466ba58bca05902eefb3608bc5ba97",
+          "slug": "is-preschool-teacher",
+          "name": "Is Preschool Teacher",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "8ae972d0d1df8de0962ea6b3e789df2d",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "70075d9ac59eabf6c09c928e96679a09",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 22,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 22,
+        "activePublished": 22,
+        "neverPublished": 0,
+        "live": 22
+      },
+      "publicPageMatches": [
+        "/school-year/programs/preschool-program",
+        "/school-year/staff-roster"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/school-year/staff-roster",
+          "/school-year/programs/preschool-program"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "678931a85d758f1afe696917",
+      "name": "SC Groups",
+      "slug": "summer-camp-groups",
+      "fields": [
+        {
+          "id": "f38af9a244c5f752328cced3a20e0140",
+          "slug": "entering-grade-2",
+          "name": "Entering Grade",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "67893508bab779ee2d89911c"
+          }
+        },
+        {
+          "id": "5dde8574e7c3c7e736965e769c5e7edf",
+          "slug": "gender",
+          "name": "Gender",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Girls",
+                "id": "5cb7bd17a45484904ff44f2a21cd5d67"
+              },
+              {
+                "name": "Boys",
+                "id": "dc24f669f0e8e3bd9b16cc07de74cbe1"
+              },
+              {
+                "name": "Coed",
+                "id": "fbf014a49803615f7839a862f5ee3788"
+              }
+            ]
+          }
+        },
+        {
+          "id": "c187ee398bb9bd069fd3f347f6a6e860",
+          "slug": "activities",
+          "name": "SC Activities",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "677fb80f7129b9488d3d6c63"
+          }
+        },
+        {
+          "id": "2a3bf81b35251b9d4d85f8d5a299bff0",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "cc85744652bc6a74dec5ef79fd3a3a35",
+          "slug": "group-schedule-pdf",
+          "name": "Group Schedule PDF",
+          "type": "File",
+          "required": false
+        },
+        {
+          "id": "938a61da4f4d28bcd18fa0dd0d791f06",
+          "slug": "welcome-letter-pdf",
+          "name": "Welcome Letter PDF",
+          "type": "File",
+          "required": false
+        },
+        {
+          "id": "0a346e9f3888e1f741dd25fe5982fd61",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "e7cf8cac2ad9701e940005206fb9f0fc",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 27,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 27,
+        "activePublished": 27,
+        "neverPublished": 0,
+        "live": 27
+      },
+      "publicPageMatches": [
+        "/summer-camp/activities",
+        "/summer-camp/summer-group-schedules",
+        "/summer-camp/summer-camp-welcome-letters"
+      ],
+      "referencedBy": [
+        "SC Activities"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/activities",
+          "/summer-camp/summer-group-schedules",
+          "/summer-camp/summer-camp-welcome-letters"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67893508bab779ee2d89911c",
+      "name": "SC Grades",
+      "slug": "summer-camp-grades",
+      "fields": [
+        {
+          "id": "63259a0d150796d945d24f9eafbd54e3",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "1ce7ca65718084943c84eef5a17f2b5f",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 11,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 11,
+        "activePublished": 11,
+        "neverPublished": 0,
+        "live": 11
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "SC Groups"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/activities",
+          "/summer-camp/summer-group-schedules",
+          "/summer-camp/summer-camp-welcome-letters"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "678a61501fa36e6fded7c3d0",
+      "name": "SY Playground Characters",
+      "slug": "school-year-playground-characters",
+      "fields": [
+        {
+          "id": "16453d9e8f51e616c79178ac45b6b81d",
+          "slug": "image",
+          "name": "Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "84fd5cb08dd2a0972dc6573401b7b4ff",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "31642c4de6ddad860e6c52ee25af11b6",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "e2d5a654eb1fe91c2c6d2793bba05deb",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "993a10ac7d6031f3f49f2cb864832131",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 25,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 25,
+        "activePublished": 25,
+        "neverPublished": 0,
+        "live": 25
+      },
+      "publicPageMatches": [
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/birthday-parties"
+      ],
+      "referencedBy": [
+        "SY Playground Calendars"
+      ],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/birthday-parties"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "678a61b3b5f8f7bbb3cd23db",
+      "name": "SY Playground Guests",
+      "slug": "school-year-playground-guests",
+      "fields": [
+        {
+          "id": "53084c259397e46ac20052256e8dde96",
+          "slug": "time",
+          "name": "Time",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "242045b2362fc260182226dc69df69fe",
+          "slug": "subtitle",
+          "name": "Subtitle",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "e109e6f6faf9e5c0be7617e6a6afe08c",
+          "slug": "person-name",
+          "name": "Person Name",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "ad1c338d0df9997345ebbe14d0c6e848",
+          "slug": "company-name",
+          "name": "Company Name",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "80a7320ef2ce013c3d4e0bc94df646e2",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "2d650dc506bdecc3958fa767f8a27b5d",
+          "slug": "link",
+          "name": "Link",
+          "type": "Link",
+          "required": false
+        },
+        {
+          "id": "7731245b5811c2a4811b510c256acbba",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "f4428026282cfbe72f5c9dc011a6859d",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 36,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 36,
+        "activePublished": 36,
+        "neverPublished": 0,
+        "live": 36
+      },
+      "publicPageMatches": [
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/birthday-parties"
+      ],
+      "referencedBy": [
+        "SY Playground Calendars"
+      ],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/birthday-parties"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "678a6231fc57d0461ee736e0",
+      "name": "SY Playground Calendars",
+      "slug": "school-year-playground-calendar",
+      "fields": [
+        {
+          "id": "f9fd9a3e1cbe2a5dd994363ca58bed6b",
+          "slug": "calendar-date",
+          "name": "Calendar Date",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "id": "85dfc6c91bea68f632393fe914eee568",
+          "slug": "special-guest",
+          "name": "Special Guest",
+          "type": "Reference",
+          "required": false,
+          "validations": {
+            "collectionId": "678a61b3b5f8f7bbb3cd23db"
+          }
+        },
+        {
+          "id": "cec9da247964477b0784b810a7d3c2f8",
+          "slug": "character",
+          "name": "Character",
+          "type": "Reference",
+          "required": false,
+          "validations": {
+            "collectionId": "678a61501fa36e6fded7c3d0"
+          }
+        },
+        {
+          "id": "57d686689d45271be5af484e2151d0a4",
+          "slug": "day-of-the-week",
+          "name": "Day",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "fac5069f4d73f4e069a045d51c35f67b",
+          "slug": "agenda",
+          "name": "Agenda",
+          "type": "RichText",
+          "required": false
+        },
+        {
+          "id": "80c3b3b30b9cff5c3e59d70d42a251bd",
+          "slug": "has-guest-2",
+          "name": "Has Guest",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "8fac38dbb68bb099fc683ebb18eab4b8",
+          "slug": "custom-day",
+          "name": "Custom Day",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "e3d6c177263d16cd5985745e084faeae",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "a08344235fc92c1b116ddcdaeec1c950",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 26,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 26,
+        "activePublished": 26,
+        "neverPublished": 0,
+        "live": 26
+      },
+      "publicPageMatches": [
+        "/school-year/programs/indoor-outdoor-play-center"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/indoor-outdoor-play-center"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "6797b70e2d82596b57b3097e",
+      "name": "FAQs",
+      "slug": "faqs",
+      "fields": [
+        {
+          "id": "b857ccae4fef682057b1e465b426a8b8",
+          "slug": "answer",
+          "name": "Answer",
+          "type": "RichText",
+          "required": false
+        },
+        {
+          "id": "0c1ca9451b086899ad5a13ebda9274f7",
+          "slug": "category",
+          "name": "Category",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "6797b73cfd315e900db665c5"
+          }
+        },
+        {
+          "id": "d21f378f20d52b25e4a38b64e014df49",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "d72e568a143bd791324c6092b41424dd",
+          "slug": "grouping",
+          "name": "Grouping",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Summer Camp",
+                "id": "6b902a16f0e3135427e485b2e06c4f15"
+              },
+              {
+                "name": "School Year",
+                "id": "322111f3aefb481cdf04ed721a18a01c"
+              }
+            ]
+          }
+        },
+        {
+          "id": "423c3f4ebe2c90f174f29bd90ebc8bd4",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "18c2de71c8665132ea7b40da1f5103bb",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 53,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 53,
+        "activePublished": 53,
+        "neverPublished": 0,
+        "live": 53
+      },
+      "publicPageMatches": [
+        "/summer-camp",
+        "/summer-camp/dates-and-rates",
+        "/school-year",
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/preschool-program",
+        "/school-year/programs/birthday-parties",
+        "/school-year/programs/enrichment-classes",
+        "/school-year/programs/enrichment-classes/gymnastics-class",
+        "/school-year/programs/enrichment-classes/sports-enrichment-class",
+        "/school-year/programs/enrichment-classes/arts-class",
+        "/staff",
+        "/faqs",
+        "/summer-camp/programs/preschool-and-kindergarten",
+        "/summer-camp/programs/1st-7th-grade",
+        "/summer-camp/programs/teen-leadership-cit"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/summer-camp",
+          "/summer-camp/dates-and-rates",
+          "/school-year",
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/preschool-program",
+          "/school-year/programs/birthday-parties",
+          "/school-year/programs/enrichment-classes",
+          "/school-year/programs/enrichment-classes/gymnastics-class",
+          "/school-year/programs/enrichment-classes/sports-enrichment-class",
+          "/school-year/programs/enrichment-classes/arts-class",
+          "/staff",
+          "/faqs",
+          "/summer-camp/programs/preschool-and-kindergarten",
+          "/summer-camp/programs/1st-7th-grade",
+          "/summer-camp/programs/teen-leadership-cit"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "6797b73cfd315e900db665c5",
+      "name": "FAQ Categories",
+      "slug": "faq-categories",
+      "fields": [
+        {
+          "id": "cd7e37786caa505b45dd898043be2daa",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "f504f9a934f4c5e58c5d7a414e6f52ad",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 15,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 15,
+        "activePublished": 15,
+        "neverPublished": 0,
+        "live": 15
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "FAQs"
+      ],
+      "pageUse": {
+        "paths": [
+          "/summer-camp",
+          "/summer-camp/dates-and-rates",
+          "/school-year",
+          "/school-year/programs/indoor-outdoor-play-center",
+          "/school-year/programs/preschool-program",
+          "/school-year/programs/birthday-parties",
+          "/school-year/programs/enrichment-classes",
+          "/school-year/programs/enrichment-classes/gymnastics-class",
+          "/school-year/programs/enrichment-classes/sports-enrichment-class",
+          "/school-year/programs/enrichment-classes/arts-class",
+          "/staff",
+          "/faqs",
+          "/summer-camp/programs/preschool-and-kindergarten",
+          "/summer-camp/programs/1st-7th-grade",
+          "/summer-camp/programs/teen-leadership-cit"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "679b4631c1781ce115e9d14d",
+      "name": "Job Opportunities",
+      "slug": "job-opportunities",
+      "fields": [
+        {
+          "id": "888fb87c3317942c91e28475ad58bf17",
+          "slug": "job-description",
+          "name": "Job Description",
+          "type": "RichText",
+          "required": false
+        },
+        {
+          "id": "351ac3ff83147a17ffaace3d4f6ea322",
+          "slug": "summer-camp",
+          "name": "Summer Camp",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "4d4ce14d6fec98eecd9b0367da2070cb",
+          "slug": "school-year",
+          "name": "School Year",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "797b815c40d4bc6166b880b2c638b577",
+          "slug": "seasonal",
+          "name": "Seasonal",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "a0d7bb309e4bcfce19e15f07e791a82a",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "935744083dd27d9887b1f0e1c5e33869",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "c09c416ae596c5a399795aa33f14d282",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "e77931e67d8ba5fb4830fe60e452c07c",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 10,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 10,
+        "activePublished": 10,
+        "neverPublished": 0,
+        "live": 10
+      },
+      "publicPageMatches": [
+        "/staff-opportunities"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/staff-opportunities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67a6368349388ec216606e98",
+      "name": "Parent Dashboard Cards",
+      "slug": "parent-dashboard-cards",
+      "fields": [
+        {
+          "id": "e41e626a8be8060aa48ca9b08786007a",
+          "slug": "color-theme",
+          "name": "Color Theme",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "1f2d706e45786642c16118a440aafea3",
+          "slug": "image",
+          "name": "Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "29856552bdc8c680d02a809736131bc5",
+          "slug": "show-image",
+          "name": "Show Image",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "c7f319b06701e65bf8c7425e16d6b065",
+          "slug": "show-icon",
+          "name": "Show Icon",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "7d061162cef9b3610902b3f1aecebc5a",
+          "slug": "icon-code",
+          "name": "Icon Code",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "b04c125558a6882d8a2ef6fb42808db5",
+          "slug": "card-text",
+          "name": "Card Text",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "95b4b126e701ca706352913352a44ab6",
+          "slug": "link-text",
+          "name": "Link Text",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "415cd8516313839b3dcdb3043a416349",
+          "slug": "link-url",
+          "name": "Link URL",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "ba10169e0c89a20327fc1e7f4e8acf64",
+          "slug": "use-attachment",
+          "name": "Use Attachment",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "26a28976fbe8dfa47a3a08bcb6815f88",
+          "slug": "attachment",
+          "name": "Attachment",
+          "type": "File",
+          "required": false
+        },
+        {
+          "id": "3fa6da549b696dc9ca01a05c3b22dc31",
+          "slug": "season",
+          "name": "Season",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "67764143b1fd5f9d2cf1db79"
+          }
+        },
+        {
+          "id": "0c374217d72915c77631641f1d997e91",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "53b04268aacaae77f27da50efed5ce91",
+          "slug": "live",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "9273ac30cb6d044a1790d920385f6254",
+          "slug": "use-link",
+          "name": "Use Link",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "37f2f37dfdb884d38021fc52abb7d140",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "f2d33ce935ca9d579ea73e146118b6ae",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 24,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 24,
+        "activePublished": 24,
+        "neverPublished": 0,
+        "live": 24
+      },
+      "publicPageMatches": [
+        "/school-year/programs/birthday-parties",
+        "/parent-dashboard"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/parent-dashboard"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67aa0f567825d8393f84cbb7",
+      "name": "SY Facility Categories",
+      "slug": "sy-facility-categories",
+      "fields": [
+        {
+          "id": "9fbf2632c850ee628c313f07d310a313",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "948cdfb8b744028b166572b4953fba4a",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 5,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 5,
+        "activePublished": 5,
+        "neverPublished": 0,
+        "live": 5
+      },
+      "publicPageMatches": [],
+      "referencedBy": [
+        "SY Facilities"
+      ],
+      "pageUse": {
+        "paths": [
+          "/school-year/facilities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67aa0f85e561b53b973289d4",
+      "name": "SY Facilities",
+      "slug": "sy-facilities",
+      "fields": [
+        {
+          "id": "b07120eadb182691c99b2b5bf0eefd5f",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "7a14981850f3042fab33a1584520b7fb",
+          "slug": "category",
+          "name": "Category",
+          "type": "MultiReference",
+          "required": false,
+          "validations": {
+            "collectionId": "67aa0f567825d8393f84cbb7"
+          }
+        },
+        {
+          "id": "9fb83170af069afd6bd81a870ffda395",
+          "slug": "main-image",
+          "name": "Main Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "2f9eb2b10facf0b7c151a616dbfade6d",
+          "slug": "published",
+          "name": "Live",
+          "type": "Switch",
+          "required": false
+        },
+        {
+          "id": "ce40a7a8e1edb5fdef6dfcc5b491f686",
+          "slug": "indoor-outdoor",
+          "name": "Indoor/Outdoor",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Indoor",
+                "id": "e58f8752d8519c43bb37cbce65b7da01"
+              },
+              {
+                "name": "Outdoor",
+                "id": "d5f7aa772ccd842ffdbf3744d8efb9f5"
+              }
+            ]
+          }
+        },
+        {
+          "id": "25ed531224cc26073a641c72bec597c0",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "e455c79da1cf49132d48a005649aa6aa",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "85a8dc9c173bca350615d7793188c1de",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 16,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 16,
+        "activePublished": 16,
+        "neverPublished": 0,
+        "live": 16
+      },
+      "publicPageMatches": [
+        "/school-year/programs/indoor-outdoor-play-center",
+        "/school-year/programs/birthday-parties",
+        "/school-year/programs/vacation-program",
+        "/school-year/facilities",
+        "/news",
+        "/summer-camp/facilities"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/school-year/facilities"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67ac6866f1c45e07ffcb3c01",
+      "name": "SC Sample Schedules",
+      "slug": "summer-camp-sample-schedules",
+      "fields": [
+        {
+          "id": "df9165cf44c95b727381678656282ce9",
+          "slug": "activity",
+          "name": "Activity",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "5ebca080d22051ae38ff2db11967b382",
+          "slug": "image",
+          "name": "Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "f8f2ef53afb260d1f2b6a3e201e862d3",
+          "slug": "program",
+          "name": "Program",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Preschool & Kindergarten",
+                "id": "837b1391ac1c05597b2b388f94730edb"
+              },
+              {
+                "name": "1st–7th Grade",
+                "id": "2af91ad7340aee39de7b031b88d758f2"
+              },
+              {
+                "name": "CIT (8th–9th grade)",
+                "id": "61dc4445dcbe78549fb07053c98ea6ef"
+              }
+            ]
+          }
+        },
+        {
+          "id": "30bac935dccdc49ba76204568b85b838",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "4cabc5c68d18cdbd6a7c0ad2cc4548b0",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "ef3eca75b28bee958df640028635a0c4",
+          "slug": "name",
+          "name": "Period",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "9ad194d7c2c39093e71798981d28ba0a",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 32,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 32,
+        "activePublished": 32,
+        "neverPublished": 0,
+        "live": 32
+      },
+      "publicPageMatches": [
+        "/summer-camp/programs/preschool-and-kindergarten",
+        "/summer-camp/programs/1st-7th-grade",
+        "/summer-camp/programs/teen-leadership-cit"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/summer-camp/programs/preschool-and-kindergarten",
+          "/summer-camp/programs/1st-7th-grade",
+          "/summer-camp/programs/teen-leadership-cit"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "67ac7f1a971929abccc3a578",
+      "name": "SY Sample Schedules",
+      "slug": "sy-sample-schedules",
+      "fields": [
+        {
+          "id": "bff75d352ba136bc3b53d742c6baece4",
+          "slug": "activity",
+          "name": "Activity",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": true
+          }
+        },
+        {
+          "id": "ccebc97a36f8fe8af4acab3741496f31",
+          "slug": "image",
+          "name": "Image",
+          "type": "Image",
+          "required": false
+        },
+        {
+          "id": "d36a779409fdf72a08643ef51f1821bd",
+          "slug": "program",
+          "name": "Program",
+          "type": "Option",
+          "required": false,
+          "validations": {
+            "options": [
+              {
+                "name": "Preschool",
+                "id": "5f2791cce8a8006d1e5492b3f8bc8cf7"
+              }
+            ]
+          }
+        },
+        {
+          "id": "5b0ca6956c511042ca686258c3c49945",
+          "slug": "order",
+          "name": "Order",
+          "type": "Number",
+          "required": false,
+          "validations": {
+            "format": "integer",
+            "precision": 1,
+            "allowNegative": false
+          }
+        },
+        {
+          "id": "b539e9908a2f920f0c42533a9d6dc3e7",
+          "slug": "description",
+          "name": "Description",
+          "type": "PlainText",
+          "required": false,
+          "validations": {
+            "singleLine": false
+          }
+        },
+        {
+          "id": "cc82c193fac09f99c65e8f28bee1531a",
+          "slug": "name",
+          "name": "Period",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "830ec5c53eff89096f7742436f5806b0",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 12,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 12,
+        "activePublished": 12,
+        "neverPublished": 0,
+        "live": 12
+      },
+      "publicPageMatches": [],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/preschool-program"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    },
+    {
+      "id": "6842a0dcb73b7671f02db266",
+      "name": "Playground Calendar PDFs",
+      "slug": "playground-calendar-pdfs",
+      "fields": [
+        {
+          "id": "765f74864dbdda2996d9690f68a8d922",
+          "slug": "pdf",
+          "name": "PDF",
+          "type": "File",
+          "required": true
+        },
+        {
+          "id": "ea7cd4f28fbd37810b36726d0fa5ec8b",
+          "slug": "effective-from",
+          "name": "Start Date",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "id": "0236b4078e7601be9c03b6fbce9734b1",
+          "slug": "name",
+          "name": "Name",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256
+          }
+        },
+        {
+          "id": "6496cc6a89910613d1e1b51b98be76bb",
+          "slug": "slug",
+          "name": "Slug",
+          "type": "PlainText",
+          "required": true,
+          "validations": {
+            "maxLength": 256,
+            "pattern": {},
+            "messages": {
+              "pattern": "Must be alphanumerical and not contain any spaces or special characters",
+              "maxLength": "Must be less than 256 characters"
+            }
+          }
+        }
+      ],
+      "counts": {
+        "total": 2,
+        "draft": 0,
+        "archived": 0,
+        "publishedAtLeastOnce": 2,
+        "activePublished": 2,
+        "neverPublished": 0,
+        "live": 2
+      },
+      "publicPageMatches": [
+        "/school-year/programs/indoor-outdoor-play-center"
+      ],
+      "referencedBy": [],
+      "pageUse": {
+        "paths": [
+          "/school-year/programs/indoor-outdoor-play-center"
+        ],
+        "basis": "Migration mapping from public section roles, matching content and schema references; not a Designer binding export."
+      }
+    }
+  ]
+}
