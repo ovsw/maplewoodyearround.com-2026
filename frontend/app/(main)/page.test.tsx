@@ -9,7 +9,7 @@ vi.mock("@/components/blocks", () => ({
     <div data-testid="blocks">{blocks.map((block) => block._type).join(",")}</div>
   ),
 }));
-vi.mock("@/components/faq-page-json-ld", () => ({ default: () => null }));
+vi.mock("@/components/faq-json-ld", () => ({ default: () => null }));
 vi.mock("@/components/video-json-ld", () => ({ default: () => null }));
 vi.mock("@/components/website-json-ld", () => ({ default: () => null }));
 vi.mock("@/sanity/lib/fetch", () => ({ fetchHomePage: vi.fn() }));

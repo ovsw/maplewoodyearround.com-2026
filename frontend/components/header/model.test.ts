@@ -9,6 +9,18 @@ const testSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 22h18"></path></svg>';
 
 describe("createHeaderNavigationModel", () => {
+  it.each(["\\evil.example", "/\\evil.example", "//evil.example", "/\t/evil.example", "/\n/evil.example"])(
+    "omits unsafe authored destinations: %j",
+    (href) => {
+      const model = createHeaderNavigationModel({
+        items: [{ _key: "unsafe", kind: "link", label: "Unsafe", destination: { href } }],
+        actions: [{ _key: "unsafe-action", label: "Unsafe", destination: { href } }],
+      });
+      expect(model.items).toEqual([]);
+      expect(model.actions).toEqual([]);
+    },
+  );
+
   it("maps direct links, rich groups, actions, and normalized destinations", () => {
     const model = createHeaderNavigationModel({
       _id: "navigation",

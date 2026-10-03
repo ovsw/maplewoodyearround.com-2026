@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { groq } from "next-sanity";
 import { isIndexableCategory } from "@/lib/blog-index";
-import { getDynamicFetchOptions, sanityFetchMetadata } from "@/sanity/lib/live";
+import { sanityFetchMetadata } from "@/sanity/lib/live";
 import { publishedPostFilter } from "@/sanity/queries/blog-post-listing";
 
 const VIEWABLE_TYPES = ["homePage", "page", "post", "blogIndex", "category"] as const;
@@ -21,6 +21,7 @@ const SITEMAP_QUERY = groq`
   *[
     _type in $viewableTypes
     && meta.noindex != true
+    && (_type != "post" || (${publishedPostFilter}))
     && (
       (_type != "category" && (defined(slug.current) || _id in ["homePage", "blogIndex"]))
       || (_type == "category" && defined(slug.current))
@@ -47,14 +48,13 @@ const SITEMAP_QUERY = groq`
 `;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { perspective } = await getDynamicFetchOptions();
   const { data } = await sanityFetchMetadata({
     query: SITEMAP_QUERY,
     params: {
       baseUrl: process.env.NEXT_PUBLIC_SITE_URL!,
       viewableTypes: [...VIEWABLE_TYPES],
     },
-    perspective,
+    perspective: "published",
   });
 
   return (((data as Array<MetadataRoute.Sitemap[number] & {

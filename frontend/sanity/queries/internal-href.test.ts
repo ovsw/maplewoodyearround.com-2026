@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FOOTER_QUERY } from "./footer";
+import { NAVIGATION_QUERY } from "./navigation";
 import {
   customLinkInternalHref,
   internalReferenceHref,
@@ -42,5 +43,13 @@ describe("internal href queries", () => {
 
   it("uses canonical post and category namespaces in footer destinations", () => {
     expectCanonicalBlogRoutes(FOOTER_QUERY, "internal");
+  });
+
+  it("resolves Blog index documents by type in footer and navigation links", () => {
+    for (const query of [FOOTER_QUERY, NAVIGATION_QUERY]) {
+      expect(query).toContain(
+        'internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog"',
+      );
+    }
   });
 });

@@ -6,7 +6,7 @@ export function getSafeLinkHref(value: unknown) {
   if (typeof value !== "string") return null;
 
   const href = stegaClean(value)?.trim();
-  if (!href) return null;
+  if (!href || /[\t\n\r]/.test(href)) return null;
   if (
     href.startsWith("#") ||
     (href.startsWith("/") && !href.startsWith("//") && href[1] !== "\\")

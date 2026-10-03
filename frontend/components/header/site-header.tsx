@@ -48,7 +48,7 @@ export function Header({
           })}
         </div>
         <div className="flex shrink-0 items-center xl:hidden">
-          <MobileNav brand={brand} navigation={model.navigation} theme={theme} />
+          <MobileNav brand={brand} brandLabel={model.brand.label} navigation={model.navigation} theme={theme} />
         </div>
       </div>
     </SiteHeaderShell>

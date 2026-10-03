@@ -45,6 +45,7 @@ test.describe('instant nav: A -> B', () => {
 
     await instant(page, async () => {
       await trigger.click()
+      await expect(page).toHaveURL(testUrl('/<b>'))
       // static shell asserted under the lock; no timeout
       await expect(page.locator(SHELL_MARKER)).toBeVisible()
     })
@@ -103,6 +104,7 @@ the content is already present and `toHaveCount(0)` fails (see `reference/red-te
 // soft navigation
 await instant(page, async () => {
   await trigger.click()
+  await expect(page).toHaveURL(testUrl('/<b>'))
   await expect(page.locator(SHELL_MARKER)).toBeVisible() // shell present
   await expect(page.getByTestId('<b>-content')).toHaveCount(0) // deferred data gated
 })
@@ -117,11 +119,18 @@ honors the cookie on the document request (set via `addCookies()` before navigat
 cached. So the initial-load `toHaveCount(0)` gated half is as valid as the soft-nav one; it needs
 no fresh browser context and no cache-busting query param.
 
-The **post-release** assertion (`getByTestId('<b>-content').toBeVisible()` after the `instant()`
-block) is soft-nav only. On an initial load the document was already emitted under the lock, so
-nothing streams in after release; drop that assertion from the initial-load test, or
-`page.reload()` first to fetch an unlocked document. The mechanism is in
+For an initial load, the document was emitted under the lock. After release,
+reload to fetch an unlocked document, then assert the same deferred marker is
+visible. Keep this assertion in the shipped test so an absent marker cannot
+make the locked check pass without proof. Use a marker guaranteed to appear for
+the test user, including empty and flag-gated states. The mechanism is in
 `reference/red-test-robustness.md`.
+
+```ts
+// After the initial-load instant() block releases its lock:
+await page.reload()
+await expect(page.getByTestId('<b>-content')).toBeVisible()
+```
 
 ## Baseline scaffold: do not ship
 

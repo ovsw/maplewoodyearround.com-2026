@@ -18,7 +18,8 @@
 //   pnpm sync:main            # merge origin/main after fetching
 
 import { execFile } from "node:child_process";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
@@ -105,15 +106,16 @@ export async function unionMerge(cwd, file) {
   const [base, ours, theirs] = await Promise.all(
     [1, 2, 3].map((stage) => stagePath(cwd, stage, file)),
   );
-  const temporary = await Promise.all(
-    [ours, base, theirs].map(async (content, index) => {
-      const target = path.join(cwd, `.merge-refs-${index}.tmp`);
-      await writeFile(target, content, "utf8");
-      return target;
-    }),
-  );
+  const directory = await mkdtemp(path.join(tmpdir(), "merge-refs-"));
   let merged;
   try {
+    const temporary = await Promise.all(
+      [ours, base, theirs].map(async (content, index) => {
+        const target = path.join(directory, `${index}.tmp`);
+        await writeFile(target, content, "utf8");
+        return target;
+      }),
+    );
     // merge-file exits with the number of conflicts (at most 127); anything
     // above that is a real error, and its output is not a merge result.
     const result = await git(cwd, ["merge-file", "-p", ...temporary], { allowFailure: true, raw: true });
@@ -122,9 +124,7 @@ export async function unionMerge(cwd, file) {
     }
     merged = unionAtMarkers(result.stdout);
   } finally {
-    await Promise.all(
-      temporary.map((target) => execFileAsync("rm", ["-f", target])),
-    );
+    await rm(directory, { recursive: true, force: true });
   }
   if (merged === null) return false;
   await writeFile(path.join(cwd, file), merged, "utf8");

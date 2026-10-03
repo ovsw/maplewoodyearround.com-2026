@@ -70,6 +70,8 @@ describe("Site Header", () => {
       />,
     );
 
+    expect(screen.getByRole("img", { name: "Northline" })).toBeInTheDocument();
+    expect(screen.queryByText("Northline")).not.toBeInTheDocument();
   });
 
   it("renders authored identity, interactive navigation, and safe actions", async () => {

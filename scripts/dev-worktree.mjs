@@ -112,7 +112,8 @@ async function main() {
   }
 
   function stopAll(signal = "SIGTERM") {
-    if (!stopping) stopping = true;
+    if (stopping) return;
+    stopping = true;
     for (const child of children) signalChild(child.process, signal);
     const timer = setTimeout(() => {
       for (const child of children) signalChild(child.process, "SIGKILL");
@@ -149,8 +150,8 @@ async function main() {
     });
   }
 
-  process.once("SIGINT", () => stopAll("SIGINT"));
-  process.once("SIGTERM", () => stopAll("SIGTERM"));
+  process.on("SIGINT", () => stopAll("SIGINT"));
+  process.on("SIGTERM", () => stopAll("SIGTERM"));
 }
 
 main().catch((error) => {

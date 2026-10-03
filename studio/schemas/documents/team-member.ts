@@ -8,9 +8,6 @@ export default defineType({
   icon: UserRound,
   description:
     "A reusable person profile that can be selected in team sections.",
-  initialValue: {
-    role: "Team Role",
-  },
   fields: [
     defineField({
       name: "name",

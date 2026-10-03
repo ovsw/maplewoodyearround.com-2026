@@ -160,12 +160,14 @@ function signal(pid, name) {
   }
 }
 
-function alive(pid) {
+export function alive(pid) {
   try {
     process.kill(pid, 0);
     return true;
-  } catch {
-    return false;
+  } catch (error) {
+    if (error.code === "ESRCH") return false;
+    if (error.code === "EPERM") return true;
+    throw error;
   }
 }
 
@@ -193,7 +195,7 @@ async function stopServers(servers) {
 }
 
 async function main() {
-  if (process.platform === "win32") throw new Error("dev:stop needs /proc; Linux or macOS only.");
+  if (process.platform !== "linux") throw new Error("dev:stop requires Linux (/proc and GNU ps).");
   const options = parseArgs(process.argv.slice(2));
   const servers = await findServers(await listProcesses());
   const wantsStop = options.all || options.here || options.orphans || options.ports.length > 0;
@@ -213,7 +215,9 @@ async function main() {
   await stopServers(selected);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}

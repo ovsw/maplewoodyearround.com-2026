@@ -189,7 +189,7 @@ function TeamMemberRosterCard({
   const yearsAtOrganization = member.yearsAtOrganization;
   const experience = yearsAtOrganization != null && yearsAtOrganization >= 1
     ? `${yearsAtOrganization} ${yearsAtOrganization === 1 ? "year" : "years"} with the team`
-    : "Years with the team to confirm";
+    : null;
 
   if (!(hasImage || hasName || hasRole || hasShortBio)) return null;
 
@@ -239,12 +239,14 @@ function TeamMemberRosterCard({
             ) : null}
           </div>
         ) : null}
-        <p
-          className="text-sm leading-snug font-medium text-foreground"
-          data-sanity={memberDataAttribute?.(member._id, "yearsAtOrganization")}
-        >
-          {experience}
-        </p>
+        {experience ? (
+          <p
+            className="text-sm leading-snug font-medium text-foreground"
+            data-sanity={memberDataAttribute?.(member._id, "yearsAtOrganization")}
+          >
+            {experience}
+          </p>
+        ) : null}
         {hasShortBio ? (
           <p
             className="text-pretty wrap-break-word text-sm leading-relaxed text-muted-foreground"

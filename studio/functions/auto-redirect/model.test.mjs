@@ -45,6 +45,7 @@ test("creates a canonical permanent redirect for a page rename", () => {
       create: true,
       destination: "/new-page",
       destinationDocumentId: "page-id",
+      reactivate: [],
       retire: [],
       retarget: [],
       source: "/old-page",
@@ -108,6 +109,7 @@ test("flattens incoming redirects after repeated renames", () => {
       create: true,
       destination: "/c",
       destinationDocumentId: "page-id",
+      reactivate: [],
       retire: [],
       retarget: [{ _id: "redirect-a", _rev: "rev-a" }],
       source: "/b",
@@ -141,6 +143,7 @@ test("retires the active redirect when a document reclaims an old slug", () => {
       create: true,
       destination: "/a",
       destinationDocumentId: "page-id",
+      reactivate: [],
       retire: [{ _id: "redirect-a", _rev: "rev-a" }],
       retarget: [],
       source: "/b",
@@ -171,6 +174,53 @@ test("repairs out-of-order rename delivery without creating a chain", () => {
   assert.equal(plan.action, "apply");
   assert.equal(plan.source, "/a");
   assert.equal(plan.destination, "/c");
+});
+
+test("reactivates owned redirects through a to b to a to c renames", () => {
+  let redirects = [];
+  function rename(beforeSlug, slug) {
+    // The handler resolves document references against the newly published slug.
+    const resolved = redirects.map((redirect) => ({ ...redirect, destination: `/${slug}` }));
+    const plan = planAutoRedirect({
+      event: { beforeSlug, slug, documentId: "page-id", documentType: "page" },
+      liveRoutes: [], redirects: resolved,
+    });
+    assert.equal(plan.action, "apply");
+    redirects = redirects.map((redirect) => ({
+      ...redirect,
+      ...(plan.retire.some((item) => item._id === redirect._id) ? { status: "inactive" } : {}),
+      ...(plan.reactivate.some((item) => item._id === redirect._id) ? { status: "active", destination: plan.destination } : {}),
+      ...(plan.retarget.some((item) => item._id === redirect._id) ? { destination: plan.destination } : {}),
+    }));
+    if (plan.create) redirects.push({
+      _id: autoRedirectId(plan.source), _rev: "revision",
+      source: plan.source, destination: plan.destination,
+      destinationReference: { _ref: "page-id" }, status: "active",
+    });
+    return plan;
+  }
+  rename("a", "b");
+  rename("b", "a");
+  const final = rename("a", "c");
+  assert.deepEqual(final.reactivate, [{ _id: autoRedirectId("/a"), _rev: "revision" }]);
+  assert.equal(final.create, false);
+  assert.equal(redirects.length, 2);
+  assert.ok(redirects.every((redirect) => redirect.status === "active"));
+  for (const redirect of redirects) {
+    assert.equal(resolveFetchedRedirectDestination({
+      ...redirect,
+      destinationDocument: { _id: "page-id", _type: "page", slug: "c" },
+    }), "/c");
+  }
+  assert.deepEqual(rename("a", "c").reactivate, []);
+});
+
+test("does not reactivate inactive redirects owned by another page", () => {
+  const plan = planAutoRedirect({
+    event: { beforeSlug: "a", slug: "c", documentId: "page-id", documentType: "page" },
+    liveRoutes: [], redirects: [{ _id: "other", source: "/a", destination: "/c", status: "inactive", destinationReference: { _ref: "other-page" } }],
+  });
+  assert.equal(plan.action, "skip");
 });
 
 test("does not flatten redirects that cannot prove the same destination document", () => {

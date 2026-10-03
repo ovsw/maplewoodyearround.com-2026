@@ -76,6 +76,7 @@ export const handler = documentEventHandler<AutoRedirectEventData>(
     }
     if (
       !plan.create &&
+      plan.reactivate.length === 0 &&
       plan.retarget.length === 0 &&
       plan.retire.length === 0
     ) {
@@ -95,6 +96,18 @@ export const handler = documentEventHandler<AutoRedirectEventData>(
       _ref: plan.destinationDocumentId,
     };
     const transaction = client.transaction();
+    for (const redirect of plan.reactivate) {
+      transaction.patch(redirect._id, (patch) => {
+        const guardedPatch = redirect._rev
+          ? patch.ifRevisionId(redirect._rev)
+          : patch;
+        return guardedPatch.set({
+          status: "active",
+          destination,
+          destinationReference,
+        });
+      });
+    }
     for (const redirect of plan.retire) {
       transaction.patch(redirect._id, (patch) => {
         const guardedPatch = redirect._rev

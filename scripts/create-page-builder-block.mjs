@@ -4,6 +4,7 @@ import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -51,7 +52,9 @@ function parseArgs(argv) {
       continue;
     }
     if (argument.startsWith("--")) {
-      const [flag, inlineValue] = argument.split("=", 2);
+      const separator = argument.indexOf("=");
+      const flag = separator < 0 ? argument : argument.slice(0, separator);
+      const inlineValue = separator < 0 ? undefined : argument.slice(separator + 1);
       const value = inlineValue ?? argv[index + 1];
       if (!value || value.startsWith("--")) throw new Error(`${flag} needs a value`);
       if (inlineValue === undefined) index += 1;
@@ -84,8 +87,19 @@ function getNames(input, explicitTitle) {
   }
 
   const pascal = words.map((word) => word[0].toUpperCase() + word.slice(1)).join("");
+  const camel = pascal[0].toLowerCase() + pascal.slice(1);
+  const reserved = new Set([
+    "await", "break", "case", "catch", "class", "const", "continue", "debugger",
+    "default", "delete", "do", "else", "enum", "export", "extends", "false",
+    "finally", "for", "function", "if", "implements", "import", "in",
+    "instanceof", "interface", "let", "new", "null", "package", "private",
+    "protected", "public", "return", "static", "super", "switch", "this",
+    "throw", "true", "try", "typeof", "var", "void", "while", "with", "yield",
+    "arguments", "eval",
+  ]);
+  if (reserved.has(camel)) throw new Error(`Block name produces a reserved identifier: ${camel}`);
   return {
-    camel: pascal[0].toLowerCase() + pascal.slice(1),
+    camel,
     kebab: words.join("-"),
     pascal,
     title: explicitTitle ?? words.map((word) => word[0].toUpperCase() + word.slice(1)).join(" "),
@@ -320,21 +334,42 @@ async function main() {
     return;
   }
 
-  const plan = await buildPlan(options);
-  const files = [plan.targets.schema, plan.targets.query, plan.targets.component];
-  if (options.preview) files.push(plan.targets.preview);
-
-  if (options.dryRun) {
-    console.log(`Would create and register ${plan.names.camel}:`);
-    for (const file of files) console.log(`- ${file}`);
-    return;
+  // A per-worktree Git lock covers both reading and writing registrations.
+  // Fail instead of letting concurrent generators overwrite one another.
+  const lock = resolve(
+    repoRoot,
+    execFileSync("git", ["rev-parse", "--git-path", "page-builder-generator.lock"], {
+      cwd: repoRoot,
+      encoding: "utf8",
+    }).trim(),
+  );
+  try {
+    await mkdir(lock);
+  } catch (error) {
+    if (error.code === "EEXIST") {
+      throw new Error(`Another block generator holds ${lock}. Retry after it finishes. If it crashed, remove the lock only after confirming no generator is running.`);
+    }
+    throw error;
   }
+  try {
+    const plan = await buildPlan(options);
+    const files = [plan.targets.schema, plan.targets.query, plan.targets.component];
+    if (options.preview) files.push(plan.targets.preview);
 
-  await applyPlan(plan, options);
-  console.log(`Created and registered ${plan.names.camel}.`);
-  for (const file of files) console.log(`- ${file}`);
-  console.log("Next: shape the schema, query, and renderer together, then run pnpm typegen once.");
-  if (!options.preview) console.log("Studio grid preview omitted. Add a JPG when the design is ready.");
+    if (options.dryRun) {
+      console.log(`Would create and register ${plan.names.camel}:`);
+      for (const file of files) console.log(`- ${file}`);
+      return;
+    }
+
+    await applyPlan(plan, options);
+    console.log(`Created and registered ${plan.names.camel}.`);
+    for (const file of files) console.log(`- ${file}`);
+    console.log("Next: shape the schema, query, and renderer together, then run pnpm typegen once.");
+    if (!options.preview) console.log("Studio grid preview omitted. Add a JPG when the design is ready.");
+  } finally {
+    await rm(lock, { recursive: true, force: true });
+  }
 }
 
 main().catch((error) => {

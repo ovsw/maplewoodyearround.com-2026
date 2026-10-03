@@ -8,7 +8,7 @@ By default (`validationLevel: 'warning'`) Cache Components validates every Page 
 
 ## when to run it
 
-After the Cache Components build is clean, not before. While the app is mid-adoption the build redboxes mask this, so a full clean build (every route `◐`, no errors) is the precondition. A quiet sweep is the expected result of a clean adoption, not a missing signal.
+Run this after a full build succeeds with no errors. Routes may intentionally remain `ƒ` when they use `await connection()`. Sweep the routes expected to navigate instantly; every route does not need to show `◐`.
 
 ## the loop
 

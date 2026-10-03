@@ -48,6 +48,7 @@ type AutoRedirectPlan =
       destination: string;
       destinationDocumentId: string;
       retire: { _id: string; _rev?: string }[];
+      reactivate: { _id: string; _rev?: string }[];
       retarget: { _id: string; _rev?: string }[];
       source: string;
     };
@@ -170,7 +171,14 @@ export function planAutoRedirect({
     (redirect) =>
       normalizeRedirectPath(readRedirectPath(redirect.source)) === source,
   );
-  if (sourceRedirect && !isActive(sourceRedirect)) {
+  const reactivating =
+    sourceRedirect &&
+    !isActive(sourceRedirect) &&
+    sourceRedirect._id &&
+    targetsDocument(sourceRedirect, destinationDocumentId)
+      ? sourceRedirect
+      : undefined;
+  if (sourceRedirect && !isActive(sourceRedirect) && !reactivating) {
     return {
       action: "skip",
       reason: "An inactive redirect already uses the previous route",
@@ -180,6 +188,7 @@ export function planAutoRedirect({
   const directRedirect = sourceRedirect;
   if (
     directRedirect &&
+    !reactivating &&
     normalizeRedirectPath(readRedirectPath(directRedirect.destination)) !==
       destination
   ) {
@@ -215,7 +224,7 @@ export function planAutoRedirect({
         ? { ...redirect, destination: toStoredRedirectPath(destination) }
         : redirect,
     );
-  if (!directRedirect) {
+  if (!directRedirect || reactivating) {
     simulated.push({
       source: toStoredRedirectPath(source),
       destination: toStoredRedirectPath(destination),
@@ -232,6 +241,9 @@ export function planAutoRedirect({
     create: !directRedirect,
     destination: toStoredRedirectPath(destination),
     destinationDocumentId,
+    reactivate: reactivating
+      ? [{ _id: reactivating._id as string, _rev: reactivating._rev }]
+      : [],
     retire: retire.map((redirect) => ({
       _id: redirect._id as string,
       _rev: redirect._rev,

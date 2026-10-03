@@ -6,7 +6,7 @@ const destinationProjection = `{
   "href": select(
     kind == "internal" => select(
       internal->_id == "homePage" || internal->_type == "homePage" => "/",
-      internal->_id == "blogIndex" => "/blog",
+      internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",
       internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")

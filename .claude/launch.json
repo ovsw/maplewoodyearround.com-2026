@@ -41,7 +41,7 @@
       "autoPort": false
     },
     {
-      "name": "dev (root, all workspaces)",
+      "name": "dev (all workspaces; checks Studio readiness)",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": [
         "dev"

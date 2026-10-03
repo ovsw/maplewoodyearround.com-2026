@@ -77,9 +77,16 @@ async function fetchTitle(
     query,
     ...(params ? { params } : {}),
     perspective: "published",
-  })) as { data: { title?: string | null } | null };
+  })) as { data: { title?: string | null; overrideTitle?: string | null } | null };
+  if (!data) return null;
 
-  const title = data?.title && getPageOgImageTitle(data.title);
+  const fallbackTitle = target.kind === "blog"
+    ? "Blog"
+    : target.kind === "category"
+      ? "Blog category"
+      : null;
+  const rawTitle = data.title || data.overrideTitle || fallbackTitle;
+  const title = rawTitle && getPageOgImageTitle(rawTitle);
   if (!title) return null;
   return target.kind === "blog" || target.kind === "category"
     ? getBlogPageTitle(title, target.page || 1)

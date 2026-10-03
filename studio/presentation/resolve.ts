@@ -81,7 +81,7 @@ export const resolve: PresentationPluginOptions["resolve"] = {
     },
     {
       route: "/blog/category/:slug",
-      filter: `_type == 'category' && slug.current in [$slug, "/" + $slug]`,
+      filter: `_type == 'category' && ${ROOT_SLUG_FILTER}`,
     },
     {
       route: "/blog/:slug",
