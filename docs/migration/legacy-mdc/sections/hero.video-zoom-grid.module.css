@@ -1,0 +1,152 @@
+.root {
+	position: relative;
+	width: 100%;
+}
+
+.scrollTrack {
+	position: relative;
+	width: 100%;
+}
+
+.stickyViewport {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.gridTargetStage {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: clamp(0.75rem, 2vw, 1.25rem);
+	pointer-events: none;
+	visibility: hidden;
+}
+
+.desktopGrid,
+.mobileGrid {
+	width: 100vw;
+	height: 100vh;
+	gap: clamp(0.45rem, 1vw, 0.8rem);
+}
+
+.desktopGrid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.mobileGrid {
+	display: none;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.measurementTile {
+	width: 100%;
+	height: 100%;
+}
+
+.tile {
+	position: relative;
+	overflow: hidden;
+	border-radius: clamp(0.65rem, 1.2vw, 1rem);
+	background: rgb(22 25 20 / 55%);
+	transform-origin: center;
+}
+
+.mediaTile {
+	opacity: 0;
+	transform: translate3d(0, 2rem, 0) scale(0.9);
+	transition: none;
+}
+
+.mediaTileVisible {
+	opacity: 1;
+	transform: translate3d(0, 0, 0) scale(1);
+}
+
+.tileImage {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.videoTarget {
+	position: relative;
+	z-index: 2;
+}
+
+.floatingScene {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	will-change: top, left, width, height;
+}
+
+.sceneDesktopGrid,
+.sceneMobileGrid {
+	width: 100%;
+	height: 100%;
+	gap: clamp(0.45rem, 1vw, 0.8rem);
+}
+
+.sceneDesktopGrid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.sceneMobileGrid {
+	display: none;
+	grid-template-columns: minmax(0, 1fr);
+	grid-template-rows: repeat(3, minmax(0, 1fr));
+}
+
+.floatingVideoEl {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.videoOverlay {
+	position: absolute;
+	inset: 0;
+	background-color: var(--brand-overlay, rgb(20 23 18 / 60%));
+}
+
+.contentLayer {
+	position: absolute;
+	inset: 0;
+	z-index: 4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: clamp(1rem, 4vw, 2rem);
+	pointer-events: none;
+}
+
+.contentInner {
+	max-width: min(80ch, 88vw);
+	text-align: center;
+}
+
+@media (max-width: 767px) {
+	.desktopGrid {
+		display: none;
+	}
+
+	.mobileGrid {
+		display: grid;
+	}
+
+	.sceneDesktopGrid {
+		display: none;
+	}
+
+	.sceneMobileGrid {
+		display: grid;
+	}
+}
