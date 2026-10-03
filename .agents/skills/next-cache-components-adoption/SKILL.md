@@ -22,10 +22,10 @@ Enable Cache Components on an app and walk it to a passing build. This skill seq
 - **A runnable app.** The whole loop verifies against `next dev` and a browser, so the app has to boot. If it reads a database or required env at import (e.g. an `env.ts` that throws on a missing `DATABASE_URL`), confirm it actually starts — with the real environment, or local data you stand up — before step 1. Adoption can't be verified against an app that won't run.
 
 - **Next.js 16.3 or later.** That release is where the pieces this skill relies on land: top-level `cacheComponents`, `export const instant`, the dev-overlay instant-navigation validation warnings, and the `cache-components-instant-false` codemod. If `next --version` reports below 16.3, upgrade first:
-  - `npx @next/codemod@latest upgrade latest` to apply the version-to-version codemods.
+  - `npx @next/codemod@16.3.0 upgrade 16.3.0` to apply the version-to-version codemods.
   - Read the relevant [version upgrade guide](https://nextjs.org/docs/app/guides/upgrading) (e.g. [Version 16](https://nextjs.org/docs/app/guides/upgrading/version-16)) for what the codemod doesn't cover.
 
-- **No incompatible config keys.** `cacheComponents: true` errors on any file that still exports `dynamic`, `revalidate`, or `fetchCache`. **Translate, don't delete.** Each export encodes behavior the route needs to keep doing; migrate each one to its Cache Components equivalent via the [migration guide's per-key sections](https://nextjs.org/docs/app/guides/migrating-to-cache-components#enable-cache-components). The exception is `dynamic = 'force-dynamic'`: under Cache Components every route is already dynamic by default, so the migration guide removes it outright rather than translating it — don't overthink a batch of identical `force-dynamic` deletions. `revalidate` and `fetchCache` still need real translation. If a value can't be cleanly translated yet, leave a `// TODO: Cache Components adoption — restore revalidate = 3600` comment so the loop picks it up. The `cache-components-instant-false` codemod does not touch these.
+- **No incompatible config keys.** `cacheComponents: true` errors on files that export `dynamic`, `revalidate`, or `fetchCache`. Remove these exports and preserve required cache behavior through the [migration guide's per-key sections](https://nextjs.org/docs/app/guides/migrating-to-cache-components#enable-cache-components). `dynamic = 'force-dynamic'` needs no replacement because routes are dynamic by default. `fetchCache` is no longer needed: remove it, then add `use cache` only where the data needs caching. A redundant value such as `fetchCache = 'auto'` needs no replacement. Translate `revalidate` into the appropriate cache lifetime. If required behavior cannot be preserved yet, leave a `// TODO: Cache Components adoption — restore revalidate = 3600` comment for the loop. The `cache-components-instant-false` codemod does not change these exports.
 
 - **`experimental.dynamicIO` is fatal.** It was renamed to top-level `cacheComponents` and the old key now aborts before any build can run — remove it (or replace with `cacheComponents: true`) first. `experimental.useCache` is still accepted as a deprecated alias; redundant once `cacheComponents: true` is set, so remove it for clarity.
 
@@ -35,7 +35,7 @@ Enable Cache Components on an app and walk it to a passing build. This skill seq
 
 - **Offline docs.** Guide links have offline copies under `node_modules/next/dist/docs/` (bundled since Next.js 16.2), with the directory layout numbered for ordering (e.g. `node_modules/next/dist/docs/01-app/02-guides/migrating-to-cache-components.md`). If you can't predict the numbered prefix, `find node_modules/next/dist/docs -name '<slug>.md'` resolves it. The `/docs/messages/*` error pages are not bundled.
 
-- **Older versions without bundled docs.** Suggest `npx @next/codemod@latest agents-md` to the user before starting: it downloads a version-matched copy to `.next-docs/` and writes an index into `AGENTS.md` / `CLAUDE.md`. It touches files in their repo, so ask first and run it only if they want it.
+- **Older versions without bundled docs.** Suggest `npx @next/codemod@16.3.0 agents-md` to the user before starting: it downloads a version-matched copy to `.next-docs/` and writes an index into `AGENTS.md` / `CLAUDE.md`. It touches files in their repo, so ask first and run it only if they want it.
 
 ## the shape of the work
 
@@ -77,17 +77,13 @@ In preference order:
 
 1. **[`next-dev-loop`](https://github.com/vercel/next.js/tree/canary/skills/next-dev-loop) — strongly preferred.** Cross-checks `/_next/mcp` against the live browser via `agent-browser` and surfaces both compile and runtime issues in one pass. The diagnostics (React tree, suspense boundaries, console + network) are richer than poking at `next dev` by hand.
 
-   Install it before starting the loop. Don't wait until you hit something `next dev` alone can't explain. Run:
-
-   ```bash
-   npx skills add https://github.com/vercel/next.js/tree/canary/skills/next-dev-loop
-   ```
+   Read the checked-in [next-dev-loop skill](../next-dev-loop/SKILL.md) before starting the loop. Use this reviewed repository copy; no remote skill installation is needed.
 
    The skill states its required `agent-browser` version and walks you through it.
 
    **Requires Turbopack.** If `package.json`'s `dev` script passes `--webpack`, flag it to the user and ask whether there's a reason to stay on webpack. If not, switch to Turbopack (the Next.js 16.3+ default). If they want to keep webpack, skip this install and use the [build-only loop](#the-loop-build-only-fallback) instead.
 
-   You don't need permission to install `next-dev-loop` itself. It's a tool, like installing a dev dependency. If a user is present, briefly tell them you're installing it for verification. In a non-interactive run (CI, dashboard, sandbox), install it without asking — "can't prompt the user" is not a reason to skip. The only legitimate skip is a real technical blocker: no network, no npm, read-only filesystem, a stated no-new-deps policy, or a webpack-only dev script. If you skip, name the specific blocker in your final report.
+   If the checked-in skill is missing, report that blocker. Review any replacement at an immutable commit before adding it to this repository.
 
 2. **A browser you can drive yourself.** Playwright, `agent-browser` directly, any browser-automation tool. Use only when `next-dev-loop` is genuinely blocked. You'll miss the framework-side checks (`/_next/mcp`), so DOM assertions alone don't catch every regression — be more cautious about what you call "verified."
 
@@ -121,7 +117,7 @@ Before invoking the codemod, fix the two classes of blocker it can't.
 The codemod refuses to run on a dirty working tree. Commit or stash unrelated work first, or pass `--force` to let its edits land alongside your WIP. Common false positive: if you recently upgraded Next.js, `package.json` and the lockfile will already be dirty — commit those first.
 
 ```bash
-npx @next/codemod@latest cache-components-instant-false ./app
+npx @next/codemod@16.3.0 cache-components-instant-false ./app
 ```
 
 Pass the app directory you resolved in [requires](#requires). A wrong path is not an error: it reports `0 ok` and exits `0`, so read the file count and treat zero as a failed run, not an adopted app.

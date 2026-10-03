@@ -23,6 +23,14 @@ try {
   if (!token) {
     throw new Error("Set SANITY_DEPLOY_TOKEN in studio/.env.local before deploying Studio.");
   }
+  // Sanity also reads .env.local through Vite. Merely omitting it from the
+  // child environment does not keep local-only public variables out of builds.
+  const localOnlyPublicNames = Object.keys(local).filter((name) =>
+    /^(SANITY_STUDIO_|SANITY_APP_)/.test(name) && !Object.hasOwn(production, name),
+  );
+  if (localOnlyPublicNames.length) {
+    throw new Error(`Set explicit production values for local public settings before deploying: ${localOnlyPublicNames.join(", ")}`);
+  }
 
   const url = new URL(previewUrl);
   const hostname = url.hostname.replace(/^\[|\]$/g, "").replace(/\.$/, "");
@@ -48,7 +56,6 @@ try {
     stdio: "inherit",
     env: {
       ...process.env,
-      ...local,
       ...production,
       SANITY_AUTH_TOKEN: token,
       SANITY_STUDIO_PREVIEW_URL: url.origin,

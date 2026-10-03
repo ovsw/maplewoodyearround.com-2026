@@ -58,8 +58,8 @@ export default defineType({
       name: "rating",
       title: "Rating",
       type: "number",
-      description: "Optional numeric rating from 1 to 5.",
-      validation: (rule) => rule.min(1).max(5),
+      description: "Optional whole-number rating from 1 to 5.",
+      validation: (rule) => rule.integer().min(1).max(5),
     }),
   ],
 

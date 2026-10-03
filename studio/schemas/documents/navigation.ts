@@ -55,7 +55,11 @@ const childLink = defineType({
           return true;
         }),
     }),
-    defineField({ name: "destination", type: "navigationDestination" }),
+    defineField({
+      name: "destination",
+      type: "navigationDestination",
+      validation: (rule) => rule.required(),
+    }),
   ],
   preview: {
     select: { icon: "icon.name", title: "label", subtitle: "description" },
@@ -78,7 +82,11 @@ const directLink = defineType({
       type: "string",
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: "destination", type: "navigationDestination" }),
+    defineField({
+      name: "destination",
+      type: "navigationDestination",
+      validation: (rule) => rule.required(),
+    }),
   ],
   preview: { select: { title: "label" } },
 });
@@ -121,7 +129,11 @@ const action = defineType({
       type: "string",
       validation: (rule) => rule.required(),
     }),
-    defineField({ name: "destination", type: "navigationDestination" }),
+    defineField({
+      name: "destination",
+      type: "navigationDestination",
+      validation: (rule) => rule.required(),
+    }),
   ],
   preview: { select: { title: "label" } },
 });

@@ -27,6 +27,7 @@ console.log(JSON.stringify({
   preview: process.env.SANITY_STUDIO_PREVIEW_URL,
   appId: process.env.SANITY_STUDIO_APP_ID,
   token: process.env.SANITY_AUTH_TOKEN,
+  localOnly: process.env.SANITY_STUDIO_LOCAL_ONLY,
   mode: process.env.SANITY_ACTIVE_ENV,
   nodeEnv: process.env.NODE_ENV,
 }));
@@ -102,6 +103,14 @@ test("deployment requires the token from the local file", (t) => {
   assert.equal(result.status, 1);
   assert.equal(result.stdout, "");
   assert.match(result.stderr, /SANITY_DEPLOY_TOKEN/);
+});
+
+test("deployment blocks local-only public settings that Sanity would load again", (t) => {
+  const result = deploy(t, { local: "SANITY_DEPLOY_TOKEN=test-token\nSANITY_STUDIO_LOCAL_ONLY=private-local-value\n" });
+  assert.equal(result.status, 1, result.stderr);
+  assert.equal(result.stdout, "");
+  assert.match(result.stderr, /SANITY_STUDIO_LOCAL_ONLY/);
+  assert.doesNotMatch(result.stderr, /private-local-value/);
 });
 
 test("deployment cannot skip the build with extra CLI arguments", (t) => {

@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { InlineObjectField } from "../../inputs/inline-object-field";
+import { validateDestinationUrl } from "../../validation/destination-url";
 
 type DestinationOptions = {
   name: string;
@@ -78,10 +79,7 @@ export function defineDestinationType({
             ) {
               return true;
             }
-            if (!value) return "Enter a destination";
-            return /^(https?:\/\/|mailto:|tel:|\/)/.test(value)
-              ? true
-              : "Use an absolute URL, mailto:, tel:, or a root-relative path";
+            return validateDestinationUrl(value);
           }),
       }),
       defineField({
