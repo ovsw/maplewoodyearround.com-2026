@@ -1,0 +1,45 @@
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: faq-hub-rise 1ms both;
+      animation-range: entry 0% entry 40%;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes faq-hub-rise {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+/* Category pills lift on hover like the dates-and-rates tabs; the chosen one
+   stays put. */
+@media (prefers-reduced-motion: no-preference) {
+  .pill:not([aria-pressed="true"]):hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Phones: the category row scrolls sideways with no visible scrollbar. */
+.track {
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop: the category list stays in view under the site header while the
+   groups scroll. --site-header-offset is set by the header shell. */
+@media (min-width: 1024px) {
+  .categories {
+    position: sticky;
+    top: calc(var(--site-header-offset, 0px) + 1.5rem);
+    align-self: start;
+    max-height: calc(100vh - var(--site-header-offset, 0px) - 3rem);
+    overflow-y: auto;
+  }
+}

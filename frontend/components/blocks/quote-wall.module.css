@@ -1,0 +1,276 @@
+/* Wall: CSS multi-column masonry. Cards fill each column top to bottom, then
+   the next column. Column count steps 1, 2, 3 with the viewport. */
+.list {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.wall {
+  column-count: 1;
+  column-gap: 1.25rem;
+}
+
+.item {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+}
+
+.item[hidden] {
+  display: none;
+}
+
+/* Focus lands here after "Show more". Pointer users see the new cards and
+   need no ring; keyboard users get one so they can see where Tab continues. */
+.item:focus {
+  outline: none;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--section-accent, var(--color-link));
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 1.5rem 1.375rem;
+  border: 1px solid color-mix(in oklch, var(--color-foreground) 10%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--color-fill-cream);
+  color: var(--color-fill-cream-foreground);
+  overflow-wrap: anywhere;
+}
+
+/* On a cream field the cream card would vanish, so it turns white. */
+[data-theme="cream"] .card {
+  background: var(--color-fill-bright);
+}
+
+.card ::selection {
+  background: var(--color-fill-amber);
+  color: var(--color-fill-amber-foreground);
+}
+
+/* Opening quote mark in the display face, clipped so it hangs above the text. */
+.quoteMark {
+  height: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 3.75rem;
+  font-weight: 800;
+  line-height: 0.75;
+  letter-spacing: -0.02em;
+  color: var(--color-link);
+  user-select: none;
+}
+
+.quoteBody {
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+}
+
+/* Clamped quote: a few lines, then the "Read the full quote" link below.
+   The grid is flattened to a block so line-clamp counts across paragraphs. */
+.quoteBody[data-clamped] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+
+.quoteBody[data-clamped] p + p {
+  margin-top: 0.75rem;
+}
+
+.quoteBody p {
+  margin: 0;
+}
+
+.quoteBody strong {
+  font-weight: 700;
+}
+
+.quoteBody a {
+  color: var(--color-prose-link);
+  text-decoration-color: color-mix(in oklch, var(--color-prose-link) 45%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+.quoteBody a:hover {
+  color: var(--color-prose-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.quoteBody a:focus-visible {
+  outline: 2px solid var(--color-prose-link);
+  outline-offset: 3px;
+}
+
+/* "Read the full quote": a text link, pulled up under the clamped lines. */
+.readMore {
+  margin-top: -0.375rem;
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--color-link) 45%, transparent);
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+  transition: color 0.2s var(--ease-standard), text-decoration-color 0.2s var(--ease-standard);
+}
+
+.readMore:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.readMore:focus-visible {
+  outline: 2px solid var(--color-link);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* Attribution row: face, then signature and role side by side. */
+.attribution {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid color-mix(in oklch, var(--color-foreground) 10%, transparent);
+}
+
+.avatarSlot {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.avatar {
+  position: relative;
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  border-radius: 50%;
+  /* The avatar carries card-panel, so --color-foreground is already cream on
+     this element; the hairline reads the fixed cream-card ink instead. */
+  border: 1px solid color-mix(in oklch, var(--color-fill-cream-foreground) 12%, transparent);
+  background: var(--color-fill-panel);
+}
+
+.avatarFallback {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-foreground);
+}
+
+.who {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.name {
+  font-family: var(--font-accent);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-emphasis);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: color-mix(in oklch, var(--color-foreground) 68%, transparent);
+}
+
+/* "Show more" row under the wall. */
+.more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.count {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: color-mix(in oklch, currentColor 68%, transparent);
+}
+
+/* Dialog: the same card, roomier, with space for the close button. */
+.dialogCard {
+  --dialog-card-pad: 1.75rem;
+}
+
+.dialogCard .card {
+  gap: 1.5rem;
+  padding: 2.25rem var(--dialog-card-pad) 1.75rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-fill-cream);
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.35);
+}
+
+.dialogCard .quoteBody {
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+}
+
+@media (min-width: 48rem) {
+  .wall {
+    column-count: 2;
+    column-gap: 1.5rem;
+  }
+
+  .item {
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    padding: 1.75rem 1.75rem 1.5rem;
+  }
+
+  .dialogCard {
+    --dialog-card-pad: 2.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .wall {
+    column-count: 3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .readMore {
+    transition: none;
+  }
+}

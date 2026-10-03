@@ -1,0 +1,21 @@
+{
+  "$schema": "https://t3.codes/schema/t3.json",
+  "scripts": [
+    {
+      "name": "Setup Worktree",
+      "command": "pnpm setup:worktree",
+      "icon": "configure",
+      "runOnWorktreeCreate": true
+    },
+    {
+      "name": "Dev Worktree",
+      "command": "pnpm dev:worktree",
+      "icon": "play"
+    },
+    {
+      "name": "Configure Sanity CORS",
+      "command": "pnpm setup:sanity-cors",
+      "icon": "configure"
+    }
+  ]
+}

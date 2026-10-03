@@ -1,0 +1,134 @@
+/*
+ * Photo-first split. Phones stack: photo at 4:3 on top, then the copy at the
+ * page gutter. From the desktop breakpoint the section becomes a four-track
+ * grid: [edge gutter] [left content half] [right content half] [edge gutter].
+ * The photo spans the edge gutter and the left half, so it bleeds to the
+ * viewport's left edge; the copy sits in the right half, aligned with the
+ * site's content container. A wrapper marked `data-mirror` swaps the two
+ * halves; see the mirror rules below. Phones never mirror.
+ *
+ * The photo never grows taller than one screen. Its frame is sticky at the
+ * top of the viewport and capped at the viewport height, so when the copy
+ * runs longer than a screen the photo pins in the left half, in cover mode,
+ * and releases when the section scrolls out. When the section is shorter
+ * than a screen the frame is simply the section's height. Nothing above this
+ * block may clip overflow, or the sticky frame stops pinning.
+ *
+ * The stage between the figure and the frame exists because a percentage
+ * height inside a stretched grid item does not resolve against the stretched
+ * size in Chrome; the frame came out shorter than both the screen and the
+ * figure. The stage is absolutely positioned to the figure's box, so its
+ * height is definite and the frame's `100%` means the figure's height.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+}
+
+.frame {
+  position: relative;
+  height: 100%;
+}
+
+.copy {
+  padding-inline: var(--gutter);
+  /* Stacked: the photo sits flush against the section above (a one-sided
+     bleed), a short gap separates it from the copy, and the copy and buttons
+     honour the resolved bottom padding so they clear the next section's
+     edge. */
+  padding-block: 2.5rem var(--section-pad-bottom);
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns:
+      minmax(var(--gutter), 1fr)
+      minmax(0, calc((min(100%, var(--container-content)) - 2 * var(--gutter)) / 2))
+      minmax(0, calc((min(100%, var(--container-content)) - 2 * var(--gutter)) / 2))
+      minmax(var(--gutter), 1fr);
+  }
+
+  /* Both items name their row. Auto-placement would otherwise push the copy
+     to a second row whenever the photo starts in a later column than the
+     copy (the mirrored case), and the photo's row would then collapse: the
+     figure has no intrinsic height here, because the image inside it is
+     absolutely positioned. */
+  .photo {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+
+  /* The frame, not the figure, carries the placeholder colour and the corners
+     on the side that faces the copy, so a notch would show the section field.
+     A corner softens only where that boundary is a seam: the same background
+     continues past it, so the curve rests on a continuous surface. At an edge
+     the photo is a field and stays square. The wrapper carries the boundary
+     attributes (see section-boundaries.ts). */
+  .frame {
+    position: sticky;
+    top: 0;
+    height: min(100vh, 100%);
+    height: min(100dvh, 100%);
+    overflow: hidden;
+    --story-corner-top: 0px;
+    --story-corner-bottom: 0px;
+    border-top-right-radius: var(--story-corner-top);
+    border-bottom-right-radius: var(--story-corner-bottom);
+  }
+
+  [data-seam-top] .frame {
+    --story-corner-top: var(--radius-section);
+  }
+
+  [data-seam-bottom] .frame {
+    --story-corner-bottom: var(--radius-section);
+  }
+
+  .copy {
+    grid-column: 3 / 4;
+    grid-row: 1;
+    padding-inline: clamp(2.5rem, 5vw, 5.5rem) 0;
+    padding-block: var(--section-pad-top) var(--section-pad-bottom);
+  }
+
+  /* Mirror: the odd section in a run of story features flips, so the page
+     does not say the same thing twice. The photo takes the right content
+     half plus the right edge gutter and bleeds to the viewport's right edge;
+     the copy takes the left half with its inner padding on the side facing
+     the photo. Text stays left-aligned, and the copy-side corners move to
+     the left. */
+  [data-mirror] .photo {
+    grid-column: 3 / 5;
+  }
+
+  [data-mirror] .frame {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: var(--story-corner-top);
+    border-bottom-left-radius: var(--story-corner-bottom);
+  }
+
+  [data-mirror] .copy {
+    grid-column: 2 / 3;
+    padding-inline: 0 clamp(2.5rem, 5vw, 5.5rem);
+  }
+
+  /* No photo: the copy takes both content halves instead of leaving the
+     left half empty. */
+  .copyWithoutPhoto {
+    grid-column: 2 / 4;
+    padding-inline: 0;
+  }
+}

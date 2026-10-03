@@ -1,0 +1,11 @@
+diff --git a/dist/index.js b/dist/index.js
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -6677,7 +6677,6 @@
+ }, TagIcon = () => {
+ 	let $ = c(1), t0;
+ 	return $[0] === Symbol.for("react.memo_cache_sentinel") ? (t0 = /* @__PURE__ */ jsxs("svg", {
+-		"data-sanity-icon": "media__tag",
+ 		fill: "currentColor",
+ 		height: "1em",
+ 		stroke: "currentColor",
