@@ -1,0 +1,1962 @@
+{
+  "capturedAt": "2026-10-03T06:34:23.538Z",
+  "sourceUrl": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/js/webflow.62e1ef6d.4dc174929073d448.js",
+  "sourceSha256": "2f781523daf9bcd91f832b5e106fc50a7058dd1a277f5879d8be87e87d4e3903",
+  "mediaQueries": [
+    {
+      "key": "main",
+      "min": 992,
+      "max": 10000
+    },
+    {
+      "key": "medium",
+      "min": 768,
+      "max": 991
+    },
+    {
+      "key": "small",
+      "min": 480,
+      "max": 767
+    },
+    {
+      "key": "tiny",
+      "min": 0,
+      "max": 479
+    }
+  ],
+  "scope": "Scroll events matched to published DOM elements on the 53 audited pages. Unmatched Webflow template actions are excluded.",
+  "matchedPages": [
+    {
+      "path": "/director-lee",
+      "matches": []
+    },
+    {
+      "path": "/school-year",
+      "matches": [
+        {
+          "event": "e-1724",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-84",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-84-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "header83_ix-trigger",
+              "section": "section_header83 text-color-alternate",
+              "heading": "50+ activitiesto choose from"
+            }
+          ]
+        },
+        {
+          "event": "e-1725",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-85",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-85-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small"
+          ],
+          "elements": [
+            {
+              "class": "header83_ix-trigger",
+              "section": "section_header83 text-color-alternate",
+              "heading": "50+ activitiesto choose from"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/summer-camp",
+      "matches": [
+        {
+          "event": "e-1273",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-42",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-42-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small",
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Discover Our Day Camp Enrollment Process"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Discover Our Day Camp Enrollment Process"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Discover Our Day Camp Enrollment Process"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Discover Our Day Camp Enrollment Process"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/",
+      "matches": [
+        {
+          "event": "e-765",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-24",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-24-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "header83_ix-trigger",
+              "section": "section_header83 text-color-alternate",
+              "heading": "50+ activitiesto choose from"
+            }
+          ]
+        },
+        {
+          "event": "e-766",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-23",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-23-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small"
+          ],
+          "elements": [
+            {
+              "class": "header83_ix-trigger",
+              "section": "section_header83 text-color-alternate",
+              "heading": "50+ activitiesto choose from"
+            }
+          ]
+        },
+        {
+          "event": "e-1506",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-25",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1507",
+          "type": "SCROLL_OUT_OF_VIEW",
+          "action": "a-26",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1508",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-27",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1509",
+          "type": "SCROLL_OUT_OF_VIEW",
+          "action": "a-28",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1510",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-29",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1511",
+          "type": "SCROLL_OUT_OF_VIEW",
+          "action": "a-30",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1512",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-31",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1513",
+          "type": "SCROLL_OUT_OF_VIEW",
+          "action": "a-32",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "layout515_image-wrapper",
+              "section": "section_layout515",
+              "heading": "Over 30,000 children have learned to swim at Maplewood, since 1965"
+            }
+          ]
+        },
+        {
+          "event": "e-1514",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-51",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "section_layout412 u-theme-dark",
+              "section": "section_layout412 u-theme-dark",
+              "heading": "We're open year-round!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/summer-camp/dates-and-rates",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs",
+      "matches": []
+    },
+    {
+      "path": "/school-year/staff-roster",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/indoor-outdoor-play-center",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/flying-solo",
+      "matches": []
+    },
+    {
+      "path": "/maplewood-seasons",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/preschool-program",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/vacation-program",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/birthday-parties",
+      "matches": [
+        {
+          "event": "e-1273",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-42",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-42-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small",
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Online Reservation Steps"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Online Reservation Steps"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Online Reservation Steps"
+            },
+            {
+              "class": "summer-camp_timeline_circle",
+              "section": "section_summer-camp_enrollment-process-timeline",
+              "heading": "Online Reservation Steps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/summer-camp/staff-roster",
+      "matches": []
+    },
+    {
+      "path": "/school-year/facilities",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "matches": [
+        {
+          "event": "e-1579",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-61",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-61-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium"
+          ],
+          "elements": [
+            {
+              "class": "w-layout-grid layout486_component",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            }
+          ]
+        },
+        {
+          "event": "e-1580",
+          "type": "SCROLL_INTO_VIEW",
+          "action": "a-62",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small",
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            }
+          ]
+        },
+        {
+          "event": "e-1581",
+          "type": "SCROLL_OUT_OF_VIEW",
+          "action": "a-63",
+          "config": {
+            "loop": false,
+            "playInReverse": false,
+            "scrollOffsetValue": 50,
+            "scrollOffsetUnit": "%",
+            "delay": null,
+            "direction": null,
+            "effectIn": null
+          },
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small",
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            },
+            {
+              "class": "layout486_content",
+              "section": "section_layout486",
+              "heading": "Sign up"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/summer-camp/bus-transportation",
+      "matches": []
+    },
+    {
+      "path": "/leadership",
+      "matches": []
+    },
+    {
+      "path": "/our-values",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/gymnastics-class",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/arts-class",
+      "matches": []
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/sports-enrichment-class",
+      "matches": []
+    },
+    {
+      "path": "/contact",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/activities",
+      "matches": []
+    },
+    {
+      "path": "/staff-opportunities",
+      "matches": []
+    },
+    {
+      "path": "/history",
+      "matches": [
+        {
+          "event": "e-1570",
+          "type": "SCROLLING_IN_VIEW",
+          "action": "a-42",
+          "config": [
+            {
+              "continuousParameterGroupId": "a-42-p",
+              "smoothing": 50,
+              "startsEntering": true,
+              "addStartOffset": false,
+              "addOffsetValue": 50,
+              "startsExiting": false,
+              "addEndOffset": false,
+              "endOffsetValue": 50
+            }
+          ],
+          "mediaQueries": [
+            "main",
+            "medium",
+            "small",
+            "tiny"
+          ],
+          "elements": [
+            {
+              "class": "timeline11_circle"
+            },
+            {
+              "class": "timeline11_circle"
+            },
+            {
+              "class": "timeline11_circle"
+            },
+            {
+              "class": "timeline11_circle"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/staff",
+      "matches": []
+    },
+    {
+      "path": "/faqs",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/programs",
+      "matches": []
+    },
+    {
+      "path": "/news",
+      "matches": []
+    },
+    {
+      "path": "/parent-dashboard",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/summer-group-schedules",
+      "matches": []
+    },
+    {
+      "path": "/maplewood-main-calendar",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/facilities",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/programs/preschool-and-kindergarten",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/swim-instruction",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/programs/teen-leadership-cit",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/schedule-a-tour",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/programs/1st-7th-grade",
+      "matches": []
+    },
+    {
+      "path": "/school-year/schedule-a-tour",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/changes-notification-form",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/camper-daily-photos",
+      "matches": []
+    },
+    {
+      "path": "/post/early-bird-enrollment",
+      "matches": []
+    },
+    {
+      "path": "/summer-camp/summer-camp-welcome-letters",
+      "matches": []
+    },
+    {
+      "path": "/post/enrichment-classes",
+      "matches": []
+    },
+    {
+      "path": "/post/new-monthly-memberships",
+      "matches": []
+    },
+    {
+      "path": "/post/meet-you-at-the-playground-copy",
+      "matches": []
+    },
+    {
+      "path": "/post/great-gift-ideas",
+      "matches": []
+    },
+    {
+      "path": "/post/we-know-how-to-throw-a-party",
+      "matches": []
+    },
+    {
+      "path": "/privacy-policy",
+      "matches": []
+    },
+    {
+      "path": "/terms-and-conditions",
+      "matches": []
+    },
+    {
+      "path": "/cookie-policy",
+      "matches": []
+    }
+  ],
+  "events": [
+    {
+      "id": "e-765",
+      "type": "SCROLLING_IN_VIEW",
+      "target": "bd1c97d4-39ee-e8b8-2443-6be4829a1d3c",
+      "mediaQueries": [
+        "tiny"
+      ],
+      "actionList": "a-24",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-24-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-766",
+      "type": "SCROLLING_IN_VIEW",
+      "target": "bd1c97d4-39ee-e8b8-2443-6be4829a1d3c",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small"
+      ],
+      "actionList": "a-23",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-23-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-1273",
+      "type": "SCROLLING_IN_VIEW",
+      "target": ".summer-camp_timeline_circle",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small",
+        "tiny"
+      ],
+      "actionList": "a-42",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-42-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-1506",
+      "type": "SCROLL_INTO_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e3",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-25",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1507",
+      "type": "SCROLL_OUT_OF_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e3",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-26",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1508",
+      "type": "SCROLL_INTO_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e5",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-27",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1509",
+      "type": "SCROLL_OUT_OF_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e5",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-28",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1510",
+      "type": "SCROLL_INTO_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e7",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-29",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1511",
+      "type": "SCROLL_OUT_OF_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e7",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-30",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1512",
+      "type": "SCROLL_INTO_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e9",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-31",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1513",
+      "type": "SCROLL_OUT_OF_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|6e65622f-ca2b-9fd9-0eea-8881674d99e9",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-32",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1514",
+      "type": "SCROLL_INTO_VIEW",
+      "target": "673ebf0eedfc15a41bedc105|420ab476-95d0-21a5-4673-d8d7f981b2ec",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-51",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1570",
+      "type": "SCROLLING_IN_VIEW",
+      "target": ".timeline11_circle",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small",
+        "tiny"
+      ],
+      "actionList": "a-42",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-42-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-1579",
+      "type": "SCROLLING_IN_VIEW",
+      "target": "678a77143b3213b49f6c4821|7708f1f5-8fc3-c31e-6678-0d715b7336f0",
+      "mediaQueries": [
+        "main",
+        "medium"
+      ],
+      "actionList": "a-61",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-61-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-1580",
+      "type": "SCROLL_INTO_VIEW",
+      "target": ".layout486_content",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small",
+        "tiny"
+      ],
+      "actionList": "a-62",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1581",
+      "type": "SCROLL_OUT_OF_VIEW",
+      "target": ".layout486_content",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small",
+        "tiny"
+      ],
+      "actionList": "a-63",
+      "config": {
+        "loop": false,
+        "playInReverse": false,
+        "scrollOffsetValue": 50,
+        "scrollOffsetUnit": "%",
+        "delay": null,
+        "direction": null,
+        "effectIn": null
+      }
+    },
+    {
+      "id": "e-1724",
+      "type": "SCROLLING_IN_VIEW",
+      "target": "45ab884b-af33-c10b-4d73-1bf6b6b5f459",
+      "mediaQueries": [
+        "tiny"
+      ],
+      "actionList": "a-84",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-84-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    },
+    {
+      "id": "e-1725",
+      "type": "SCROLLING_IN_VIEW",
+      "target": "45ab884b-af33-c10b-4d73-1bf6b6b5f459",
+      "mediaQueries": [
+        "main",
+        "medium",
+        "small"
+      ],
+      "actionList": "a-85",
+      "config": [
+        {
+          "continuousParameterGroupId": "a-85-p",
+          "smoothing": 50,
+          "startsEntering": true,
+          "addStartOffset": false,
+          "addOffsetValue": 50,
+          "startsExiting": false,
+          "addEndOffset": false,
+          "endOffsetValue": 50
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "a-24",
+      "title": "Header 83 [Scroll] [Mobile]",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-24-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 0,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                },
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 3.4,
+                    "yValue": 3.4,
+                    "locked": true
+                  }
+                },
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 24,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 60,
+              "actions": [
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 1,
+                    "yValue": 1,
+                    "locked": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-23",
+      "title": "Header 83 [Scroll] [Desktop]",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-23-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 0,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                },
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 3.2,
+                    "yValue": 3.2,
+                    "locked": true
+                  }
+                },
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 24,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 60,
+              "actions": [
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 1,
+                    "yValue": 1,
+                    "locked": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-42",
+      "title": "Timeline Circle [Scroll]",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-42-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 45,
+              "actions": [
+                {
+                  "type": "STYLE_BACKGROUND_COLOR",
+                  "target": "65e1215e005c55ebd076fa03|5b403cdb-74ba-0825-9020-cca13decdb31",
+                  "values": {
+                    "globalSwatchId": "--swatch--brand-primary",
+                    "rValue": 0,
+                    "bValue": 1,
+                    "gValue": 102,
+                    "aValue": 1
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "STYLE_BACKGROUND_COLOR",
+                  "target": "65e1215e005c55ebd076fa03|5b403cdb-74ba-0825-9020-cca13decdb31",
+                  "values": {
+                    "globalSwatchId": "--_themes---button--background-hover",
+                    "rValue": 255,
+                    "bValue": 0,
+                    "gValue": 176,
+                    "aValue": 1
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-25",
+      "title": "Layout 515 Item 1 [Fade In]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-1",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-1",
+            "values": {
+              "value": 1,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-26",
+      "title": "Layout 515 Item 1 [Fade Out]",
+      "initialState": false,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-1",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-27",
+      "title": "Layout 515 Item 2 [Fade In]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-2",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-2",
+            "values": {
+              "value": 1,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-28",
+      "title": "Layout 515 Item 2 [Fade Out]",
+      "initialState": false,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-2",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-29",
+      "title": "Layout 515 Item 3 [Fade In]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-3",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-3",
+            "values": {
+              "value": 1,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-30",
+      "title": "Layout 515 Item 3 [Fade Out]",
+      "initialState": false,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-3",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-31",
+      "title": "Layout 515 Item 4 [Fade In]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-4",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-4",
+            "values": {
+              "value": 1,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-32",
+      "title": "Layout 515 Item 4 [Fade Out]",
+      "initialState": false,
+      "steps": [
+        [
+          {
+            "type": "STYLE_OPACITY",
+            "target": ".layout515_item.item-4",
+            "values": {
+              "value": 0,
+              "unit": ""
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-51",
+      "title": "Layout 412 Image [Shrink]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_SIZE",
+            "target": ".layout412_image-wrapper",
+            "values": {
+              "widthValue": 200,
+              "widthUnit": "%",
+              "heightUnit": "PX",
+              "locked": false
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_SIZE",
+            "target": ".layout412_image-wrapper",
+            "values": {
+              "widthValue": 100,
+              "widthUnit": "%",
+              "heightUnit": "PX",
+              "locked": false
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-61",
+      "title": "Layout 486 Number [Scroll]",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-61-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 30,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": 0,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            },
+            {
+              "at": 40,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": -25,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": -25,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            },
+            {
+              "at": 60,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": -50,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            },
+            {
+              "at": 70,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": -50,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            },
+            {
+              "at": 80,
+              "actions": [
+                {
+                  "type": "TRANSFORM_MOVE",
+                  "target": ".layout486_number-wrapper",
+                  "values": {
+                    "yValue": -75,
+                    "xUnit": "PX",
+                    "yUnit": "%",
+                    "zUnit": "PX"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-62",
+      "title": "Layout 486 Progress [Grow]",
+      "initialState": true,
+      "steps": [
+        [
+          {
+            "type": "STYLE_SIZE",
+            "target": ".layout486_progress-bar",
+            "values": {
+              "widthValue": 0,
+              "widthUnit": "%",
+              "heightUnit": "PX",
+              "locked": false
+            }
+          }
+        ],
+        [
+          {
+            "type": "STYLE_SIZE",
+            "target": ".layout486_progress-bar",
+            "values": {
+              "widthValue": 100,
+              "widthUnit": "%",
+              "heightUnit": "PX",
+              "locked": false
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-63",
+      "title": "Layout 486 Progress [Shrink]",
+      "initialState": false,
+      "steps": [
+        [
+          {
+            "type": "STYLE_SIZE",
+            "target": ".layout486_progress-bar",
+            "values": {
+              "widthValue": 0,
+              "widthUnit": "%",
+              "heightUnit": "PX",
+              "locked": false
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "id": "a-84",
+      "title": "Header 83 [Scroll] [Mobile] 2",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-84-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 0,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                },
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 3.4,
+                    "yValue": 3.4,
+                    "locked": true
+                  }
+                },
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 24,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 60,
+              "actions": [
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 1,
+                    "yValue": 1,
+                    "locked": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-85",
+      "title": "Header 83 [Scroll] [Desktop] 2",
+      "initialState": false,
+      "steps": [
+        {
+          "id": "a-85-p",
+          "label": "Scroll",
+          "type": "SCROLL_PROGRESS",
+          "frames": [
+            {
+              "at": 0,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                },
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 3.2,
+                    "yValue": 3.2,
+                    "locked": true
+                  }
+                },
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 1,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 24,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".header83_content",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 50,
+              "actions": [
+                {
+                  "type": "STYLE_OPACITY",
+                  "target": ".image-overlay-layer",
+                  "values": {
+                    "value": 0,
+                    "unit": ""
+                  }
+                }
+              ]
+            },
+            {
+              "at": 60,
+              "actions": [
+                {
+                  "type": "TRANSFORM_SCALE",
+                  "target": ".header83_images-layout",
+                  "values": {
+                    "xValue": 1,
+                    "yValue": 1,
+                    "locked": true
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "slaterScripts": [
+    {
+      "url": "https://assets.slater.app/slater/11822/31894.js?v=475424",
+      "sha256": "e8aeb95cab4e4e6c2c97f603d639fa6b89d39363e333000c89bf90e32b045044",
+      "bytes": 293,
+      "code": "let bodyScrollDirection;ScrollTrigger.create({trigger:\"body\",start:\"top top\",end:\"bottom bottom\",onUpdate:o=>{bodyScrollDirection!==o.direction&&(bodyScrollDirection=o.direction,1===o.direction?$(\".nav_component\").addClass(\"is-nav-hidden\"):$(\".nav_component\").removeClass(\"is-nav-hidden\"))}});"
+    },
+    {
+      "url": "https://assets.slater.app/slater/11822/28045.js?v=69601",
+      "sha256": "4c44d35e3ead47c059b3789ac2c969eb2387a7c4a9423383bcaf3dbf0b2932da",
+      "bytes": 151966,
+      "code": "$(\".swiper-slider_component\").each((function(){new Swiper($(this).find(\".swiper\")[0],{slidesPerView:\"auto\",speed:500,keyboard:{enabled:!0,onlyInViewport:!0},freeMode:!1,slideToClickedSlide:!0,followFinger:!0,loop:!1,slideActiveClass:\"is-active\",slideDuplicateActiveClass:\"is-active\",pagination:{el:$(this).find(\".swiper-bullet-wrapper\")[0],bulletActiveClass:\"is-active\",bulletClass:\"swiper-bullet\",bulletElement:\"button\",clickable:!0},navigation:{nextEl:$(this).find(\".swiper-next\")[0],prevEl:$(this).find(\".swiper-prev\")[0],disabledClass:\"is-disabled\"}})}));"
+    },
+    {
+      "url": "https://assets.slater.app/slater/11822/28408.js?v=565578",
+      "sha256": "d532ec4b523f618d24ec21934d308dd0d8c929dab77295ecb58d885129c4dbb8",
+      "bytes": 110,
+      "code": "const currentYearEl=document.getElementById(\"currentYear\");currentYearEl.textContent=(new Date).getFullYear();"
+    }
+  ]
+}
