@@ -1,0 +1,52 @@
+{
+  "name": "studio",
+  "version": "2.2.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.10.0+sha512.0b7f8b98060031904c017e3a41eb187a16d40eeb829b95c4f8cb03681761fc4ab53dd219115b9b447f4dce1a05a214764461e7d3703392a9f32f9511ce8c86c8",
+  "scripts": {
+    "dev": "sanity dev --port 3333",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "node ../scripts/deploy-studio.mjs",
+    "generate:lucide-icons": "node scripts/generate-lucide-icon-catalog.mjs",
+    "test:presentation": "node --test presentation/presentation.test.mjs",
+    "typegen": "rm -f schema.json && sanity schema extract; test -f schema.json && sanity typegen generate",
+    "typecheck": "tsc --noEmit",
+    "page:text": "node --env-file=.env.local scripts/print-page-text.mjs",
+    "sanity:query": "node --env-file=.env.local scripts/query.mjs",
+    "page:seed": "node --env-file=.env.local scripts/seed-page-draft.mjs",
+    "raster:sync": "node --env-file=.env.local scripts/sync-raster-descriptions.mjs"
+  },
+  "dependencies": {
+    "@portabletext/react": "^6.2.0",
+    "@sanity/functions": "^1.2.1",
+    "@sanity/icons": "^5.0.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/preview-url-secret": "^4.0.8",
+    "@sanity/table": "3.1.12",
+    "@sanity/ui": "^3.3.5",
+    "@sanity/vision": "^6.16.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.23.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-player": "^3.4.0",
+    "sanity": "^6.16.0",
+    "sanity-plugin-media": "6.3.0",
+    "styled-components": "^6.4.3",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@sanity/blueprints": "^0.20.2",
+    "@sanity/client": "^7.23.0",
+    "@sanity/eslint-config-studio": "^6.0.0",
+    "@sanity/types": "^6.16.0",
+    "@types/node": "^26.1.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.2",
+    "typescript": "^6.0.3"
+  }
+}
