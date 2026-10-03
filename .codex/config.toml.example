@@ -1,0 +1,12 @@
+[mcp_servers.shadcn]
+command = "node_modules/.bin/shadcn"
+args = ["mcp"]
+cwd = "/rooot/path/to/PROJECT-FOLDER/frontend"
+
+[mcp_servers.shadcn.env]
+SHADCNBLOCKS_API_KEY = "YOUR_KEY_HERE"
+
+[mcp_servers.sanity]
+url = "https://mcp.sanity.io"
+http_headers = { Authorization = "Bearer YOUR_KEY_HERE" }
+default_tools_approval_mode = "writes"

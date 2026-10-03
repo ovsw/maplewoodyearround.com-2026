@@ -1,0 +1,16 @@
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: cta-banner-rise 1ms both;
+      animation-range: entry 0% entry 45%;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes cta-banner-rise {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
