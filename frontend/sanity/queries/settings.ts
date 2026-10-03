@@ -20,6 +20,7 @@ export const SETTINGS_QUERY = defineQuery(`
       email,
       phone,
       fax,
+      menuAddress,
       addressLines
     },
     socialLinks[]{

@@ -8112,6 +8112,13 @@
           },
           "optional": true
         },
+        "menuAddress": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "fax": {
           "type": "objectAttribute",
           "value": {

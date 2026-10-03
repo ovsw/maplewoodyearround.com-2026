@@ -35,6 +35,12 @@ const contactDetails = defineType({
       description: "The public contact email.",
     }),
     defineField({
+      name: "menuAddress",
+      title: "Menu address",
+      type: "string",
+      description: "The public location address shown in the main menu.",
+    }),
+    defineField({
       name: "fax",
       title: "Fax",
       type: "string",
