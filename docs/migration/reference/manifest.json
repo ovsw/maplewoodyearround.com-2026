@@ -1,0 +1,4444 @@
+{
+  "source": "https://www.maplewoodyearround.com",
+  "sitemap": "https://www.maplewoodyearround.com/sitemap.xml",
+  "method": "Chromium, device scale 1, normal motion, real scroll pass, fonts and lazy images awaited, videos paused, top of page, fullPage screenshot. Scroll-dependent sections retain their scroll-zero state. Sliders retain the loaded state; individual slides are not combined.",
+  "pages": [
+    {
+      "path": "/",
+      "file": "home-1440.png",
+      "capturedAt": "2026-10-03T06:27:18.997Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Children's Summer Camp in South Easton, MA | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/",
+      "documentWidth": 1440,
+      "documentHeight": 16284,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/6022af993a6b2191db3ed10c/628298b20ae0236682d4b87f_Play-24.svg",
+          "alt": "Play video"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a3fed768b85180e7ff598_97d132811772c6ec4992cf48454e8c30_maplewood-swim-lessons-staff.avif",
+          "alt": "A woman and a child swimming in a pool"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f4790b3a7fcf68fff4303_2.avif",
+          "alt": "A laughing young boy in a yellow and blue soccer uniform"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f4790d8355fb7bc3f441e_4.avif",
+          "alt": "A group of young girls playing with a Maplewood counselor."
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a47c889c565a4b1d2f77c_e5d5c23013063be487fb0edc4c1f801d_1553589246-summer-camp-maplewood-girls-camper-staff-smiles.avif",
+          "alt": "A group of young girls standing next to each other"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/",
+      "file": "home-390.png",
+      "capturedAt": "2026-10-03T06:27:36.440Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Children's Summer Camp in South Easton, MA | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/",
+      "documentWidth": 390,
+      "documentHeight": 17801,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67b2f2b6a56766989bfdc5a8_archery%20(1).avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f479023ed5c040e7629b5_3.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a3bb6c123fd73076d12c68_ed3120a0166d8ada700e7143a866d5fd_summer-camp-maplewood-gardening-planting.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/6022af993a6b2191db3ed10c/628298b20ae0236682d4b87f_Play-24.svg",
+          "alt": "Play video"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67b2f4a8ddd7553ea74aa6c3_maplewood-camp-splash-slide-smiles.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f479002611b18f2a612f7_15f75179dc6d1b1f169e4abb6c72e5f6_8.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f479062a9c66d71ed90b7_5.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a3fed768b85180e7ff598_97d132811772c6ec4992cf48454e8c30_maplewood-swim-lessons-staff.avif",
+          "alt": "A woman and a child swimming in a pool"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f4790b3a7fcf68fff4303_2-p-500.avif",
+          "alt": "A laughing young boy in a yellow and blue soccer uniform"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67b2f3e3920bf4fe755fffa6_8f6bbbdab133b77f6c96f94570dbbda8_maplewood-staff-bubbles.avif",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a48a554f0bf5afcd3ef31_1684595852-maplewood-camp-family.avif",
+          "alt": "A woman sitting on a bench with two children"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/director-lee",
+      "file": "director-lee-1440.png",
+      "capturedAt": "2026-10-03T06:27:49.819Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Lee Pinstein: Camp Director at Maplewood in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/director-lee",
+      "documentWidth": 1440,
+      "documentHeight": 3921,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/director-lee",
+      "file": "director-lee-390.png",
+      "capturedAt": "2026-10-03T06:28:02.727Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Lee Pinstein: Camp Director at Maplewood in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/director-lee",
+      "documentWidth": 390,
+      "documentHeight": 3234,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp",
+      "file": "summer-camp-1440.png",
+      "capturedAt": "2026-10-03T06:28:20.019Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Summer Camp at Maplewood: Adventure Awaits | Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp",
+      "documentWidth": 1440,
+      "documentHeight": 13894,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp",
+      "file": "summer-camp-390.png",
+      "capturedAt": "2026-10-03T06:28:39.223Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Summer Camp at Maplewood: Adventure Awaits | Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp",
+      "documentWidth": 390,
+      "documentHeight": 22909,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/dates-and-rates",
+      "file": "summer-camp/dates-and-rates-1440.png",
+      "capturedAt": "2026-10-03T06:28:53.533Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Dates & Rates Summer Day Camp in Easton, MA | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/dates-and-rates",
+      "documentWidth": 1440,
+      "documentHeight": 7700,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/dates-and-rates",
+      "file": "summer-camp/dates-and-rates-390.png",
+      "capturedAt": "2026-10-03T06:29:08.145Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Dates & Rates Summer Day Camp in Easton, MA | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/dates-and-rates",
+      "documentWidth": 390,
+      "documentHeight": 8988,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f47906d78212466a77acf_1.avif",
+          "alt": "A group of young children standing around each other"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673f4790b3a7fcf68fff4303_2.avif",
+          "alt": "A laughing young boy in a yellow and blue soccer uniform"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a3fed768b85180e7ff598_97d132811772c6ec4992cf48454e8c30_maplewood-swim-lessons-staff.avif",
+          "alt": "A woman and a child swimming in a pool"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67ae075457b8ffdc7decc2e3_maplewood_camp_lee_lessons-swim-pool.avif",
+          "alt": "Lee Pinstein Maplewood Director teaching a camper how to swim in one of the heated swimming pools"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a8673fb5f5590dfecc9d63_Maplewood-camp-pool-happiness.avif",
+          "alt": "A little girl in a swim suit standing in front of a green frog statue"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year",
+      "file": "school-year-1440.png",
+      "capturedAt": "2026-10-03T06:29:24.775Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Transformative Summer Camp Experiences for Kids | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year",
+      "documentWidth": 1440,
+      "documentHeight": 11492,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year",
+      "file": "school-year-390.png",
+      "capturedAt": "2026-10-03T06:29:40.925Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Transformative Summer Camp Experiences for Kids | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year",
+      "documentWidth": 390,
+      "documentHeight": 12632,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a3ab385c070f490ddd9b3e_7ec4ec362a59207acb0c8b36e5c7391e_school-year-afterschool-maplewood-gymnastics.avif",
+          "alt": "A girl doing a handstand on a balance beam"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a39528ff2d60c5a0929054_maplewood-camp-ceramics.avif",
+          "alt": "A group of young children sitting at a table painting ceramics"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a393f1eea335d318392573_maplewood-kindergarten-preschool.avif",
+          "alt": "A little girl sits at a table happily playing with colorful shapes"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a3a94ddd0c518ecbe2bc6d_Untitled-2.avif",
+          "alt": "A woman teaching a child how to use a gymnastics bar"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a79ae22e5819b79cce529e_Maplewood_-6%20sm.avif",
+          "alt": "A couple of kids that are sitting at a table"
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": ""
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo"
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/indoor-outdoor-play-center",
+      "file": "school-year/programs/indoor-outdoor-play-center-1440.png",
+      "capturedAt": "2026-10-03T06:30:12.427Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Explore Maplewood Indoor/Outdoor Playground in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/indoor-outdoor-play-center",
+      "documentWidth": 1440,
+      "documentHeight": 10300,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffb27239a13020ce6fcdc9_pony-ride-sm.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3050d135312ae62f69263_fire-dog-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffaf74097aa335bfb05034_Elsa--Anna.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3baf00d5bfea3816d92_silly-dog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de3f8c94204516f3b6d7c7_xens-critters-sm-(1).jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3086522b8074b754acee2_air-rescue-pup.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c303fc4fe7d0072eaf682c_BLUE-HEELER-2-EDITED.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de3f8c94204516f3b6d7c7_xens-critters-sm-(1).jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3086522b8074b754acee2_air-rescue-pup.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffb27239a13020ce6fcdc9_pony-ride-sm.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69011aa869aa2500192ac929_stitch-upload.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a799a61707daf40c5c0ee5_2025-01-23-15.13.33.avif",
+          "alt": "Infant Area",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0494781a4d84273fe9123_2025-01-23-13.16.43.avif",
+          "alt": "Giant Lite Brite",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0512e95db449c340cff00_2025-01-23-13.28.46.avif",
+          "alt": "Toy Room",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b4dccf895611d303501cb1_magentiic-blocks-girls.png",
+          "alt": "Superspace Magnetic Tiles",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6799019df78b053b285d78b7_IMG_5449.avif",
+          "alt": "Lego display",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a78afeca64c39b2293a3ec_maplewood-lobby-characters.avif",
+          "alt": "Characters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68bf1a815c52a17adcc31538_MOUSE.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b41444a6fef9a6314194_bob.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3e9bb85875862857c12_minnie.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6908f9bdcf0910949f012973_pig.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c5bfac64a412eb8acc_construction-bulldog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68cdaded1149230877616e74_shark-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c30bbc2ae122da2be1cd3a_hedgehog.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b411d041c033ec6dbf64_cowboy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c1a0a2464b49ffbcbd_snolaf.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bccdcb3b5fffa6b273_reindeer.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d20682980f5f64bbe3_snowman.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3db0e6370e941b85392_gingerbread.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6a843f1a51155d9c71a7f67c_miss-stacy-add.jpeg",
+          "alt": "Small Singers and Shakers",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b8e537bbed186d1fe15083_bd-hat-3.jpeg",
+          "alt": "Balloon Creations",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34d881908a92655ff7077_1555596388-school-year-maplewood-kids-events-paddle-boats.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af67dbb645628bdfdca152_camp-cotton-candy.avif",
+          "alt": "Cotton-Candy",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930391780db39a0b3bab1f3_Elsa--Anna-(1).jpeg",
+          "alt": "Elsa & Anna ",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0c5bd0fd80dff130dc64b_maplewood-pottery-pre-k.avif",
+          "alt": "Arts & Crafts/Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b64ecea0e5752357d9e792_rock-climbing-sm.jpeg",
+          "alt": "Rock Climbing Wall",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d1249b2c8a4decce33e410_Pr-Elsa.png",
+          "alt": "Princess Elsa",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127b59eba606d2542a5fb_barbie.png",
+          "alt": "Barbie",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124b76581bfc4c37bd1c1_PR-Ariel.png",
+          "alt": "Princess Ariel",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12645ed54394528223cc7_Pr-Cinderella.png",
+          "alt": "Princess Cinderella",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127517fa14f15b2fadcf8_Pr-Belle.png",
+          "alt": "Princess Belle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12484214e9e6fcaf8523f_Pr-Anna.png",
+          "alt": "Princess Anna",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127a1b8a7de297b907d6f_tinkerbell.png",
+          "alt": "Tinker Bell",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcf9b7f3fb5ed859b419e8_spidey-heroes.png",
+          "alt": "Spidey Heroes",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124c2707d0843b7cb61f6_Pr-Aurora.png",
+          "alt": "Princess Aurora",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de90f37b36ee8fb42395c7_jessie-and-bo.png",
+          "alt": "Jessie & Bo Peep",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcfb8b8fab7d1c76d09c91_jasmine-web.png",
+          "alt": "Princess Jasmine",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcec789bb0f80fa4368ca2_blippi-inspired.png",
+          "alt": "Blippi",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930310e6f35030558db1279_kpop-2.jpeg",
+          "alt": "K-Pop Inspired",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69696409af589168e4dcc8ec_handprint.jpeg",
+          "alt": "Handprint Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/indoor-outdoor-play-center",
+      "file": "school-year/programs/indoor-outdoor-play-center-390.png",
+      "capturedAt": "2026-10-03T06:30:12.825Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Explore Maplewood Indoor/Outdoor Playground in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/indoor-outdoor-play-center",
+      "documentWidth": 390,
+      "documentHeight": 12140,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c1a0a2464b49ffbcbd_snolaf.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abff2f1c74765d63a782bd0_holiday-facepaint.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69011aa869aa2500192ac929_stitch-upload.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffb11039a13020ce6f4b0d_miss-stacy-sm-1.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3038b853a85d63c9c52c6_RED-HEELER-EDITED2.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffb27239a13020ce6fcdc9_pony-ride-sm.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3050d135312ae62f69263_fire-dog-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffaf74097aa335bfb05034_Elsa--Anna.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3baf00d5bfea3816d92_silly-dog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de3f8c94204516f3b6d7c7_xens-critters-sm-(1).jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3086522b8074b754acee2_air-rescue-pup.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c303fc4fe7d0072eaf682c_BLUE-HEELER-2-EDITED.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de3f8c94204516f3b6d7c7_xens-critters-sm-(1).jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c3086522b8074b754acee2_air-rescue-pup.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ffb27239a13020ce6fcdc9_pony-ride-sm.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69011aa869aa2500192ac929_stitch-upload.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a383896001b1cc242e32fa_school-year-vacation-program-imagination-playground-p-500.webp",
+          "alt": "A young boy standing in front of a set of giant blue imagination play blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a048a995e2c53d5dc9dded_maplewood-ball-launcher.avif",
+          "alt": "Ultimate Ball Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a35a40de66429cf0111b9c_maplewood-soar-and-catch.avif",
+          "alt": "Soar and Catch Scarf Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af673e268bf9c3e6cf1dcd_2025-01-23-13.20.18.avif",
+          "alt": "Playsets",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a799a61707daf40c5c0ee5_2025-01-23-15.13.33.avif",
+          "alt": "Infant Area",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0494781a4d84273fe9123_2025-01-23-13.16.43.avif",
+          "alt": "Giant Lite Brite",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0512e95db449c340cff00_2025-01-23-13.28.46.avif",
+          "alt": "Toy Room",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b4dccf895611d303501cb1_magentiic-blocks-girls.png",
+          "alt": "Superspace Magnetic Tiles",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6799019df78b053b285d78b7_IMG_5449.avif",
+          "alt": "Lego display",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a78afeca64c39b2293a3ec_maplewood-lobby-characters.avif",
+          "alt": "Characters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3baf00d5bfea3816d92_silly-dog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bebb85875862854820_video-game-man.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d8e2ac3a5353ef638d_astronaut-toy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68bf1a815c52a17adcc31538_MOUSE.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b41444a6fef9a6314194_bob.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3e9bb85875862857c12_minnie.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6908f9bdcf0910949f012973_pig.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c5bfac64a412eb8acc_construction-bulldog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68cdaded1149230877616e74_shark-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c30bbc2ae122da2be1cd3a_hedgehog.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b411d041c033ec6dbf64_cowboy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c1a0a2464b49ffbcbd_snolaf.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bccdcb3b5fffa6b273_reindeer.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d20682980f5f64bbe3_snowman.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3db0e6370e941b85392_gingerbread.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/679294c23c97097d0ba726f7_maplewood-ice-cream-cart.avif",
+          "alt": "Ice cream cart",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6797ec997d3ea64e9790899b_maplewood-furries.avif",
+          "alt": "Animals with Matt",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a796ddde8db7b4109dcaab_maplewood-facepaint-.avif",
+          "alt": "Face Painting",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6a843f1a51155d9c71a7f67c_miss-stacy-add.jpeg",
+          "alt": "Small Singers and Shakers",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b8e537bbed186d1fe15083_bd-hat-3.jpeg",
+          "alt": "Balloon Creations",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34d881908a92655ff7077_1555596388-school-year-maplewood-kids-events-paddle-boats.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af67dbb645628bdfdca152_camp-cotton-candy.avif",
+          "alt": "Cotton-Candy",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930391780db39a0b3bab1f3_Elsa--Anna-(1).jpeg",
+          "alt": "Elsa & Anna ",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0c5bd0fd80dff130dc64b_maplewood-pottery-pre-k.avif",
+          "alt": "Arts & Crafts/Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b64ecea0e5752357d9e792_rock-climbing-sm.jpeg",
+          "alt": "Rock Climbing Wall",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d1249b2c8a4decce33e410_Pr-Elsa.png",
+          "alt": "Princess Elsa",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127b59eba606d2542a5fb_barbie.png",
+          "alt": "Barbie",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124b76581bfc4c37bd1c1_PR-Ariel.png",
+          "alt": "Princess Ariel",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12645ed54394528223cc7_Pr-Cinderella.png",
+          "alt": "Princess Cinderella",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127517fa14f15b2fadcf8_Pr-Belle.png",
+          "alt": "Princess Belle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12484214e9e6fcaf8523f_Pr-Anna.png",
+          "alt": "Princess Anna",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127a1b8a7de297b907d6f_tinkerbell.png",
+          "alt": "Tinker Bell",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcf9b7f3fb5ed859b419e8_spidey-heroes.png",
+          "alt": "Spidey Heroes",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124c2707d0843b7cb61f6_Pr-Aurora.png",
+          "alt": "Princess Aurora",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de90f37b36ee8fb42395c7_jessie-and-bo.png",
+          "alt": "Jessie & Bo Peep",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcfb8b8fab7d1c76d09c91_jasmine-web.png",
+          "alt": "Princess Jasmine",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcec789bb0f80fa4368ca2_blippi-inspired.png",
+          "alt": "Blippi",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930310e6f35030558db1279_kpop-2.jpeg",
+          "alt": "K-Pop Inspired",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69696409af589168e4dcc8ec_handprint.jpeg",
+          "alt": "Handprint Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/preschool-program",
+      "file": "school-year/programs/preschool-program-1440.png",
+      "capturedAt": "2026-10-03T06:30:30.008Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Preschool: Nurturing Young Minds",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/preschool-program",
+      "documentWidth": 1440,
+      "documentHeight": 13282,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Ariyana Bennett",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "Good bye song/dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2efd21df5483ed9364d_l5gWsuUQ.avif",
+          "alt": "Preschool bridge program",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2e5ba05d1f856279369_maplewood-on-the-ball.avif",
+          "alt": "Children's Classes",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/preschool-program",
+      "file": "school-year/programs/preschool-program-390.png",
+      "capturedAt": "2026-10-03T06:30:32.679Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Preschool: Nurturing Young Minds",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/preschool-program",
+      "documentWidth": 390,
+      "documentHeight": 23662,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Ariyana Bennett",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2c6ba05d1f8562774c4_Q-rB0Ngw.avif",
+          "alt": "Small Group Time",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2d2d21df5483ed917fa_maplewood-train-playground.avif",
+          "alt": "Outdoors/Indoor Play Center",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/677f834fc568f82671d8e327_x5yGt_-A.webp",
+          "alt": "Lunch",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc110_Placeholder%20Image%20-%20Landscape.svg",
+          "alt": "Good bye song/dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2efd21df5483ed9364d_l5gWsuUQ.avif",
+          "alt": "Preschool bridge program",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67acd2e5ba05d1f856279369_maplewood-on-the-ball.avif",
+          "alt": "Children's Classes",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs",
+      "file": "school-year/programs-1440.png",
+      "capturedAt": "2026-10-03T06:30:37.163Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Explore 2025 School Year Programs for Kids | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs",
+      "documentWidth": 1440,
+      "documentHeight": 1662,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs",
+      "file": "school-year/programs-390.png",
+      "capturedAt": "2026-10-03T06:30:37.602Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Explore 2025 School Year Programs for Kids | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs",
+      "documentWidth": 390,
+      "documentHeight": 3051,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/flying-solo",
+      "file": "school-year/programs/enrichment-classes/flying-solo-1440.png",
+      "capturedAt": "2026-10-03T06:30:42.751Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Independent Play Program for Kids in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/flying-solo",
+      "documentWidth": 1440,
+      "documentHeight": 4295,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/flying-solo",
+      "file": "school-year/programs/enrichment-classes/flying-solo-390.png",
+      "capturedAt": "2026-10-03T06:30:43.416Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Independent Play Program for Kids in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/flying-solo",
+      "documentWidth": 390,
+      "documentHeight": 6041,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/staff-roster",
+      "file": "school-year/staff-roster-1440.png",
+      "capturedAt": "2026-10-03T06:30:49.438Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Meet Our School Year Team | Maplewood Day Camp, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/staff-roster",
+      "documentWidth": 1440,
+      "documentHeight": 4652,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Ariyana Bennett",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/staff-roster",
+      "file": "school-year/staff-roster-390.png",
+      "capturedAt": "2026-10-03T06:30:52.618Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Meet Our School Year Team | Maplewood Day Camp, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/staff-roster",
+      "documentWidth": 390,
+      "documentHeight": 13121,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Ariyana Bennett",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/maplewood-seasons",
+      "file": "maplewood-seasons-1440.png",
+      "capturedAt": "2026-10-03T06:30:57.561Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Explore Our Camp Seasons at Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/maplewood-seasons",
+      "documentWidth": 1440,
+      "documentHeight": 2106,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/maplewood-seasons",
+      "file": "maplewood-seasons-390.png",
+      "capturedAt": "2026-10-03T06:30:57.249Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Explore Our Camp Seasons at Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/maplewood-seasons",
+      "documentWidth": 390,
+      "documentHeight": 3063,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/birthday-parties",
+      "file": "school-year/programs/birthday-parties-1440.png",
+      "capturedAt": "2026-10-03T06:31:13.793Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Exciting Kids Birthday Party Venue in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/birthday-parties",
+      "documentWidth": 1440,
+      "documentHeight": 10943,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a799a61707daf40c5c0ee5_2025-01-23-15.13.33.avif",
+          "alt": "Infant Area",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0494781a4d84273fe9123_2025-01-23-13.16.43.avif",
+          "alt": "Giant Lite Brite",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0512e95db449c340cff00_2025-01-23-13.28.46.avif",
+          "alt": "Toy Room",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b4dccf895611d303501cb1_magentiic-blocks-girls.png",
+          "alt": "Superspace Magnetic Tiles",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6799019df78b053b285d78b7_IMG_5449.avif",
+          "alt": "Lego display",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a78afeca64c39b2293a3ec_maplewood-lobby-characters.avif",
+          "alt": "Characters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68bf1a815c52a17adcc31538_MOUSE.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b41444a6fef9a6314194_bob.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3e9bb85875862857c12_minnie.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6908f9bdcf0910949f012973_pig.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c5bfac64a412eb8acc_construction-bulldog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68cdaded1149230877616e74_shark-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c30bbc2ae122da2be1cd3a_hedgehog.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b411d041c033ec6dbf64_cowboy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c1a0a2464b49ffbcbd_snolaf.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bccdcb3b5fffa6b273_reindeer.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d20682980f5f64bbe3_snowman.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3db0e6370e941b85392_gingerbread.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b64ecea0e5752357d9e792_rock-climbing-sm.jpeg",
+          "alt": "Rock Climbing Wall",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d1249b2c8a4decce33e410_Pr-Elsa.png",
+          "alt": "Princess Elsa",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127b59eba606d2542a5fb_barbie.png",
+          "alt": "Barbie",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124b76581bfc4c37bd1c1_PR-Ariel.png",
+          "alt": "Princess Ariel",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12645ed54394528223cc7_Pr-Cinderella.png",
+          "alt": "Princess Cinderella",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127517fa14f15b2fadcf8_Pr-Belle.png",
+          "alt": "Princess Belle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12484214e9e6fcaf8523f_Pr-Anna.png",
+          "alt": "Princess Anna",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127a1b8a7de297b907d6f_tinkerbell.png",
+          "alt": "Tinker Bell",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124c2707d0843b7cb61f6_Pr-Aurora.png",
+          "alt": "Princess Aurora",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de90f37b36ee8fb42395c7_jessie-and-bo.png",
+          "alt": "Jessie & Bo Peep",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcfb8b8fab7d1c76d09c91_jasmine-web.png",
+          "alt": "Princess Jasmine",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcec789bb0f80fa4368ca2_blippi-inspired.png",
+          "alt": "Blippi",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930310e6f35030558db1279_kpop-2.jpeg",
+          "alt": "K-Pop Inspired",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/birthday-parties",
+      "file": "school-year/programs/birthday-parties-390.png",
+      "capturedAt": "2026-10-03T06:31:14.271Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Exciting Kids Birthday Party Venue in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/birthday-parties",
+      "documentWidth": 390,
+      "documentHeight": 13593,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a048a995e2c53d5dc9dded_maplewood-ball-launcher.avif",
+          "alt": "Ultimate Ball Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a35a40de66429cf0111b9c_maplewood-soar-and-catch.avif",
+          "alt": "Soar and Catch Scarf Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af673e268bf9c3e6cf1dcd_2025-01-23-13.20.18.avif",
+          "alt": "Playsets",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a799a61707daf40c5c0ee5_2025-01-23-15.13.33.avif",
+          "alt": "Infant Area",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0494781a4d84273fe9123_2025-01-23-13.16.43.avif",
+          "alt": "Giant Lite Brite",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0512e95db449c340cff00_2025-01-23-13.28.46.avif",
+          "alt": "Toy Room",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b4dccf895611d303501cb1_magentiic-blocks-girls.png",
+          "alt": "Superspace Magnetic Tiles",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6799019df78b053b285d78b7_IMG_5449.avif",
+          "alt": "Lego display",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a78afeca64c39b2293a3ec_maplewood-lobby-characters.avif",
+          "alt": "Characters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3baf00d5bfea3816d92_silly-dog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bebb85875862854820_video-game-man.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d8e2ac3a5353ef638d_astronaut-toy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68bf1a815c52a17adcc31538_MOUSE.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b41444a6fef9a6314194_bob.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3e9bb85875862857c12_minnie.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6908f9bdcf0910949f012973_pig.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c5bfac64a412eb8acc_construction-bulldog.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68cdaded1149230877616e74_shark-edited.png",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68c30bbc2ae122da2be1cd3a_hedgehog.jpeg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b411d041c033ec6dbf64_cowboy.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3c1a0a2464b49ffbcbd_snolaf.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3bccdcb3b5fffa6b273_reindeer.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3d20682980f5f64bbe3_snowman.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a9b3db0e6370e941b85392_gingerbread.avif",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b8e537bbed186d1fe15083_bd-hat-3.jpeg",
+          "alt": "Balloon Creations",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34d881908a92655ff7077_1555596388-school-year-maplewood-kids-events-paddle-boats.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930391780db39a0b3bab1f3_Elsa--Anna-(1).jpeg",
+          "alt": "Elsa & Anna ",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b64ecea0e5752357d9e792_rock-climbing-sm.jpeg",
+          "alt": "Rock Climbing Wall",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d1249b2c8a4decce33e410_Pr-Elsa.png",
+          "alt": "Princess Elsa",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127b59eba606d2542a5fb_barbie.png",
+          "alt": "Barbie",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124b76581bfc4c37bd1c1_PR-Ariel.png",
+          "alt": "Princess Ariel",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12645ed54394528223cc7_Pr-Cinderella.png",
+          "alt": "Princess Cinderella",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127517fa14f15b2fadcf8_Pr-Belle.png",
+          "alt": "Princess Belle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d12484214e9e6fcaf8523f_Pr-Anna.png",
+          "alt": "Princess Anna",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d127a1b8a7de297b907d6f_tinkerbell.png",
+          "alt": "Tinker Bell",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68d124c2707d0843b7cb61f6_Pr-Aurora.png",
+          "alt": "Princess Aurora",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/69de90f37b36ee8fb42395c7_jessie-and-bo.png",
+          "alt": "Jessie & Bo Peep",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcfb8b8fab7d1c76d09c91_jasmine-web.png",
+          "alt": "Princess Jasmine",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6abcec789bb0f80fa4368ca2_blippi-inspired.png",
+          "alt": "Blippi",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6930310e6f35030558db1279_kpop-2.jpeg",
+          "alt": "K-Pop Inspired",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/vacation-program",
+      "file": "school-year/programs/vacation-program-1440.png",
+      "capturedAt": "2026-10-03T06:31:27.971Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Engaging Vacation Program for Kids | Maplewood Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/vacation-program",
+      "documentWidth": 1440,
+      "documentHeight": 4362,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34a93fb9341731e5a480b_Maplewood-indoor-village-2.avif",
+          "alt": "Playhouses",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a048a995e2c53d5dc9dded_maplewood-ball-launcher.avif",
+          "alt": "Ultimate Ball Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34d881908a92655ff7077_1555596388-school-year-maplewood-kids-events-paddle-boats.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0c5bd0fd80dff130dc64b_maplewood-pottery-pre-k.avif",
+          "alt": "Arts & Crafts/Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34770f5a8dde8188b2a35_pedal-karts-preschool.avif",
+          "alt": "Pedal Karts / Bikes / Scooters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af6d87bfb1cb49e1504a88_village-playground.avif",
+          "alt": "Playground",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a35a40de66429cf0111b9c_maplewood-soar-and-catch.avif",
+          "alt": "Soar and Catch Scarf Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/vacation-program",
+      "file": "school-year/programs/vacation-program-390.png",
+      "capturedAt": "2026-10-03T06:31:28.168Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Engaging Vacation Program for Kids | Maplewood Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/vacation-program",
+      "documentWidth": 390,
+      "documentHeight": 5920,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0512e95db449c340cff00_2025-01-23-13.28.46.avif",
+          "alt": "Toy Room",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0494781a4d84273fe9123_2025-01-23-13.16.43.avif",
+          "alt": "Giant Lite Brite",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b4dccf895611d303501cb1_magentiic-blocks-girls.png",
+          "alt": "Superspace Magnetic Tiles",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34a93fb9341731e5a480b_Maplewood-indoor-village-2.avif",
+          "alt": "Playhouses",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a048a995e2c53d5dc9dded_maplewood-ball-launcher.avif",
+          "alt": "Ultimate Ball Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a052da910681d099c1fca9_school-year-vacation-program-imagination-playground.avif",
+          "alt": "Imagination Blocks",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34d881908a92655ff7077_1555596388-school-year-maplewood-kids-events-paddle-boats.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a65c816582a596f3455735_IMG_4614.avif",
+          "alt": "Beam Interactive Floor",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0c5bd0fd80dff130dc64b_maplewood-pottery-pre-k.avif",
+          "alt": "Arts & Crafts/Pottery",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a34770f5a8dde8188b2a35_pedal-karts-preschool.avif",
+          "alt": "Pedal Karts / Bikes / Scooters",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a047b918accf44dc72eb9d_maplewood-giant-piano-smiles.avif",
+          "alt": "Big Piano",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68ff6c7b0b5e8a7605afaf09_bounce-house.jpeg",
+          "alt": "Bounce House Castle",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a0518ae3357121e2f36eee_maplewood-gymn-playground.avif",
+          "alt": "Gymnastics Obstacle Course",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67af6d87bfb1cb49e1504a88_village-playground.avif",
+          "alt": "Playground",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67a35a40de66429cf0111b9c_maplewood-soar-and-catch.avif",
+          "alt": "Soar and Catch Scarf Launcher",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/68badeec566adeda7756656d_train-table-maplewood-play.jpeg",
+          "alt": "Train Table",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/staff-roster",
+      "file": "summer-camp/staff-roster-1440.png",
+      "capturedAt": "2026-10-03T06:31:34.917Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Meet Our Summer Camp Team at Maplewood Day Camp, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/staff-roster",
+      "documentWidth": 1440,
+      "documentHeight": 6336,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/staff-roster",
+      "file": "summer-camp/staff-roster-390.png",
+      "capturedAt": "2026-10-03T06:31:39.128Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Meet Our Summer Camp Team at Maplewood Day Camp, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/staff-roster",
+      "documentWidth": 390,
+      "documentHeight": 17434,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/facilities",
+      "file": "school-year/facilities-1440.png",
+      "capturedAt": "2026-10-03T06:31:44.630Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "School Year Facilities | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/facilities",
+      "documentWidth": 1440,
+      "documentHeight": 3853,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Preschool Classrooms",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/facilities",
+      "file": "school-year/facilities-390.png",
+      "capturedAt": "2026-10-03T06:31:46.519Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "School Year Facilities | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/facilities",
+      "documentWidth": 390,
+      "documentHeight": 9749,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/673ebf0eedfc15a41bedc10a_placeholder-image.svg",
+          "alt": "Preschool Classrooms",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "summer-camp/my-hot-lunchbox-1440.png",
+      "capturedAt": "2026-10-03T06:31:52.207Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Order Delicious Lunches Easily with My Hot Lunchbox | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/my-hot-lunchbox",
+      "documentWidth": 1440,
+      "documentHeight": 5588,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/my-hot-lunchbox",
+      "file": "summer-camp/my-hot-lunchbox-390.png",
+      "capturedAt": "2026-10-03T06:31:52.792Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Order Delicious Lunches Easily with My Hot Lunchbox | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/my-hot-lunchbox",
+      "documentWidth": 390,
+      "documentHeight": 7456,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/bus-transportation",
+      "file": "summer-camp/bus-transportation-1440.png",
+      "capturedAt": "2026-10-03T06:31:58.479Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Safe and Independent Transportation for Kids at Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/bus-transportation",
+      "documentWidth": 1440,
+      "documentHeight": 5073,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/bus-transportation",
+      "file": "summer-camp/bus-transportation-390.png",
+      "capturedAt": "2026-10-03T06:31:58.847Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Safe and Independent Transportation for Kids at Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/bus-transportation",
+      "documentWidth": 390,
+      "documentHeight": 6335,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/our-values",
+      "file": "our-values-1440.png",
+      "capturedAt": "2026-10-03T06:32:04.777Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Day Camp: Fun, Friendship, and Growth | South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/our-values",
+      "documentWidth": 1440,
+      "documentHeight": 4710,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/our-values",
+      "file": "our-values-390.png",
+      "capturedAt": "2026-10-03T06:32:05.063Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Day Camp: Fun, Friendship, and Growth | South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/our-values",
+      "documentWidth": 390,
+      "documentHeight": 6794,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/leadership",
+      "file": "leadership-1440.png",
+      "capturedAt": "2026-10-03T06:32:10.968Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Meet the Leadership Team at Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/leadership",
+      "documentWidth": 1440,
+      "documentHeight": 4730,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/leadership",
+      "file": "leadership-390.png",
+      "capturedAt": "2026-10-03T06:32:12.188Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Meet the Leadership Team at Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/leadership",
+      "documentWidth": 390,
+      "documentHeight": 9009,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes",
+      "file": "school-year/programs/enrichment-classes-1440.png",
+      "capturedAt": "2026-10-03T06:32:17.107Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Children's Enrichment Classes in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes",
+      "documentWidth": 1440,
+      "documentHeight": 2906,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes",
+      "file": "school-year/programs/enrichment-classes-390.png",
+      "capturedAt": "2026-10-03T06:32:17.671Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Children's Enrichment Classes in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes",
+      "documentWidth": 390,
+      "documentHeight": 4612,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/gymnastics-class",
+      "file": "school-year/programs/enrichment-classes/gymnastics-class-1440.png",
+      "capturedAt": "2026-10-03T06:32:23.606Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Fun Gymnastics Classes for Kids in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/gymnastics-class",
+      "documentWidth": 1440,
+      "documentHeight": 5132,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/gymnastics-class",
+      "file": "school-year/programs/enrichment-classes/gymnastics-class-390.png",
+      "capturedAt": "2026-10-03T06:32:23.930Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Fun Gymnastics Classes for Kids in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/gymnastics-class",
+      "documentWidth": 390,
+      "documentHeight": 7370,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/sports-enrichment-class",
+      "file": "school-year/programs/enrichment-classes/sports-enrichment-class-1440.png",
+      "capturedAt": "2026-10-03T06:32:29.859Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Engaging Sports Program for Kids | Maplewood Day Camp in Easton MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/sports-enrichment-class",
+      "documentWidth": 1440,
+      "documentHeight": 5083,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/sports-enrichment-class",
+      "file": "school-year/programs/enrichment-classes/sports-enrichment-class-390.png",
+      "capturedAt": "2026-10-03T06:32:30.227Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Engaging Sports Program for Kids | Maplewood Day Camp in Easton MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/sports-enrichment-class",
+      "documentWidth": 390,
+      "documentHeight": 7220,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/arts-class",
+      "file": "school-year/programs/enrichment-classes/arts-class-1440.png",
+      "capturedAt": "2026-10-03T06:32:36.321Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Ignite Creativity with Maplewood Art Classes for kids South Easton MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/arts-class",
+      "documentWidth": 1440,
+      "documentHeight": 5053,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/programs/enrichment-classes/arts-class",
+      "file": "school-year/programs/enrichment-classes/arts-class-390.png",
+      "capturedAt": "2026-10-03T06:32:36.651Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Ignite Creativity with Maplewood Art Classes for kids South Easton MA",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/programs/enrichment-classes/arts-class",
+      "documentWidth": 390,
+      "documentHeight": 7175,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/activities",
+      "file": "summer-camp/activities-1440.png",
+      "capturedAt": "2026-10-03T06:32:44.906Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Over 50 Activities | Maplewood Summer Camp in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/activities",
+      "documentWidth": 1440,
+      "documentHeight": 8676,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/activities",
+      "file": "summer-camp/activities-390.png",
+      "capturedAt": "2026-10-03T06:32:51.712Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Over 50 Activities | Maplewood Summer Camp in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/activities",
+      "documentWidth": 390,
+      "documentHeight": 27067,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg",
+          "alt": "",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/contact",
+      "file": "contact-1440.png",
+      "capturedAt": "2026-10-03T06:32:57.454Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Contact Maplewood Day Camp and Enrichment Center in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/contact",
+      "documentWidth": 1440,
+      "documentHeight": 4946,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/contact",
+      "file": "contact-390.png",
+      "capturedAt": "2026-10-03T06:32:57.904Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Contact Maplewood Day Camp and Enrichment Center in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/contact",
+      "documentWidth": 390,
+      "documentHeight": 7029,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/staff",
+      "file": "staff-1440.png",
+      "capturedAt": "2026-10-03T06:33:05.651Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Join the Maplewood Day Camp Family in 2025",
+      "finalUrl": "https://www.maplewoodyearround.com/staff",
+      "documentWidth": 1440,
+      "documentHeight": 8108,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/staff",
+      "file": "staff-390.png",
+      "capturedAt": "2026-10-03T06:33:07.319Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Join the Maplewood Day Camp Family in 2025",
+      "finalUrl": "https://www.maplewoodyearround.com/staff",
+      "documentWidth": 390,
+      "documentHeight": 14941,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/staff-opportunities",
+      "file": "staff-opportunities-1440.png",
+      "capturedAt": "2026-10-03T06:33:13.385Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Join Maplewood: Summer Camp Job Opportunities",
+      "finalUrl": "https://www.maplewoodyearround.com/staff-opportunities",
+      "documentWidth": 1440,
+      "documentHeight": 6835,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/staff-opportunities",
+      "file": "staff-opportunities-390.png",
+      "capturedAt": "2026-10-03T06:33:13.641Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Join Maplewood: Summer Camp Job Opportunities",
+      "finalUrl": "https://www.maplewoodyearround.com/staff-opportunities",
+      "documentWidth": 390,
+      "documentHeight": 8006,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/faqs",
+      "file": "faqs-1440.png",
+      "capturedAt": "2026-10-03T06:33:19.173Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Frequent questions answered | Maplewood Day Camp in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/faqs",
+      "documentWidth": 1440,
+      "documentHeight": 5852,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/faqs",
+      "file": "faqs-390.png",
+      "capturedAt": "2026-10-03T06:33:19.358Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Frequent questions answered | Maplewood Day Camp in South Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/faqs",
+      "documentWidth": 390,
+      "documentHeight": 6924,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/parent-dashboard",
+      "file": "parent-dashboard-1440.png",
+      "capturedAt": "2026-10-03T06:33:24.079Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Parent Dashboard | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/parent-dashboard",
+      "documentWidth": 1440,
+      "documentHeight": 3200,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b1780a86cec895b85a115b_playspace.avif",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b73b3a0a61400ba04732e4_camp-t-shirt.png",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/679ba896e9cffbc091f95e20_7c4cf592ba09ec4615d75730515046b1_scott-graham-OQMZwNd3ThU-unsplash.webp",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/parent-dashboard",
+      "file": "parent-dashboard-390.png",
+      "capturedAt": "2026-10-03T06:33:24.788Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Parent Dashboard | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/parent-dashboard",
+      "documentWidth": 390,
+      "documentHeight": 5865,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b1780a86cec895b85a115b_playspace.avif",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67b73b3a0a61400ba04732e4_camp-t-shirt.png",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/679ba896e9cffbc091f95e20_7c4cf592ba09ec4615d75730515046b1_scott-graham-OQMZwNd3ThU-unsplash.webp",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/history",
+      "file": "history-1440.png",
+      "capturedAt": "2026-10-03T06:33:31.507Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "The Maplewood Story: A Legacy of Summer Camp Joy",
+      "finalUrl": "https://www.maplewoodyearround.com/history",
+      "documentWidth": 1440,
+      "documentHeight": 7744,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/history",
+      "file": "history-390.png",
+      "capturedAt": "2026-10-03T06:33:30.866Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "The Maplewood Story: A Legacy of Summer Camp Joy",
+      "finalUrl": "https://www.maplewoodyearround.com/history",
+      "documentWidth": 390,
+      "documentHeight": 7933,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs",
+      "file": "summer-camp/programs-1440.png",
+      "capturedAt": "2026-10-03T06:33:36.708Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Summer Camp Programs | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs",
+      "documentWidth": 1440,
+      "documentHeight": 3925,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs",
+      "file": "summer-camp/programs-390.png",
+      "capturedAt": "2026-10-03T06:33:37.275Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Summer Camp Programs | Maplewood Day Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs",
+      "documentWidth": 390,
+      "documentHeight": 6437,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/news",
+      "file": "news-1440.png",
+      "capturedAt": "2026-10-03T06:33:42.085Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Latest news from Maplewood Day Camp and Enrichment Center",
+      "finalUrl": "https://www.maplewoodyearround.com/news",
+      "documentWidth": 1440,
+      "documentHeight": 3441,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/news",
+      "file": "news-390.png",
+      "capturedAt": "2026-10-03T06:33:42.702Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Latest news from Maplewood Day Camp and Enrichment Center",
+      "finalUrl": "https://www.maplewoodyearround.com/news",
+      "documentWidth": 390,
+      "documentHeight": 6048,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/maplewood-main-calendar",
+      "file": "maplewood-main-calendar-1440.png",
+      "capturedAt": "2026-10-03T06:33:51.788Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Main Calendar",
+      "finalUrl": "https://www.maplewoodyearround.com/maplewood-main-calendar",
+      "documentWidth": 1440,
+      "documentHeight": 1361,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/maplewood-main-calendar",
+      "file": "maplewood-main-calendar-390.png",
+      "capturedAt": "2026-10-03T06:33:51.946Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Main Calendar",
+      "finalUrl": "https://www.maplewoodyearround.com/maplewood-main-calendar",
+      "documentWidth": 390,
+      "documentHeight": 1817,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/facilities",
+      "file": "summer-camp/facilities-1440.png",
+      "capturedAt": "2026-10-03T06:34:06.689Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Summer Camp Facilities | Maplewood Summer Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/facilities",
+      "documentWidth": 1440,
+      "documentHeight": 7873,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6778e006981c4d87aff0c045_6776b6a54535aaa29a037090_soccerbuddies.avif",
+          "alt": "Soccer Field",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67815576eebb5548c5297613_street-hockey.avif",
+          "alt": "Street Hockey Court",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/facilities",
+      "file": "summer-camp/facilities-390.png",
+      "capturedAt": "2026-10-03T06:34:07.073Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Summer Camp Facilities | Maplewood Summer Day Camp in Easton, MA",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/facilities",
+      "documentWidth": 390,
+      "documentHeight": 9299,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6781551d9d85a0c05cb9f7e2_6314bf87-5e21-4933-b228-53515b044376.avif",
+          "alt": "Splash Slide",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67aa2b2af00d5bfea3001399_gaga.avif",
+          "alt": "Ga-Ga Ball Court ",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67814f089e999bf2d5f956d8_gymnastics-camp-bars.avif",
+          "alt": "Gymnastics Studio",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6778e006c747dcc5e607edce_677651832d0197814e46108f_1554839213-summer-camp-maplewood-pilo-polo-group.avif",
+          "alt": "Pillo Polo Court",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/6778e006981c4d87aff0c045_6776b6a54535aaa29a037090_soccerbuddies.avif",
+          "alt": "Soccer Field",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67815576eebb5548c5297613_street-hockey.avif",
+          "alt": "Street Hockey Court",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67aa236168ed126ea47e663c_6778e004d2b779b4be3dea8a_677651862150d86d43103d50_1554213764-pg-tube.avif",
+          "alt": "Playgrounds",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/preschool-and-kindergarten",
+      "file": "summer-camp/programs/preschool-and-kindergarten-1440.png",
+      "capturedAt": "2026-10-03T06:34:21.775Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Preschool & Kindergarten Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/preschool-and-kindergarten",
+      "documentWidth": 1440,
+      "documentHeight": 8195,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac692b515e0a63b88f55bb_swim-smiles-2.avif",
+          "alt": "Free Swim",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ace20eea75ee0394767e97_maplewood-change-towels.avif",
+          "alt": "Change",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac6937c015c1b323efde4a_ice-cream-smiles.avif",
+          "alt": "Ice Cream Dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/preschool-and-kindergarten",
+      "file": "summer-camp/programs/preschool-and-kindergarten-390.png",
+      "capturedAt": "2026-10-03T06:34:22.090Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Preschool & Kindergarten Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/preschool-and-kindergarten",
+      "documentWidth": 390,
+      "documentHeight": 10020,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac69444135442da1ff2214_camp-boating-pre-k.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac694091e41e0917786e75_gymnastics-maplewood.avif",
+          "alt": "Gymnastics",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ace0ff194bb47d072c2487_summer-camp-swimming-lessons-instructor.avif",
+          "alt": "Swimming Lessons  (daily)",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac692b515e0a63b88f55bb_swim-smiles-2.avif",
+          "alt": "Free Swim",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ace20eea75ee0394767e97_maplewood-change-towels.avif",
+          "alt": "Change",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac6937c015c1b323efde4a_ice-cream-smiles.avif",
+          "alt": "Ice Cream Dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/677a3fed768b85180e7ff598_97d132811772c6ec4992cf48454e8c30_maplewood-swim-lessons-staff.avif",
+          "alt": "A woman and a child swimming in a pool",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67ae075457b8ffdc7decc2e3_maplewood_camp_lee_lessons-swim-pool.avif",
+          "alt": "Lee Pinstein Maplewood Director teaching a camper how to swim in one of the heated swimming pools",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a8673fb5f5590dfecc9d63_Maplewood-camp-pool-happiness.avif",
+          "alt": "A little girl in a swim suit standing in front of a green frog statue",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/1st-7th-grade",
+      "file": "summer-camp/programs/1st-7th-grade-1440.png",
+      "capturedAt": "2026-10-03T06:34:37.015Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "1st-7th Grade Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/1st-7th-grade",
+      "documentWidth": 1440,
+      "documentHeight": 8584,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac637d69c0f0eb22073304_maplewood-jump-high.webp",
+          "alt": "Club Day",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac6927478f302efab75c1d_camp-free-swim-thumbs-ups.avif",
+          "alt": "Free Swim",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac67e73e880565b6fc63c7_summer-camp-maplewood-ice-cream-friends--(1).webp",
+          "alt": "Ice Cream Dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/1st-7th-grade",
+      "file": "summer-camp/programs/1st-7th-grade-390.png",
+      "capturedAt": "2026-10-03T06:34:37.340Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "1st-7th Grade Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/1st-7th-grade",
+      "documentWidth": 390,
+      "documentHeight": 10183,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67addfe7cd0b35c5606c55b4_summer-camp-maplewood-lunch-pavilion.avif",
+          "alt": "Lunch",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac691ee2e4540472e7b8e9_img7841.avif",
+          "alt": "Boating",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac636d0a45fd4f8a0d1b57_rock-n-ropes-climb.avif",
+          "alt": "Rock'N'Ropes - Climb Adventure",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac637d69c0f0eb22073304_maplewood-jump-high.webp",
+          "alt": "Club Day",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac6927478f302efab75c1d_camp-free-swim-thumbs-ups.avif",
+          "alt": "Free Swim",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac67e73e880565b6fc63c7_summer-camp-maplewood-ice-cream-friends--(1).webp",
+          "alt": "Ice Cream Dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/teen-leadership-cit",
+      "file": "summer-camp/programs/teen-leadership-cit-1440.png",
+      "capturedAt": "2026-10-03T06:34:44.216Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Teen Leadership (C.I.T.) Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/teen-leadership-cit",
+      "documentWidth": 1440,
+      "documentHeight": 8713,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/programs/teen-leadership-cit",
+      "file": "summer-camp/programs/teen-leadership-cit-390.png",
+      "capturedAt": "2026-10-03T06:34:52.271Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Teen Leadership (C.I.T.) Program | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/programs/teen-leadership-cit",
+      "documentWidth": 390,
+      "documentHeight": 10199,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67ac636d0a45fd4f8a0d1b57_rock-n-ropes-climb.avif",
+          "alt": "Rock'N'Ropes - Climb Adventure",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/67758e2e906cb8afffdc8b75/67bcb6be4420e7a3ea268d1e_cit-ice-cream.png",
+          "alt": "Ice Cream Dismissal",
+          "visible": true
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/swim-instruction",
+      "file": "summer-camp/swim-instruction-1440.png",
+      "capturedAt": "2026-10-03T06:34:57.974Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Swim Instruction | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/swim-instruction",
+      "documentWidth": 1440,
+      "documentHeight": 5521,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/swim-instruction",
+      "file": "summer-camp/swim-instruction-390.png",
+      "capturedAt": "2026-10-03T06:34:58.243Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Swim Instruction | Maplewood Summer Camp",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/swim-instruction",
+      "documentWidth": 390,
+      "documentHeight": 7304,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/schedule-a-tour",
+      "file": "summer-camp/schedule-a-tour-1440.png",
+      "capturedAt": "2026-10-03T06:35:03.110Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Schedule a Summer Camp Tour | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/schedule-a-tour",
+      "documentWidth": 1440,
+      "documentHeight": 2522,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/schedule-a-tour",
+      "file": "summer-camp/schedule-a-tour-390.png",
+      "capturedAt": "2026-10-03T06:35:03.217Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Schedule a Summer Camp Tour | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/schedule-a-tour",
+      "documentWidth": 390,
+      "documentHeight": 3197,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/schedule-a-tour",
+      "file": "school-year/schedule-a-tour-1440.png",
+      "capturedAt": "2026-10-03T06:35:08.147Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Schedule a School Year Tour | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/schedule-a-tour",
+      "documentWidth": 1440,
+      "documentHeight": 2466,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/school-year/schedule-a-tour",
+      "file": "school-year/schedule-a-tour-390.png",
+      "capturedAt": "2026-10-03T06:35:08.011Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Schedule a School Year Tour | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/school-year/schedule-a-tour",
+      "documentWidth": 390,
+      "documentHeight": 3117,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/changes-notification-form",
+      "file": "summer-camp/changes-notification-form-1440.png",
+      "capturedAt": "2026-10-03T06:35:12.533Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Changes / Notification Form",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/changes-notification-form",
+      "documentWidth": 1440,
+      "documentHeight": 2275,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/changes-notification-form",
+      "file": "summer-camp/changes-notification-form-390.png",
+      "capturedAt": "2026-10-03T06:35:12.625Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Changes / Notification Form",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/changes-notification-form",
+      "documentWidth": 390,
+      "documentHeight": 2715,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/camper-daily-photos",
+      "file": "summer-camp/camper-daily-photos-1440.png",
+      "capturedAt": "2026-10-03T06:35:18.074Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Camper Daily Photos",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/camper-daily-photos",
+      "documentWidth": 1440,
+      "documentHeight": 4900,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/camper-daily-photos",
+      "file": "summer-camp/camper-daily-photos-390.png",
+      "capturedAt": "2026-10-03T06:35:18.332Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Camper Daily Photos",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/camper-daily-photos",
+      "documentWidth": 390,
+      "documentHeight": 6417,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/summer-camp-welcome-letters",
+      "file": "summer-camp/summer-camp-welcome-letters-1440.png",
+      "capturedAt": "2026-10-03T06:35:22.919Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Summer Camp Welcome Letters",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/summer-camp-welcome-letters",
+      "documentWidth": 1440,
+      "documentHeight": 3129,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/summer-camp-welcome-letters",
+      "file": "summer-camp/summer-camp-welcome-letters-390.png",
+      "capturedAt": "2026-10-03T06:35:23.083Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Summer Camp Welcome Letters",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/summer-camp-welcome-letters",
+      "documentWidth": 390,
+      "documentHeight": 3510,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/early-bird-enrollment",
+      "file": "post/early-bird-enrollment-1440.png",
+      "capturedAt": "2026-10-03T06:35:27.212Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/early-bird-enrollment",
+      "documentWidth": 1440,
+      "documentHeight": 1910,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/early-bird-enrollment",
+      "file": "post/early-bird-enrollment-390.png",
+      "capturedAt": "2026-10-03T06:35:27.296Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/early-bird-enrollment",
+      "documentWidth": 390,
+      "documentHeight": 2374,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/enrichment-classes",
+      "file": "post/enrichment-classes-1440.png",
+      "capturedAt": "2026-10-03T06:35:31.590Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/enrichment-classes",
+      "documentWidth": 1440,
+      "documentHeight": 2038,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/enrichment-classes",
+      "file": "post/enrichment-classes-390.png",
+      "capturedAt": "2026-10-03T06:35:31.686Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/enrichment-classes",
+      "documentWidth": 390,
+      "documentHeight": 2526,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/great-gift-ideas",
+      "file": "post/great-gift-ideas-1440.png",
+      "capturedAt": "2026-10-03T06:35:35.994Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/great-gift-ideas",
+      "documentWidth": 1440,
+      "documentHeight": 2126,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/great-gift-ideas",
+      "file": "post/great-gift-ideas-390.png",
+      "capturedAt": "2026-10-03T06:35:36.085Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/great-gift-ideas",
+      "documentWidth": 390,
+      "documentHeight": 2594,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/meet-you-at-the-playground-copy",
+      "file": "post/meet-you-at-the-playground-copy-1440.png",
+      "capturedAt": "2026-10-03T06:35:40.214Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/meet-you-at-the-playground-copy",
+      "documentWidth": 1440,
+      "documentHeight": 1950,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/meet-you-at-the-playground-copy",
+      "file": "post/meet-you-at-the-playground-copy-390.png",
+      "capturedAt": "2026-10-03T06:35:40.297Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/meet-you-at-the-playground-copy",
+      "documentWidth": 390,
+      "documentHeight": 2462,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/new-monthly-memberships",
+      "file": "post/new-monthly-memberships-1440.png",
+      "capturedAt": "2026-10-03T06:35:44.602Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/new-monthly-memberships",
+      "documentWidth": 1440,
+      "documentHeight": 2010,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/new-monthly-memberships",
+      "file": "post/new-monthly-memberships-390.png",
+      "capturedAt": "2026-10-03T06:35:44.602Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/new-monthly-memberships",
+      "documentWidth": 390,
+      "documentHeight": 2450,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/we-know-how-to-throw-a-party",
+      "file": "post/we-know-how-to-throw-a-party-1440.png",
+      "capturedAt": "2026-10-03T06:35:48.765Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/we-know-how-to-throw-a-party",
+      "documentWidth": 1440,
+      "documentHeight": 1910,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/post/we-know-how-to-throw-a-party",
+      "file": "post/we-know-how-to-throw-a-party-390.png",
+      "capturedAt": "2026-10-03T06:35:48.849Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "MDC 3.0",
+      "finalUrl": "https://www.maplewoodyearround.com/post/we-know-how-to-throw-a-party",
+      "documentWidth": 390,
+      "documentHeight": 2306,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/terms-and-conditions",
+      "file": "terms-and-conditions-1440.png",
+      "capturedAt": "2026-10-03T06:36:07.398Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Year Round Terms & Conditions",
+      "finalUrl": "https://www.maplewoodyearround.com/terms-and-conditions",
+      "documentWidth": 1440,
+      "documentHeight": 12531,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/terms-and-conditions",
+      "file": "terms-and-conditions-390.png",
+      "capturedAt": "2026-10-03T06:36:10.162Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Year Round Terms & Conditions",
+      "finalUrl": "https://www.maplewoodyearround.com/terms-and-conditions",
+      "documentWidth": 390,
+      "documentHeight": 21355,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/summer-group-schedules",
+      "file": "summer-camp/summer-group-schedules-1440.png",
+      "capturedAt": "2026-10-03T06:36:34.814Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Summer Group Schedules | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/summer-group-schedules",
+      "documentWidth": 1440,
+      "documentHeight": 3129,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/summer-camp/summer-group-schedules",
+      "file": "summer-camp/summer-group-schedules-390.png",
+      "capturedAt": "2026-10-03T06:36:34.814Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Summer Group Schedules | Maplewood",
+      "finalUrl": "https://www.maplewoodyearround.com/summer-camp/summer-group-schedules",
+      "documentWidth": 412,
+      "documentHeight": 3465,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": true
+    },
+    {
+      "path": "/privacy-policy",
+      "file": "privacy-policy-1440.png",
+      "capturedAt": "2026-10-03T06:36:57.067Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Year Round Privacy Policy",
+      "finalUrl": "https://www.maplewoodyearround.com/privacy-policy",
+      "documentWidth": 1440,
+      "documentHeight": 13216,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/privacy-policy",
+      "file": "privacy-policy-390.png",
+      "capturedAt": "2026-10-03T06:36:59.823Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Year Round Privacy Policy",
+      "finalUrl": "https://www.maplewoodyearround.com/privacy-policy",
+      "documentWidth": 483,
+      "documentHeight": 21750,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": true
+    },
+    {
+      "path": "/cookie-policy",
+      "file": "cookie-policy-1440.png",
+      "capturedAt": "2026-10-03T06:37:32.173Z",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "title": "Maplewood Year Round Cookie Policy Overview",
+      "finalUrl": "https://www.maplewoodyearround.com/cookie-policy",
+      "documentWidth": 1440,
+      "documentHeight": 6257,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": false
+    },
+    {
+      "path": "/cookie-policy",
+      "file": "cookie-policy-390.png",
+      "capturedAt": "2026-10-03T06:37:32.969Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "title": "Maplewood Year Round Cookie Policy Overview",
+      "finalUrl": "https://www.maplewoodyearround.com/cookie-policy",
+      "documentWidth": 530,
+      "documentHeight": 9310,
+      "failedImages": [
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/6764206f0602eb3dcce35b09_Company%20Name.svg",
+          "alt": "",
+          "visible": false
+        },
+        {
+          "src": "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67c003afe987d4f10d79b573_accreditedlogo_white.avif",
+          "alt": "American Camp Association Logo",
+          "visible": false
+        }
+      ],
+      "horizontalOverflow": true
+    }
+  ],
+  "expectedCaptures": 106,
+  "completedCaptures": 106,
+  "complete": true
+}
