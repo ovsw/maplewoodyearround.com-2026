@@ -13,6 +13,7 @@ test("sitemap emits canonical posts and eligible category archives", () => {
   assert.doesNotMatch(source, /slug\.current \+ "\/"/);
   assert.match(source, /isIndexableCategory\(/);
   assert.match(source, /publishedPostFilter/);
+  assert.match(source, /&& \(_type != "post" \|\| \(\$\{publishedPostFilter\}\)\)/);
   assert.match(source, /_type == "category" => 0\.6/);
   assert.match(source, /_type == "category" => null/);
   assert.match(source, /delete sitemapEntry\.lastModified/);

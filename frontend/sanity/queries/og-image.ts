@@ -10,18 +10,21 @@ export const HOME_PAGE_OG_IMAGE_QUERY = defineQuery(`
 
 export const PAGE_OG_IMAGE_QUERY = defineQuery(`
   *[_type == "page" && ${ROOT_SLUG_FILTER}][0]{
-    "title": coalesce(title, meta.title)
+    title,
+    "overrideTitle": meta.title
   }
 `);
 
 export const BLOG_INDEX_OG_IMAGE_QUERY = defineQuery(`
   *[_id == "blogIndex" && _type == "blogIndex"][0]{
-    "title": coalesce(title, meta.title)
+    title,
+    "overrideTitle": meta.title
   }
 `);
 
 export const CATEGORY_OG_IMAGE_QUERY = defineQuery(`
   *[_type == "category" && slug.current == $slug][0]{
-    "title": coalesce(title, meta.title)
+    title,
+    "overrideTitle": meta.title
   }
 `);

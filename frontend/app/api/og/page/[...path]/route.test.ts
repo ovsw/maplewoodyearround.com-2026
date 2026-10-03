@@ -1,4 +1,4 @@
-import { buildPageOgImageUrl } from "@/lib/page-og-image";
+import { buildPageOgImageUrl, getPageOgImagePath, type PageOgImageTarget } from "@/lib/page-og-image";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const routeState = vi.hoisted(() => ({ renderFails: false }));
@@ -90,6 +90,39 @@ describe("page OG image route", () => {
     sanityFetchMetadata.mockResolvedValueOnce({ data: null });
     expect((await get(signedUrl())).status).toBe(404);
   });
+
+  it.each([
+    { target: { kind: "blog" }, data: {}, title: "Blog" },
+    { target: { kind: "blog", page: 2 }, data: { title: "", overrideTitle: "" }, title: "Blog - Page 2" },
+    { target: { kind: "category", slug: "camp" }, data: {}, title: "Blog category" },
+    { target: { kind: "category", slug: "camp", page: 2 }, data: { overrideTitle: "Camp news" }, title: "Camp news - Page 2" },
+    { target: { kind: "blog" }, data: { title: "Camp news", overrideTitle: "SEO title" }, title: "Camp news" },
+    { target: { kind: "page", slug: "about" }, data: { title: "", overrideTitle: "About camp" }, title: "About camp" },
+  ] satisfies Array<{ target: PageOgImageTarget; data: { title?: string; overrideTitle?: string }; title: string }>) (
+    "renders the signed fallback title for $target.kind: $title",
+    async ({ target, data, title }) => {
+      sanityFetchMetadata.mockResolvedValueOnce({ data });
+      const url = buildPageOgImageUrl({ origin: "https://example.test", target, title });
+      const response = await GET(new Request(url), {
+        params: Promise.resolve({ path: getPageOgImagePath(target).split("/") }),
+      });
+      expect(response.status).toBe(200);
+    },
+  );
+
+  it.each([
+    { target: { kind: "blog" }, data: null },
+    { target: { kind: "page", slug: "about" }, data: {} },
+  ] satisfies Array<{ target: PageOgImageTarget; data: Record<string, never> | null }>) (
+    "keeps missing content or title without a fallback as not found",
+    async ({ target, data }) => {
+      sanityFetchMetadata.mockResolvedValueOnce({ data });
+      const url = buildPageOgImageUrl({ origin: "https://example.test", target, title: "Blog" });
+      expect((await GET(new Request(url), {
+        params: Promise.resolve({ path: getPageOgImagePath(target).split("/") }),
+      })).status).toBe(404);
+    },
+  );
 
   it("redirects render failures to the prebuilt local fallback", async () => {
     routeState.renderFails = true;
