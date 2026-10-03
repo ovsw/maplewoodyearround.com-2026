@@ -1,33 +1,7 @@
 import { defineField, defineType } from "sanity";
 import { InlineObjectField } from "../../inputs/inline-object-field";
 
-const safeProtocols = new Set(["http:", "https:", "mailto:", "tel:"]);
-
-function validateExternalUrl(value: unknown) {
-  if (typeof value !== "string" || !value.trim()) {
-    return "Add the external URL";
-  }
-
-  const href = value.trim();
-  if (
-    href.startsWith("#") ||
-    (href.startsWith("/") && !href.startsWith("//") && href[1] !== "\\")
-  ) {
-    return true;
-  }
-
-  try {
-    const url = new URL(href);
-    if (["http:", "https:"].includes(url.protocol) && !/^https?:\/\//i.test(href)) {
-      return "Enter a valid URL";
-    }
-    return safeProtocols.has(url.protocol)
-      ? true
-      : "Use an http, https, mailto, or tel URL";
-  } catch {
-    return "Enter a valid URL";
-  }
-}
+import { validateDestinationUrl } from "../../validation/destination-url";
 
 export default defineType({
   name: "customUrl",
@@ -38,6 +12,14 @@ export default defineType({
   components: { field: InlineObjectField },
   fields: [
     defineField({
+      name: "file", title: "File", type: "file",
+      description: "Upload a document to link to it. Replace the asset here when it changes.",
+      hidden: ({ parent }) => parent?.type !== "file",
+      validation: (rule) => rule.custom((value, context) =>
+        (context.parent as { type?: string } | undefined)?.type === "file" && !value?.asset?._ref
+          ? "Upload a file" : true),
+    }),
+    defineField({
       name: "external",
       title: "External URL",
       type: "string",
@@ -45,7 +27,7 @@ export default defineType({
       validation: (rule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string } | undefined;
-          return parent?.type === "external" ? validateExternalUrl(value) : true;
+          return parent?.type === "external" ? validateDestinationUrl(value) : true;
         }),
     }),
     defineField({
@@ -54,6 +36,7 @@ export default defineType({
       type: "reference",
       to: [
         { type: "homePage" },
+        { type: "parentDashboard" },
         { type: "blogIndex" },
         { type: "page" },
         { type: "post" },
@@ -77,6 +60,7 @@ export default defineType({
         list: [
           { title: "Internal", value: "internal" },
           { title: "External", value: "external" },
+          { title: "File", value: "file" },
         ],
       },
       validation: (rule) => rule.required(),

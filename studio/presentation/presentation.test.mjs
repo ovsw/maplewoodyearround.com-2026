@@ -26,7 +26,7 @@ test("resolves a normal page slug to a canonical path", () => {
 });
 
 test("resolves a normal post slug to a canonical path", () => {
-  assert.equal(getPresentationPath("post", "first-post"), "/blog/first-post");
+  assert.equal(getPresentationPath("post", "first-post"), "/post/first-post");
 });
 
 test("resolves a category slug under the blog category namespace", () => {
@@ -38,7 +38,7 @@ test("resolves a category slug under the blog category namespace", () => {
 });
 
 test("resolves the Blog Index singleton without an authored slug", () => {
-  assert.equal(getPresentationPath("blogIndex"), "/blog");
+  assert.equal(getPresentationPath("blogIndex"), "/news");
 });
 
 test("missing and empty slugs disable Presentation navigation", () => {

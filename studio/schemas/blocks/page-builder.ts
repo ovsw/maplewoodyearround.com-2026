@@ -16,6 +16,27 @@ export const contentPageBuilderBlockTypes = [
   "largeSlides",
   "headingImage",
   "quoteWall",
+  "videoHero",
+  "videoZoomGrid",
+  "scrollPanels",
+  "busMap",
+  "imageReveal",
+  "directorIntro",
+  "programCards",
+  "electiveCards",
+  "historyStory",
+  "rateTable",
+  "pricingCards",
+  "cardSlider",
+  "statistics",
+  "filterableCards",
+  "instructionSteps",
+  "embedSection",
+  "contactDetailsSection",
+  "jobList",
+  "parentDashboardSection",
+  "summerDocumentList",
+  "tabbedHero",
   // page-builder-generator:content-types
 ] as const;
 
@@ -63,7 +84,7 @@ export function getPageBuilderPreviewImageUrl(schemaTypeName: string) {
 }
 
 /** Every block type that opens a page. One per page, always first. */
-export const heroBlockTypes = new Set(["hero", "homeHero", "innerHero"]);
+export const heroBlockTypes = new Set(["hero", "homeHero", "innerHero", "videoHero", "tabbedHero", "directorIntro"]);
 
 /**
  * Every block type that lists FAQs. One per page, hub or curated, so the
@@ -159,6 +180,7 @@ function createBlocksField(
   return defineField({
     name: "blocks",
     title: "Page sections",
+    description: "Sections in display order. Put one hero first.",
     type: "array",
     group: "content",
     of: blockTypes.map((type) => ({ type })),

@@ -1,4 +1,16 @@
 // documents
+import staffMember from "./schemas/documents/staff-member";
+import activity from "./schemas/documents/activity";
+import facility from "./schemas/documents/facility";
+import programOffering from "./schemas/documents/program-offering";
+import { activityCategory, facilityCategory, grade, season } from "./schemas/documents/maplewood-categories";
+import campGroup from "./schemas/documents/camp-group";
+import sampleSchedule from "./schemas/documents/sample-schedule";
+import jobOpportunity from "./schemas/documents/job-opportunity";
+import { playgroundCharacter, playgroundGuest, playgroundEvent, playgroundCalendar } from "./schemas/documents/playground";
+import parentDashboard, { dashboardCard, summerDocuments } from "./schemas/documents/parent-dashboard";
+import contentDestination from "./schemas/blocks/shared/content-destination";
+import { contentAction, contentCard } from "./schemas/blocks/shared/maplewood-fields";
 import page from "./schemas/documents/page";
 import post from "./schemas/documents/post";
 import author from "./schemas/documents/author";
@@ -56,9 +68,35 @@ import largeSlides from "./schemas/blocks/large-slides";
 import headingImage from "./schemas/blocks/heading-image";
 import quoteWall from "./schemas/blocks/quote-wall";
 import faqHub from "./schemas/blocks/faq-hub";
+import videoHero from "./schemas/blocks/video-hero";
+import videoZoomGrid from "./schemas/blocks/video-zoom-grid";
+import scrollPanels from "./schemas/blocks/scroll-panels";
+import busMap from "./schemas/blocks/bus-map";
+import imageReveal from "./schemas/blocks/image-reveal";
+import directorIntro from "./schemas/blocks/director-intro";
+import programCards from "./schemas/blocks/program-cards";
+import electiveCards from "./schemas/blocks/elective-cards";
+import historyStory from "./schemas/blocks/history-story";
+import rateTable from "./schemas/blocks/rate-table";
+import pricingCards from "./schemas/blocks/pricing-cards";
+import cardSlider from "./schemas/blocks/card-slider";
+import statistics from "./schemas/blocks/statistics";
+import filterableCards from "./schemas/blocks/filterable-cards";
+import instructionSteps from "./schemas/blocks/instruction-steps";
+import embedSection from "./schemas/blocks/embed-section";
+import contactDetailsSection from "./schemas/blocks/contact-details-section";
+import jobList from "./schemas/blocks/job-list";
+import parentDashboardSection from "./schemas/blocks/parent-dashboard-section";
+import summerDocumentList from "./schemas/blocks/summer-document-list";
+import tabbedHero from "./schemas/blocks/tabbed-hero";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
+  staffMember, activity, facility, programOffering, activityCategory,
+  facilityCategory, grade, season, campGroup, sampleSchedule, jobOpportunity,
+  playgroundCharacter, playgroundGuest, playgroundEvent, playgroundCalendar,
+  parentDashboard, dashboardCard, summerDocuments, contentDestination,
+  contentAction, contentCard,
   // documents
   page,
   post,
@@ -113,5 +151,26 @@ export const schemaTypes = [
   headingImage,
   quoteWall,
   faqHub,
+  videoHero,
+  videoZoomGrid,
+  scrollPanels,
+  busMap,
+  imageReveal,
+  directorIntro,
+  programCards,
+  electiveCards,
+  historyStory,
+  rateTable,
+  pricingCards,
+  cardSlider,
+  statistics,
+  filterableCards,
+  instructionSteps,
+  embedSection,
+  contactDetailsSection,
+  jobList,
+  parentDashboardSection,
+  summerDocumentList,
+  tabbedHero,
   // page-builder-generator:block-types
 ];

@@ -11,7 +11,7 @@ import {
 
 function expectCanonicalBlogRoutes(query: string, reference: string) {
   expect(query).toContain(
-    `${reference}->_type == "post" && defined(${reference}->slug.current) => "/blog/" + array::join(string::split(${reference}->slug.current, "/")[@ != ""], "/")`,
+    `${reference}->_type == "post" && defined(${reference}->slug.current) => "/post/" + array::join(string::split(${reference}->slug.current, "/")[@ != ""], "/")`,
   );
   expect(query).toContain(
     `${reference}->_type == "category" && defined(${reference}->slug.current) => "/blog/category/" + array::join(string::split(${reference}->slug.current, "/")[@ != ""], "/")`,
@@ -34,10 +34,10 @@ describe("internal href queries", () => {
 
   it("resolves the Blog index singleton from shared button URLs", () => {
     expect(urlInternalHref).toContain(
-      'url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/blog"',
+      'url.internal->_id == "blogIndex" || url.internal->_type == "blogIndex" => "/news"',
     );
     expect(linkInternalHref).toContain(
-      'link.internal->_id == "blogIndex" || link.internal->_type == "blogIndex" => "/blog"',
+      'link.internal->_id == "blogIndex" || link.internal->_type == "blogIndex" => "/news"',
     );
   });
 
@@ -48,7 +48,7 @@ describe("internal href queries", () => {
   it("resolves Blog index documents by type in footer and navigation links", () => {
     for (const query of [FOOTER_QUERY, NAVIGATION_QUERY]) {
       expect(query).toContain(
-        'internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog"',
+        'internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news"',
       );
     }
   });

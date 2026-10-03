@@ -1,10 +1,12 @@
 import { defineField, defineType } from "sanity";
+import { textField } from "./maplewood-fields";
 
 export default defineType({
   name: "author",
   title: "Author",
   type: "document",
   fields: [
+    textField("role", "Role", "The author's public role or job title."),
     defineField({
       name: "name",
       title: "Name",

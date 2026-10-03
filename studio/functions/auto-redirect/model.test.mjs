@@ -76,8 +76,8 @@ test("creates post and category redirects in their public namespaces", () => {
   });
 
   assert.equal(post.action, "apply");
-  assert.equal(post.source, "/blog/old-post");
-  assert.equal(post.destination, "/blog/new-post");
+  assert.equal(post.source, "/post/old-post");
+  assert.equal(post.destination, "/post/new-post");
   assert.equal(category.action, "apply");
   assert.equal(category.source, "/blog/category/old-category");
   assert.equal(category.destination, "/blog/category/new-category");

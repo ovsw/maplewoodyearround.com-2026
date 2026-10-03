@@ -22,7 +22,7 @@ export function pagePath(value?: string | null) {
 
 export function postPath(value?: string | null) {
   const slug = cleanSlug(value);
-  return isRouteSlug(slug) ? `/blog/${slug}` : null;
+  return isRouteSlug(slug) ? `/post/${slug}` : null;
 }
 
 export function categoryPath(value?: string | null) {
@@ -63,6 +63,8 @@ export function isApplicationPath(value?: string | null) {
   if (
     path === "/" ||
     path === "/blog" ||
+    path === "/news" ||
+    path === "/parent-dashboard" ||
     path === "/blog/category" ||
     path === "/contact/thanks" ||
     path === "/favicon.ico" ||
@@ -83,6 +85,6 @@ export function isReservedPagePath(value?: string | null) {
   const path = normalizePublicPath(value);
   return Boolean(
     path &&
-    (isApplicationPath(path) || path === "/blog" || path.startsWith("/blog/")),
+    (isApplicationPath(path) || path === "/blog" || path.startsWith("/blog/") || path === "/post" || path.startsWith("/post/") || path.startsWith("/news/")),
   );
 }

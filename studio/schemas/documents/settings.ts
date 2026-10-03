@@ -29,7 +29,8 @@ const contactDetails = defineType({
   type: "object",
   icon: Contact,
   fields: [
-    defineField({ name: "email", type: "email" }),
+    defineField({ name: "email", type: "email", description: "The public contact email." }),
+    defineField({ name: "fax", title: "Fax", type: "string", description: "The public fax number shown in contact details." }),
     defineField({
       name: "phone",
       type: "string",
@@ -56,6 +57,8 @@ const settings = defineType({
     { name: "seo", title: "Search & sharing" },
   ],
   fields: [
+    defineField({ name: "gaMeasurementId", title: "Google Analytics ID", type: "string", group: "seo", description: "The public GA4 measurement ID. Analytics runs only in production.", validation: (rule) => rule.regex(/^G-[A-Z0-9]+$/) }),
+    defineField({ name: "hotjarSiteId", title: "Hotjar site ID", type: "string", group: "seo", description: "The numeric public Hotjar site ID. Analytics runs only in production.", validation: (rule) => rule.regex(/^[0-9]+$/) }),
     defineField({
       name: "siteName",
       title: "Site name",

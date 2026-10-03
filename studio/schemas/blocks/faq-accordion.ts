@@ -1,5 +1,6 @@
 import { MessageCircle } from "lucide-react";
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { defineField, defineType } from "sanity";
+import { programFilterField } from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
 const richTextToPlainText = (value: unknown): string => {
@@ -47,28 +48,15 @@ export default defineType({
       title: "Intro line",
       description: "Optional. One or two sentences under the heading.",
     }),
-    defineField({
-      name: "faqs",
-      type: "array",
-      title: "FAQs",
-      description: "Select the FAQ items to display in this accordion",
-      of: [
-        defineArrayMember({
-          type: "reference",
-          to: [{ type: "faq" }],
-          options: { disableNew: true },
-        }),
-      ],
-      validation: (rule) => [rule.required(), rule.unique()],
-    }),
+    programFilterField,
+    defineField({ name: "category", title: "Category filter", type: "reference", to: [{ type: "faqCategory" }], description: "Show all questions in this category. Leave empty for all categories." }),
   ],
   preview: {
-    select: { title: "title", faqs: "faqs" },
-    prepare: ({ title, faqs }) => {
-      const count = Array.isArray(faqs) ? faqs.length : 0;
+    select: { title: "title" },
+    prepare: ({ title }) => {
       return {
         title: richTextToPlainText(title) || "Untitled FAQ Section",
-        subtitle: `FAQ Section · ${count} ${count === 1 ? "question" : "questions"}`,
+        subtitle: "FAQ Section",
       };
     },
   },

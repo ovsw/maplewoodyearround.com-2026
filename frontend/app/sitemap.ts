@@ -9,8 +9,8 @@ const VIEWABLE_TYPES = ["homePage", "page", "post", "blogIndex", "category"] as 
 const urlQuery = `
   'url': select(
     _id == "homePage" && _type == "homePage" => $baseUrl + "/",
-    _id == "blogIndex" => $baseUrl + "/blog",
-    _type == "post" => $baseUrl + "/blog/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
+    _id == "blogIndex" => $baseUrl + "/news",
+    _type == "post" => $baseUrl + "/post/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     _type == "category" => $baseUrl + "/blog/category/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     $baseUrl + "/" + array::join(string::split(slug.current, "/")[@ != ""], "/")
   )

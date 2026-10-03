@@ -46,6 +46,8 @@ function hubFaq(id: string, title: string, answer: string): HubFaq {
   const { _id, title: question, answer: body } = faq(id, title, answer);
   return {
     _id,
+    program: null,
+    categories: [],
     title: question,
     answer: body,
     answerText: answer,

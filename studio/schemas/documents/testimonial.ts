@@ -1,5 +1,6 @@
 import { Quote } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import { orderField, programField, slugField, switchField, textField, visibleField } from "./maplewood-fields";
 
 export default defineType({
   name: "testimonial",
@@ -12,6 +13,10 @@ export default defineType({
     rating: 5,
   },
   fields: [
+    textField("internalTitle", "Internal title", "The source CMS record name; the visitor sees the author name below."),
+    slugField, programField,
+    switchField("pluralParents", "Quote from parents", "Use the plural parent label for this quote."),
+    orderField, visibleField,
     defineField({
       name: "name",
       title: "Name",

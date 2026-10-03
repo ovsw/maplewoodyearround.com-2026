@@ -150,7 +150,7 @@ describe("blog index", () => {
     expect(screen.queryByRole("link", { name: "News" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Summer update" })).toHaveAttribute(
       "href",
-      "/blog/summer-update",
+      "/post/summer-update",
     );
   });
 
@@ -180,7 +180,7 @@ describe("blog index", () => {
     expect(cards[0].closest("a")).toBeNull();
     expect(
       within(cards[0] as HTMLElement).getByRole("link", { name: "Post one" }),
-    ).toHaveAttribute("href", "/blog/one");
+    ).toHaveAttribute("href", "/post/one");
     expect(screen.queryByRole("link", { name: "News" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Pagination" })).toBeNull();
   });
@@ -353,7 +353,7 @@ describe("blog index", () => {
 
     expect(screen.getByRole("link", { name: "Summer update" })).toHaveAttribute(
       "href",
-      "/blog/summer-update",
+      "/post/summer-update",
     );
     expect(screen.getByText("No more posts yet.")).toBeInTheDocument();
   });

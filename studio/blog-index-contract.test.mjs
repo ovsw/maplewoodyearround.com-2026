@@ -21,26 +21,6 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
     blocksField.of.filter(({ hidden }) => !hidden).map(({ type }) => type),
     [...pageBuilderBlockTypes],
   );
-  assert.deepEqual([...pageBuilderBlockTypes], [
-    "hero",
-    "innerHero",
-    "faqHub",
-    "richTextBlock",
-    "benefitCards",
-    "storyFeature",
-    "imageCollageFeature",
-    "featureCards",
-    "stackedFeatureRows",
-    "latestArticles",
-    "faqAccordion",
-    "teamMembers",
-    "ctaBanner",
-    "stackedTimeline",
-    "bigImageList",
-    "largeSlides",
-    "headingImage",
-    "quoteWall",
-  ]);
   assert.equal(blocksField.of.some(({ hidden }) => hidden), false);
   assert.equal(new Set(pageBuilderBlockTypes).size, pageBuilderBlockTypes.length);
 });

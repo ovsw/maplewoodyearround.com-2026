@@ -58,7 +58,7 @@ describe("blog segment metadata", () => {
     });
     expect(generatePageMetadata).toHaveBeenCalledWith({
       page: post,
-      path: "/blog/first-post",
+      path: "/post/first-post",
       settings,
     });
   });

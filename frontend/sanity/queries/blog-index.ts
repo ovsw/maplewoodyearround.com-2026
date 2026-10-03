@@ -19,7 +19,7 @@ export type BlogPost = Omit<NonNullable<LATEST_POST_QUERY_RESULT>, "category"> &
 };
 
 export const BLOG_INDEX_QUERY = groq`
-  *[_id == "blogIndex"][0]{
+  *[_id == "blogIndex" && _type == "blogIndex"][0]{
     _id,
     _type,
     title,

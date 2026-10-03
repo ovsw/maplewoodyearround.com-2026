@@ -71,6 +71,8 @@ test("rejects malformed and application-owned slugs", async () => {
   assert.match(await uniqueRoutedSlug({ current: "blog" }, pageContext), /reserved/);
   assert.match(await uniqueRoutedSlug({ current: "blog/post" }, pageContext), /reserved/);
   assert.match(await uniqueRoutedSlug({ current: "api" }, pageContext), /reserved/);
-  assert.match(await uniqueRoutedSlug({ current: "category" }, postContext), /reserved/);
-  assert.match(await uniqueRoutedSlug({ current: "2" }, postContext), /reserved/);
+  assert.match(await uniqueRoutedSlug({ current: "news" }, pageContext), /reserved/);
+  assert.match(await uniqueRoutedSlug({ current: "post/example" }, pageContext), /reserved/);
+  assert.equal(await uniqueRoutedSlug({ current: "category" }, postContext), true);
+  assert.equal(await uniqueRoutedSlug({ current: "2" }, postContext), true);
 });

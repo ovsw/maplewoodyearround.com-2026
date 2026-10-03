@@ -12,23 +12,7 @@ const destination = defineDestinationType({
   externalFieldTitle: "URL or root-relative path",
 });
 
-const childLink = defineType({
-  name: "navigationChildLink",
-  title: "Rich navigation link",
-  type: "object",
-  icon: LinkIcon,
-  fields: [
-    defineField({
-      name: "label",
-      type: "string",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "description",
-      type: "string",
-      description: "Optional context shown in a grouped navigation menu.",
-    }),
-    defineField({
+const navigationIcon = defineField({
       name: "icon",
       title: "Icon",
       type: "object",
@@ -54,7 +38,25 @@ const childLink = defineType({
           }
           return true;
         }),
+    });
+
+const childLink = defineType({
+  name: "navigationChildLink",
+  title: "Rich navigation link",
+  type: "object",
+  icon: LinkIcon,
+  fields: [
+    defineField({
+      name: "label",
+      type: "string",
+      validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "description",
+      type: "string",
+      description: "Optional context shown in a grouped navigation menu.",
+    }),
+    navigationIcon,
     defineField({
       name: "destination",
       type: "navigationDestination",
@@ -77,6 +79,8 @@ const directLink = defineType({
   type: "object",
   icon: LinkIcon,
   fields: [
+    navigationIcon,
+    defineField({ name: "accent", title: "Link color", type: "string", description: "Choose the source color for this large menu link.", options: { list: ["none", "yellow", "mint", "purple", "blue", "red"] } }),
     defineField({
       name: "label",
       type: "string",
@@ -97,6 +101,7 @@ const group = defineType({
   type: "object",
   icon: PanelsTopLeft,
   fields: [
+    defineField({ name: "destination", title: "Group heading link", type: "navigationDestination", description: "Optional page opened by the group heading." }),
     defineField({
       name: "label",
       type: "string",
@@ -159,9 +164,9 @@ const navigation = defineType({
       title: "Calls to action",
       type: "array",
       description:
-        "One configurable link shown beside the fixed Call Justin & Anna action.",
+        "Up to two links shown beside the main menu.",
       of: [defineArrayMember({ type: "navigationAction" })],
-      validation: (rule) => rule.unique().max(1),
+      validation: (rule) => rule.unique().max(2),
     }),
   ],
   preview: { prepare: () => ({ title: "Site Navigation" }) },

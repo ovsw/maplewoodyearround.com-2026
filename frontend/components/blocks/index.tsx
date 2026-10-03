@@ -26,6 +26,27 @@ import LargeSlides from "@/components/blocks/large-slides";
 import HeadingImage from "@/components/blocks/heading-image";
 import QuoteWall from "@/components/blocks/quote-wall";
 import FaqHub from "@/components/blocks/faq-hub";
+import VideoHero from "@/components/blocks/video-hero";
+import VideoZoomGrid from "@/components/blocks/video-zoom-grid";
+import ScrollPanels from "@/components/blocks/scroll-panels";
+import BusMap from "@/components/blocks/bus-map";
+import ImageReveal from "@/components/blocks/image-reveal";
+import DirectorIntro from "@/components/blocks/director-intro";
+import ProgramCards from "@/components/blocks/program-cards";
+import ElectiveCards from "@/components/blocks/elective-cards";
+import HistoryStory from "@/components/blocks/history-story";
+import RateTable from "@/components/blocks/rate-table";
+import PricingCards from "@/components/blocks/pricing-cards";
+import CardSlider from "@/components/blocks/card-slider";
+import Statistics from "@/components/blocks/statistics";
+import FilterableCards from "@/components/blocks/filterable-cards";
+import InstructionSteps from "@/components/blocks/instruction-steps";
+import EmbedSection from "@/components/blocks/embed-section";
+import ContactDetailsSection from "@/components/blocks/contact-details-section";
+import JobList from "@/components/blocks/job-list";
+import ParentDashboardSection from "@/components/blocks/parent-dashboard-section";
+import SummerDocumentList from "@/components/blocks/summer-document-list";
+import TabbedHero from "@/components/blocks/tabbed-hero";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 import type { BlogListing } from "@/lib/blog-index";
@@ -67,6 +88,27 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "headingImage",
   "quoteWall",
   "faqHub",
+  "videoHero",
+  "videoZoomGrid",
+  "scrollPanels",
+  "busMap",
+  "imageReveal",
+  "directorIntro",
+  "programCards",
+  "electiveCards",
+  "historyStory",
+  "rateTable",
+  "pricingCards",
+  "cardSlider",
+  "statistics",
+  "filterableCards",
+  "instructionSteps",
+  "embedSection",
+  "contactDetailsSection",
+  "jobList",
+  "parentDashboardSection",
+  "summerDocumentList",
+  "tabbedHero",
   // page-builder-generator:editing-types
 ]);
 
@@ -94,6 +136,27 @@ const componentMap: Partial<{
   headingImage: HeadingImage,
   quoteWall: QuoteWall,
   faqHub: FaqHub,
+  videoHero: VideoHero,
+  videoZoomGrid: VideoZoomGrid,
+  scrollPanels: ScrollPanels,
+  busMap: BusMap,
+  imageReveal: ImageReveal,
+  directorIntro: DirectorIntro,
+  programCards: ProgramCards,
+  electiveCards: ElectiveCards,
+  historyStory: HistoryStory,
+  rateTable: RateTable,
+  pricingCards: PricingCards,
+  cardSlider: CardSlider,
+  statistics: Statistics,
+  filterableCards: FilterableCards,
+  instructionSteps: InstructionSteps,
+  embedSection: EmbedSection,
+  contactDetailsSection: ContactDetailsSection,
+  jobList: JobList,
+  parentDashboardSection: ParentDashboardSection,
+  summerDocumentList: SummerDocumentList,
+  tabbedHero: TabbedHero,
   // page-builder-generator:component-map
 };
 
@@ -168,7 +231,7 @@ export default function Blocks({
                           id: memberId,
                           path,
                           projectId,
-                          type: "teamMember",
+                          type: "staffMember",
                         }).toString()
                     : undefined,
                 }

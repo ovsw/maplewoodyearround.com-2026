@@ -11,6 +11,8 @@ const PRESENTATION_DOCUMENT_TYPES = new Set([
   "category",
   "blogIndex",
   "homePage",
+  "parentDashboard",
+  "summerDocuments",
 ]);
 
 function readSlug(document: unknown) {
@@ -42,7 +44,9 @@ export function getPresentationPath(
   documentType: string,
   slug?: string | null,
 ) {
-  if (documentType === "blogIndex") return "/blog";
+  if (documentType === "blogIndex") return "/news";
+  if (documentType === "parentDashboard") return "/parent-dashboard";
+  if (documentType === "summerDocuments") return "/summer-camp/summer-group-schedules";
   if (documentType === "homePage") return "/";
   if (!isPresentationDocumentType(documentType) || !slug?.trim()) return null;
   if (documentType === "page") return pagePath(slug);

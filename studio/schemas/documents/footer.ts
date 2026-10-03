@@ -57,7 +57,7 @@ const footerLogo = defineType({
     defineField({
       name: "destination",
       type: "footerDestination",
-      validation: (rule) => rule.required(),
+      description: "Optional link. Leave empty for an unlinked accreditation mark.",
     }),
   ],
   preview: { select: { media: "image", title: "alt" } },
@@ -145,6 +145,16 @@ const footer = defineType({
   ],
   fields: [
     defineField({
+      name: "newsletter", title: "Newsletter", type: "object", group: "content",
+      description: "The heading, prompt and status messages for the newsletter form.",
+      fields: [
+        defineField({ name: "heading", title: "Heading", type: "string", description: "The title above the signup form." }),
+        defineField({ name: "description", title: "Introduction", type: "text", description: "The explanation shown with the signup form." }),
+        defineField({ name: "successMessage", title: "Success message", type: "string", description: "Shown after a successful signup." }),
+        defineField({ name: "errorMessage", title: "Error message", type: "string", description: "Shown when the signup cannot be sent." }),
+      ],
+    }),
+    defineField({
       name: "intro",
       title: "Introduction (deprecated)",
       type: "text",
@@ -160,21 +170,21 @@ const footer = defineType({
       title: "Location line",
       type: "string",
       group: "signoff",
-      validation: (rule) => rule.required(),
+      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
       name: "heading",
       title: "Closing heading",
       type: "string",
       group: "signoff",
-      validation: (rule) => rule.required(),
+      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
       name: "accent",
       title: "Closing emphasis",
       type: "string",
       group: "signoff",
-      validation: (rule) => rule.required(),
+      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
       name: "actions",
@@ -182,7 +192,7 @@ const footer = defineType({
       type: "array",
       group: "signoff",
       of: [defineArrayMember({ type: "footerLink" })],
-      validation: (rule) => rule.required().min(1).max(2).unique(),
+      validation: (rule) => rule.max(2).unique(),
     }),
     defineField({
       name: "logos",

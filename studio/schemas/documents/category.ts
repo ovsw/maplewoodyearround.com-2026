@@ -14,6 +14,7 @@ export default defineType({
     { name: "seo", title: "SEO" },
   ],
   fields: [
+    defineField({ name: "color", title: "Label color", type: "string", group: "content", description: "The source color used for this news category label." }),
     defineField({
       name: "title",
       title: "Title",
