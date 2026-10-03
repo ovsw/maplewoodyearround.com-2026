@@ -145,7 +145,7 @@ The workflow depends on framework capabilities that ship with current Next.js:
   testing API is in the `next` runtime, gated by the
   `experimental.exposeTestingApiInProductionBuild` config flag (phase A).
 
-If the project does not meet these, upgrade first (`npx @next/codemod upgrade`
+If the project does not meet these, upgrade first (`npx @next/codemod@16.3.0 upgrade 16.3.0`
 automates most of it), then enable Cache Components in `next.config.ts`:
 
 ```ts
@@ -283,11 +283,13 @@ the static shell, even when it reads a statically known param. Minimal shape: a
 dynamic-segment route with one segment lacking `generateStaticParams`, plus a
 top-level `await` in the layout above it.
 
-### The fix: defer the gate, render children
+### The fix: keep public shell content outside the auth gate
 
-Render `children` unconditionally; move the top-level `await` into a
-`<Suspense fallback={null}>`-wrapped child. Mechanism and before→after:
-`reference/real-app-patterns.md`, "Deferring an auth gate".
+Place public layout content outside a `<Suspense>` boundary. Render protected
+`children` only after the authorization check, with a public loading fallback.
+Authorize protected reads and mutations at the data source too: layouts do not
+prevent independent route rendering and do not rerun on every navigation.
+See `reference/real-app-patterns.md`, "Deferring an auth gate".
 
 **Fix the page below the shell too, not only the layout.** A page-level
 top-level `await` (commonly `await params`) blocks the same way the layout's

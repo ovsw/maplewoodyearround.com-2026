@@ -51,6 +51,17 @@ const rawFooter: RawFooter = {
 };
 
 describe("createFooterModel", () => {
+  it.each(["\\evil.example", "/\\evil.example", "//evil.example", "/\t/evil.example", "/\n/evil.example"])(
+    "omits unsafe authored destinations: %j",
+    (href) => {
+      const model = createFooterModel({
+        ...rawFooter,
+        columns: [{ _key: "links", heading: "Links", links: [rawLink("safe", "About", "/about"), rawLink("unsafe", "Unsafe", href)] }],
+      }, 2026);
+      expect(model?.columns[0]?.links.map((item) => item.href)).toEqual(["/about"]);
+    },
+  );
+
   it("builds the footer from authored links, logos, and contact rows", () => {
     const model = createFooterModel(rawFooter, 2026);
 

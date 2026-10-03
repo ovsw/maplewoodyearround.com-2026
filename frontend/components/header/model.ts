@@ -1,6 +1,7 @@
 import { stegaClean } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import { siteName } from "@/lib/site-name";
+import { getSafeLinkHref } from "@/lib/safe-href";
 import type { SETTINGS_QUERY_RESULT } from "@/sanity.types";
 import type { NavigationIconModel } from "./navigation-icon";
 
@@ -121,9 +122,11 @@ export function createHeaderBrandModel(
 function normalizeHref(value: string | null | undefined): string | null {
   const href = value?.trim();
   if (!href || href === "#") return null;
-  if (/^(https?:\/\/|mailto:|tel:)/i.test(href)) return href;
-  if (/^[a-z][a-z\d+.-]*:/i.test(href)) return null;
-  return `/${href.replace(/^\/+/, "")}`;
+  return getSafeLinkHref(
+    /^[a-z][a-z\d+.-]*:/i.test(href) || href.startsWith("/")
+      ? href
+      : `/${href}`,
+  );
 }
 
 function normalizeLink(

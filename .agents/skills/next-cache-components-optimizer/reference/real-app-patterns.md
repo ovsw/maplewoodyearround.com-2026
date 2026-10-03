@@ -51,28 +51,34 @@ export default async function SettingsLayout({ children }) {
 ```
 
 ```tsx
-// ✅ After: render children unconditionally; move the gate into a Suspense child
+// Keep only public shell content outside the authorization boundary.
 import { Suspense } from 'react'
 
 export default function SettingsLayout({ children }) {
   return (
     <Shell>
-      <Suspense fallback={null}>
-        <AuthGate />
+      <Suspense fallback={<SettingsSkeleton />}>
+        <AuthGate>{children}</AuthGate>
       </Suspense>
-      {children}
     </Shell>
   )
 }
 
-async function AuthGate() {
+async function AuthGate({ children }) {
   const session = await getSession() // the session read suspends during prerender…
   if (!session?.user) redirect(getLoginUrl()) // …so redirect() never runs at build time
-  return null
+  return children
 }
 ```
 
-The shell prerenders as if authorized (the session read suspends before `redirect()` is reached, so the redirect only happens at request time), and `{children}` is now in the shell instead of behind the gate. (`fallback={null}` is correct here: `AuthGate` renders nothing on success.)
+`Shell` and `SettingsSkeleton` contain only public content. Protected children
+appear after the session check. A streaming redirect is not a security boundary.
+
+This layout controls display only. Next.js can render route segments and parallel
+slots independently, and layouts do not rerun on every navigation. Each protected
+data read and mutation must authorize the request at the data source before
+returning private values. Test unauthenticated document and RSC responses for
+private data. See the installed authentication guide, "Layouts and auth checks".
 
 ## Initial-load shell vs soft-navigation shell
 

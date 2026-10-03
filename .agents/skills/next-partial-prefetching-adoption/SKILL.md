@@ -49,14 +49,23 @@ Every insight has a docs page — open it. Fetch the linked page for every disti
 
 ## step 1: audit `<Link prefetch={true}>` (before enabling)
 
-If `partialPrefetching: true` is already set in `next.config.ts`, the app is adopted — skip to [step 3](#step-3-sweep-for-url-data-insights-after-enabling). Otherwise work the audit with the global flag **off**, adopting each destination with `export const prefetch = 'partial'` — enabling the flag first would mark every route adopted and silence the [`link-prefetch-partial`](https://nextjs.org/docs/messages/instant-link-prefetch-partial) insight this audit runs on. Ask the user how to ship it, in the language of PRs:
+Locate the active `next.config.js`, `next.config.mjs`, or `next.config.ts` in the
+Next.js app directory. Use that same file for the initial flag check and step 2.
+
+If `partialPrefetching: true` is already set in the active config, the app is adopted — skip to [step 3](#step-3-sweep-for-url-data-insights-after-enabling). Otherwise work the audit with the global flag **off**, adopting each destination with `export const prefetch = 'partial'` — enabling the flag first would mark every route adopted and silence the [`link-prefetch-partial`](https://nextjs.org/docs/messages/instant-link-prefetch-partial) insight this audit runs on. Ask the user how to ship it, in the language of PRs:
 
 - **One branch** — the whole audit in one change, with the flag enabled and the codemod run at the end (step 2).
 - **Route by route** — each adopted destination ships as its own PR. The insight still fires for the destinations you haven't reached, a live worklist, and step 2 comes after the last one.
 
 The work is identical either way — only the commit boundaries differ. Default by app size: one branch for a handful of links, route by route when the audit is big enough that reviewers need smaller diffs. Note the choice in your report.
 
-Enumerate the prefetch sites across the whole source tree, not only `app/` — they often live in `src/components` or shared UI packages: `rg -n '\bprefetch\b|router\.prefetch' -g '*.tsx' -g '*.jsx' .`. Keep the `<Link prefetch={true}>` and bare-prop matches (a bare prop is `true`) as the over-prefetching links this audit adopts destinations for, and drop `prefetch={false}` and other values. Also audit existing imperative [`router.prefetch()`](https://nextjs.org/docs/app/api-reference/functions/use-router#userouter) call sites with the same table, because they can be preserving the same "fetch before navigation" behavior and have no dev insight. For new navigation prefetching, prefer [`<Link>`](https://nextjs.org/docs/app/api-reference/components/link), which the docs call the primary navigation API; use [`router.prefetch()`](https://nextjs.org/docs/app/guides/prefetching#manual-prefetch) only for manual prefetching. If the app already passes an internal `kind` option, treat that as existing implementation detail, not a pattern to spread. If nothing matches, check for a custom link wrapper before calling the audit empty. If there's still nothing, say so in your report and move on to [step 2](#step-2-enable-the-flag).
+Enumerate the prefetch sites across the whole source tree, including shared UI and non-JSX modules:
+
+```bash
+rg -n '\bprefetch\b|router\.prefetch' -g '*.{ts,tsx,js,jsx}' .
+```
+
+Keep `<Link prefetch={true}>` and bare-prop matches (a bare prop is `true`) as the over-prefetching links this audit adopts destinations for, and drop `prefetch={false}` and other values. Also audit existing imperative [`router.prefetch()`](https://nextjs.org/docs/app/api-reference/functions/use-router#userouter) call sites with the same table, because they can preserve the same "fetch before navigation" behavior and have no dev insight. For new navigation prefetching, prefer [`<Link>`](https://nextjs.org/docs/app/api-reference/components/link), which the docs call the primary navigation API; use [`router.prefetch()`](https://nextjs.org/docs/app/guides/prefetching#manual-prefetch) only for manual prefetching. If the app already passes an internal `kind` option, treat that as existing implementation detail, not a pattern to spread. If nothing matches, check for a custom link wrapper before calling the audit empty. If there are still no matches, report that and move on to [step 2](#step-2-enable-the-flag).
 
 Then, for each one:
 
@@ -86,7 +95,7 @@ Then, for each one:
 
 Once every audited destination has `prefetch = 'partial'`, finish in two moves.
 
-1. **Enable the flag globally.** Set `partialPrefetching: true` in `next.config.ts` (alongside `cacheComponents: true`). Every route is adopted now, so every link is good.
+1. **Enable the flag globally.** Set `partialPrefetching: true` in the active config found in step 1 (alongside `cacheComponents: true`). Every route is adopted now, so every link is good.
 2. **Strip the redundant `prefetch = 'partial'` exports.** Run the first-party `remove-partial-prefetch` codemod rather than a text find-and-replace. It removes only `export const prefetch = 'partial'` and its generated Partial Prefetching guide comment. It leaves other values such as `prefetch = 'force-disabled'` in place, along with your `TODO(runtime-prefetch)` markers and their Runtime Prefetching guide links, which wait for step 5.
 
    ```bash

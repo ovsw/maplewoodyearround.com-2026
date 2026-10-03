@@ -40,10 +40,12 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export function MobileNav({
   brand,
+  brandLabel,
   navigation,
   theme,
 }: {
   brand: ReactNode;
+  brandLabel: string;
   navigation: HeaderNavigationModel;
   theme: HeaderTheme;
 }) {
@@ -81,7 +83,7 @@ export function MobileNav({
           <div className="flex min-w-0 items-center">{brand}</div>
           <SheetTitle className="sr-only">Main navigation</SheetTitle>
           <SheetDescription className="sr-only">
-            Browse Maplewood Year Round pages and programs.
+            Browse {brandLabel} pages and programs.
           </SheetDescription>
           <SheetClose
             className={cn(
