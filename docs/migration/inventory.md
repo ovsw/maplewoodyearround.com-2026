@@ -4,18 +4,21 @@ Captured on 2026-10-03 UTC. Scope: all 50 sitemap URLs and the three policy page
 
 ## Status and evidence
 
-This is the public HTML fallback audit allowed by issue #4. It is ready for page planning and visual matching. The authenticated CMS audit is incomplete because `WEBFLOW_API_TOKEN` from issue #2 is unavailable. The spec states that there are 27 collections. Public HTML does not prove their names, fields, types, full counts or bindings. Do not use rendered card counts as collection totals.
+This audit combines the public site reference with the authenticated Webflow CMS audit. It covers all 53 public routes and all 27 collections, including 179 field definitions and 641 staged records. The collection appendix records each collection's page use, fields, types and staged/live counts. Do not use rendered card counts as collection totals.
 
 - [Public source evidence](public-source-evidence.json) contains each response date, original HTML hash, metadata, ordered sections, rendered collection wrappers, forms, scripts, embeds and links.
 - [Public animation evidence](public-animation-evidence.json) contains only scroll events that match elements on the audited pages, their action values and source hashes.
+- [Authenticated CMS inventory](cms-inventory.md) lists all 27 collections, their fields and page-use mappings. [Schema evidence](cms-schema-evidence.json) retains exact field IDs, required flags, options, reference targets and state counts without private item values.
 - [Reference capture notes](reference/README.md), [baseline manifest](reference/manifest.json) and [scroll-state manifest](reference/states/manifest.json) describe the visual reference.
 - Baseline viewports are 1440 × 1000 and 390 × 844. There are 106 baseline images, one per route and width. Supplemental images show scroll states.
 - Full-page images are not complete motion references. Sticky content can be hidden at the initial scroll position. Use the supplemental states with the animation requirements below.
 - Original public source URLs and service IDs remain in the evidence. Auth and API key values are redacted. No forms were submitted. Private project records are not included.
 
-### Required authenticated follow-up
+### Authenticated audit limits
 
-When issue #2 supplies the token, export all 27 actual collection IDs and names. For each, record field names, field IDs, types, required flags, options, reference targets and asset fields. Page through all items and count published, draft and archived records separately. Record page bindings, filters, sort order and limits. Include records that do not appear in public HTML. Until that audit is complete, the collection requirement in issue #4 remains open.
+Read access to the Maplewood site, pages, CMS and assets was verified on 2026-10-03. Every staged item page was read, including records absent from the public HTML. Live totals were fetched separately. Blog Posts has 28 staged records but 7 live records; staged draft/archive flags alone do not determine live membership.
+
+The Data API does not expose Designer collection-list filters, sort settings or limits. Page-use mappings combine the schema references with public section roles and matching content. They are not an export of Designer bindings. The per-section rendered counts and screenshot order remain the behavior reference for the rebuild. No private item content is included, and no source content was changed.
 
 ## Shared page behavior
 
@@ -84,11 +87,11 @@ The home text panels cover swimming, experiences, safety and family. The Hot Lun
 
 Keep the preserved hero, video zoom grid and header references in `legacy-mdc/` unchanged for later porting.
 
-## Observed CMS use and missing schema audit
+## Observed CMS use
 
 The section tables below list every observed `w-dyn-list` wrapper and its direct rendered-item count. There are 80 wrapper instances across the 53 pages. A wrapper is evidence of a published Webflow list. Its CSS class is not a collection name. A list may use filters, limits, nesting or the same collection as another list.
 
-Observed content roles include news cards, testimonials, program cards, activities/facilities, staff, pricing, FAQs, jobs and documents. Those are descriptive roles only. Exact collection identity, field types and total counts remain unknown until the authenticated audit. The page and section rows provide the current page-use evidence without inventing a 27-collection schema.
+Observed content roles include news cards, testimonials, program cards, activities/facilities, staff, pricing, FAQs, jobs and documents. The [authenticated collection appendix](cms-inventory.md) supplies exact collection identities, field types and total counts, plus a page-use register. The per-section rows below retain the original public HTML evidence: “collection unknown” means that the HTML wrapper itself does not identify its Designer binding, not that its schema is missing.
 
 ## Live-site defects and checks still needed
 
