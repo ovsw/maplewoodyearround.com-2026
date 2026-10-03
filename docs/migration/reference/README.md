@@ -30,8 +30,9 @@ Use the animation descriptions in `../inventory.md` to check the functional
 scroll states separately. A missing live image is recorded as source
 evidence, not silently replaced. These captures do not approve the new site.
 
-`states/` contains extra home page viewport images at the start, middle and
-end of the video zoom and image/text scroll sections, plus the bus section.
+`states/` contains extra viewport images of the home video zoom, image/text
+scroll panels, bus map and year-round image. It also records the School Year
+zoom and My Hot Lunchbox step counter at several scroll positions.
 Its manifest records the actual scroll offset for each image. Run
 `pnpm ref:states` to refresh them. These images show the real scroll states
 that the full-page images cannot show together.

@@ -178,38 +178,60 @@ export async function compare(route, origin) {
   console.log(path.join(output, 'index.html'));
 }
 
-export async function captureHomeStates() {
+export async function captureScrollStates() {
   const browser = await launchBrowser();
   const states = [];
   try {
-    for (const viewport of viewports) {
-      const context = await browser.newContext({viewport, deviceScaleFactor: 1});
-      const page = await context.newPage();
-      await page.goto(liveOrigin, {waitUntil: 'domcontentloaded'});
-      await settlePage(page);
-      const sections = [
+    const pages = [
+      {route: '/', name: 'home', sections: [
         {name: 'video-zoom', selector: '.section_header83', fractions: [0, 0.5, 1]},
         {name: 'image-text', selector: '.section_layout515', fractions: [0, 1 / 3, 2 / 3, 1]},
         {name: 'bus', selector: '.section_transportation_contact14', fractions: [0, 1]},
-      ];
-      for (const section of sections) {
-        const box = await page.locator(section.selector).evaluate((element) => ({
-          top: element.getBoundingClientRect().top + window.scrollY,
-          height: element.getBoundingClientRect().height,
-        }));
-        for (const [index, fraction] of section.fractions.entries()) {
-          const scrollY = Math.round(box.top + Math.max(0, box.height - viewport.height) * fraction);
-          await page.evaluate((top) => window.scrollTo(0, top), scrollY);
-          await page.waitForTimeout(1800);
-          const file = `states/home-${section.name}-${index + 1}-${viewport.width}.png`;
-          await mkdir(path.join(referenceDir, 'states'), {recursive: true});
-          await page.screenshot({path: path.join(referenceDir, file), animations: 'disabled'});
-          const actualScrollY = await page.evaluate(() => window.scrollY);
-          states.push({path: '/', file, section: section.selector, fraction, scrollY: actualScrollY, viewport, capturedAt: new Date().toISOString()});
-          console.log(file);
+        {name: 'year-round', selector: '.section_layout412', viewportOffsets: [-0.9, -0.4, 0]},
+      ]},
+      {route: '/school-year', name: 'school-year', sections: [
+        {name: 'video-zoom', selector: '.section_header83', fractions: [0, 0.5, 1]},
+      ]},
+      {route: '/summer-camp/my-hot-lunchbox', name: 'hot-lunch', sections: [
+        {name: 'steps', selector: '.layout486_component', fractions: [0, 0.3, 0.6, 1]},
+      ]},
+    ];
+    for (const {route, name, sections} of pages) {
+      for (const viewport of viewports) {
+        const context = await browser.newContext({viewport, deviceScaleFactor: 1});
+        const page = await context.newPage();
+        await page.goto(`${liveOrigin}${route}`, {waitUntil: 'domcontentloaded'});
+        await settlePage(page);
+        for (const section of sections) {
+          if (section.viewportOffsets) {
+            // A one-time entrance animation must be captured before its first
+            // trigger. Reload so the earlier lazy-load pass has not fired it.
+            await page.reload({waitUntil: 'domcontentloaded'});
+            await page.waitForFunction(() => document.fonts.status === 'loaded');
+            await page.waitForTimeout(1200);
+          }
+          const box = await page.locator(section.selector).evaluate((element) => ({
+            top: element.getBoundingClientRect().top + window.scrollY,
+            height: element.getBoundingClientRect().height,
+          }));
+          for (const [index, position] of (section.fractions ?? section.viewportOffsets).entries()) {
+            const scrollY = Math.round(box.top + (section.viewportOffsets
+              ? viewport.height * position
+              : Math.max(0, box.height - viewport.height) * position));
+            await page.evaluate((top) => window.scrollTo(0, top), scrollY);
+            await page.waitForTimeout(1800);
+            const file = `states/${name}-${section.name}-${index + 1}-${viewport.width}.png`;
+            await mkdir(path.join(referenceDir, 'states'), {recursive: true});
+            await page.screenshot({path: path.join(referenceDir, file), animations: 'disabled'});
+            const actualScrollY = await page.evaluate(() => window.scrollY);
+            states.push({path: route, file, section: section.selector, position,
+              positionUnit: section.viewportOffsets ? 'viewport offset before section' : 'section scroll fraction',
+              scrollY: actualScrollY, viewport, capturedAt: new Date().toISOString()});
+            console.log(file);
+          }
         }
+        await context.close();
       }
-      await context.close();
     }
     await writeFile(path.join(referenceDir, 'states/manifest.json'), `${JSON.stringify({source: liveOrigin, method: 'Real viewport captures at actual scroll offsets; no layout or opacity changes.', states}, null, 2)}\n`);
   } finally {
@@ -225,7 +247,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       if (pathIndex !== -1 && !process.argv[pathIndex + 1]) throw new Error('--path needs a page path.');
       await captureReferences(process.argv.includes('--resume'), pathIndex === -1 ? undefined : process.argv[pathIndex + 1]);
     }
-    else if (mode === 'states') await captureHomeStates();
+    else if (mode === 'states') await captureScrollStates();
     else if (mode === 'compare') await compare(route, process.env.REF_BASE_URL);
     else throw new Error('Use pnpm ref:capture or pnpm ref:compare <path>.');
   } catch (error) {
