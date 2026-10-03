@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "sh",
+      "args": ["-c", "cd frontend && exec npx -y shadcn@4.16.1 mcp"]
+    },
+    "sanity": {
+      "type": "http",
+      "url": "https://mcp.sanity.io"
+    }
+  }
+}

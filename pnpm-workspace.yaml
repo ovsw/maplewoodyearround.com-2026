@@ -1,0 +1,18 @@
+packages:
+  - "studio"
+  - "frontend"
+
+strictDepBuilds: true
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  # Verified official release of sanity-io/plugins#2014.
+  - sanity-plugin-media@6.3.0
+blockExoticSubdeps: true
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+
+patchedDependencies:
+  sanity-plugin-media@6.3.0: patches/sanity-plugin-media@6.3.0.patch

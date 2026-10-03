@@ -1,0 +1,7 @@
+.claude/worktrees/
+**/node_modules/
+**/.next/
+**/.sanity/
+**/dist/
+**/build/
+backups/
