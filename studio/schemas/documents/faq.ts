@@ -12,7 +12,12 @@ export default defineType({
   fields: [
     slugField,
     programField,
-    referencesField("categories", "Categories", "faqCategory", "Every topic this question appears under. Select all that apply."),
+    referencesField(
+      "categories",
+      "Categories",
+      "faqCategory",
+      "Every topic this question appears under. Select all that apply.",
+    ),
     defineField({
       name: "title",
       type: "string",
@@ -34,7 +39,9 @@ export default defineType({
       description: "The topic this question appears under on the FAQ hub.",
       hidden: true,
       readOnly: true,
-      deprecated: { reason: "Use Categories. The importer keeps every source category." },
+      deprecated: {
+        reason: "Use Categories. The importer keeps every source category.",
+      },
     }),
     defineField({
       name: "order",

@@ -5,7 +5,10 @@ type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
   | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
 
-type ParentDashboardSectionProps = Extract<PageBlock, { _type: "parentDashboardSection" }> & {
+type ParentDashboardSectionProps = Extract<
+  PageBlock,
+  { _type: "parentDashboardSection" }
+> & {
   dataAttribute?: (path: string) => string | undefined;
 };
 

@@ -1,5 +1,8 @@
 import { groq } from "next-sanity";
-import { contentActionsProjection, contentCardsProjection } from "./shared/maplewood";
+import {
+  contentActionsProjection,
+  contentCardsProjection,
+} from "./shared/maplewood";
 import { imageQuery } from "./shared/image";
 import { richTextContentQuery } from "./shared/rich-text-content";
 

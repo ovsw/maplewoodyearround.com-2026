@@ -5,7 +5,10 @@ type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
   | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
 
-type InstructionStepsProps = Extract<PageBlock, { _type: "instructionSteps" }> & {
+type InstructionStepsProps = Extract<
+  PageBlock,
+  { _type: "instructionSteps" }
+> & {
   dataAttribute?: (path: string) => string | undefined;
 };
 

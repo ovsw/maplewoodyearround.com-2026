@@ -85,6 +85,11 @@ export function isReservedPagePath(value?: string | null) {
   const path = normalizePublicPath(value);
   return Boolean(
     path &&
-    (isApplicationPath(path) || path === "/blog" || path.startsWith("/blog/") || path === "/post" || path.startsWith("/post/") || path.startsWith("/news/")),
+    (isApplicationPath(path) ||
+      path === "/blog" ||
+      path.startsWith("/blog/") ||
+      path === "/post" ||
+      path.startsWith("/post/") ||
+      path.startsWith("/news/")),
   );
 }

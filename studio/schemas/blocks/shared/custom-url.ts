@@ -12,14 +12,23 @@ export default defineType({
   components: { field: InlineObjectField },
   fields: [
     defineField({
-      name: "file", title: "File", type: "file",
-      description: "Upload a document to link to it. Replace the asset here when it changes.",
+      name: "file",
+      title: "File",
+      type: "file",
+      description:
+        "Upload a document to link to it. Replace the asset here when it changes.",
       hidden: ({ parent }) => parent?.type !== "file",
-      validation: (rule) => rule.custom((value, context) =>
-        (context.parent as { type?: string } | undefined)?.type === "file" && !value?.asset?._ref
-          ? "Upload a file" : true),
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          (context.parent as { type?: string } | undefined)?.type === "file" &&
+          !value?.asset?._ref
+            ? "Upload a file"
+            : true,
+        ),
     }),
     defineField({
+      description:
+        "Use a full website URL, an email or phone link, or a path on this site.",
       name: "external",
       title: "External URL",
       type: "string",
@@ -27,10 +36,13 @@ export default defineType({
       validation: (rule) =>
         rule.custom((value, context) => {
           const parent = context.parent as { type?: string } | undefined;
-          return parent?.type === "external" ? validateDestinationUrl(value) : true;
+          return parent?.type === "external"
+            ? validateDestinationUrl(value)
+            : true;
         }),
     }),
     defineField({
+      description: "Select the page this link opens.",
       name: "internal",
       title: "Internal Page",
       type: "reference",
@@ -51,6 +63,7 @@ export default defineType({
         }),
     }),
     defineField({
+      description: "Choose the kind of destination.",
       name: "type",
       type: "string",
       initialValue: "internal",
@@ -66,12 +79,14 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "Open the link in a new browser tab.",
       name: "openInNewTab",
       title: "Open in new tab",
       type: "boolean",
       initialValue: false,
     }),
     defineField({
+      description: "The address this link opens.",
       name: "href",
       type: "string",
       hidden: true,

@@ -14,7 +14,10 @@ export type CategoryReference = {
   slug?: { current?: string | null } | null;
 };
 
-export type BlogPost = Omit<NonNullable<LATEST_POST_QUERY_RESULT>, "category"> & {
+export type BlogPost = Omit<
+  NonNullable<LATEST_POST_QUERY_RESULT>,
+  "category"
+> & {
   category?: CategoryReference | null;
 };
 

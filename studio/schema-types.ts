@@ -3,14 +3,30 @@ import staffMember from "./schemas/documents/staff-member";
 import activity from "./schemas/documents/activity";
 import facility from "./schemas/documents/facility";
 import programOffering from "./schemas/documents/program-offering";
-import { activityCategory, facilityCategory, grade, season } from "./schemas/documents/maplewood-categories";
+import {
+  activityCategory,
+  facilityCategory,
+  grade,
+  season,
+} from "./schemas/documents/maplewood-categories";
 import campGroup from "./schemas/documents/camp-group";
 import sampleSchedule from "./schemas/documents/sample-schedule";
 import jobOpportunity from "./schemas/documents/job-opportunity";
-import { playgroundCharacter, playgroundGuest, playgroundEvent, playgroundCalendar } from "./schemas/documents/playground";
-import parentDashboard, { dashboardCard, summerDocuments } from "./schemas/documents/parent-dashboard";
+import {
+  playgroundCharacter,
+  playgroundGuest,
+  playgroundEvent,
+  playgroundCalendar,
+} from "./schemas/documents/playground";
+import parentDashboard, {
+  dashboardCard,
+  summerDocuments,
+} from "./schemas/documents/parent-dashboard";
 import contentDestination from "./schemas/blocks/shared/content-destination";
-import { contentAction, contentCard } from "./schemas/blocks/shared/maplewood-fields";
+import {
+  contentAction,
+  contentCard,
+} from "./schemas/blocks/shared/maplewood-fields";
 import page from "./schemas/documents/page";
 import post from "./schemas/documents/post";
 import author from "./schemas/documents/author";
@@ -21,9 +37,7 @@ import testimonial from "./schemas/documents/testimonial";
 import navigation, {
   navigationSchemaTypes,
 } from "./schemas/documents/navigation";
-import settings, {
-  settingsSchemaTypes,
-} from "./schemas/documents/settings";
+import settings, { settingsSchemaTypes } from "./schemas/documents/settings";
 import teamMember from "./schemas/documents/team-member";
 import blogIndex from "./schemas/documents/blog-index";
 import blogPostSettings from "./schemas/documents/blog-post-settings";
@@ -92,11 +106,27 @@ import tabbedHero from "./schemas/blocks/tabbed-hero";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
-  staffMember, activity, facility, programOffering, activityCategory,
-  facilityCategory, grade, season, campGroup, sampleSchedule, jobOpportunity,
-  playgroundCharacter, playgroundGuest, playgroundEvent, playgroundCalendar,
-  parentDashboard, dashboardCard, summerDocuments, contentDestination,
-  contentAction, contentCard,
+  staffMember,
+  activity,
+  facility,
+  programOffering,
+  activityCategory,
+  facilityCategory,
+  grade,
+  season,
+  campGroup,
+  sampleSchedule,
+  jobOpportunity,
+  playgroundCharacter,
+  playgroundGuest,
+  playgroundEvent,
+  playgroundCalendar,
+  parentDashboard,
+  dashboardCard,
+  summerDocuments,
+  contentDestination,
+  contentAction,
+  contentCard,
   // documents
   page,
   post,

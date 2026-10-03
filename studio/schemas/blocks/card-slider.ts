@@ -1,5 +1,11 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, collectionSourceField, collectionFilterFields } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  collectionSourceField,
+  collectionFilterFields,
+} from "./shared/maplewood-fields";
 
 export default defineType({
   name: "cardSlider",
@@ -7,11 +13,16 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, collectionSourceField, ...collectionFilterFields,
+    sectionTitleField,
+    sectionDescriptionField,
+    collectionSourceField,
+    ...collectionFilterFields,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Collection card slider", subtitle: "Collection card slider" }),
+    prepare: ({ title }) => ({
+      title: title || "Collection card slider",
+      subtitle: "Collection card slider",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

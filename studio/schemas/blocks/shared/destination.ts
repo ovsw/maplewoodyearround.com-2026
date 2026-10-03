@@ -35,7 +35,8 @@ export function defineDestinationType({
         name: "kind",
         title: "Links to",
         type: "string",
-        description: "Choose a website page, another website, or an uploaded file.",
+        description:
+          "Choose a website page, another website, or an uploaded file.",
         initialValue: "internal",
         options: {
           layout: "radio",
@@ -74,7 +75,8 @@ export function defineDestinationType({
         name: "external",
         title: externalFieldTitle,
         type: "string",
-        description: "Use a full URL, public email or phone link, or a path on this site.",
+        description:
+          "Use a full URL, public email or phone link, or a path on this site.",
         hidden: ({ parent }) => parent?.kind !== "external",
         validation: (rule) =>
           rule.custom((value, context) => {
@@ -88,12 +90,19 @@ export function defineDestinationType({
           }),
       }),
       defineField({
-        name: "file", title: "File", type: "file",
-        description: "Upload the document visitors download. Replace it here when it changes.",
+        name: "file",
+        title: "File",
+        type: "file",
+        description:
+          "Upload the document visitors download. Replace it here when it changes.",
         hidden: ({ parent }) => parent?.kind !== "file",
-        validation: (rule) => rule.custom((value, context) =>
-          (context.parent as { kind?: string } | undefined)?.kind === "file" && !value?.asset?._ref
-            ? "Upload a file" : true),
+        validation: (rule) =>
+          rule.custom((value, context) =>
+            (context.parent as { kind?: string } | undefined)?.kind ===
+              "file" && !value?.asset?._ref
+              ? "Upload a file"
+              : true,
+          ),
       }),
       defineField({
         name: "openInNewTab",

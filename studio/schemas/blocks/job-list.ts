@@ -1,5 +1,10 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, programFilterField } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  programFilterField,
+} from "./shared/maplewood-fields";
 
 export default defineType({
   name: "jobList",
@@ -7,11 +12,15 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, programFilterField,
+    sectionTitleField,
+    sectionDescriptionField,
+    programFilterField,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Job opportunities", subtitle: "Job opportunities" }),
+    prepare: ({ title }) => ({
+      title: title || "Job opportunities",
+      subtitle: "Job opportunities",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

@@ -1,5 +1,10 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, sectionActionsField } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  sectionActionsField,
+} from "./shared/maplewood-fields";
 import { imageField } from "../documents/maplewood-fields";
 
 export default defineType({
@@ -8,11 +13,16 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, imageField(), sectionActionsField,
+    sectionTitleField,
+    sectionDescriptionField,
+    imageField(),
+    sectionActionsField,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Image width reveal", subtitle: "Image width reveal" }),
+    prepare: ({ title }) => ({
+      title: title || "Image width reveal",
+      subtitle: "Image width reveal",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

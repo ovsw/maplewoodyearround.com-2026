@@ -78,13 +78,22 @@ const pageBuilderPreviewBlockTypes = new Set<PageBuilderBlockType>([
 ]);
 
 export function getPageBuilderPreviewImageUrl(schemaTypeName: string) {
-  return pageBuilderPreviewBlockTypes.has(schemaTypeName as PageBuilderBlockType)
+  return pageBuilderPreviewBlockTypes.has(
+    schemaTypeName as PageBuilderBlockType,
+  )
     ? `/static/images/preview/${schemaTypeName}.jpg`
     : undefined;
 }
 
 /** Every block type that opens a page. One per page, always first. */
-export const heroBlockTypes = new Set(["hero", "homeHero", "innerHero", "videoHero", "tabbedHero", "directorIntro"]);
+export const heroBlockTypes = new Set([
+  "hero",
+  "homeHero",
+  "innerHero",
+  "videoHero",
+  "tabbedHero",
+  "directorIntro",
+]);
 
 /**
  * Every block type that lists FAQs. One per page, hub or curated, so the
@@ -104,7 +113,8 @@ export function validateBlocks(
     return "The Hero section must be the first section";
   }
   const faqCount =
-    blocks?.filter((block) => faqBlockTypes.has(block?._type ?? "")).length ?? 0;
+    blocks?.filter((block) => faqBlockTypes.has(block?._type ?? "")).length ??
+    0;
   if (faqCount > 1) return "Add no more than one FAQ section";
   const teamCount =
     blocks?.filter((block) => block?._type === "teamMembers").length ?? 0;
@@ -196,7 +206,12 @@ function createBlocksField(
         views: [
           { name: "list" as const },
           ...(pageBuilderPreviewBlockTypes.size
-            ? [{ name: "grid" as const, previewImageUrl: getPageBuilderPreviewImageUrl }]
+            ? [
+                {
+                  name: "grid" as const,
+                  previewImageUrl: getPageBuilderPreviewImageUrl,
+                },
+              ]
             : []),
         ],
       },

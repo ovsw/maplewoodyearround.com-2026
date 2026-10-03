@@ -1,5 +1,10 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, sectionActionsField } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  sectionActionsField,
+} from "./shared/maplewood-fields";
 
 export default defineType({
   name: "contactDetailsSection",
@@ -7,11 +12,15 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, sectionActionsField,
+    sectionTitleField,
+    sectionDescriptionField,
+    sectionActionsField,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Contact details", subtitle: "Contact details" }),
+    prepare: ({ title }) => ({
+      title: title || "Contact details",
+      subtitle: "Contact details",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

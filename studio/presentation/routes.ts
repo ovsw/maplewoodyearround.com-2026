@@ -46,7 +46,8 @@ export function getPresentationPath(
 ) {
   if (documentType === "blogIndex") return "/news";
   if (documentType === "parentDashboard") return "/parent-dashboard";
-  if (documentType === "summerDocuments") return "/summer-camp/summer-group-schedules";
+  if (documentType === "summerDocuments")
+    return "/summer-camp/summer-group-schedules";
   if (documentType === "homePage") return "/";
   if (!isPresentationDocumentType(documentType) || !slug?.trim()) return null;
   if (documentType === "page") return pagePath(slug);
@@ -55,9 +56,6 @@ export function getPresentationPath(
   return null;
 }
 
-export function getDocumentSlug(
-  draft?: unknown,
-  published?: unknown,
-) {
+export function getDocumentSlug(draft?: unknown, published?: unknown) {
   return draft ? readSlug(draft) : readSlug(published);
 }

@@ -1,5 +1,12 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, sectionActionsField, contentCardsField, embedUrlField } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  sectionActionsField,
+  contentCardsField,
+  embedUrlField,
+} from "./shared/maplewood-fields";
 
 export default defineType({
   name: "busMap",
@@ -7,11 +14,17 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, embedUrlField, contentCardsField, sectionActionsField,
+    sectionTitleField,
+    sectionDescriptionField,
+    embedUrlField,
+    contentCardsField,
+    sectionActionsField,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Bus map and benefits", subtitle: "Bus map and benefits" }),
+    prepare: ({ title }) => ({
+      title: title || "Bus map and benefits",
+      subtitle: "Bus map and benefits",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

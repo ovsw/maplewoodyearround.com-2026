@@ -1,5 +1,10 @@
+import { sectionBackgroundField } from "./shared/section-background";
 import { defineType } from "sanity";
-import { sectionTitleField, sectionDescriptionField, contentCardsField } from "./shared/maplewood-fields";
+import {
+  sectionTitleField,
+  sectionDescriptionField,
+  contentCardsField,
+} from "./shared/maplewood-fields";
 
 export default defineType({
   name: "scrollPanels",
@@ -7,11 +12,15 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
-    sectionTitleField, sectionDescriptionField, contentCardsField,
+    sectionTitleField,
+    sectionDescriptionField,
+    contentCardsField,
   ],
   preview: {
     select: { title: "title" },
-    prepare: ({ title }) => ({ title: title || "Scroll image and text panels", subtitle: "Scroll image and text panels" }),
+    prepare: ({ title }) => ({
+      title: title || "Scroll image and text panels",
+      subtitle: "Scroll image and text panels",
+    }),
   },
 });
-import { sectionBackgroundField } from "./shared/section-background";

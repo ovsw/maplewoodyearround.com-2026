@@ -1,7 +1,4 @@
-import {
-  defineLocations,
-  defineDocuments,
-} from "sanity/presentation";
+import { defineLocations, defineDocuments } from "sanity/presentation";
 import type { PresentationPluginOptions } from "sanity/presentation";
 import { ROOT_SLUG_FILTER } from "../../shared/root-slug-filter.ts";
 import {
@@ -16,14 +13,29 @@ export const resolve: PresentationPluginOptions["resolve"] = {
   locations: {
     parentDashboard: defineLocations({
       select: { title: "title" },
-      resolve: (doc) => ({ locations: [{ title: doc?.title || "Parent dashboard", href: "/parent-dashboard" }] }),
+      resolve: (doc) => ({
+        locations: [
+          {
+            title: doc?.title || "Parent dashboard",
+            href: "/parent-dashboard",
+          },
+        ],
+      }),
     }),
     summerDocuments: defineLocations({
       select: { title: "seasonLabel" },
-      resolve: (doc) => ({ locations: [
-        { title: (doc?.title || "Summer") + " group schedules", href: "/summer-camp/summer-group-schedules" },
-        { title: (doc?.title || "Summer") + " welcome letters", href: "/summer-camp/summer-camp-welcome-letters" },
-      ] }),
+      resolve: (doc) => ({
+        locations: [
+          {
+            title: (doc?.title || "Summer") + " group schedules",
+            href: "/summer-camp/summer-group-schedules",
+          },
+          {
+            title: (doc?.title || "Summer") + " welcome letters",
+            href: "/summer-camp/summer-camp-welcome-letters",
+          },
+        ],
+      }),
     }),
     page: defineLocations({
       select: {
@@ -33,9 +45,7 @@ export const resolve: PresentationPluginOptions["resolve"] = {
       resolve: (doc) => {
         const href = resolveContentPath(doc?.slug);
         return {
-          locations: href
-            ? [{ title: doc?.title || "Untitled", href }]
-            : [],
+          locations: href ? [{ title: doc?.title || "Untitled", href }] : [],
         };
       },
     }),

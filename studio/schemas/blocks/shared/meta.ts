@@ -5,6 +5,7 @@ import { SeoDescriptionInput } from "../../inputs/seo-description-input";
 import { SeoTitleInput } from "../../inputs/seo-title-input";
 
 export default defineField({
+  description: "Optional search result and sharing settings for this page.",
   name: "meta",
   title: "Meta",
   type: "object",
@@ -14,8 +15,7 @@ export default defineField({
       name: "title",
       type: "string",
       title: "SEO title override",
-      description:
-        `Optional. Titles without a pipe get “| ${studioSiteName}” automatically. Titles containing a pipe are used as written.`,
+      description: `Optional. Titles without a pipe get “| ${studioSiteName}” automatically. Titles containing a pipe are used as written.`,
       components: { input: SeoTitleInput },
       validation: (rule) =>
         rule
@@ -43,6 +43,8 @@ export default defineField({
       components: { input: SeoDescriptionInput },
     }),
     defineField({
+      description:
+        "Ask search engines to keep this page out of search results.",
       name: "noindex",
       title: "No Index",
       type: "boolean",

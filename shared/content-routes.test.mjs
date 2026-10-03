@@ -21,10 +21,25 @@ test("resolves every routed document type without an ending slash", () => {
 });
 
 test("rejects missing and malformed routed slugs", () => {
-  for (const slug of [undefined, "", "/", "Uppercase", "under_score", "two//segments", "two/Bad"]) {
+  for (const slug of [
+    undefined,
+    "",
+    "/",
+    "Uppercase",
+    "under_score",
+    "two//segments",
+    "two/Bad",
+  ]) {
     assert.equal(pagePath(slug), null, String(slug));
   }
-  for (const slug of [undefined, "", "/", "two/segments", "Uppercase", "under_score"]) {
+  for (const slug of [
+    undefined,
+    "",
+    "/",
+    "two/segments",
+    "Uppercase",
+    "under_score",
+  ]) {
     assert.equal(postPath(slug), null, String(slug));
     assert.equal(categoryPath(slug), null, String(slug));
   }

@@ -5,7 +5,10 @@ type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
   | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
 
-type SummerDocumentListProps = Extract<PageBlock, { _type: "summerDocumentList" }> & {
+type SummerDocumentListProps = Extract<
+  PageBlock,
+  { _type: "summerDocumentList" }
+> & {
   dataAttribute?: (path: string) => string | undefined;
 };
 

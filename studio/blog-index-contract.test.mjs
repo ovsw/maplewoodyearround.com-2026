@@ -21,13 +21,21 @@ test("the shared blocks field exactly matches its authoritative inventory", () =
     blocksField.of.filter(({ hidden }) => !hidden).map(({ type }) => type),
     [...pageBuilderBlockTypes],
   );
-  assert.equal(blocksField.of.some(({ hidden }) => hidden), false);
-  assert.equal(new Set(pageBuilderBlockTypes).size, pageBuilderBlockTypes.length);
+  assert.equal(
+    blocksField.of.some(({ hidden }) => hidden),
+    false,
+  );
+  assert.equal(
+    new Set(pageBuilderBlockTypes).size,
+    pageBuilderBlockTypes.length,
+  );
 });
 
 test("the homepage alone offers the homepage hero", () => {
   assert.deepEqual(
-    homePageBlocksField.of.filter(({ hidden }) => !hidden).map(({ type }) => type),
+    homePageBlocksField.of
+      .filter(({ hidden }) => !hidden)
+      .map(({ type }) => type),
     [...homePagePageBuilderBlockTypes],
   );
   assert.equal(homePagePageBuilderBlockTypes.includes("homeHero"), true);

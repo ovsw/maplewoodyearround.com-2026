@@ -8,8 +8,7 @@ export default defineType({
   title: "Team Members",
   type: "object",
   icon: UsersRound,
-  description:
-    "A staff section selected by program and profile group.",
+  description: "A staff section selected by program and profile group.",
   fields: [
     sectionBackgroundField,
     defineField({
@@ -58,9 +57,26 @@ export default defineType({
       ],
     }),
     programFilterField,
-    defineField({ name: "profileGroup", title: "Profile group", type: "string", description: "Choose the staff roster or authored leadership profiles.", initialValue: "roster", options: { list: ["roster", "leadership"] } }),
-    defineField({ name: "preschoolOnly", title: "Preschool teachers only", type: "boolean", description: "Only show preschool teachers." }),
-    defineField({ name: "tourGuidesOnly", title: "Tour guides only", type: "boolean", description: "Only show School Year tour guides." }),
+    defineField({
+      name: "profileGroup",
+      title: "Profile group",
+      type: "string",
+      description: "Choose the staff roster or authored leadership profiles.",
+      initialValue: "roster",
+      options: { list: ["roster", "leadership"] },
+    }),
+    defineField({
+      name: "preschoolOnly",
+      title: "Preschool teachers only",
+      type: "boolean",
+      description: "Only show preschool teachers.",
+    }),
+    defineField({
+      name: "tourGuidesOnly",
+      title: "Tour guides only",
+      type: "boolean",
+      description: "Only show School Year tour guides.",
+    }),
   ],
   preview: {
     select: {

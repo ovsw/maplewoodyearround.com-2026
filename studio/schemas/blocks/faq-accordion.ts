@@ -20,8 +20,7 @@ export default defineType({
   title: "FAQ Section",
   type: "object",
   icon: MessageCircle,
-  description:
-    "Intro beside an accordion of selected FAQ documents.",
+  description: "Intro beside an accordion of selected FAQ documents.",
   initialValue: {
     background: "cream",
     eyebrow: "FAQ",
@@ -49,7 +48,14 @@ export default defineType({
       description: "Optional. One or two sentences under the heading.",
     }),
     programFilterField,
-    defineField({ name: "category", title: "Category filter", type: "reference", to: [{ type: "faqCategory" }], description: "Show all questions in this category. Leave empty for all categories." }),
+    defineField({
+      name: "category",
+      title: "Category filter",
+      type: "reference",
+      to: [{ type: "faqCategory" }],
+      description:
+        "Show all questions in this category. Leave empty for all categories.",
+    }),
   ],
   preview: {
     select: { title: "title" },

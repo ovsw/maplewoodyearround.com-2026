@@ -178,100 +178,104 @@ export default function Blocks({
   // A stored block whose type has no renderer (a removed section type) is
   // skipped. Drop it before resolving boundaries so its neighbours meet
   // as if it were not there and the trait table is never read for it.
-  const sections = (blocks ?? []).filter((block) => block._type in componentMap);
+  const sections = (blocks ?? []).filter(
+    (block) => block._type in componentMap,
+  );
   const boundaries = resolveSectionBoundaries(sections);
   const bands = resolveSectionBands(boundaries);
 
   const wrappers = sections.map((block, index) => {
-        const Component = componentMap[block._type] as React.ComponentType<
-          Block & BlockEditingProps & BlockPageDataProps
-        >;
+    const Component = componentMap[block._type] as React.ComponentType<
+      Block & BlockEditingProps & BlockPageDataProps
+    >;
 
-        const blockPath = `blocks[_key=="${block._key}"]`;
-        const dataSanity = stega
-          ? createDataAttribute({
-              baseUrl: process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3333",
-              dataset,
-              id: documentId,
-              path: blockPath,
-              projectId,
-              type: documentType,
-            }).toString()
-          : undefined;
-        const dataAttribute = stega
-          ? (path: string) =>
-              createDataAttribute({
-                baseUrl: process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3333",
-                dataset,
-                id: documentId,
-                path: `${blockPath}.${path}`,
-                projectId,
-                type: documentType,
-              }).toString()
-          : undefined;
-        const boundary = boundaries[index];
-        // Fixed-background sections (heroes, night sections) render their own
-        // colour and the query does not project `background` for them; every
-        // other section receives the resolved editor background.
-        const themedBlock: Block =
-          hasEditorBackground(block) && isEditorBackground(boundary.background)
-            ? { ...block, background: boundary.background }
-            : block;
-        const editingProps: BlockEditingProps =
-          block._type === "teamMembers"
-              ? {
-                  dataAttribute,
-                  memberDataAttribute: stega
-                    ? (memberId: string, path: string) =>
-                        createDataAttribute({
-                          baseUrl:
-                            process.env.NEXT_PUBLIC_STUDIO_URL ||
-                            "http://localhost:3333",
-                          dataset,
-                          id: memberId,
-                          path,
-                          projectId,
-                          type: "staffMember",
-                        }).toString()
-                    : undefined,
-                }
-              : block._type === "quoteWall"
-                  ? {
-                      dataAttribute,
-                      testimonialDataAttribute: stega
-                        ? (testimonialId: string, path: string) =>
-                            createDataAttribute({
-                              baseUrl:
-                                process.env.NEXT_PUBLIC_STUDIO_URL ||
-                                "http://localhost:3333",
-                              dataset,
-                              id: testimonialId,
-                              path,
-                              projectId,
-                              type: "testimonial",
-                            }).toString()
-                        : undefined,
-                    }
-                : serverFieldEditingBlockTypes.has(block._type)
-              ? { dataAttribute }
-              : {};
-        const pageDataProps: BlockPageDataProps =
-          block._type === "latestArticles" && blogListing ? { blogListing } : {};
+    const blockPath = `blocks[_key=="${block._key}"]`;
+    const dataSanity = stega
+      ? createDataAttribute({
+          baseUrl:
+            process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3333",
+          dataset,
+          id: documentId,
+          path: blockPath,
+          projectId,
+          type: documentType,
+        }).toString()
+      : undefined;
+    const dataAttribute = stega
+      ? (path: string) =>
+          createDataAttribute({
+            baseUrl:
+              process.env.NEXT_PUBLIC_STUDIO_URL || "http://localhost:3333",
+            dataset,
+            id: documentId,
+            path: `${blockPath}.${path}`,
+            projectId,
+            type: documentType,
+          }).toString()
+      : undefined;
+    const boundary = boundaries[index];
+    // Fixed-background sections (heroes, night sections) render their own
+    // colour and the query does not project `background` for them; every
+    // other section receives the resolved editor background.
+    const themedBlock: Block =
+      hasEditorBackground(block) && isEditorBackground(boundary.background)
+        ? { ...block, background: boundary.background }
+        : block;
+    const editingProps: BlockEditingProps =
+      block._type === "teamMembers"
+        ? {
+            dataAttribute,
+            memberDataAttribute: stega
+              ? (memberId: string, path: string) =>
+                  createDataAttribute({
+                    baseUrl:
+                      process.env.NEXT_PUBLIC_STUDIO_URL ||
+                      "http://localhost:3333",
+                    dataset,
+                    id: memberId,
+                    path,
+                    projectId,
+                    type: "staffMember",
+                  }).toString()
+              : undefined,
+          }
+        : block._type === "quoteWall"
+          ? {
+              dataAttribute,
+              testimonialDataAttribute: stega
+                ? (testimonialId: string, path: string) =>
+                    createDataAttribute({
+                      baseUrl:
+                        process.env.NEXT_PUBLIC_STUDIO_URL ||
+                        "http://localhost:3333",
+                      dataset,
+                      id: testimonialId,
+                      path,
+                      projectId,
+                      type: "testimonial",
+                    }).toString()
+                : undefined,
+            }
+          : serverFieldEditingBlockTypes.has(block._type)
+            ? { dataAttribute }
+            : {};
+    const pageDataProps: BlockPageDataProps =
+      block._type === "latestArticles" && blogListing ? { blogListing } : {};
 
-        return (
-          <div
-            data-sanity={dataSanity}
-            data-seam-top={boundary.seamTop ? "" : undefined}
-            data-seam-bottom={boundary.seamBottom ? "" : undefined}
-            data-mirror={boundary.mirror ? "" : undefined}
-            data-tuck={boundary.tuck ? "" : undefined}
-            data-tuck-below={boundary.tuckBelow ? "" : undefined}
-            key={block._key}
-          >
-            <Component {...themedBlock} {...editingProps} {...pageDataProps} />
-          </div>
-        );
-      });
+    return (
+      <div
+        data-sanity={dataSanity}
+        data-seam-top={boundary.seamTop ? "" : undefined}
+        data-seam-bottom={boundary.seamBottom ? "" : undefined}
+        data-mirror={boundary.mirror ? "" : undefined}
+        data-tuck={boundary.tuck ? "" : undefined}
+        data-tuck-below={boundary.tuckBelow ? "" : undefined}
+        key={block._key}
+      >
+        <Component {...themedBlock} {...editingProps} {...pageDataProps} />
+      </div>
+    );
+  });
 
   // A band is a run of sections joined by seams: one continuous surface.
   // The stylesheet paints the surface texture on the band, so the texture

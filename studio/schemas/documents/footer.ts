@@ -23,11 +23,13 @@ const footerLink = defineType({
   icon: Link,
   fields: [
     defineField({
+      description: "The text visitors see on the link.",
       name: "label",
       type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "The page, website or file this link opens.",
       name: "destination",
       type: "footerDestination",
       validation: (rule) => rule.required(),
@@ -43,6 +45,8 @@ const footerLogo = defineType({
   icon: ImageIcon,
   fields: [
     defineField({
+      description:
+        "The image shown with this item. Set the crop and focal point.",
       name: "image",
       type: "image",
       options: { hotspot: true },
@@ -57,7 +61,8 @@ const footerLogo = defineType({
     defineField({
       name: "destination",
       type: "footerDestination",
-      description: "Optional link. Leave empty for an unlinked accreditation mark.",
+      description:
+        "Optional link. Leave empty for an unlinked accreditation mark.",
     }),
   ],
   preview: { select: { media: "image", title: "alt" } },
@@ -76,6 +81,7 @@ const footerContactLink = defineType({
   icon: MapPin,
   fields: [
     defineField({
+      description: "Choose the symbol shown beside this item.",
       name: "icon",
       type: "string",
       options: {
@@ -92,6 +98,7 @@ const footerContactLink = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "The page, website or file this link opens.",
       name: "destination",
       type: "footerDestination",
       validation: (rule) => rule.required(),
@@ -113,11 +120,13 @@ const footerColumn = defineType({
   icon: Columns3,
   fields: [
     defineField({
+      description: "The heading shown above these links.",
       name: "heading",
       type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "Add and order the links in this group.",
       name: "links",
       type: "array",
       of: [defineArrayMember({ type: "footerLink" })],
@@ -145,16 +154,41 @@ const footer = defineType({
   ],
   fields: [
     defineField({
-      name: "newsletter", title: "Newsletter", type: "object", group: "content",
-      description: "The heading, prompt and status messages for the newsletter form.",
+      name: "newsletter",
+      title: "Newsletter",
+      type: "object",
+      group: "content",
+      description:
+        "The heading, prompt and status messages for the newsletter form.",
       fields: [
-        defineField({ name: "heading", title: "Heading", type: "string", description: "The title above the signup form." }),
-        defineField({ name: "description", title: "Introduction", type: "text", description: "The explanation shown with the signup form." }),
-        defineField({ name: "successMessage", title: "Success message", type: "string", description: "Shown after a successful signup." }),
-        defineField({ name: "errorMessage", title: "Error message", type: "string", description: "Shown when the signup cannot be sent." }),
+        defineField({
+          name: "heading",
+          title: "Heading",
+          type: "string",
+          description: "The title above the signup form.",
+        }),
+        defineField({
+          name: "description",
+          title: "Introduction",
+          type: "text",
+          description: "The explanation shown with the signup form.",
+        }),
+        defineField({
+          name: "successMessage",
+          title: "Success message",
+          type: "string",
+          description: "Shown after a successful signup.",
+        }),
+        defineField({
+          name: "errorMessage",
+          title: "Error message",
+          type: "string",
+          description: "Shown when the signup cannot be sent.",
+        }),
       ],
     }),
     defineField({
+      description: "The previous footer introduction, kept for reference.",
       name: "intro",
       title: "Introduction (deprecated)",
       type: "text",
@@ -170,23 +204,27 @@ const footer = defineType({
       title: "Location line",
       type: "string",
       group: "signoff",
-      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
+      description:
+        "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
       name: "heading",
       title: "Closing heading",
       type: "string",
       group: "signoff",
-      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
+      description:
+        "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
       name: "accent",
       title: "Closing emphasis",
       type: "string",
       group: "signoff",
-      description: "Optional source sign-off text. Leave empty when the site footer does not use it.",
+      description:
+        "Optional source sign-off text. Leave empty when the site footer does not use it.",
     }),
     defineField({
+      description: "Add and order the main action links.",
       name: "actions",
       title: "Calls to action",
       type: "array",
@@ -204,6 +242,7 @@ const footer = defineType({
       validation: (rule) => rule.required().min(1).unique(),
     }),
     defineField({
+      description: "Add the public address, phone and email links.",
       name: "contactLinks",
       title: "Contact information",
       type: "array",
@@ -212,6 +251,7 @@ const footer = defineType({
       validation: (rule) => rule.required().min(1).unique(),
     }),
     defineField({
+      description: "Add and order the footer link groups.",
       name: "columns",
       title: "Navigation columns",
       type: "array",
@@ -220,6 +260,7 @@ const footer = defineType({
       validation: (rule) => rule.required().min(1).max(4),
     }),
     defineField({
+      description: "Links to privacy, terms and other legal pages.",
       name: "legalLinks",
       title: "Legal links",
       type: "array",
@@ -228,6 +269,7 @@ const footer = defineType({
       validation: (rule) => rule.unique(),
     }),
     defineField({
+      description: "The first year shown in the copyright notice.",
       name: "copyrightStartYear",
       title: "Copyright start year",
       type: "number",
@@ -235,6 +277,7 @@ const footer = defineType({
       validation: (rule) => rule.required().integer().min(1900),
     }),
     defineField({
+      description: "The organization name and notice shown after the year.",
       name: "copyrightOwner",
       title: "Copyright owner and notice",
       type: "string",
