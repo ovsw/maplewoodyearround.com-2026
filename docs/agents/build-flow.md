@@ -3,6 +3,10 @@
 The work loop and review budget are in `AGENTS.md` and spec issue #1.
 Issue acceptance criteria define the required outcome.
 
+Automatic CodeRabbit reviews are off. `.macroscope/ignore.md` excludes all
+paths, including hidden files, from Macroscope review. These settings preserve
+the spec's single paid review on issue #6.
+
 1. Trace current behavior and ownership before editing. Reuse a fitting
    pattern and keep the change within the claimed issue.
 2. Keep schemas, queries, renderers and stored content consistent.
