@@ -14,6 +14,10 @@ function requiredEnvironmentValue(name) {
 const nextConfig = {
   cacheComponents: true,
   cacheLife: { default: sanity },
+  rewrites() {
+    // Keep Maplewood's public post URLs while reusing the existing renderer.
+    return [{ source: "/post/:slug", destination: "/blog/:slug" }];
+  },
   async redirects() {
     const client = createClient({
       projectId: requiredEnvironmentValue("NEXT_PUBLIC_SANITY_PROJECT_ID"),
