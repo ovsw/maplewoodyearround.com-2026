@@ -66,9 +66,17 @@ export default function RateTable({
               {rowHeading.label}
             </div>
             {valueColumns.map((column) => (
-              <div className={css.rateHeadCell} key={column._key} role="columnheader">
+              <div
+                className={css.rateHeadCell}
+                data-sanity={dataAttribute?.(`columns[_key=="${column._key}"]`)}
+                key={column._key}
+                role="columnheader"
+              >
                 {column.image?.asset?._id ? (
-                  <div className={[css.cardSmall, css.rateImage].join(" ")}>
+                  <div
+                    className={[css.cardSmall, css.rateImage].join(" ")}
+                    data-sanity={dataAttribute?.(`columns[_key=="${column._key}"].image`)}
+                  >
                     <SourceImage image={column.image} sizes="10rem" width={320} />
                   </div>
                 ) : null}
