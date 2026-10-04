@@ -1,6 +1,9 @@
 import { UsersRound } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { programFilterField } from "./shared/maplewood-fields";
+import {
+  programFilterField,
+  sectionActionsField,
+} from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
 export default defineType({
@@ -57,6 +60,19 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: "closingTitle",
+      title: "Closing heading",
+      type: "string",
+      description: 'Optional heading after the list, such as "We\'re hiring!".',
+    }),
+    defineField({
+      name: "closingText",
+      title: "Closing text",
+      type: "text",
+      rows: 2,
+    }),
+    sectionActionsField,
     programFilterField,
     defineField({
       name: "profileGroup",

@@ -6,7 +6,7 @@ import {
   resolveSectionBoundaries,
 } from "@/components/blocks/section-boundaries";
 import { type LivePerspective } from "next-sanity/live";
-import { createDataAttribute } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 import LatestArticles from "@/components/blocks/latest-articles";
 import FaqAccordion from "@/components/blocks/faq-accordion";
 import StoryFeature from "@/components/blocks/story-feature";
@@ -59,6 +59,12 @@ type BlockEditingProps = {
   ) => string | undefined;
   testimonialDataAttribute?: (
     documentId: string,
+    path: string,
+  ) => string | undefined;
+  /** Edit targets on the collection records a section lists, such as facilities. */
+  itemDataAttribute?: (
+    documentId: string,
+    documentType: string,
     path: string,
   ) => string | undefined;
 };
@@ -256,15 +262,34 @@ export default function Blocks({
                     }).toString()
                 : undefined,
             }
-          : serverFieldEditingBlockTypes.has(block._type)
-            ? { dataAttribute }
-            : {};
+          : block._type === "cardSlider"
+            ? {
+                dataAttribute,
+                itemDataAttribute: stega
+                  ? (itemId: string, itemType: string, path: string) =>
+                      createDataAttribute({
+                        baseUrl:
+                          process.env.NEXT_PUBLIC_STUDIO_URL ||
+                          "http://localhost:3333",
+                        dataset,
+                        id: itemId,
+                        path,
+                        projectId,
+                        type: itemType,
+                      }).toString()
+                  : undefined,
+              }
+            : serverFieldEditingBlockTypes.has(block._type)
+              ? { dataAttribute }
+              : {};
     const pageDataProps: BlockPageDataProps =
       block._type === "latestArticles" && blogListing ? { blogListing } : {};
 
     return (
       <div
         data-sanity={dataSanity}
+        // Source anchors such as #bus-map let links jump to a section.
+        id={"anchorId" in block ? stegaClean(block.anchorId) || undefined : undefined}
         data-seam-top={boundary.seamTop ? "" : undefined}
         data-seam-bottom={boundary.seamBottom ? "" : undefined}
         data-mirror={boundary.mirror ? "" : undefined}

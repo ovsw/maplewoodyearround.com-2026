@@ -3,11 +3,20 @@ import { imageQuery } from "./shared/image";
 import { customLinkMarkDefsQuery } from "./shared/custom-link";
 import { urlInternalHref } from "./shared/internal-href";
 import { minimalRichTextQuery } from "./shared/minimal-rich-text";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
+import { iconProjection, taglineProjection } from "./shared/maplewood";
 
 // @sanity-typegen-ignore
 export const storyFeatureQuery = groq`
   _type == "storyFeature" => {
-    eyebrow,
+    anchorId,
+    ${taglineProjection},
+    imagePosition,
+    headingSize,
+    features[]{
+      _key, ${iconProjection}, accent, title,
+      body[]{${simpleRichTextQuery}}
+    },
     title[]{
       ${minimalRichTextQuery}
     },
@@ -17,10 +26,6 @@ export const storyFeatureQuery = groq`
     richText[]{
       ...,
       ${customLinkMarkDefsQuery}
-    },
-    keyDetails {
-      title,
-      items[]
     },
     buttons[]{
       _key,

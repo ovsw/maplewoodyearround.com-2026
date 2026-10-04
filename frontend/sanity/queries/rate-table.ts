@@ -1,12 +1,16 @@
 import { groq } from "next-sanity";
-import { contentActionsProjection } from "./shared/maplewood";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { imageQuery } from "./shared/image";
+import { contentActionsProjection, taglineProjection } from "./shared/maplewood";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const rateTableQuery = groq`
   _type == "rateTable" => {
+    anchorId,
+    ${taglineProjection},
     title,
-    description,
-columns, rows[]{_key, label, cells}, notes[]{${richTextContentQuery}}, ${contentActionsProjection}
+    intro[]{${simpleRichTextQuery}},
+    columns[]{_key, label, note, detail, image{${imageQuery}}},
+    rows[]{_key, label, cells}, notes[]{${simpleRichTextQuery}}, ${contentActionsProjection}
   }
 `;

@@ -24,6 +24,40 @@ All these source slots are mapped in the importer, restricted to the home
 path. A full plan comparison confirms that no other imported document changes.
 SEO retains the inventory title, description and Sanity copy of the OG image.
 
+## Summer Camp information pages (issue #10)
+
+No new section type was needed. The shared inner-page sections gained the
+source slots that these pages display; every non-home page uses the same
+importer mapping, so later page issues inherit them:
+
+- `tagline` (label object): the program badge, such as "Summer Camp", and the
+  text after its dash. Used by image-and-text, rich text, rate table, pricing,
+  slider and embed sections.
+- `innerHero.breadcrumbs`, `linksLabel` and link-style buttons. Same-page links
+  keep their `#fragment`; a source `#` or empty link is imported without a
+  destination and stays hidden until an editor adds one (for example the
+  Android app and "MHL YouTube Channel" buttons).
+- `storyFeature.features` (icon points with colour), `imagePosition` and
+  `headingSize`. Icons keep the source artwork, reduced to the Website's SVG
+  allowlist.
+- `rateTable.intro`, `columns[]` objects (heading, note, detail and photo) and
+  `notes` for the reminder above the buttons. Phones repeat each column
+  heading beside its price; the importer stores the price only. A table has
+  3 or 4 columns (row headings, then 2 or 3 programs). Studio edits the rows
+  as a grid whose columns come from that list, and validation requires one
+  value per program column.
+- `pricingCards.plans[].icon` and `accent`; `faqAccordion.actions`;
+  `cardSlider` icon, colour and buttons; `embedSection.body`; `ctaBanner.body`
+  and `image`; roster `closingTitle`, `closingText` and `actions`.
+- `anchorId` on body sections keeps the source section IDs that page links
+  target, such as `#bus-map`. A repeated source ID anchors its last section.
+
+Backgrounds follow the live result: most source pages carry custom code that
+alternates `<section>` backgrounds (odd cream, even white); the pages without
+it use the stylesheet colours. The FAQ list uses the one category whose
+questions match the displayed list exactly. Rate-table columns stored as plain
+text were converted to column objects with the same text.
+
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 
 ## Import rules

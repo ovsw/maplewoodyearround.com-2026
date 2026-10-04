@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { contentDestinationProjection } from "./shared/maplewood";
 import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
 
@@ -6,6 +7,10 @@ import { urlInternalHref } from "./shared/internal-href";
 export const innerHeroQuery = groq`
   _type == "innerHero" => {
     eyebrow,
+    "breadcrumbs": array::compact(breadcrumbs[]{
+      _key, label, program, destination${contentDestinationProjection}
+    }),
+    linksLabel,
     title[]{
       ...
     },

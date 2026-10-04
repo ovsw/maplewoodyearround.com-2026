@@ -1,9 +1,13 @@
 import { sectionBackgroundField } from "./shared/section-background";
 import { defineField, defineType } from "sanity";
 import {
+  accentField,
+  iconField,
   sectionTitleField,
   sectionDescriptionField,
   sectionActionsField,
+  sectionAnchorField,
+  taglineField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -12,6 +16,8 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
+    taglineField,
     sectionTitleField,
     sectionDescriptionField,
     defineField({
@@ -24,18 +30,20 @@ export default defineType({
           name: "pricingPlan",
           type: "object",
           fields: [
+            iconField,
+            accentField,
             sectionTitleField,
             defineField({
               name: "price",
               title: "Price wording",
               type: "string",
               description:
-                "The full displayed price and period; no automatic calculations.",
+                'The full displayed price and period, such as "$17/day". Text after "/" is shown smaller.',
             }),
             defineField({
               name: "details",
               title: "Details",
-              type: "richTextContent",
+              type: "basicRichText",
               description: "What the plan includes, and its conditions.",
             }),
             sectionActionsField,

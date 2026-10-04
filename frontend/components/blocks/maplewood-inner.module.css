@@ -1,0 +1,1124 @@
+/* Inner-page sections ported from the live Maplewood Webflow stylesheet.
+   Sizes and colours follow its components; class names describe roles. */
+
+.section {
+  --accent: var(--maplewood-green);
+  padding: 7rem 5%;
+  color: var(--maplewood-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.white {
+  background: #fff;
+}
+.cream {
+  background: var(--maplewood-cream);
+}
+.green {
+  background: var(--maplewood-green);
+  color: #fff;
+}
+.green :is(.h2, .h4, .h5, .h6, .inlineLink) {
+  color: var(--maplewood-cream);
+}
+.container {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.narrow {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+.centerText {
+  text-align: center;
+}
+
+/* Typography */
+.h2,
+.h4,
+.h5,
+.h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--maplewood-green);
+  margin: 0;
+}
+.h2 {
+  font-size: 3rem;
+  line-height: 1.2;
+}
+.h4 {
+  font-size: 2rem;
+  line-height: 1.3;
+}
+.h5 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+.h6 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+.medium {
+  font-size: 1.125rem;
+}
+.tagline {
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+.badgeSummer,
+.badgeSchool {
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.4em;
+}
+.badgeSummer {
+  background: var(--maplewood-gold-mid);
+  color: var(--maplewood-ink);
+}
+.badgeSchool {
+  background: var(--maplewood-purple-dark);
+  color: var(--maplewood-cream);
+}
+
+/* Copy */
+.copy {
+  display: grid;
+  gap: 1rem;
+}
+.copy p,
+.copy ul,
+.copy ol,
+.copy blockquote {
+  margin: 0;
+}
+.copy p {
+  white-space: pre-line;
+}
+.copy ul,
+.copy ol {
+  padding-left: 1.5rem;
+}
+.copy ul {
+  list-style: disc;
+}
+.copy ol {
+  list-style: decimal;
+}
+.copy li + li {
+  margin-top: 0.25rem;
+}
+.copy strong {
+  font-weight: 700;
+}
+.inlineLink {
+  color: var(--maplewood-green);
+  text-decoration: underline;
+}
+
+/* Accents: the live site's u-accent-* colours. Text uses a darker shade of
+   the same hue so it keeps a 4.5:1 contrast on cream and white. */
+.accent-green {
+  --accent: var(--maplewood-green);
+  --accent-text: var(--maplewood-green);
+}
+.accent-blue {
+  --accent: var(--maplewood-blue-dark);
+  --accent-text: #1d6fa5;
+}
+.accent-red {
+  --accent: #e64420;
+  --accent-text: #c2361a;
+}
+.accent-purple {
+  --accent: var(--maplewood-purple);
+  --accent-text: #9b3cc6;
+}
+.accent-mint {
+  --accent: var(--maplewood-mint);
+  --accent-text: #1f7a5c;
+}
+.accent-yellow {
+  --accent: var(--maplewood-gold-mid);
+  --accent-text: #946000;
+}
+.icon {
+  display: inline-flex;
+  width: 3rem;
+  height: 3rem;
+  color: var(--accent);
+}
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Buttons */
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+.center {
+  justify-content: center;
+}
+.buttonItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+}
+.separator {
+  color: inherit;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--maplewood-green);
+  border-radius: 0.8em;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-decoration: none;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+.button:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 2px;
+}
+.buttonPrimary {
+  background: var(--maplewood-green);
+  color: var(--maplewood-cream);
+}
+.buttonPrimary:hover {
+  border-color: var(--maplewood-gold);
+  background: var(--maplewood-gold-mid);
+  color: var(--maplewood-ink);
+}
+.buttonSecondary {
+  background: transparent;
+  color: var(--maplewood-green);
+}
+.buttonSecondary:hover {
+  background: var(--maplewood-green);
+  color: var(--maplewood-cream);
+}
+.buttonLink {
+  padding: 0.25rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--maplewood-green);
+  line-height: 1;
+  text-decoration: underline;
+}
+.onDark.buttonPrimary {
+  border-color: var(--maplewood-cream);
+  background: var(--maplewood-cream);
+  color: #000;
+}
+.onDark.buttonSecondary {
+  border-color: var(--maplewood-cream);
+  color: var(--maplewood-cream);
+}
+.onDark.buttonLink {
+  color: var(--maplewood-cream);
+}
+
+/* Card frame used by images and cards (is-card / is-card-small) */
+.card {
+  overflow: hidden;
+  border: 3px solid var(--accent);
+  border-radius: 0.8em;
+  background: var(--maplewood-cream);
+  box-shadow: 6px 6px 0 0 var(--accent);
+}
+.cardSmall {
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  border-radius: 0.8em;
+  background: var(--maplewood-cream);
+  box-shadow: 4px 4px 0 0 var(--accent);
+}
+
+/* Inner hero (header50) */
+.hero {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  background: var(--maplewood-green);
+  color: #fff;
+}
+.heroBackground {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(5%, 1fr) minmax(0, 20rem) minmax(5%, 0.5fr);
+  grid-template-areas: ". area area";
+  column-gap: 16px;
+}
+.heroImageWrap {
+  position: relative;
+  grid-area: area;
+  background-image: linear-gradient(#00000080, #00000080);
+}
+.heroImage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: linear-gradient(90deg, #006601 11%, #006601cc 45%, #00660166);
+}
+.heroContain {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-height: 30rem;
+  padding: 7rem 5%;
+}
+.heroInner {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+.heroContent {
+  max-width: 60%;
+}
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.breadcrumbs a {
+  color: #fff;
+  text-decoration: none;
+}
+.breadcrumbs .badgeSummer,
+.breadcrumbs .badgeSchool {
+  color: var(--maplewood-ink);
+}
+.breadcrumbs .badgeSchool {
+  color: var(--maplewood-cream);
+}
+.heroEyebrow {
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+.heroTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+}
+.heroBody {
+  margin: 1.5rem 0 0;
+  font-size: 1.125rem;
+  opacity: 0.8;
+  white-space: pre-line;
+}
+.heroLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+.heroLinksLabel {
+  opacity: 0.8;
+}
+
+/* Image and text (layout10 / layout203 / layout30) */
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem 5rem;
+}
+.storyImageLeft .storyMedia {
+  order: -1;
+}
+.storyMedia img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.storyCopy .h2,
+.storyCopy .h4 {
+  margin-bottom: 1.5rem;
+}
+.storyText {
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+}
+.storyTextSmall {
+  margin-bottom: 1.5rem;
+}
+.points {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding-block: 0.5rem;
+}
+.point .icon {
+  margin-bottom: 1rem;
+}
+.point h3 {
+  margin: 0 0 1rem;
+}
+.point strong {
+  color: var(--accent-text, var(--maplewood-green));
+}
+.storyButtons {
+  margin-top: 2rem;
+}
+
+/* Rich text sections (comparison8 without a table) */
+.richCenter {
+  text-align: center;
+}
+.richCenter .copy ul,
+.richCenter .copy ol {
+  justify-self: center;
+  text-align: left;
+}
+.richTitle {
+  margin-bottom: 1.5rem;
+}
+
+/* Dates and rates table (comparison6 / comparison8) */
+.rateIntro {
+  margin-top: 1.5rem;
+}
+.rateTable {
+  --rate-columns: 2;
+  max-width: 64rem;
+  margin: 3rem auto 0;
+}
+.rateHead,
+.rateRow {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(var(--rate-columns), 1fr);
+}
+.rateHeadTitle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  color: var(--maplewood-ink);
+  font-weight: 400;
+}
+.rateHeadCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: center;
+}
+.rateHeadCell .h6 {
+  color: var(--maplewood-ink);
+  line-height: 1;
+}
+.rateImage {
+  width: 100%;
+  max-width: 9rem;
+  margin-bottom: 0.5rem;
+}
+.rateImage img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.rateNote {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.rateDetail {
+  margin-top: 0.25rem;
+  opacity: 0.8;
+}
+.rateRow:nth-of-type(even) {
+  border-radius: 0.8em;
+  background: #ffd7005c;
+}
+.rateLabel,
+.rateCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+.rateCell {
+  flex-direction: column;
+}
+.rateCellLabel {
+  display: none;
+}
+.rateClosing {
+  margin-top: 3rem;
+  text-align: center;
+}
+.rateNotes {
+  margin-bottom: 2rem;
+  font-family: var(--font-body);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--maplewood-green);
+}
+
+/* Price cards (pricing19) */
+.pricingIntro {
+  margin: 1.5rem 0 0;
+}
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 5rem;
+}
+.pricingPlan {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: #fff;
+}
+.pricingIcon {
+  display: flex;
+  justify-content: flex-end;
+}
+.pricingTitle {
+  margin: 1rem 0 0.5rem;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--maplewood-ink);
+}
+.pricingPrice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--accent-text, var(--maplewood-green));
+}
+.pricingPeriod {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+.pricingDivider {
+  width: 100%;
+  height: 1px;
+  margin: 2rem 0;
+  border: 0;
+  background: #000;
+}
+.pricingDetails ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding: 0.5rem 0;
+  list-style: none;
+}
+.pricingDetails li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.pricingDetails li svg {
+  flex: none;
+}
+.pricingDetails p {
+  margin: 0 0 0.5rem;
+}
+
+/* FAQ (faq3) */
+.faq {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  align-items: start;
+  gap: 4rem 5rem;
+}
+.faqIntro {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+}
+.faqList {
+  border-bottom: 1px solid #000;
+}
+.faqItem {
+  border-top: 1px solid #000;
+}
+.faqQuestion {
+  padding-block: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--maplewood-ink);
+}
+.faqQuestion svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--maplewood-ink);
+}
+.faqAnswer {
+  padding-bottom: 1.5rem;
+}
+
+/* Collection slider (blog66) */
+.sectionSmall {
+  padding-block: 3rem;
+}
+.sectionMedium {
+  padding-block: 5rem;
+}
+.sliderHeading {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: end;
+  gap: 1rem 5rem;
+  margin-bottom: 2rem;
+}
+.sliderIntro {
+  max-width: 48rem;
+}
+.sliderTitle {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.sliderDescription {
+  margin: 1.5rem 0 0;
+  padding-left: 4rem;
+  opacity: 0.8;
+}
+.sliderControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.sliderButtons {
+  display: flex;
+  gap: 1rem;
+}
+.sliderButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--maplewood-green);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--maplewood-ink);
+  cursor: pointer;
+}
+.sliderButton:hover:not(:disabled) {
+  background: var(--maplewood-green);
+  color: var(--maplewood-cream);
+}
+.sliderButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.sliderButton:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 2px;
+}
+.sliderDots {
+  display: flex;
+  gap: 0.5em;
+}
+.sliderDot,
+.sliderDotActive {
+  width: 1.25em;
+  height: 1.25em;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #3532331a;
+  cursor: pointer;
+}
+.sliderDot:hover {
+  background: #35323340;
+}
+.sliderDot:focus-visible,
+.sliderDotActive:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 2px;
+}
+.sliderDotActive {
+  background: var(--maplewood-gold-mid);
+}
+.sliderTrack {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  list-style: none;
+  cursor: grab;
+  user-select: none;
+}
+.sliderTrack[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+.sliderTrack:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 4px;
+}
+.sliderTrack::-webkit-scrollbar {
+  display: none;
+}
+.sliderCard {
+  flex: 0 0 calc((100% - 4rem) / 4.6);
+  scroll-snap-align: start;
+}
+.sliderImage {
+  margin: 0 6px 1rem 0;
+}
+.sliderImage img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.sliderCardText {
+  padding-left: 0.5rem;
+}
+.sliderCardText h3 {
+  margin-bottom: 0.5rem;
+}
+.sliderCardText p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Embeds (gallery1, content30, Airtable frame) */
+.embedHeading {
+  margin-bottom: 3rem;
+}
+.embedDescription {
+  margin: 1.5rem 0 0;
+  white-space: pre-line;
+}
+.embedFrame iframe {
+  display: block;
+  width: 100%;
+  height: 600px;
+  border: 0;
+}
+.embedBody {
+  margin-bottom: 2rem;
+}
+.cognito {
+  min-height: 30rem;
+}
+.cognito :global(.cog-field--45) {
+  display: none !important;
+}
+.airtable {
+  padding: 0;
+}
+.airtableFrame {
+  display: block;
+  width: 100%;
+  height: 800px;
+  border: 1px solid #ccc;
+  background: transparent;
+}
+
+/* Staff roster (team4) */
+.rosterIntro {
+  max-width: 35rem;
+  margin-bottom: 5rem;
+}
+.rosterIntro a {
+  color: var(--maplewood-green);
+  text-decoration: underline;
+}
+.roster {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rosterPhoto {
+  position: relative;
+  margin: 0 4px 1rem 0;
+  aspect-ratio: 1;
+}
+.rosterPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.rosterTags {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 0.5em;
+  padding: 0.5em;
+}
+.tagPurple,
+.tagGreen {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.4em;
+  font-size: 0.75rem;
+  color: #fff;
+}
+.tagPurple {
+  background: #8f35b8;
+}
+.tagGreen {
+  background: var(--maplewood-green);
+}
+.rosterText {
+  padding-left: 0.5rem;
+}
+.rosterText p {
+  margin: 0;
+}
+.rosterName {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.rosterClosing {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 35rem;
+  margin-top: 5rem;
+}
+
+/* Numbered steps (layout486) */
+.steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  align-items: start;
+  gap: 4rem 5rem;
+}
+.stepsAside {
+  position: sticky;
+  top: 20%;
+  height: 14rem;
+}
+.stepsNumber {
+  font-family: var(--font-body);
+  font-size: 14rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--maplewood-green);
+}
+.stepsList {
+  display: grid;
+  gap: 7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stepNumberMobile {
+  display: none;
+}
+.stepRule {
+  width: 100%;
+  height: 2px;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, var(--maplewood-ink) 2rem, #d9dadb 2rem);
+}
+.stepTitle {
+  margin-bottom: 1.5rem;
+}
+
+/* Call-to-action card (cta39) */
+.ctaCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 3px solid var(--maplewood-green-dark);
+  border-radius: 0.8em;
+  background: var(--maplewood-green);
+  color: var(--maplewood-cream);
+}
+.ctaContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+}
+.ctaTitle {
+  margin-bottom: 1.5rem;
+  color: var(--maplewood-cream);
+}
+.ctaButtons {
+  margin-top: 2rem;
+}
+.ctaImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.cardLink {
+  color: var(--maplewood-cream);
+  text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+  .section {
+    padding-block: 6rem;
+  }
+  .h2 {
+    font-size: 2.75rem;
+  }
+  .h4 {
+    font-size: 1.75rem;
+  }
+  .heroContain {
+    min-height: 26rem;
+    padding-block: 6rem;
+  }
+  .story {
+    gap: 4rem 3rem;
+  }
+  .rateHeadTitle {
+    padding-right: 1rem;
+  }
+  .rateHeadCell {
+    padding: 1.5rem 1rem;
+  }
+  .pricingGrid {
+    grid-template-columns: 1fr;
+  }
+  .faq {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem 3rem;
+  }
+  .sliderHeading {
+    column-gap: 3rem;
+  }
+  .sectionMedium {
+    padding-block: 4rem;
+  }
+  .sectionSmall {
+    padding-block: 3rem;
+  }
+  .sliderCard {
+    flex-basis: calc((100% - 2rem) / 2.6);
+  }
+  .roster {
+    grid-template-columns: 1fr 1fr;
+  }
+  .steps {
+    grid-template-columns: 0.75fr 1fr;
+    column-gap: 2rem;
+  }
+  .ctaCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: 4rem;
+  }
+  .h2 {
+    font-size: 2.25rem;
+  }
+  .h4 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  .h5 {
+    font-size: 1.25rem;
+  }
+  .h6 {
+    font-size: 1.125rem;
+  }
+  .medium,
+  .storyText,
+  .heroBody {
+    font-size: 1rem;
+  }
+  .heroContain {
+    min-height: 20rem;
+    padding-block: 4rem;
+  }
+  .heroOverlay {
+    background-image: linear-gradient(90deg, #006601 11%, #006601db 22%, #006601d1);
+  }
+  .heroContent {
+    max-width: none;
+  }
+  .heroTitle {
+    font-size: 3.6rem;
+  }
+  .heroLinks {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .heroLinks .buttonGroup {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .separator {
+    display: none;
+  }
+  .story {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  /* Phones always show the copy first, then the photo. */
+  .storyImageLeft .storyMedia {
+    order: 0;
+  }
+  .points {
+    grid-template-columns: 1fr;
+  }
+  .rateNotes {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  .rateImage {
+    display: none;
+  }
+  .rateLabel,
+  .rateCell {
+    padding-inline: 1rem;
+  }
+  .rateStacked .rateHead {
+    display: none;
+  }
+  .rateStacked .rateRow {
+    grid-template-columns: repeat(var(--rate-columns), 1fr);
+  }
+  .rateStacked .rateLabel {
+    grid-column: 1 / -1;
+  }
+  .rateStacked .rateCellLabel {
+    display: block;
+    font-weight: 600;
+  }
+  .pricingPlan {
+    padding-inline: 1.5rem;
+  }
+  .faq {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .faqQuestion {
+    padding-block: 1rem;
+  }
+  .sectionSmall {
+    padding-block: 2rem;
+  }
+  .sectionMedium {
+    padding-block: 3rem;
+  }
+  .sliderHeading {
+    grid-template-columns: 1fr;
+    row-gap: 2rem;
+  }
+  .sliderDescription {
+    padding-left: 0;
+  }
+  .sliderTitle {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .sliderCard {
+    flex-basis: 80%;
+  }
+  .roster {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+  }
+  .rosterIntro {
+    margin-bottom: 3rem;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+  }
+  .stepsAside {
+    display: none;
+  }
+  .stepsList {
+    gap: 3rem;
+  }
+  .stepNumberMobile {
+    display: flex;
+    margin-top: 2.5rem;
+    font-size: 6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--maplewood-green);
+  }
+  .stepRule {
+    margin-top: 2rem;
+  }
+  .ctaContent {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .heroTitle {
+    font-size: 2.8rem;
+  }
+  .rateHeadTitle,
+  .rateHeadCell {
+    padding: 1rem 0.5rem;
+  }
+  .pricingIcon {
+    display: none;
+  }
+  .sliderControls {
+    display: flex;
+  }
+}

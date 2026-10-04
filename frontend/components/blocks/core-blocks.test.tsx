@@ -487,10 +487,15 @@ describe("core Page Builder sections", () => {
       _type: "storyFeature",
       buttons: [],
       image: null,
-      keyDetails: {
-        items: ["Reusable", "Neutral"],
-        title: "Details",
-      },
+      features: [
+        {
+          _key: "point",
+          accent: "blue",
+          body: [paragraph("point-copy", "Point text.")],
+          icon: null,
+          title: "Reusable",
+        },
+      ],
       richText: [paragraph("story-copy", "Story context visitors can use.")],
       title: [paragraph("story-title", "Image and text")],
     } as unknown as ComponentProps<typeof StoryFeature>;

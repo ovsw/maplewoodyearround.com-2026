@@ -24,8 +24,11 @@ import parentDashboard, {
 } from "./schemas/documents/parent-dashboard";
 import contentDestination from "./schemas/blocks/shared/content-destination";
 import {
+  breadcrumb,
   contentAction,
   contentCard,
+  featureItem,
+  tagline,
 } from "./schemas/blocks/shared/maplewood-fields";
 import page from "./schemas/documents/page";
 import post from "./schemas/documents/post";
@@ -57,6 +60,7 @@ import button from "./schemas/blocks/shared/button";
 import buttonLink from "./schemas/blocks/shared/button-link";
 import richTextContent from "./schemas/blocks/shared/rich-text-content";
 import simpleRichText from "./schemas/blocks/shared/simple-rich-text";
+import basicRichText from "./schemas/blocks/shared/basic-rich-text";
 import minimalRichText from "./schemas/blocks/shared/minimal-rich-text";
 import {
   blogPostSidebar,
@@ -127,6 +131,9 @@ export const schemaTypes = [
   contentDestination,
   contentAction,
   contentCard,
+  tagline,
+  featureItem,
+  breadcrumb,
   // documents
   page,
   post,
@@ -158,6 +165,7 @@ export const schemaTypes = [
   buttonLink,
   richTextContent,
   simpleRichText,
+  basicRichText,
   minimalRichText,
   blogPostSidebarAction,
   blogPostSidebar,

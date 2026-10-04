@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { contentActionsProjection } from "./shared/maplewood";
 import { bodyQuery } from "./shared/body";
 import { imageQuery } from "./shared/image";
 
@@ -7,6 +8,7 @@ export const teamMembersQuery = groq`
   _type == "teamMembers" => {
     presentation, eyebrow, title,
     richText[]{${bodyQuery}},
+    closingTitle, closingText, ${contentActionsProjection},
     "members": *[
       _type == "staffMember" && visible != false
       && (!defined(^.program) || program == ^.program)

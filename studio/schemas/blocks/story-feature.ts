@@ -1,6 +1,7 @@
 import { BookOpenText } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
+import { sectionAnchorField, taglineField } from "./shared/maplewood-fields";
 
 const richTextToPlainText = (value: unknown): string => {
   if (!Array.isArray(value)) return "";
@@ -48,7 +49,7 @@ const storyRichTextField = defineField({
     }),
   ],
   validation: (rule) =>
-    rule.required().custom((value: Array<{ style?: string }> | undefined) => {
+    rule.custom((value: Array<{ style?: string }> | undefined) => {
       const pullQuotes = value?.filter((block) => block.style === "blockquote").length ?? 0;
 
       return pullQuotes <= 1 ? true : "Use no more than one pull quote in this story";
@@ -64,11 +65,8 @@ export default defineType({
     "A reusable image-and-text section for a story, service, or point of view.",
   fields: [
     sectionBackgroundField,
-    defineField({
-      name: "eyebrow",
-      type: "string",
-      description: "Optional short label shown above the section heading",
-    }),
+    sectionAnchorField,
+    taglineField,
     defineField({
       name: "title",
       title: "Heading",
@@ -93,26 +91,41 @@ export default defineType({
       ],
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "imagePosition",
+      title: "Image side",
+      type: "string",
+      description: "The side of the section that shows the image.",
+      initialValue: "right",
+      options: {
+        layout: "radio",
+        list: [
+          { title: "Right", value: "right" },
+          { title: "Left", value: "left" },
+        ],
+      },
+    }),
+    defineField({
+      name: "headingSize",
+      title: "Heading size",
+      type: "string",
+      initialValue: "large",
+      options: {
+        layout: "radio",
+        list: [
+          { title: "Large", value: "large" },
+          { title: "Small", value: "small" },
+        ],
+      },
+    }),
     storyRichTextField,
     defineField({
-      name: "keyDetails",
-      title: "Key Details",
-      type: "object",
-      description: "Optional short facts shown as non-interactive pills",
-      fields: [
-        defineField({
-          name: "title",
-          type: "string",
-          description: "Optional label shown above the key details",
-        }),
-        defineField({
-          name: "items",
-          type: "array",
-          description: "Short facts to display as pills",
-          of: [defineArrayMember({ type: "string" })],
-          validation: (rule) => rule.required().min(1).max(8),
-        }),
-      ],
+      name: "features",
+      title: "Points",
+      type: "array",
+      description: "Optional short points with icons, shown below the text.",
+      of: [defineArrayMember({ type: "featureItem" })],
+      validation: (rule) => rule.max(4),
     }),
     defineField({
       name: "buttons",

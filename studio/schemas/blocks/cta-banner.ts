@@ -1,6 +1,7 @@
 import { Megaphone } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
+import { sectionAnchorField } from "./shared/maplewood-fields";
 
 export default defineType({
   name: "ctaBanner",
@@ -11,6 +12,7 @@ export default defineType({
     "A clear invitation with a heading, supporting line, and up to two actions. Closing bands end a page; nudges sit quietly between sections.",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
     defineField({
       name: "variant",
       title: "Weight",
@@ -36,6 +38,22 @@ export default defineType({
       name: "description",
       type: "string",
       description: "Optional supporting sentence shown under the heading",
+    }),
+    defineField({
+      name: "body",
+      title: "Text",
+      type: "simpleRichText",
+      description: "Optional longer text with links, shown instead of the supporting sentence.",
+    }),
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      description: "Optional image beside the text.",
+      options: { hotspot: true },
+      fields: [
+        defineField({ name: "alt", title: "Image description", type: "string" }),
+      ],
     }),
     defineField({
       name: "buttons",

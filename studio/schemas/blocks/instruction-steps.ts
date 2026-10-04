@@ -5,6 +5,7 @@ import {
   sectionDescriptionField,
   sectionActionsField,
   contentCardsField,
+  sectionAnchorField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -13,6 +14,7 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
     sectionTitleField,
     sectionDescriptionField,
     contentCardsField,

@@ -1,11 +1,21 @@
 import { groq } from "next-sanity";
-import { collectionItemsProjection } from "./shared/maplewood";
+import {
+  collectionItemsProjection,
+  contentActionsProjection,
+  iconProjection,
+  taglineProjection,
+} from "./shared/maplewood";
 
 // @sanity-typegen-ignore
 export const cardSliderQuery = groq`
   _type == "cardSlider" => {
+    anchorId,
+    ${taglineProjection},
+    ${iconProjection},
+    accent,
     title,
     description,
-source, program, ${collectionItemsProjection}
+    ${contentActionsProjection},
+    source, program, ${collectionItemsProjection}
   }
 `;

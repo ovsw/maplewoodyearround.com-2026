@@ -1,5 +1,6 @@
 import { documentId, key, reference, htmlDocument, text, mediaUrl, destination, customUrl, plainBlocks, portableText } from './html.mjs';
 import { mappings } from './collections.mjs';
+import { mapSourceSections, sectionAnchors } from './sections.mjs';
 
 const patterns = {
   section_header33: 'videoHero', section_header83: 'videoZoomGrid', section_layout515: 'scrollPanels',
@@ -140,6 +141,7 @@ export function staticPages(snapshot, context, schema) {
     if (!main) throw new Error(`Missing main content on ${page.path}`);
     const sectionNodes = [...main.querySelectorAll('section,header,.w-embed.w-iframe')].filter((n) => !n.parentElement?.closest('main section,main header,.w-embed.w-iframe'));
     const blocks = [];
+    const anchors = sectionAnchors(sectionNodes);
     for (const [index, original] of sectionNodes.entries()) {
       const prefix = `${page.path}-${index}`;
       const selector = [...original.classList].find((name) => patterns[name]);
@@ -212,6 +214,7 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'stackedTimeline') block.items = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'stackedTimelineItem', title: card.title, text: card.description, image: card.image }));
       if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
       if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
+      if (page.path !== '/') mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html: page.html });
       if (page.path === '/') {
         // The home composition has distinct intro, label, body and action slots.
         // Preserve those slots on every import, including the final frozen run.
@@ -285,7 +288,9 @@ export function staticPages(snapshot, context, schema) {
       // Every remaining static text node must be present in an editable field.
       // An unsupported fit is reported, never hidden in an opaque source blob.
       const strings = contentStrings(block);
-      const leaves = staticTextNodes(staticNode);
+      // Separators such as "•" and the dash after a label badge are drawn by
+      // the Website, so they are not editor copy.
+      const leaves = staticTextNodes(staticNode).map((value) => value.replace(/\u200d/g, '').replace(/^[–•·]\s*/, '')).filter(Boolean);
       const missing = leaves.filter((value) => !strings.some((stored) => stored.includes(value)));
       if (missing.length) gaps.push({ path: page.path, section: index + 1, reason: 'static copy does not fit section fields', missing });
       coverage.push({ path: page.path, section: index + 1, type, textNodes: leaves.length, covered: leaves.length - missing.length });

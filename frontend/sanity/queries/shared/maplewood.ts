@@ -60,3 +60,9 @@ export const collectionItemsProjection = `
     "fileUrl": file.asset->url, effectiveFrom
   }
 `;
+
+export const taglineProjection = `tagline{label, program, text}`;
+
+// Imported and picked icons both store their artwork with the content.
+export const iconProjection = `icon{name, svg}`;
+

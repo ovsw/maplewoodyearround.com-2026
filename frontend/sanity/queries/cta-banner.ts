@@ -1,12 +1,17 @@
 import { groq } from "next-sanity";
+import { imageQuery } from "./shared/image";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 import { urlInternalHref } from "./shared/internal-href";
 
 // @sanity-typegen-ignore
 export const ctaBannerQuery = groq`
   _type == "ctaBanner" => {
+    anchorId,
     variant,
     title,
     description,
+    body[]{${simpleRichTextQuery}},
+    image{${imageQuery}},
     "buttons": array::compact(buttons[]{
       _key,
       _type,
