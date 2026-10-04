@@ -27,10 +27,6 @@ export const storyFeatureQuery = groq`
       ...,
       ${customLinkMarkDefsQuery}
     },
-    keyDetails {
-      title,
-      items[]
-    },
     buttons[]{
       _key,
       _type,

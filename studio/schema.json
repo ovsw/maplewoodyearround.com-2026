@@ -47,32 +47,6 @@
   },
   {
     "type": "type",
-    "name": "keyDetails",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "title": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
-        },
-        "items": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "array",
-            "of": {
-              "type": "string"
-            }
-          },
-          "optional": true
-        }
-      }
-    }
-  },
-  {
-    "type": "type",
     "name": "cta",
     "value": {
       "type": "object",
@@ -5707,14 +5681,6 @@
                 "name": "featureItem"
               }
             }
-          },
-          "optional": true
-        },
-        "keyDetails": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "inline",
-            "name": "keyDetails"
           },
           "optional": true
         },

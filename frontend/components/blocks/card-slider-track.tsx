@@ -62,7 +62,8 @@ export default function CardSliderTrack({
           ))}
         </div>
       </div>
-      <ul aria-label={label} className={css.sliderTrack} ref={track}>
+      {/* Focusable so keyboard users can scroll the cards with arrow keys. */}
+      <ul aria-label={label} className={css.sliderTrack} ref={track} tabIndex={0}>
         {children}
       </ul>
     </div>

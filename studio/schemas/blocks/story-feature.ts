@@ -128,26 +128,6 @@ export default defineType({
       validation: (rule) => rule.max(4),
     }),
     defineField({
-      name: "keyDetails",
-      title: "Key Details",
-      type: "object",
-      description: "Optional short facts shown as non-interactive pills",
-      fields: [
-        defineField({
-          name: "title",
-          type: "string",
-          description: "Optional label shown above the key details",
-        }),
-        defineField({
-          name: "items",
-          type: "array",
-          description: "Short facts to display as pills",
-          of: [defineArrayMember({ type: "string" })],
-          validation: (rule) => rule.required().min(1).max(8),
-        }),
-      ],
-    }),
-    defineField({
       name: "buttons",
       title: "Buttons",
       type: "array",

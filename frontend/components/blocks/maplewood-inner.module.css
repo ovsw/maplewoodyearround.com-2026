@@ -114,24 +114,31 @@
   text-decoration: underline;
 }
 
-/* Accents: the live site's u-accent-* colours */
+/* Accents: the live site's u-accent-* colours. Text uses a darker shade of
+   the same hue so it keeps a 4.5:1 contrast on cream and white. */
 .accent-green {
   --accent: var(--maplewood-green);
+  --accent-text: var(--maplewood-green);
 }
 .accent-blue {
   --accent: var(--maplewood-blue-dark);
+  --accent-text: #1d6fa5;
 }
 .accent-red {
   --accent: #e64420;
+  --accent-text: #c2361a;
 }
 .accent-purple {
   --accent: var(--maplewood-purple);
+  --accent-text: #9b3cc6;
 }
 .accent-mint {
   --accent: var(--maplewood-mint);
+  --accent-text: #1f7a5c;
 }
 .accent-yellow {
   --accent: var(--maplewood-gold-mid);
+  --accent-text: #946000;
 }
 .icon {
   display: inline-flex;
@@ -384,7 +391,7 @@
   margin: 0 0 1rem;
 }
 .point strong {
-  color: var(--accent);
+  color: var(--accent-text, var(--maplewood-green));
 }
 .storyButtons {
   margin-top: 2rem;
@@ -524,7 +531,7 @@
   font-size: 3rem;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--accent);
+  color: var(--accent-text, var(--maplewood-green));
 }
 .pricingPeriod {
   font-size: 1.5rem;
@@ -671,6 +678,10 @@
   scrollbar-width: none;
   list-style: none;
 }
+.sliderTrack:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 4px;
+}
 .sliderTrack::-webkit-scrollbar {
   display: none;
 }
@@ -775,7 +786,7 @@
   color: #fff;
 }
 .tagPurple {
-  background: var(--maplewood-purple-dark);
+  background: #8f35b8;
 }
 .tagGreen {
   background: var(--maplewood-green);
@@ -1031,6 +1042,10 @@
   }
   .sliderDescription {
     padding-left: 0;
+  }
+  .sliderTitle {
+    flex-direction: column;
+    align-items: flex-start;
   }
   .sliderCard {
     flex-basis: 80%;
