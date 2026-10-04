@@ -27,6 +27,13 @@ export function contentStrings(value) {
   for (const [name, child] of Object.entries(value)) if (!name.startsWith('_')) strings.push(...contentStrings(child));
   return strings;
 }
+export function staticTextNodes(node) {
+  if(node.nodeType===3) {
+    const value=node.nodeValue.replace(/\s+/g,' ').trim();
+    return value?[value]:[];
+  }
+  return [...node.childNodes].flatMap(staticTextNodes);
+}
 const imageNodes = (node) => [...node.querySelectorAll('img[src]')];
 const firstImage = (node, context) => {
   const image = imageNodes(node).find((e) => mediaUrl(e.getAttribute('src')));
@@ -205,7 +212,7 @@ export function staticPages(snapshot, context, schema) {
       // Every remaining static text node must be present in an editable field.
       // An unsupported fit is reported, never hidden in an opaque source blob.
       const strings = contentStrings(block);
-      const leaves = [...staticNode.querySelectorAll('*')].filter((n) => !n.children.length && !['IMG','IFRAME','VIDEO','SOURCE'].includes(n.tagName)).map(text).filter(Boolean);
+      const leaves = staticTextNodes(staticNode);
       const missing = leaves.filter((value) => !strings.some((stored) => stored.includes(value)));
       if (missing.length) gaps.push({ path: page.path, section: index + 1, reason: 'static copy does not fit section fields', missing });
       coverage.push({ path: page.path, section: index + 1, type, textNodes: leaves.length, covered: leaves.length - missing.length });

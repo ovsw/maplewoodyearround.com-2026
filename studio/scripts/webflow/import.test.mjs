@@ -4,7 +4,8 @@ import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { webflowReader } from './source.mjs';
-import { assetCollector, destination, portableText } from './html.mjs';
+import { assetCollector, destination, portableText, htmlDocument } from './html.mjs';
+import { staticTextNodes } from './pages.mjs';
 import { cmsDocuments, identityMap, mapItem } from './collections.mjs';
 import { mediaAliases, buildPlan } from './plan.mjs';
 import { changes, equal, materialize, writeDocuments, verifyTarget, backupDataset, savePrivate } from './write.mjs';
@@ -12,6 +13,10 @@ import { argumentsFor } from '../import-webflow.mjs';
 
 const context = () => ({ ...assetCollector(), routes:new Map([['/known','known-page']]), warnings:new Set(), identities:new Map() });
 const image = 'https://cdn.prod.website-files.com/site/image.jpg';
+
+test('coverage includes prose surrounding inline elements, not just leaf elements',()=>{
+  assert.deepEqual(staticTextNodes(htmlDocument('<p>Before <strong>inside</strong> after.</p>').body),['Before','inside','after.']);
+});
 
 test('pagination retrieves every page and rejects changing or missing totals', async () => {
   const calls=[];

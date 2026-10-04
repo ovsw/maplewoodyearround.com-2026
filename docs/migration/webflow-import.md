@@ -26,7 +26,9 @@ Static public pages retain their source section patterns and exact copy.
 Unpublished template and system pages are preserved as drafts with editable
 text and media; their layouts are not reconstructed or published. Deleted
 template-library images that the Webflow API no longer supplies are reported.
-Their original IDs remain in the private source snapshot.
+The 2026-10-04 capture has four such template image IDs. The importer preserves
+their available alternative text. Their original IDs remain in the private
+source snapshot; it does not create broken image references or invent images.
 
 The shared settings, navigation and footer are read from public HTML. Existing
 editor-owned drafts remain intact. The importer stops on an unexpected target
