@@ -4,7 +4,7 @@ import {
   iconProjection,
   taglineProjection,
 } from "./shared/maplewood";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const pricingCardsQuery = groq`
@@ -13,6 +13,6 @@ export const pricingCardsQuery = groq`
     ${taglineProjection},
     title,
     description,
-    plans[]{_key, ${iconProjection}, accent, title, price, details[]{${richTextContentQuery}}, ${contentActionsProjection}}
+    plans[]{_key, ${iconProjection}, accent, title, price, details[]{${simpleRichTextQuery}}, ${contentActionsProjection}}
   }
 `;

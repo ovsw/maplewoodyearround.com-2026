@@ -43,7 +43,7 @@ export default defineType({
             defineField({
               name: "details",
               title: "Details",
-              type: "richTextContent",
+              type: "basicRichText",
               description: "What the plan includes, and its conditions.",
             }),
             sectionActionsField,

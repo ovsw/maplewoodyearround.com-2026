@@ -1,7 +1,7 @@
 import { groq } from "next-sanity";
 import { imageQuery } from "./shared/image";
 import { contentActionsProjection, taglineProjection } from "./shared/maplewood";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const rateTableQuery = groq`
@@ -9,8 +9,8 @@ export const rateTableQuery = groq`
     anchorId,
     ${taglineProjection},
     title,
-    intro[]{${richTextContentQuery}},
+    intro[]{${simpleRichTextQuery}},
     columns[]{_key, label, note, detail, image{${imageQuery}}},
-    rows[]{_key, label, cells}, notes[]{${richTextContentQuery}}, ${contentActionsProjection}
+    rows[]{_key, label, cells}, notes[]{${simpleRichTextQuery}}, ${contentActionsProjection}
   }
 `;

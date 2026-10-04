@@ -20,7 +20,7 @@ export default defineType({
     defineField({
       name: "intro",
       title: "Introduction",
-      type: "richTextContent",
+      type: "basicRichText",
       description: "Who the table is for, times and other notes above it.",
     }),
     defineField({
@@ -125,7 +125,7 @@ export default defineType({
     defineField({
       name: "notes",
       title: "Text below the table",
-      type: "richTextContent",
+      type: "basicRichText",
       description: "Shown large above the buttons, such as a reminder to reserve.",
     }),
     sectionActionsField,

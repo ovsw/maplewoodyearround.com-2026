@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 import { contentActionsProjection, taglineProjection } from "./shared/maplewood";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const embedSectionQuery = groq`
@@ -9,7 +9,7 @@ export const embedSectionQuery = groq`
     ${taglineProjection},
     title,
     description,
-    body[]{${richTextContentQuery}},
+    body[]{${simpleRichTextQuery}},
     embedUrl, frameTitle, provider, providerId, accountId, sentFrom, ${contentActionsProjection}
   }
 `;

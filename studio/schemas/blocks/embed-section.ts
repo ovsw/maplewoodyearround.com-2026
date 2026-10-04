@@ -22,7 +22,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Text",
-      type: "richTextContent",
+      type: "basicRichText",
       description: "Optional paragraphs and lists shown before the embed.",
     }),
     embedUrlField,

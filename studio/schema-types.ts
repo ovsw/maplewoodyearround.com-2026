@@ -60,6 +60,7 @@ import button from "./schemas/blocks/shared/button";
 import buttonLink from "./schemas/blocks/shared/button-link";
 import richTextContent from "./schemas/blocks/shared/rich-text-content";
 import simpleRichText from "./schemas/blocks/shared/simple-rich-text";
+import basicRichText from "./schemas/blocks/shared/basic-rich-text";
 import minimalRichText from "./schemas/blocks/shared/minimal-rich-text";
 import {
   blogPostSidebar,
@@ -164,6 +165,7 @@ export const schemaTypes = [
   buttonLink,
   richTextContent,
   simpleRichText,
+  basicRichText,
   minimalRichText,
   blogPostSidebarAction,
   blogPostSidebar,
