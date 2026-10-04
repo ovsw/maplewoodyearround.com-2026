@@ -42,7 +42,10 @@ importer mapping, so later page issues inherit them:
   allowlist.
 - `rateTable.intro`, `columns[]` objects (heading, note, detail and photo) and
   `notes` for the reminder above the buttons. Phones repeat each column
-  heading beside its price; the importer stores the price only.
+  heading beside its price; the importer stores the price only. A table has
+  3 or 4 columns (row headings, then 2 or 3 programs). Studio edits the rows
+  as a grid whose columns come from that list, and validation requires one
+  value per program column.
 - `pricingCards.plans[].icon` and `accent`; `faqAccordion.actions`;
   `cardSlider` icon, colour and buttons; `embedSection.body`; `ctaBanner.body`
   and `image`; roster `closingTitle`, `closingText` and `actions`.

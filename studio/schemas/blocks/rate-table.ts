@@ -1,5 +1,6 @@
 import { sectionBackgroundField } from "./shared/section-background";
 import { defineField, defineType } from "sanity";
+import RateTableRowsInput from "../inputs/rate-table-rows-input";
 import {
   sectionTitleField,
   sectionActionsField,
@@ -27,7 +28,7 @@ export default defineType({
       title: "Columns",
       type: "array",
       description:
-        "One entry for each column, in order. The first column holds the row headings.",
+        "The first column holds the row headings; then one column per program. Use 3 or 4 columns.",
       of: [
         {
           name: "rateColumn",
@@ -68,14 +69,36 @@ export default defineType({
           preview: { select: { title: "label", media: "image" } },
         },
       ],
-      validation: (rule) => rule.required().min(1),
+      validation: (rule) =>
+        rule
+          .required()
+          .min(3)
+          .error("Use 3 or 4 columns: the row headings, then 2 or 3 programs.")
+          .max(4)
+          .error("Use 3 or 4 columns: the row headings, then 2 or 3 programs."),
     }),
     defineField({
       name: "rows",
       title: "Rows",
       type: "array",
       description:
-        "Prices or dates in display order. Keep the original wording.",
+        "Prices or dates in display order, one value per program column. Keep the original wording.",
+      components: { input: RateTableRowsInput },
+      validation: (rule) =>
+        rule.custom((rows: Array<{ label?: string; cells?: string[] }> | undefined, context) => {
+          const parent = context.parent as { columns?: unknown[] } | undefined;
+          const width = Math.max(0, (parent?.columns?.length ?? 0) - 1);
+          const problem = (rows ?? []).find(
+            (row) =>
+              !row.label?.trim() ||
+              (row.cells?.length ?? 0) !== width ||
+              row.cells?.some((cell) => !cell?.trim()),
+          );
+          if (!problem) return true;
+          const name = problem.label?.trim() || "A row";
+          if (!problem.label?.trim()) return "Every row needs a heading.";
+          return `${name}: enter exactly one value for each of the ${width} program columns.`;
+        }),
       of: [
         {
           name: "rateRow",
