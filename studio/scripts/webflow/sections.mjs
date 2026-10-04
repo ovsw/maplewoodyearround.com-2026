@@ -158,7 +158,7 @@ function faqCategory(original, snapshot) {
 
 // The displayed testimonials as references, or nothing if one has no record.
 export function selectedTestimonials(original, snapshot) {
-  const source = snapshot.collections.find((collection) => collection.displayName === 'Testimonials');
+  const source = snapshot.collections?.find((collection) => collection.displayName === 'Testimonials');
   const normalized = (value) => (typeof value === 'string' ? value : '').replace(/\s+/g, ' ').trim();
   const items = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
     const content = normalized(text(node));
@@ -203,7 +203,7 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
         _key: key(`${prefix}-c${i}`), _type: 'iconCard',
         ...(iconFromSvg(item.querySelector('svg')) ? { icon: iconFromSvg(item.querySelector('svg')) } : {}),
         ...(accentOf(item.querySelector('[class*="u-accent-"]') ?? item) ?? iconAccent(item) ? { accent: accentOf(item.querySelector('[class*="u-accent-"]') ?? item) ?? iconAccent(item) } : {}),
-        title: text(heading),
+        title: lines(heading).replace(/\n/g, ' '),
         ...(label ? { label: text(label) } : {}),
         body: textBlocks(without(item, `${NON_COPY},h3,p.text-weight-bold`), context, `${prefix}-c${i}`),
         ...(link ? { link: { label: link.label, ...(link.destination ? { destination: link.destination } : {}) } } : {}),

@@ -131,3 +131,122 @@ test('a points heading is not the section heading, and a one-price table gets an
   assert.equal(table.columns.length, 2);
   assert.equal(table.columns[1].label, '');
 });
+
+const mapSection = (type, html, extra = {}) => {
+  const original = body(html).firstElementChild;
+  const block = { _type: type, ...extra };
+  const staticNode = original.cloneNode(true);
+  staticNode.querySelectorAll('svg,.w-dyn-list').forEach((node) => node.remove());
+  mapSourceSections({ type, selector: [...original.classList][0], original, staticNode, block, context: context(), prefix: 'p', snapshot: extra.snapshot ?? {}, anchors: new Map(), html: '' });
+  return block;
+};
+
+test('a tabbed hero keeps one tab per pane, named by its menu link', () => {
+  const block = mapSection('tabbedHero', `<header class="section_header103"><div class="w-tab-content">
+    <div data-w-tab="Playground" class="w-tab-pane"><div class="breadcrumb_component"><a href="/contact">Home</a></div><h1>Play Center</h1><p>Rain or shine.</p><div class="button-group"><a class="button" href="/contact">Info</a><a class="button is-secondary" href="#">Gift</a></div></div>
+    <div data-w-tab="Preschool" class="w-tab-pane"><h2><span class="text-color-brand-secondary">Preschool</span> Program</h2><p>Ages 3-5.</p></div>
+  </div><div class="w-tab-menu"><a data-w-tab="Playground" class="w-tab-link">Play&nbsp;Center</a><a data-w-tab="Preschool" class="w-tab-link">Preschool</a></div></header>`, { title: 'x', cards: [] });
+  assert.deepEqual(block.tabs.map((tab) => [tab.label, tab.title, tab.highlightText, tab.description, tab.buttons.length]),
+    [['Play Center', 'Play Center', undefined, 'Rain or shine.', 2], ['Preschool', 'Preschool Program', 'Preschool', 'Ages 3-5.', 0]]);
+  assert.equal(block.breadcrumbs[0].label, 'Home');
+  assert.equal('cards' in block || 'title' in block, false);
+});
+
+test('icon cards keep their colour, label, text and link', () => {
+  const block = mapSection('iconCards', `<section class="section_layout311"><div class="layout311_content-left"><h2>Classes</h2></div><div class="layout311_content-right"><p>Held <strong>weekdays</strong>.</p></div>
+    <div class="layout311_list"><div class="layout311_item"><div class="layout311_item-text-wrapper u-accent-mint"><svg viewBox="0 0 1 1"><path d="M0 0"/></svg><h3>Gymnastics</h3><p class="text-weight-bold">ages: 3-4</p><p>Tumbling.</p><div class="button-group"><a class="button is-link" href="/contact">Sessions</a></div></div></div></div></section>`);
+  assert.equal(block.title, 'Classes');
+  assert.equal(block.intro[0].children[1].marks[0], 'strong');
+  const [card] = block.cards;
+  assert.deepEqual([card.title, card.accent, card.label, card.body[0].children[0].text, card.link.label, Boolean(card.icon)], ['Gymnastics', 'mint', 'ages: 3-4', 'Tumbling.', 'Sessions', true]);
+});
+
+test('a testimonial wall keeps the displayed testimonials as its ordered selection', () => {
+  const testimonials = { id: 't', displayName: 'Testimonials', live: [
+    { id: 'a', fieldData: { 'testimonial-text': 'First quote.', live: false } },
+    { id: 'b', fieldData: { 'testimonial-text': 'Second quote.', live: true } },
+  ] };
+  const block = mapSection('quoteWall', `<section class="section_testimonials_testimonial11"><h2><span class="school-year">School Year</span><br>Parent Testimonials</h2>
+    <div class="wall-of-love_item">Second quote. ~ Parent</div><div class="wall-of-love_item">First quote. ~ Parent</div></section>`, { snapshot: { collections: [testimonials] } });
+  assert.deepEqual(block.selectedTestimonials.map((item) => item._ref), ['wf-t-b', 'wf-t-a']);
+  assert.deepEqual([block.eyebrow, block.eyebrowProgram, block.heading[0].children[0].text], ['School Year', 'schoolYear', 'Parent Testimonials']);
+});
+
+test('calendar days keep the template character time', () => {
+  const block = mapSection('cardSlider', `<section class="section_blog66"><div class="blog66_heading-wrapper"><h2>Event Calendar</h2><p>Morning: 9:30.<br>Saturday: 8:30.</p></div>
+    <div class="event19_meta-wrapper"><div><div class="display-inlineflex">• </div><div class="display-inlineflex">Red Heeler</div><div class="display-inlineflex"> – 10:30am &amp; 3pm</div></div></div></section>`, { source: 'playgroundEvent' });
+  assert.equal(block.characterTime, '10:30am & 3pm');
+  assert.equal(block.description, 'Morning: 9:30.\nSaturday: 8:30.');
+});
+
+test('pricing checklists keep their heading, items and footnote', () => {
+  const item = (content, icon = true) => `<div class="check-list_item">${icon ? '<svg viewBox="0 0 1 1"><path d="M0 0"/></svg>' : ''}<p>${content}</p></div>`;
+  const block = mapSection('pricingCards', `<section class="section_pricing19"><h2>Pricing</h2><p>Sign the <a href="https://example.com/waiver">waiver</a>.</p>
+    <div class="check-list_wrap"><div class="check-list_content-left">${item('All Parties Include', false)}${item('Party Room')}</div>
+    <div class="check-list_content-right">${item('Not Included', false)}${item('Food')}${item('* Private parties', false)}</div></div></section>`, { plans: [] });
+  assert.equal(block.intro[0].markDefs.length, 1);
+  assert.deepEqual(block.checklists.map((list) => [list.title, list.items.map((entry) => entry.children[0].text)]),
+    [['All Parties Include', ['Party Room']], ['Not Included', ['Food']]]);
+  assert.equal(block.checklistNote[0].children[0].text, '* Private parties');
+});
+
+const mapOne = (type, html, extra = {}) => {
+  const original = body(html).firstElementChild;
+  const block = { _type: type, ...extra };
+  mapSourceSections({ type, selector: [...original.classList].find((name) => name.startsWith('section_')), original, staticNode: original.cloneNode(true), block, context: context(), prefix: 'p', snapshot: extra.snapshot ?? {}, anchors: new Map(), html: '' });
+  return block;
+};
+
+test('a tabbed hero keeps one tab per pane, named by its tab-menu link', () => {
+  const block = mapOne('tabbedHero', `<header class="section_header103"><div class="w-tab-content">
+    <div data-w-tab="Playground / Birthdays" class="w-tab-pane"><h1>Play Center</h1><p>Rain or shine.</p><a class="button" href="/contact">Info</a><img src="https://cdn.prod.website-files.com/a/b.jpg" alt="Gym"></div>
+    <div data-w-tab="Preschool" class="w-tab-pane"><h2><span class="text-color-brand-secondary">Preschool</span> Program</h2><p>Ages 3-5.</p><img src="https://cdn.prod.website-files.com/a/c.jpg" alt=""></div>
+  </div><div class="w-tab-menu"><a data-w-tab="Playground / Birthdays">Play Center &amp; Birthdays</a><a data-w-tab="Preschool">Preschool</a></div></header>`, { title: 'x', description: 'x', cards: [] });
+  assert.deepEqual(block.tabs.map((tab) => [tab.label, tab.title, tab.highlightText, tab.description]), [
+    ['Play Center & Birthdays', 'Play Center', undefined, 'Rain or shine.'],
+    ['Preschool', 'Preschool Program', 'Preschool', 'Ages 3-5.'],
+  ]);
+  assert.equal(block.tabs[0].buttons[0].text, 'Info');
+  assert.equal('cards' in block, false);
+});
+
+test('icon cards keep the heading, introduction and each card with its label and link', () => {
+  const block = mapOne('iconCards', `<section class="section_layout311"><div class="layout311_content-left"><h2>Enrichment Classes</h2></div>
+    <div class="layout311_content-right"><p>Held <strong>weekdays</strong>.</p></div>
+    <div class="layout311_list"><div class="layout311_item"><div class="layout311_item-text-wrapper u-accent-mint"><svg viewBox="0 0 24 24"><path d="M1 1"/></svg><h3>Gymnastics<br>Class</h3><p class="text-weight-bold">ages: 3-4</p><p>Tumbling.</p><div class="button-group"><a class="button is-link" href="/contact">Sessions and Info</a></div></div></div></div></section>`);
+  assert.equal(block.title, 'Enrichment Classes');
+  assert.equal(block.intro[0].children.find((span) => span.marks.includes('strong')).text, 'weekdays');
+  const [card] = block.cards;
+  assert.deepEqual([card.title, card.label, card.accent, card.link.label, card.link.destination.kind], ['Gymnastics Class', 'ages: 3-4', 'mint', 'Sessions and Info', 'internal']);
+  assert.ok(card.icon.svg.startsWith('<svg'));
+});
+
+test('statistics keep each figure in its colour and show the program\'s preschool teachers', () => {
+  const block = mapOne('statistics', `<section class="section_stats14"><div class="stats14_content-left"><div class="text-style-tagline"><span class="school-year">School Year</span></div><h2>Outstanding Staff</h2><p>Our teachers.</p>
+    <div class="stats14_item-list"><div class="stats14_item u-accent-purple"><div class="stats14_number">1:7</div><h3>Staff-to-child ratio</h3><p>exceeds the requirements</p></div></div></div>
+    <div class="team4_component"><div class="w-dyn-list"></div></div></section>`, { description: 'x' });
+  assert.deepEqual(block.items.map((item) => [item.value, item.label, item.accent]), [['1:7', 'Staff-to-child ratio', 'purple']]);
+  assert.deepEqual([block.preschoolTeachers, block.program, block.title], [true, 'schoolYear', 'Outstanding Staff']);
+});
+
+test('a testimonial wall keeps the displayed testimonials in order as its selection', () => {
+  const testimonials = { id: 't', displayName: 'Testimonials', live: [
+    { id: 'one', fieldData: { 'testimonial-text': 'First quote.' } },
+    { id: 'two', fieldData: { 'testimonial-text': 'Second quote.' } },
+  ] };
+  const block = mapOne('quoteWall', `<section class="section_testimonials_testimonial11"><h2><span class="school-year">School Year</span><br>Parent Testimonials</h2>
+    <div class="wall-of-love_item">Second quote. ~ Parent</div><div class="wall-of-love_item">First quote. ~ Parent</div></section>`, { snapshot: { collections: [testimonials] } });
+  assert.deepEqual(block.selectedTestimonials.map((item) => item._ref), ['wf-t-two', 'wf-t-one']);
+  assert.deepEqual([block.eyebrow, block.eyebrowProgram], ['School Year', 'schoolYear']);
+});
+
+test('price card checklists keep their heading, icon, colour and a closing note', () => {
+  const item = (text, icon = true) => `<div class="check-list_item">${icon ? '<svg viewBox="0 0 24 24"><path d="M1 1"/></svg>' : ''}<p>${text}</p></div>`;
+  const block = mapOne('pricingCards', `<section class="section_pricing19"><h2>Pricing</h2><p>Sign the <a href="https://example.com/waiver">waiver</a>.</p>
+    <div class="check-list_wrap"><div class="check-list_content-left">${item('<strong>All Parties Include</strong>', false)}${item('Party Room')}</div>
+    <div class="check-list_content-right">${item('<strong>Not Included:</strong>', false).replace('check-list_item', 'check-list_item u-accent-red')}${item('Decorations').replace('check-list_item', 'check-list_item u-accent-red')}${item('<strong>* Private parties</strong>', false)}</div></div></section>`, { description: 'x' });
+  assert.deepEqual(block.checklists.map((list) => [list.title, list.accent, list.items.length]), [['All Parties Include', undefined, 1], ['Not Included:', 'red', 1]]);
+  assert.equal(block.checklistNote[0].children.map((span) => span.text).join('').trim(), '* Private parties');
+  assert.equal(block.intro[0].markDefs[0].customLink.external, 'https://example.com/waiver');
+  assert.equal('description' in block, false);
+});
