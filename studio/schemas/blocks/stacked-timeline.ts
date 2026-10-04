@@ -25,7 +25,7 @@ const item = defineArrayMember({
       type: "string",
       description:
         "One sentence on what happens here. Explain any camp jargon.",
-      validation: (rule) => rule.required().max(180),
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "image",

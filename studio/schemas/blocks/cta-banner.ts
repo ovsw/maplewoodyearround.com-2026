@@ -41,9 +41,9 @@ export default defineType({
       name: "buttons",
       type: "array",
       description:
-        "One or two actions. The first is the main action; the second is secondary.",
+        "Optional actions. A notice can contain supporting text without a button.",
       of: [defineArrayMember({ type: "button" })],
-      validation: (rule) => rule.required().min(1).max(2),
+      validation: (rule) => rule.max(2),
     }),
   ],
   preview: {

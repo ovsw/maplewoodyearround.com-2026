@@ -177,6 +177,7 @@ export default function QuoteWall({
   background,
   dataAttribute,
   eyebrow,
+  description,
   heading,
   testimonialDataAttribute,
   testimonials,
@@ -234,6 +235,7 @@ export default function QuoteWall({
               <PortableText components={headingComponents} value={heading} />
             </h2>
           </div>
+          {description ? <p className="mt-5" data-sanity={dataAttribute?.("description")}>{description}</p> : null}
         </header>
 
         <QuoteWallList

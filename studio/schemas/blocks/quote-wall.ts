@@ -25,6 +25,12 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     defineField({
+      name: "description",
+      title: "Supporting text",
+      type: "text",
+      description: "The source introduction and closing text shown with these testimonials.",
+    }),
+    defineField({
       name: "eyebrow",
       title: "Eyebrow",
       type: "string",

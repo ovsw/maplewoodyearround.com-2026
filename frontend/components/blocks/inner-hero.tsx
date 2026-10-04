@@ -56,7 +56,7 @@ export default function InnerHero({
 
   const cleanKey = stegaClean(_key);
   const headingId = `inner-hero-${cleanKey}-title`;
-  const ctaButtons = buttons?.slice(0, 2) ?? [];
+  const ctaButtons = buttons ?? [];
   const factList = facts?.slice(0, 4) ?? [];
   const hasImage = Boolean(image?.asset?._id);
 

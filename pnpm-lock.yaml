@@ -197,6 +197,9 @@ importers:
       '@sanity/vision':
         specifier: ^6.16.0
         version: 6.16.0(28d9025b0c38eed842e545056484b040)
+      jsdom:
+        specifier: ^30.0.1
+        version: 30.0.1(@noble/hashes@2.2.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1

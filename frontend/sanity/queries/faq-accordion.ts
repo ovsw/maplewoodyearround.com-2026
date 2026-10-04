@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { simpleRichTextQuery } from "./shared/simple-rich-text";
+import { richTextContentQuery } from "./shared/rich-text-content";
 
 // @sanity-typegen-ignore
 export const faqAccordionQuery = groq`
@@ -11,7 +11,7 @@ export const faqAccordionQuery = groq`
       && (!defined(^.category._ref) || ^.category._ref in categories[]._ref || category._ref == ^.category._ref)
     ] | order(coalesce(order, 2147483647) asc, title asc, _id asc) {
       "_key": _id, _id, _type, title,
-      "answer": body[]{${simpleRichTextQuery}}
+      "answer": body[]{${richTextContentQuery}}
     }
   }
 `;

@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { simpleRichTextQuery } from "./shared/simple-rich-text";
+import { richTextContentQuery } from "./shared/rich-text-content";
 
 // Keep every category for the Maplewood filter. The first category also feeds
 // the existing generic hub renderer until the page issue replaces its layout.
@@ -11,7 +11,7 @@ export const faqHubQuery = groq`
       && (count(categories) > 0 || defined(category._ref))]
       | order(coalesce(order, 2147483647) asc, title asc, _id asc) {
         _id, title, program, order,
-        "answer": body[]{${simpleRichTextQuery}},
+        "answer": body[]{${richTextContentQuery}},
         "answerText": pt::text(body),
         "category": coalesce(categories[0]->, category->){_id, title, "slug": slug.current, order},
         "categories": categories[]->{_id, title, "slug": slug.current, order}

@@ -1,5 +1,5 @@
 import { createCustomLinkMarkRenderer } from "@/components/portable-text/custom-link-mark";
-import { simpleRichTextComponents } from "@/components/simple-rich-text";
+import { richTextContentComponents } from "@/components/rich-text-content";
 import {
   AccordionContent,
   AccordionItem,
@@ -21,9 +21,9 @@ import type { ReactNode } from "react";
 
 export function faqAnswerComponents(): PortableTextComponents {
   return {
-    ...simpleRichTextComponents,
+    ...richTextContentComponents,
     marks: {
-      ...simpleRichTextComponents?.marks,
+      ...richTextContentComponents?.marks,
       customLink: createCustomLinkMarkRenderer(
         "font-medium text-prose-link underline decoration-prose-link/30 underline-offset-4 hover:text-prose-link-hover hover:decoration-prose-link-hover",
       ),

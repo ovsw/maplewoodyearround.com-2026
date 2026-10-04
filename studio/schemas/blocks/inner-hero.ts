@@ -43,7 +43,7 @@ export default defineType({
   type: "object",
   icon: Mountain,
   description:
-    "Full-bleed photo hero for interior pages: eyebrow, heading with a handwritten accent, one-line body, up to two buttons, and up to four facts along the bottom edge. No video.",
+    "Interior page heading with an optional photo, supporting copy, buttons and facts.",
   fields: [
     defineField({
       name: "eyebrow",
@@ -69,9 +69,8 @@ export default defineType({
     defineField({
       name: "buttons",
       type: "array",
-      description: "Up to two call-to-action buttons.",
+      description: "Call-to-action buttons in display order.",
       of: [defineArrayMember({ type: "button" })],
-      validation: (rule) => rule.max(2),
     }),
     defineField({
       name: "image",
@@ -85,13 +84,7 @@ export default defineType({
           name: "alt",
           title: "Alternative text",
           type: "string",
-          validation: (rule) =>
-            rule.custom((value, context) => {
-              const image = context.parent as { asset?: unknown } | undefined;
-              return image?.asset && !value
-                ? "Describe the image for visitors who cannot see it"
-                : true;
-            }),
+          description: "Describe meaningful content. Leave empty for a decorative image.",
         }),
       ],
       validation: (rule) => rule.required(),

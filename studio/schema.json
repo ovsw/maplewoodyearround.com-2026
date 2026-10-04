@@ -2972,6 +2972,13 @@
           },
           "optional": true
         },
+        "description": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "eyebrow": {
           "type": "objectAttribute",
           "value": {
@@ -4662,31 +4669,16 @@
                     "of": {
                       "type": "object",
                       "attributes": {
-                        "href": {
+                        "_key": {
                           "type": "objectAttribute",
                           "value": {
                             "type": "string"
-                          },
-                          "optional": true
-                        },
-                        "_type": {
-                          "type": "objectAttribute",
-                          "value": {
-                            "type": "string",
-                            "value": "link"
                           }
                         }
                       },
                       "rest": {
-                        "type": "object",
-                        "attributes": {
-                          "_key": {
-                            "type": "objectAttribute",
-                            "value": {
-                              "type": "string"
-                            }
-                          }
-                        }
+                        "type": "inline",
+                        "name": "customLink"
                       }
                     }
                   },
@@ -4925,6 +4917,26 @@
                       {
                         "type": "string",
                         "value": "normal"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h2"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h3"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h4"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h5"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h6"
                       },
                       {
                         "type": "string",
@@ -8273,6 +8285,13 @@
                     },
                     "optional": true
                   },
+                  "alt": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    },
+                    "optional": true
+                  },
                   "_type": {
                     "type": "objectAttribute",
                     "value": {
@@ -8317,6 +8336,13 @@
                     "value": {
                       "type": "inline",
                       "name": "sanity.imageCrop"
+                    },
+                    "optional": true
+                  },
+                  "alt": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
                     },
                     "optional": true
                   },
@@ -9173,7 +9199,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "simpleRichText"
+          "name": "richTextContent"
         },
         "optional": true
       },

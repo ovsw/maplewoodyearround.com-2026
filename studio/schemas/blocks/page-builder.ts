@@ -102,7 +102,7 @@ export const heroBlockTypes = new Set([
 export const faqBlockTypes = new Set(["faqAccordion", "faqHub"]);
 
 export function validateBlocks(
-  blocks: Array<{ _type?: string; background?: string }> | undefined,
+  blocks: Array<{ _type?: string; background?: string; program?: string }> | undefined,
 ): true | string {
   const heroTypes = heroBlockTypes;
   const heroIndexes = (blocks ?? []).flatMap((block, index) =>
@@ -112,10 +112,10 @@ export function validateBlocks(
   if (heroIndexes.length === 1 && heroIndexes[0] !== 0) {
     return "The Hero section must be the first section";
   }
-  const faqCount =
-    blocks?.filter((block) => faqBlockTypes.has(block?._type ?? "")).length ??
-    0;
-  if (faqCount > 1) return "Add no more than one FAQ section";
+  const faqs = blocks?.filter((block) => faqBlockTypes.has(block?._type ?? "")) ?? [];
+  const separatePrograms = faqs.length === 2 && faqs.every((block) => block._type === "faqAccordion") &&
+    faqs.some((block) => block.program === "summerCamp") && faqs.some((block) => block.program === "schoolYear");
+  if (faqs.length > 1 && !separatePrograms) return "Add no more than one FAQ section";
   const teamCount =
     blocks?.filter((block) => block?._type === "teamMembers").length ?? 0;
   if (teamCount > 1) return "Add no more than one Team Members section";
