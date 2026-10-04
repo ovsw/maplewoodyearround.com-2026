@@ -62,6 +62,13 @@ export function summerDocuments(snapshot, context) {
       const matched = labelGrades(label, version);
       if (!matched.length) throw new Error(`Summer document label "${label}" names no source grade`);
       matched.forEach((grade) => covered.add(grade.id));
+      // One entry order serves both pages, so their group orders must agree.
+      const order = (links, field) => groups[version].filter((group) => links.includes(group.fieldData[field]?.url))
+        .sort((a, b) => links.indexOf(a.fieldData[field].url) - links.indexOf(b.fieldData[field].url)).map((group) => group.id);
+      const schedules = order(scheduleLists[index].links, 'group-schedule-pdf');
+      const letters = order(letterLists[index].links, 'welcome-letter-pdf');
+      const shared = (ids, other) => ids.filter((id) => other.includes(id)).join('|');
+      if (shared(schedules, letters) !== shared(letters, schedules)) throw new Error(`Summer document pages order "${label}" groups differently`);
       return gradeGroup(matched[0], inGrades(matched.map((grade) => grade.id)), [...scheduleLists[index].links, ...letterLists[index].links], label);
     });
     // Grades with groups but no public label keep their entries after the page order.
