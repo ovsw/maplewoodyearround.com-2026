@@ -9,6 +9,7 @@
 }
 
 .stickyViewport {
+  background: #006601;
   position: sticky;
   top: 0;
   height: 100vh;

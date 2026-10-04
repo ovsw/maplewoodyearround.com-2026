@@ -37,7 +37,8 @@ export default function QuoteWall({
               data-sanity={testimonialDataAttribute?.(card._id, "body")}
             >
               <div
-                className={css.stars}
+              className={css.stars}
+              role="img"
                 aria-label={`${card.rating || 5} out of 5 stars`}
               >
                 {Array.from({ length: card.rating || 5 }, (_, i) => (
