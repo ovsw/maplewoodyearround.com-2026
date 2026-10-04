@@ -50,7 +50,8 @@ export default function InnerHero({
         </div>
       </div>
       <div className={css.heroContain}>
-        <div className={css.heroInner}>
+        {/* Without a photo the live page centres the text in a reading column. */}
+        <div className={[css.heroInner, image?.asset ? "" : css.heroInnerNarrow].join(" ")}>
           <div className={css.heroContent}>
             <Breadcrumbs breadcrumbs={breadcrumbs} dataAttribute={dataAttribute} />
             {stegaClean(eyebrow)?.trim() ? (

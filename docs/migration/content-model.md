@@ -297,9 +297,9 @@ The featured-news title, date and link must come from one selected post. The kno
 | `group-schedule-pdf` | `summerDocuments.gradeGroups[].entries[].file` | `kind = schedule`, `group` references this `campGroup`.   |
 | `welcome-letter-pdf` | `summerDocuments.gradeGroups[].entries[].file` | `kind = welcomeLetter`, same group reference.             |
 
-Create one `summerDocuments` document per evidenced summer label, with grade references in `gradeGroups[].grade`. A group with several entering grades contributes entries under each of those grades; entries reuse the same file asset. Preserve public grade/group order. Omit an entry when no source PDF exists. The annual label is not a field on SC Groups: obtain it from the source page/PDF evidence or report the missing label. Do not substitute the import year.
+Create one `summerDocuments` document per evidenced summer label, with one `gradeGroups[]` item per grade label on the public pages, in page order. A label that covers several grades, such as "8th & 9th Grades", references its first grade and keeps the label in `gradeGroups[].heading`; other headings come from the grade title. A group with several entering grades contributes entries under each of its labelled grades; entries reuse the same file asset. Entries follow the public link order under each label. Omit an entry when no source PDF exists. The annual label is not a field on SC Groups: obtain it from the source page/PDF evidence or report the missing label. Do not substitute the import year.
 
-The group-schedules and welcome-letters pages select the same document and filter entries by `kind`. Both pages therefore use the same grade structure and file replacements. Current group visibility must be respected when lists are rendered.
+The group-schedules and welcome-letters pages select the same document and filter entries by `kind`. Both pages therefore use the same grade structure and file replacements. Current group visibility must be respected when lists are rendered. The section's description holds only the page's introduction; grade labels belong to the document list. A page hero without a photo uses the live centred reading column (`header50c`).
 
 ### SC Grades → `grade`
 

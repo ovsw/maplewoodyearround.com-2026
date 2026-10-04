@@ -134,6 +134,13 @@ export const summerDocuments = defineType({
               validation: (rule) => rule.required(),
             }),
             defineField({
+              name: "heading",
+              title: "Heading",
+              type: "string",
+              description:
+                "Optional. Replaces the grade name above this list, for example 8th & 9th Grades.",
+            }),
+            defineField({
               name: "entries",
               title: "Documents",
               type: "array",
@@ -181,7 +188,10 @@ export const summerDocuments = defineType({
               ],
             }),
           ],
-          preview: { select: { title: "grade.title" } },
+          preview: {
+            select: { heading: "heading", grade: "grade.title" },
+            prepare: ({ heading, grade }) => ({ title: heading || grade }),
+          },
         }),
       ],
     }),

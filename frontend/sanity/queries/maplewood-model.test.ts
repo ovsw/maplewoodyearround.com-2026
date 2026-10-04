@@ -345,6 +345,7 @@ describe("summer document visibility", () => {
               {
                 _key: "grade",
                 grade: ref("grade"),
+                heading: "Grades 2 & 3",
                 entries: [
                   entry("schedule", "schedule", "visible"),
                   entry("welcome", "welcomeLetter", "visible"),
@@ -376,6 +377,7 @@ describe("summer document visibility", () => {
           (item: Fixture) => item._key,
         ),
       ).toEqual([kind === "schedule" ? "schedule" : "welcome", "ungrouped"]);
+      expect(section.documents.gradeGroups[0].heading).toBe("Grades 2 & 3");
     },
   );
 });

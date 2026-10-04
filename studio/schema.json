@@ -13382,6 +13382,13 @@
                 },
                 "optional": true
               },
+              "heading": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
               "entries": {
                 "type": "objectAttribute",
                 "value": {
