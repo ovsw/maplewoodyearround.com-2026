@@ -115,7 +115,29 @@ export function Header({
                   <ul>
                     {group.links.map((item) => (
                       <li key={item.key}>
-                        <HeaderLink link={item.link} onClick={close} />
+                        <HeaderLink
+                          link={item.link}
+                          onClick={close}
+                          className={
+                            item.icon || item.description
+                              ? styles.childLink
+                              : undefined
+                          }
+                        >
+                          {item.icon && (
+                            <span className={styles.childIcon}>
+                              <NavigationIcon icon={item.icon} />
+                            </span>
+                          )}
+                          <span>
+                            {item.label}
+                            {item.description && (
+                              <span className={styles.childDescription}>
+                                {item.description}
+                              </span>
+                            )}
+                          </span>
+                        </HeaderLink>
                       </li>
                     ))}
                   </ul>

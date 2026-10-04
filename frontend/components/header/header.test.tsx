@@ -28,7 +28,10 @@ const model: HeaderModel = {
             key: "strategy",
             label: "Strategy",
             description: "Find the clearest path through a hard problem.",
-            icon: null,
+            icon: {
+              name: "landmark",
+              svg: '<svg viewBox="0 0 24 24"><path d="M3 22h18" /></svg>',
+            },
             link: {
               href: "/strategy",
               label: "Strategy",
@@ -93,10 +96,16 @@ describe("Site Header", () => {
     expect(
       screen.getByRole("heading", { name: "Services" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Strategy" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /^Strategy/ })).toHaveAttribute(
       "href",
       "/strategy",
     );
+    expect(
+      screen.getByText("Find the clearest path through a hard problem."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /^Strategy/ }).querySelector("svg path"),
+    ).toBeInTheDocument();
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(trigger).toHaveFocus();

@@ -59,9 +59,8 @@ export async function CachedHeader({
     contact: settings?.contact,
     socialLinks: (settings?.socialLinks ?? []).flatMap((social) => {
       const href = getSafeLinkHref(social.url);
-      return social.label && href
-        ? [{ label: social.label, href, openInNewTab: true }]
-        : [];
+      const label = social.label?.trim();
+      return label && href ? [{ label, href, openInNewTab: true }] : [];
     }),
   };
 

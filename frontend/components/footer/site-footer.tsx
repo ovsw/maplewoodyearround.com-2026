@@ -32,7 +32,20 @@ export function SiteFooter({
   dataAttribute?: (path: string) => string | undefined;
   model: FooterModel;
 }) {
-  const contact = model.contact;
+  const contact = {
+    phone: model.contact?.phone?.trim(),
+    email: model.contact?.email?.trim(),
+    fax: model.contact?.fax?.trim(),
+    addressLines: model.contact?.addressLines
+      ?.map((line) => line.trim())
+      .filter(Boolean),
+  };
+  const hasContact = Boolean(
+    contact.phone ||
+    contact.email ||
+    contact.fax ||
+    contact.addressLines?.length,
+  );
   return (
     <footer className={styles.footer} data-footer-state="ready">
       <div className={styles.inner}>
@@ -44,7 +57,7 @@ export function SiteFooter({
             <p className={styles.business}>
               Maplewood Country Day Camp and Enrichment Center Inc.
             </p>
-            {contact ? (
+            {hasContact ? (
               <address>
                 <p>
                   {contact.phone && (
@@ -113,6 +126,13 @@ export function SiteFooter({
             ))}
           </div>
         </div>
+        {model.actions.length > 0 && (
+          <nav aria-label="Footer actions" className={styles.actions}>
+            {model.actions.map((action) => (
+              <FooterLink key={action.key} link={action} />
+            ))}
+          </nav>
+        )}
         <Newsletter
           copy={
             model.newsletter ?? {

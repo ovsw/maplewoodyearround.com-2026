@@ -10,9 +10,14 @@ export async function SiteAnalyticsLoader() {
     return null;
   const { isEnabled } = await draftMode();
   if (isEnabled) return null;
-  const settings = await fetchSanitySettings({
-    perspective: "published",
-    stega: false,
-  });
+  let settings;
+  try {
+    settings = await fetchSanitySettings({
+      perspective: "published",
+      stega: false,
+    });
+  } catch {
+    return null;
+  }
   return <SiteAnalytics settings={settings} />;
 }
