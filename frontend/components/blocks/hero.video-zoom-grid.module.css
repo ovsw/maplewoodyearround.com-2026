@@ -132,6 +132,7 @@
 .contentInner {
   max-width: min(80ch, 88vw);
   text-align: center;
+  pointer-events: auto;
 }
 
 @media (max-width: 767px) {

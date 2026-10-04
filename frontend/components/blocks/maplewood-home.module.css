@@ -34,6 +34,7 @@
   pointer-events: none;
 }
 .heroContent h1 {
+  pointer-events: auto;
   font-family: var(--font-display);
   font-size: 56px;
   line-height: 1.2;
@@ -42,6 +43,7 @@
   margin: 0 0 24px;
 }
 .heroContent p {
+  pointer-events: auto;
   font-size: 20px;
   line-height: 1.5;
   margin-bottom: 32px;
@@ -502,6 +504,17 @@
   }
   .newsFeatured > img {
     aspect-ratio: 1.33;
+  }
+}
+/* Match the live site's shorter testimonial wall on smaller screens. */
+@media (width < 62rem) {
+  .quote:nth-child(n + 10) {
+    display: none;
+  }
+}
+@media (width < 31rem) {
+  .quote:nth-child(n + 7) {
+    display: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
