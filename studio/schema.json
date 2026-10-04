@@ -1548,6 +1548,36 @@
   },
   {
     "type": "type",
+    "name": "grade.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "grade"
+    }
+  },
+  {
+    "type": "type",
     "name": "programOffering.reference",
     "value": {
       "type": "object",
@@ -1756,6 +1786,14 @@
           "value": {
             "type": "inline",
             "name": "activityCategory.reference"
+          },
+          "optional": true
+        },
+        "grade": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "grade.reference"
           },
           "optional": true
         },
@@ -2177,6 +2215,21 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "tagline": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "tagline"
+          },
+          "optional": true
+        },
         "title": {
           "type": "objectAttribute",
           "value": {
@@ -2253,6 +2306,28 @@
           },
           "optional": true
         },
+        "features": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              },
+              "rest": {
+                "type": "inline",
+                "name": "featureItem"
+              }
+            }
+          },
+          "optional": true
+        },
         "cards": {
           "type": "objectAttribute",
           "value": {
@@ -2321,6 +2396,21 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "tagline": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "tagline"
+          },
+          "optional": true
+        },
         "title": {
           "type": "objectAttribute",
           "value": {
@@ -2332,6 +2422,90 @@
           "type": "objectAttribute",
           "value": {
             "type": "string"
+          },
+          "optional": true
+        },
+        "content": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "basicRichText"
+          },
+          "optional": true
+        },
+        "features": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              },
+              "rest": {
+                "type": "inline",
+                "name": "featureItem"
+              }
+            }
+          },
+          "optional": true
+        },
+        "image": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "object",
+            "attributes": {
+              "asset": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.imageAsset.reference"
+                },
+                "optional": true
+              },
+              "media": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "unknown"
+                },
+                "optional": true
+              },
+              "hotspot": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.imageHotspot"
+                },
+                "optional": true
+              },
+              "crop": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "sanity.imageCrop"
+                },
+                "optional": true
+              },
+              "alt": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                },
+                "optional": true
+              },
+              "_type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string",
+                  "value": "image"
+                }
+              }
+            }
           },
           "optional": true
         },
@@ -2403,6 +2577,43 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "breadcrumbs": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "object",
+              "attributes": {
+                "_key": {
+                  "type": "objectAttribute",
+                  "value": {
+                    "type": "string"
+                  }
+                }
+              },
+              "rest": {
+                "type": "inline",
+                "name": "breadcrumb"
+              }
+            }
+          },
+          "optional": true
+        },
+        "tagline": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "tagline"
+          },
+          "optional": true
+        },
         "title": {
           "type": "objectAttribute",
           "value": {
@@ -2450,6 +2661,10 @@
               {
                 "type": "string",
                 "value": "enrichment"
+              },
+              {
+                "type": "string",
+                "value": "seasons"
               }
             ]
           },
@@ -3349,6 +3564,13 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "backgroundImage": {
           "type": "objectAttribute",
           "value": {
@@ -3426,6 +3648,13 @@
           "optional": true
         },
         "eyebrow": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
+        "subtitle": {
           "type": "objectAttribute",
           "value": {
             "type": "string"
@@ -3784,6 +4013,13 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "eyebrow": {
           "type": "objectAttribute",
           "value": {
@@ -3937,6 +4173,13 @@
           "value": {
             "type": "inline",
             "name": "minimalRichText"
+          },
+          "optional": true
+        },
+        "highlightText": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
           },
           "optional": true
         },
@@ -13054,36 +13297,6 @@
   },
   {
     "type": "type",
-    "name": "grade.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "grade"
-    }
-  },
-  {
-    "type": "type",
     "name": "campGroup.reference",
     "value": {
       "type": "object",
@@ -14804,6 +15017,13 @@
         },
         "optional": true
       },
+      "label": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "description": {
         "type": "objectAttribute",
         "value": {
@@ -14881,6 +15101,10 @@
             {
               "type": "string",
               "value": "enrichment"
+            },
+            {
+              "type": "string",
+              "value": "seasons"
             }
           ]
         },
@@ -14945,6 +15169,13 @@
         "value": {
           "type": "inline",
           "name": "contentDestination"
+        },
+        "optional": true
+      },
+      "linkLabel": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       },

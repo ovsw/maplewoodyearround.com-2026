@@ -55,11 +55,17 @@ function authoredCollections(snapshot, context) {
       const id = `wf-authored-program-${key(title)}`;
       const image = node.querySelector('img[src]');
       const link = node.matches('a[href]') ? node : node.querySelector('a[href]');
+      const label = text(node.querySelector('.text-style-tagline'));
+      const linkLabel = text(node.querySelector('.button'));
+      // The seasons page shows the two seasons in the same card component.
+      const listingGroup = node.classList.contains('summer-camp_additional-programs_item') ? 'additional' : path === '/maplewood-seasons' ? 'seasons' : 'main';
       const doc = {
-        _id: id, _type: 'programOffering', title, program: 'summerCamp', visible: true,
-        listingGroup: node.classList.contains('summer-camp_additional-programs_item') ? 'additional' : 'main',
-        description: text(node), ...(image ? { image: context.asset(image.src, 'image', image.alt) } : {}),
+        _id: id, _type: 'programOffering', title, program: 'summerCamp', visible: true, listingGroup,
+        ...(label ? { label } : {}),
+        description: [...node.querySelectorAll('p')].map(text).filter(Boolean).join('\n') || text(node),
+        ...(image ? { image: context.asset(image.src, 'image', image.alt) } : {}),
         ...(link ? { destination: destination(link.getAttribute('href'), context) } : {}),
+        ...(linkLabel ? { linkLabel } : {}),
         order: documents.size,
       };
       if (!documents.has(id)) documents.set(id, doc);

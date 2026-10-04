@@ -293,6 +293,13 @@ export type ActivityCategoryReference = {
   [internalGroqTypeReferenceTo]?: "activityCategory";
 };
 
+export type GradeReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "grade";
+};
+
 export type ProgramOfferingReference = {
   _ref: string;
   _type: "reference";
@@ -325,6 +332,7 @@ export type CardSlider = {
   program?: "summerCamp" | "schoolYear";
   facilityCategory?: FacilityCategoryReference;
   activityCategory?: ActivityCategoryReference;
+  grade?: GradeReference;
   location?: "Indoor" | "Outdoor" | "Special";
   audience?: string;
   programOffering?: ProgramOfferingReference;
@@ -385,6 +393,8 @@ export type RateTable = {
 export type HistoryStory = {
   _type: "historyStory";
   background?: SectionBackground;
+  anchorId?: string;
+  tagline?: Tagline;
   title?: string;
   description?: string;
   image?: {
@@ -396,6 +406,11 @@ export type HistoryStory = {
     _type: "image";
   };
   body?: RichTextContent;
+  features?: Array<
+    {
+      _key: string;
+    } & FeatureItem
+  >;
   cards?: Array<
     {
       _key: string;
@@ -411,8 +426,24 @@ export type HistoryStory = {
 export type ElectiveCards = {
   _type: "electiveCards";
   background?: SectionBackground;
+  anchorId?: string;
+  tagline?: Tagline;
   title?: string;
   description?: string;
+  content?: BasicRichText;
+  features?: Array<
+    {
+      _key: string;
+    } & FeatureItem
+  >;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
   cards?: Array<
     {
       _key: string;
@@ -428,10 +459,17 @@ export type ElectiveCards = {
 export type ProgramCards = {
   _type: "programCards";
   background?: SectionBackground;
+  anchorId?: string;
+  breadcrumbs?: Array<
+    {
+      _key: string;
+    } & Breadcrumb
+  >;
+  tagline?: Tagline;
   title?: string;
   description?: string;
   program?: "summerCamp" | "schoolYear";
-  listingGroup?: "main" | "additional" | "enrichment";
+  listingGroup?: "main" | "additional" | "enrichment" | "seasons";
 };
 
 export type DirectorIntro = {
@@ -584,6 +622,7 @@ export type TestimonialReference = {
 export type QuoteWall = {
   _type: "quoteWall";
   background?: SectionBackground;
+  anchorId?: string;
   backgroundImage?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -598,6 +637,7 @@ export type QuoteWall = {
   >;
   description?: string;
   eyebrow?: string;
+  subtitle?: string;
   heading?: MinimalRichText;
   program?: "summerCamp" | "schoolYear";
 };
@@ -652,6 +692,7 @@ export type BigImageList = {
 export type StackedTimeline = {
   _type: "stackedTimeline";
   background?: SectionBackground;
+  anchorId?: string;
   eyebrow?: string;
   title?: MinimalRichText;
   intro?: string;
@@ -679,6 +720,7 @@ export type InnerHero = {
     } & Breadcrumb
   >;
   title?: MinimalRichText;
+  highlightText?: string;
   body?: string;
   linksLabel?: string;
   buttons?: Array<
@@ -2195,13 +2237,6 @@ export type HomePage = {
   meta?: Meta;
 };
 
-export type GradeReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "grade";
-};
-
 export type CampGroupReference = {
   _ref: string;
   _type: "reference";
@@ -2494,6 +2529,7 @@ export type ProgramOffering = {
   title?: string;
   slug?: Slug;
   program?: "summerCamp" | "schoolYear";
+  label?: string;
   description?: string;
   image?: {
     asset?: SanityImageAssetReference;
@@ -2503,7 +2539,7 @@ export type ProgramOffering = {
     alt?: string;
     _type: "image";
   };
-  listingGroup?: "main" | "additional" | "enrichment";
+  listingGroup?: "main" | "additional" | "enrichment" | "seasons";
   days?: "Tue, Thu" | "Mo, Wed, Fri" | "Mo-Fri" | "Mo-Sat";
   activities?: Array<
     {
@@ -2512,6 +2548,7 @@ export type ProgramOffering = {
   >;
   color?: string;
   destination?: ContentDestination;
+  linkLabel?: string;
   order?: number;
   visible?: boolean;
 };
@@ -2794,6 +2831,7 @@ export type AllSanitySchemaTypes =
   | Statistics
   | FacilityCategoryReference
   | ActivityCategoryReference
+  | GradeReference
   | ProgramOfferingReference
   | CardSlider
   | PricingCards
@@ -2886,7 +2924,6 @@ export type AllSanitySchemaTypes =
   | Author
   | Page
   | HomePage
-  | GradeReference
   | CampGroupReference
   | SummerDocuments
   | SeasonReference
@@ -5845,7 +5882,7 @@ export type BLOG_INDEX_QUERY_RESULT = {
         title: string | null;
         description: string | null;
         program: "schoolYear" | "summerCamp" | null;
-        listingGroup: "additional" | "enrichment" | "main" | null;
+        listingGroup: "additional" | "enrichment" | "main" | "seasons" | null;
         items: Array<{
           _id: string;
           title: string | null;
@@ -10306,7 +10343,7 @@ export type HOME_PAGE_QUERY_RESULT = {
         title: string | null;
         description: string | null;
         program: "schoolYear" | "summerCamp" | null;
-        listingGroup: "additional" | "enrichment" | "main" | null;
+        listingGroup: "additional" | "enrichment" | "main" | "seasons" | null;
         items: Array<{
           _id: string;
           title: string | null;
@@ -14629,7 +14666,7 @@ export type PAGE_QUERY_RESULT = {
         title: string | null;
         description: string | null;
         program: "schoolYear" | "summerCamp" | null;
-        listingGroup: "additional" | "enrichment" | "main" | null;
+        listingGroup: "additional" | "enrichment" | "main" | "seasons" | null;
         items: Array<{
           _id: string;
           title: string | null;

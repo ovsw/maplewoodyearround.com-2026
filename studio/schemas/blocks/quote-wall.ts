@@ -1,6 +1,6 @@
 import { LayoutGrid } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import { programFilterField } from "./shared/maplewood-fields";
+import { programFilterField, sectionAnchorField } from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
 const richTextToPlainText = (value: unknown): string => {
@@ -24,6 +24,7 @@ export default defineType({
     "Every matching Testimonial as a card in a wall of columns, for pages that are about the quotes. Long quotes are shortened with a link to read the whole quote. After the first nine cards a button shows more.",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
     defineField({
       name: "backgroundImage",
       title: "Background image",
@@ -50,7 +51,14 @@ export default defineType({
       name: "eyebrow",
       title: "Eyebrow",
       type: "string",
-      description: "Short label shown above the heading.",
+      description: "Short label shown in yellow on the heading's first line.",
+    }),
+    defineField({
+      name: "subtitle",
+      title: "Introduction",
+      type: "text",
+      rows: 2,
+      description: "Optional line under the heading.",
     }),
     defineField({
       name: "heading",

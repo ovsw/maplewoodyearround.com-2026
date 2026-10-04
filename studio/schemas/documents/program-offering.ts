@@ -20,6 +20,12 @@ export default defineType({
     titleField,
     slugField,
     programField,
+    defineField({
+      name: "label",
+      title: "Short label",
+      type: "string",
+      description: 'Shown above the title on a program card, such as "Ages 3-5".',
+    }),
     descriptionField(),
     imageField(),
     defineField({
@@ -27,7 +33,7 @@ export default defineType({
       title: "Card group",
       type: "string",
       description: "Which program-card section shows this offering.",
-      options: { list: ["main", "additional", "enrichment"] },
+      options: { list: ["main", "additional", "enrichment", "seasons"] },
     }),
     defineField({
       name: "days",
@@ -53,6 +59,12 @@ export default defineType({
       title: "Program page",
       type: "contentDestination",
       description: "The page or website opened by the program card.",
+    }),
+    defineField({
+      name: "linkLabel",
+      title: "Link text",
+      type: "string",
+      description: 'The link text on the program card, such as "Details".',
     }),
     orderField,
     visibleField,

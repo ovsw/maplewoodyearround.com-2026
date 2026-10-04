@@ -152,18 +152,27 @@ function faqCategory(original, snapshot) {
   return exact.length === 1 && field?.validations?.collectionId ? reference(documentId(field.validations.collectionId, exact[0])) : undefined;
 }
 
+function breadcrumbs(node, context, prefix) {
+  return [...node.querySelectorAll('.breadcrumb_component a')].filter((a) => text(a)).map((a, i) => {
+    const target = destination(a.getAttribute('href'), context);
+    return { _key: key(`${prefix}-crumb${i}`), _type: 'breadcrumb', label: text(a), ...(target ? { destination: target } : {}), ...(programOf(a) ? { program: programOf(a) } : {}) };
+  });
+}
+
+// The words of a heading in the live highlight colour.
+const highlightOf = (heading) => text(heading?.querySelector('[class*="text-color-brand-secondary"]'));
+
 export function mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html }) {
   const background = backgroundOf(selector, original, html);
   if (background && 'background' in block) block.background = background;
   if (original.id && anchors.get(original.id) === original) block.anchorId = original.id;
-  const title = headingOf(staticNode);
+  let title = headingOf(staticNode);
 
   if (type === 'innerHero') {
     const content = staticNode.querySelector('[class*="_content-wrap"]') ?? staticNode;
-    block.breadcrumbs = [...content.querySelectorAll('.breadcrumb_component a')].filter((a) => text(a)).map((a, i) => {
-      const target = destination(a.getAttribute('href'), context);
-      return { _key: key(`${prefix}-crumb${i}`), _type: 'breadcrumb', label: text(a), ...(target ? { destination: target } : {}), ...(programOf(a) ? { program: programOf(a) } : {}) };
-    });
+    block.breadcrumbs = breadcrumbs(content, context, prefix);
+    const highlight = highlightOf(content.querySelector('h1'));
+    if (highlight) block.highlightText = highlight;
     const group = content.querySelector('.button-group');
     const linksLabel = group?.previousElementSibling;
     if (linksLabel && !linksLabel.querySelector('a') && text(linksLabel)) block.linksLabel = text(linksLabel);
@@ -176,6 +185,10 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
   }
 
   if (type === 'storyFeature') {
+    if (title && bySuffix(staticNode, '_item-list').some((list) => list.contains(title))) {
+      delete block.title;
+      title = undefined;
+    }
     block.tagline = tagline(staticNode);
     block.headingSize = title?.matches('.heading-style-h4,h3,h4') ? 'small' : 'large';
     const image = staticNode.querySelector('img');
@@ -208,6 +221,9 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     block.tagline = tagline(staticNode);
     block.intro = blocksOf(before, 'intro');
     block.columns = [...top.children].map((node, i) => rateColumn(node, context, prefix, i));
+    // A table whose top row has only the row-heading cell has one unnamed price column.
+    const width = Math.max(0, ...block.rows.map((row) => row.cells.length));
+    while (block.columns.length < width + 1) block.columns.push({ _key: key(`${prefix}-col${block.columns.length}`), _type: 'rateColumn', label: '' });
     const labels = block.columns.slice(1).map((column) => column.label);
     // Phones show each price with its column heading; the Website adds it.
     for (const node of staticNode.querySelectorAll('[class*="_row"] *')) if (labels.some((label) => text(node).replace(/\u200d/g, '') === `${label}:`)) node.remove();
@@ -258,7 +274,7 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     const heading = staticNode.querySelector('[class*="_heading-wrapper"]') ?? staticNode;
     block.tagline = tagline(heading);
     const sourceHeading = bySuffix(original, '_heading-wrapper')[0] ?? original;
-    const icon = iconFromSvg(sourceHeading.querySelector('.button-group svg'));
+    const icon = iconFromSvg([...sourceHeading.querySelectorAll('.button-group svg')].find((svg) => !svg.closest('a,.button')));
     if (icon) block.icon = icon;
     const accent = accentOf(sourceHeading.querySelector('.button-group [class*="u-color-accent"]'));
     if (accent) block.accent = accent;
@@ -273,6 +289,68 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     const rich = staticNode.querySelector('.w-richtext');
     block.body = rich ? portableText(without(rich, NON_COPY), context, prefix) : undefined;
     block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    return;
+  }
+
+  if (type === 'programCards' && selector?.startsWith('section_summer-camp_')) {
+    // The cards are program offering records; the section keeps its intro.
+    const intro = staticNode.querySelector('.max-width-large') ?? staticNode;
+    block.breadcrumbs = breadcrumbs(intro, context, prefix);
+    block.tagline = tagline(intro);
+    block.description = [...intro.querySelectorAll('p')].map(text).filter(Boolean).join('\n');
+    staticNode.querySelectorAll('.summer-camp_programs_grid-list,.summer-camp_additional-programs_list').forEach((node) => node.remove());
+    return;
+  }
+
+  if (type === 'electiveCards' && selector === 'section_summer-camp_club-day-electives') {
+    const copy = bySuffix(staticNode, '_content-left')[0] ?? staticNode;
+    block.tagline = tagline(copy);
+    // A second label under the heading is the lead sentence.
+    const lead = [...copy.querySelectorAll('.text-style-tagline')].slice(1).map(text).filter(Boolean).join('\n');
+    if (lead) block.description = lead;
+    else delete block.description;
+    block.features = featureItems(original, context, prefix);
+    bySuffix(copy, '_item-list').forEach((node) => node.setAttribute('data-import-features', ''));
+    block.content = textBlocks(withoutTitle(copy, title, `${NON_COPY},[data-import-features]`), context, prefix);
+    block.cards = [];
+    block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    return;
+  }
+
+  if (type === 'historyStory') {
+    block.tagline = tagline(staticNode);
+    block.features = featureItems(original, context, prefix);
+    bySuffix(staticNode, '_item-list').forEach((node) => node.setAttribute('data-import-features', ''));
+    block.body = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},[data-import-features]`), context, prefix);
+    block.cards = [];
+    block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    delete block.description;
+    return;
+  }
+
+  if (type === 'stackedTimeline' && selector === 'section_summer-camp_enrollment-process-timeline') {
+    const intro = bySuffix(staticNode, '_content-left')[0] ?? staticNode;
+    block.eyebrow = text(intro.querySelector('.text-style-tagline'));
+    block.intro = [...intro.querySelectorAll('p')].map(text).filter(Boolean).join('\n');
+    block.buttons = sourceButtons(buttonLinks(intro), context, prefix);
+    // Each step: a large step label, its name and one paragraph.
+    block.items = bySuffix(staticNode, '_item').filter((node) => node.querySelector('h3,h4')).map((node, i) => ({
+      _key: key(`${prefix}-t${i}`), _type: 'stackedTimelineItem',
+      meta: text(node.querySelector('h3')), title: text(node.querySelector('h4')), text: text(node.querySelector('p')),
+    }));
+    return;
+  }
+
+  if (type === 'quoteWall') {
+    const heading = staticNode.querySelector('h2');
+    const highlight = highlightOf(heading);
+    if (highlight) block.eyebrow = highlight;
+    const rest = heading && without(heading, '[class*="text-color-brand-secondary"]');
+    if (rest && text(rest)) block.heading = plainBlocks(text(rest), `${prefix}-title`);
+    block.subtitle = text(heading?.closest('.max-width-large')?.querySelector('p')) || undefined;
+    // The closing lines under the testimonials, one per line.
+    const closing = [...staticNode.querySelectorAll('.text-align-center')].at(-1);
+    block.description = closing ? [...closing.children].map(text).filter(Boolean).join('\n') : undefined;
     return;
   }
 

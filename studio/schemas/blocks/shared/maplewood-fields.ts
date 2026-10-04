@@ -96,6 +96,13 @@ export const collectionFilterFields = [
     description: "For activities: show only this category.",
   }),
   defineField({
+    name: "grade",
+    title: "Grade filter",
+    type: "reference",
+    to: [{ type: "grade" }],
+    description: "For activities: show only items offered to a camp group in this grade.",
+  }),
+  defineField({
     name: "location",
     title: "Location filter",
     type: "string",
@@ -367,4 +374,28 @@ export const breadcrumb = defineType({
     }),
   ],
   preview: { select: { title: "label" } },
+});
+
+export const breadcrumbsField = defineField({
+  name: "breadcrumbs",
+  title: "Breadcrumbs",
+  type: "array",
+  description: "The trail of links above the heading, in order.",
+  of: [defineArrayMember({ type: "breadcrumb" })],
+});
+
+export const featureItemsField = defineField({
+  name: "features",
+  title: "Points",
+  type: "array",
+  description: "Optional short points, shown below the text.",
+  of: [defineArrayMember({ type: "featureItem" })],
+  validation: (rule) => rule.max(4),
+});
+
+export const highlightTextField = defineField({
+  name: "highlightText",
+  title: "Highlighted words",
+  type: "string",
+  description: "Words of the heading shown in yellow, such as “Summer Camp”.",
 });

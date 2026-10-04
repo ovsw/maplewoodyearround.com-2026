@@ -28,7 +28,7 @@ export default defineType({
       title: "Columns",
       type: "array",
       description:
-        "The first column holds the row headings; then one column per program. Use 3 or 4 columns.",
+        "The first column holds the row headings; then one column per program. Use 2 to 4 columns. Leave the headings empty to hide the heading row.",
       of: [
         {
           name: "rateColumn",
@@ -38,7 +38,6 @@ export default defineType({
               name: "label",
               title: "Heading",
               type: "string",
-              validation: (rule) => rule.required(),
             }),
             defineField({
               name: "note",
@@ -72,10 +71,10 @@ export default defineType({
       validation: (rule) =>
         rule
           .required()
-          .min(3)
-          .error("Use 3 or 4 columns: the row headings, then 2 or 3 programs.")
+          .min(2)
+          .error("Use 2 to 4 columns: the row headings, then 1 to 3 programs.")
           .max(4)
-          .error("Use 3 or 4 columns: the row headings, then 2 or 3 programs."),
+          .error("Use 2 to 4 columns: the row headings, then 1 to 3 programs."),
     }),
     defineField({
       name: "rows",

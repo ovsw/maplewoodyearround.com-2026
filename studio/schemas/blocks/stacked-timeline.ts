@@ -1,6 +1,7 @@
 import { ListOrdered } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
+import { sectionAnchorField } from "./shared/maplewood-fields";
 
 const item = defineArrayMember({
   name: "stackedTimelineItem",
@@ -63,6 +64,7 @@ export default defineType({
     "A sticky intro with up to two actions beside a stack of numbered cards, in order. Everything stacks on phones.",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
     defineField({
       name: "eyebrow",
       type: "string",

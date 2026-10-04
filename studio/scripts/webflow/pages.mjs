@@ -88,10 +88,34 @@ function collectionFor(node, snapshot, types) {
   const html = node.innerHTML;
   const scored = snapshot.collections.filter((c) => types.includes(mappings[c.displayName]?.[0])).map((c) => {
     const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) ||
-      [...node.querySelectorAll('.w-dyn-item')].some((element) => headingText(element) === item.fieldData.name));
+      [...node.querySelectorAll('.w-dyn-item')].some((element) => [item.fieldData.name, item.fieldData.activity].includes(headingText(element))));
     return { collection: c, matches };
   }).sort((a, b) => b.matches.length - a.matches.length);
   return scored[0]?.matches.length ? scored[0] : undefined;
+}
+
+// A list of one activity category can also be limited to the camp groups of
+// one grade. Choose that grade only when it reproduces the displayed list,
+// preferring the grade named in the section's label.
+function activityFilters(node, snapshot, found) {
+  const field = found.collection.fields.find((f) => f.slug === 'category');
+  const categories = new Set(found.matches.map((item) => item.fieldData.category));
+  if (categories.size !== 1 || !found.matches.every((item) => item.fieldData.category) || !field?.validations?.collectionId) return {};
+  const [category] = categories;
+  const filter = { activityCategory: reference(documentId(field.validations.collectionId, category)) };
+  const pool = found.collection.live.filter((item) => item.fieldData.category === category && item.fieldData.published !== false);
+  const shown = new Set(found.matches.map((item) => item.id));
+  if (pool.length === shown.size && pool.every((item) => shown.has(item.id))) return filter;
+  const groups = snapshot.collections.find((c) => c.displayName === 'SC Groups');
+  const grades = snapshot.collections.find((c) => c.displayName === 'SC Grades');
+  const gradesOf = (item) => new Set((item.fieldData['sc-groups-ages'] ?? []).flatMap((id) => groups?.live.find((group) => group.id === id)?.fieldData['entering-grade-2'] ?? []));
+  const exact = (grades?.live ?? []).filter((grade) => {
+    const listed = pool.filter((item) => gradesOf(item).has(grade.id));
+    return listed.length === shown.size && listed.every((item) => shown.has(item.id));
+  });
+  const label = text(node.querySelector('.text-style-tagline'));
+  const grade = exact.find((item) => label.includes(item.fieldData.name.trim())) ?? exact[0];
+  return grade ? { ...filter, grade: reference(documentId(grades.id, grade.id)) } : filter;
 }
 
 function inferFilter(node, snapshot, allowedTypes) {
@@ -108,6 +132,7 @@ function inferFilter(node, snapshot, allowedTypes) {
       filter[target] = field?.validations?.options?.find((o) => o.id === [...values][0])?.name;
     }
   }
+  if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found));
   if (source === 'facility') {
     const field = found.collection.fields.find((f) => ['category', 'category-multi'].includes(f.slug));
     const shared = found.matches.reduce((ids, item) => ids.filter((id) => item.fieldData[field.slug]?.includes(id)), found.matches[0].fieldData[field.slug] ?? []);
@@ -200,7 +225,7 @@ export function staticPages(snapshot, context, schema) {
         else if (type === 'faqAccordion' && original.id === 'school-year') block.program = 'schoolYear';
       }
       if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : 'roster'; }
-      if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : 'main';
+      if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : page.path === '/maplewood-seasons' ? 'seasons' : 'main';
       if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
       if (type === 'embedSection') Object.assign(block, embed(original));
       if (type === 'busMap') block.embedUrl = embed(original).embedUrl;

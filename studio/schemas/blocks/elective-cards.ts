@@ -1,6 +1,10 @@
 import { sectionBackgroundField } from "./shared/section-background";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
+import { imageField } from "../documents/maplewood-fields";
 import {
+  featureItemsField,
+  sectionAnchorField,
+  taglineField,
   sectionTitleField,
   sectionDescriptionField,
   sectionActionsField,
@@ -13,8 +17,18 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
+    taglineField,
     sectionTitleField,
     sectionDescriptionField,
+    defineField({
+      name: "content",
+      title: "Text",
+      type: "basicRichText",
+      description: "The paragraph under the heading.",
+    }),
+    featureItemsField,
+    imageField(),
     contentCardsField,
     sectionActionsField,
   ],

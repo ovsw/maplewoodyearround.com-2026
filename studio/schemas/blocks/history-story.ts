@@ -5,6 +5,9 @@ import {
   sectionDescriptionField,
   sectionActionsField,
   contentCardsField,
+  featureItemsField,
+  sectionAnchorField,
+  taglineField,
 } from "./shared/maplewood-fields";
 import { imageField } from "../documents/maplewood-fields";
 
@@ -14,6 +17,8 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
+    taglineField,
     sectionTitleField,
     sectionDescriptionField,
     imageField(),
@@ -23,6 +28,7 @@ export default defineType({
       type: "richTextContent",
       description: "The story text beside the historical image.",
     }),
+    featureItemsField,
     contentCardsField,
     sectionActionsField,
   ],
