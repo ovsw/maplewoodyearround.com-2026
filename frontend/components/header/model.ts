@@ -25,12 +25,15 @@ export type HeaderNavigationItem =
       kind: "link";
       label: string;
       link: HeaderLinkModel;
+      accent?: string;
+      icon?: NavigationIconModel | null;
     }
   | {
       key: string;
       kind: "group";
       label: string;
       links: HeaderChildLinkModel[];
+      link?: HeaderLinkModel;
     };
 
 export type HeaderNavigationModel = {
@@ -53,6 +56,13 @@ export type HeaderBrandModel = {
 export type HeaderModel = {
   brand: HeaderBrandModel;
   navigation: HeaderNavigationModel;
+  contact?: {
+    email?: string | null;
+    phone?: string | null;
+    menuAddress?: string | null;
+    addressLines?: string[] | null;
+  } | null;
+  socialLinks?: HeaderLinkModel[];
 };
 
 type RawDestination = { href?: string | null; openInNewTab?: boolean | null };
@@ -69,6 +79,8 @@ type RawItem = {
   label?: string | null;
   destination?: RawDestination | null;
   links?: RawChildLink[] | null;
+  accent?: string | null;
+  icon?: { name?: unknown; svg?: string | null } | null;
 };
 type RawAction = {
   _key?: string | null;
@@ -82,10 +94,7 @@ export type RawHeaderNavigation = {
   actions?: RawAction[] | null;
 } | null;
 
-type RawLogoGroup =
-  | { light?: unknown; dark?: unknown }
-  | null
-  | undefined;
+type RawLogoGroup = { light?: unknown; dark?: unknown } | null | undefined;
 
 type RawAsset = {
   asset?: { metadata?: { dimensions?: { width?: number; height?: number } } };
@@ -156,7 +165,26 @@ export function createHeaderNavigationModel(
 
     if (item.kind === "link") {
       const link = normalizeLink(label, item.destination);
-      if (link) items.push({ key, kind: "link", label, link });
+      if (link) {
+        const name =
+          typeof item.icon?.name === "string"
+            ? stegaClean(item.icon.name)?.trim()
+            : null;
+        const svg = stegaClean(item.icon?.svg)?.trim() || null;
+        items.push({
+          key,
+          kind: "link",
+          label,
+          link,
+          ...(item.accent &&
+          ["none", "yellow", "mint", "purple", "blue", "red"].includes(
+            item.accent,
+          )
+            ? { accent: item.accent }
+            : {}),
+          ...(name && svg ? { icon: { name, svg } } : {}),
+        });
+      }
       continue;
     }
 
@@ -180,7 +208,15 @@ export function createHeaderNavigationModel(
           },
         ];
       });
-      if (links.length) items.push({ key, kind: "group", label, links });
+      const groupLink = normalizeLink(label, item.destination);
+      if (links.length)
+        items.push({
+          key,
+          kind: "group",
+          label,
+          links,
+          ...(groupLink ? { link: groupLink } : {}),
+        });
     }
   }
 
@@ -190,7 +226,7 @@ export function createHeaderNavigationModel(
       const link = normalizeLink(action.label, action.destination);
       return key && link ? [{ key, link }] : [];
     })
-    .slice(0, 1);
+    .slice(0, 2);
 
   return { items, actions };
 }

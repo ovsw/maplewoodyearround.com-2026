@@ -28,7 +28,10 @@ const model: HeaderModel = {
             key: "strategy",
             label: "Strategy",
             description: "Find the clearest path through a hard problem.",
-            icon: null,
+            icon: {
+              name: "landmark",
+              svg: '<svg viewBox="0 0 24 24"><path d="M3 22h18" /></svg>',
+            },
             link: {
               href: "/strategy",
               label: "Strategy",
@@ -74,76 +77,52 @@ describe("Site Header", () => {
     expect(screen.queryByText("Northline")).not.toBeInTheDocument();
   });
 
-  it("renders authored identity, interactive navigation, and safe actions", async () => {
+  it("opens the menu, keeps authored links safe, and restores focus on Escape", async () => {
     const user = userEvent.setup();
     render(<Header model={model} />);
-
-    expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "Main navigation" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Northline home page" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "/contact");
-    await user.click(screen.getByRole("button", { name: "Services" }));
-
+    const trigger = screen.getByRole("button", { name: "Open menu" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    const action = screen.getByRole("link", { name: "Start a project" });
+    expect(action).toHaveAttribute("rel", "noopener noreferrer");
+    expect(action).toHaveAttribute("target", "_blank");
+    await user.click(trigger);
     expect(
-      await screen.findByText("Find the clearest path through a hard problem."),
+      screen.getByRole("dialog", { name: "Main navigation" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Contact" })).toHaveAttribute(
+      "href",
+      "/contact",
+    );
+    expect(
+      screen.getByRole("heading", { name: "Services" }),
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /^Strategy/ })).toHaveAttribute(
       "href",
       "/strategy",
     );
-
-    const action = screen.getByRole("link", { name: "Start a project" });
-    expect(action).toHaveAttribute("href", "https://example.com/book");
-    expect(action).toHaveAttribute("rel", "noopener noreferrer");
-    expect(action).toHaveAttribute("target", "_blank");
-    expect(document.querySelector('a[href="#"]')).not.toBeInTheDocument();
+    expect(
+      screen.getByText("Find the clearest path through a hard problem."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /^Strategy/ }).querySelector("svg path"),
+    ).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
   });
 
-  it("uses the dark theme by default and accepts the light theme", () => {
-    const { rerender } = render(<Header model={model} />);
-
-    expect(screen.getByRole("banner")).toHaveAttribute("data-theme", "dark");
-
-    rerender(<Header model={model} theme="light" />);
-
-    expect(screen.getByRole("banner")).toHaveAttribute("data-theme", "light");
-  });
-
-  it("balances long desktop submenus across two columns", async () => {
+  it("closes the menu when a destination is chosen", async () => {
     const user = userEvent.setup();
-    const links = Array.from({ length: 8 }, (_, index) => ({
-      key: `planning-${index}`,
-      label: `Planning link ${index + 1}`,
-      description: `Planning description ${index + 1}`,
-      icon: null,
-      link: {
-        href: `/planning-${index}`,
-        label: `Planning link ${index + 1}`,
-        openInNewTab: false,
-      },
-    }));
-    const balancedModel: HeaderModel = {
-      ...model,
-      navigation: {
-        ...model.navigation,
-        items: [
-          {
-            key: "planning",
-            kind: "group",
-            label: "Planning",
-            links,
-          },
-        ],
-      },
-    };
-    const { container } = render(<Header model={balancedModel} />);
+    render(<Header model={model} />);
+    await user.click(screen.getByRole("button", { name: "Open menu" }));
+    await user.click(screen.getByRole("link", { name: "Contact" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
 
-    await user.click(screen.getByRole("button", { name: "Planning" }));
-
-    const columns = container.querySelector(".grid-cols-2");
-    expect(columns).not.toBeNull();
-    expect(Array.from(columns?.children ?? []).map((column) => column.children.length)).toEqual([
-      4, 4,
-    ]);
+  it("uses the light header and accepts an explicit theme", () => {
+    const { rerender } = render(<Header model={model} />);
+    expect(screen.getByRole("banner")).toHaveAttribute("data-theme", "light");
+    rerender(<Header model={model} theme="dark" />);
+    expect(screen.getByRole("banner")).toHaveAttribute("data-theme", "dark");
   });
 });

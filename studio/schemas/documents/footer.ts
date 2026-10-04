@@ -242,13 +242,17 @@ const footer = defineType({
       validation: (rule) => rule.required().min(1).unique(),
     }),
     defineField({
-      description: "Add the public address, phone and email links.",
+      description:
+        "Legacy fallback. Edit the current contact details in Global Settings.",
       name: "contactLinks",
-      title: "Contact information",
+      title: "Contact information (legacy)",
       type: "array",
       group: "content",
       of: [defineArrayMember({ type: "footerContactLink" })],
-      validation: (rule) => rule.required().min(1).unique(),
+      validation: (rule) => rule.unique(),
+      deprecated: { reason: "Use contact details in Global Settings." },
+      readOnly: true,
+      hidden: ({ value }) => value === undefined,
     }),
     defineField({
       description: "Add and order the footer link groups.",

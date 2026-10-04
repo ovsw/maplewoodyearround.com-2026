@@ -1,0 +1,69 @@
+.newsletter {
+  margin-top: 1.5rem;
+  max-width: 32rem;
+}
+.newsletter h2 {
+  font: inherit;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.form {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.form input[type="email"] {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid currentColor;
+  border-radius: 0.4em;
+  padding: 0.65rem 0.8rem;
+  background: transparent;
+  color: inherit;
+}
+.form input::placeholder {
+  color: inherit;
+  opacity: 1;
+}
+.form button {
+  border: 1px solid currentColor;
+  border-radius: 0.8em;
+  padding: 0.65rem 1.25rem;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.form button:hover {
+  background: #fffbf0;
+  color: #004201;
+}
+.form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.form :focus-visible {
+  outline: 3px solid #ffd700;
+  outline-offset: 3px;
+}
+.privacy {
+  font-size: 0.75rem;
+  margin-top: 0.75rem;
+}
+.privacy a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.status {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 479px) {
+  .form {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .form button {
+    align-self: flex-start;
+  }
+}
