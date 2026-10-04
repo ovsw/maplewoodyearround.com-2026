@@ -1,4 +1,6 @@
 import { stegaClean } from "next-sanity";
+import { urlFor } from "@/sanity/lib/image";
+import BackgroundVideo from "./background-video";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import {
   Breadcrumbs,
@@ -35,13 +37,29 @@ export default function InnerHero({
   highlightText,
   image,
   linksLabel,
+  poster,
   title,
+  videoMp4Url,
+  videoWebmUrl,
 }: InnerHeroProps) {
   const heading = plain(title);
   if (!heading) return null;
   const headingId = `inner-hero-${stegaClean(_key)}-title`;
 
+  const video = stegaClean(videoMp4Url) || stegaClean(videoWebmUrl);
   return (
+    <>
+      {/* The Play Center header opens with a video band above the heading. */}
+      {video ? (
+        <div className={css.heroVideo} data-sanity={dataAttribute?.("videoMp4")}>
+          <BackgroundVideo
+            className={css.heroVideoMedia}
+            mp4={stegaClean(videoMp4Url)}
+            poster={poster?.asset ? urlFor(poster).width(1920).url() : undefined}
+            webm={stegaClean(videoWebmUrl)}
+          />
+        </div>
+      ) : null}
     <header aria-labelledby={headingId} className={css.hero} data-sanity={dataAttribute?.("image")}>
       <div className={css.heroBackground}>
         <div className={css.heroImageWrap}>
@@ -81,5 +99,6 @@ export default function InnerHero({
         </div>
       </div>
     </header>
+    </>
   );
 }

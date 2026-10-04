@@ -1,5 +1,6 @@
 import { groq } from "next-sanity";
 import { imageQuery } from "./shared/image";
+import { iconProjection } from "./shared/maplewood";
 import { simpleRichTextQuery } from "./shared/simple-rich-text";
 import { urlInternalHref } from "./shared/internal-href";
 
@@ -11,6 +12,7 @@ export const ctaBannerQuery = groq`
     title,
     description,
     body[]{${simpleRichTextQuery}},
+    ${iconProjection}, accent,
     image{${imageQuery}},
     "buttons": array::compact(buttons[]{
       _key,

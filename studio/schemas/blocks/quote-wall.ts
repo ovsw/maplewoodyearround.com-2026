@@ -1,5 +1,6 @@
 import { LayoutGrid } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import { programOptions } from "../documents/maplewood-fields";
 import { programFilterField, sectionAnchorField } from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
@@ -37,7 +38,7 @@ export default defineType({
       title: "Selected testimonials",
       type: "array",
       description:
-        "Optional source selection in display order. Leave empty to use the program filter.",
+        "Optional selection in display order. Selected testimonials show even when their Visible switch is off. Leave empty to use the program filter.",
       of: [{ type: "reference", to: [{ type: "testimonial" }] }],
     }),
     defineField({
@@ -52,6 +53,13 @@ export default defineType({
       title: "Eyebrow",
       type: "string",
       description: "Short label shown in yellow on the heading's first line.",
+    }),
+    defineField({
+      name: "eyebrowProgram",
+      title: "Eyebrow badge colour",
+      type: "string",
+      description: "Optional. Show the eyebrow as a program badge instead of yellow text.",
+      options: { list: programOptions },
     }),
     defineField({
       name: "subtitle",

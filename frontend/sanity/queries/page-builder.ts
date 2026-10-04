@@ -38,6 +38,7 @@ import { jobListQuery } from "./job-list";
 import { parentDashboardSectionQuery } from "./parent-dashboard-section";
 import { summerDocumentListQuery } from "./summer-document-list";
 import { tabbedHeroQuery } from "./tabbed-hero";
+import { iconCardsQuery } from "./icon-cards";
 // page-builder-generator:query-imports
 
 export const pageBuilderQuery = `
@@ -85,6 +86,7 @@ export const pageBuilderQuery = `
     ${parentDashboardSectionQuery},
     ${summerDocumentListQuery},
     ${tabbedHeroQuery},
+    ${iconCardsQuery},
     ${"" /* page-builder-generator:query-spreads */}
   }
 `;

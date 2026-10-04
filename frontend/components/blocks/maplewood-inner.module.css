@@ -595,6 +595,45 @@
 .pricingDetails p {
   margin: 0 0 0.5rem;
 }
+/* Checklists above the price cards (check-list_wrap) */
+.checklists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 3rem;
+  max-width: 48rem;
+  margin: 3rem auto 0;
+}
+.checklistTitle {
+  margin: 0 0 1rem;
+  font-weight: 700;
+  color: var(--accent-text);
+}
+.checklist p {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+}
+.checklist .icon {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.checklistNote {
+  grid-column: 2;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+@media (max-width: 767px) {
+  .checklists {
+    grid-template-columns: 1fr;
+  }
+  .checklistNote {
+    grid-column: 1;
+  }
+}
+
 /* The plan's buttons fill the card width in its colour (is-accent). */
 .pricingActions {
   display: grid;
@@ -1185,4 +1224,88 @@
 /* A rate table without column headings (one unnamed price column). */
 .rateHead.rateHeadHidden {
   display: none;
+}
+
+/* Tour invitation beside the tour guides' portraits (layout30 with staff) */
+.tour {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem 5rem;
+}
+.tourCopy {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+.tourStaff {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tourName {
+  margin: 0.5rem 0 0 0.5rem;
+  font-weight: 700;
+  color: var(--maplewood-green);
+}
+.tourRole {
+  margin: 0 0 0 0.5rem;
+  opacity: 0.8;
+}
+@media (max-width: 767px) {
+  .tour {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Video band above an inner hero (header11o) */
+.heroVideo {
+  position: relative;
+  height: 43rem;
+  overflow: hidden;
+  background: var(--maplewood-green);
+}
+.heroVideoMedia {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 767px) {
+  .heroVideo {
+    height: 27.5rem;
+  }
+}
+
+/* Reminder band (cta13) */
+.reminderLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 2rem 5rem;
+}
+.reminderHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.reminderHeading .h2 {
+  color: var(--maplewood-cream);
+}
+.reminderText {
+  color: var(--maplewood-cream);
+}
+.reminderText strong {
+  color: var(--accent);
+}
+.reminderText a {
+  color: var(--maplewood-cream);
+  text-decoration: underline;
+}
+@media (max-width: 767px) {
+  .reminderLayout {
+    grid-template-columns: 1fr;
+  }
 }

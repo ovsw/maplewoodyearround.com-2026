@@ -1,5 +1,5 @@
 import { groq } from "next-sanity";
-import { contentDestinationProjection } from "./shared/maplewood";
+import { contentDestinationProjection, sectionVideoProjection } from "./shared/maplewood";
 import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
 
@@ -32,6 +32,7 @@ export const innerHeroQuery = groq`
     image {
       ${imageQuery}
     },
+    ${sectionVideoProjection},
     "facts": array::compact(facts[]{
       _key,
       value,

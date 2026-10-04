@@ -13,6 +13,9 @@ export const pricingCardsQuery = groq`
     ${taglineProjection},
     title,
     description,
+    intro[]{${simpleRichTextQuery}},
+    checklists[]{_key, title, ${iconProjection}, accent, items[]{${simpleRichTextQuery}}},
+    checklistNote[]{${simpleRichTextQuery}},
     plans[]{_key, ${iconProjection}, accent, title, price, details[]{${simpleRichTextQuery}}, ${contentActionsProjection}}
   }
 `;

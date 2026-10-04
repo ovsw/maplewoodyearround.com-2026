@@ -1,5 +1,5 @@
 import { sectionBackgroundField } from "./shared/section-background";
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import {
   accentField,
   iconField,
@@ -19,7 +19,46 @@ export default defineType({
     sectionAnchorField,
     taglineField,
     sectionTitleField,
-    sectionDescriptionField,
+    {
+      ...sectionDescriptionField,
+      description: "Optional plain text under the heading. The text below replaces it.",
+    },
+    defineField({
+      name: "intro",
+      title: "Introduction",
+      type: "simpleRichText",
+      description: "Optional text under the heading, with bold words and links.",
+    }),
+    defineField({
+      name: "checklists",
+      title: "Checklists",
+      type: "array",
+      description: "Optional lists side by side above the cards, such as what a party includes.",
+      of: [
+        defineArrayMember({
+          name: "checklist",
+          type: "object",
+          fields: [
+            defineField({ name: "title", title: "Heading", type: "string" }),
+            { ...iconField, description: "The icon before each item." },
+            accentField,
+            defineField({
+              name: "items",
+              title: "Items",
+              type: "simpleRichText",
+              description: "One paragraph per item.",
+            }),
+          ],
+          preview: { select: { title: "title" } },
+        }),
+      ],
+      validation: (rule) => rule.max(3),
+    }),
+    defineField({
+      name: "checklistNote",
+      title: "Note under the checklists",
+      type: "simpleRichText",
+    }),
     defineField({
       name: "plans",
       title: "Pricing cards",

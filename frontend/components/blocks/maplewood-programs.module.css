@@ -384,3 +384,24 @@
 .calendarActions {
   margin-top: 4rem;
 }
+
+/* A program badge on the testimonial heading's first line. */
+.quoteBadgeSchool,
+.quoteBadgeSummer {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  padding: 0 0.5rem;
+  border-radius: 0.4em;
+}
+.quoteBadgeSchool {
+  background: var(--maplewood-purple-dark);
+  color: var(--maplewood-cream);
+}
+.quoteBadgeSummer {
+  background: var(--maplewood-gold-mid);
+  color: var(--maplewood-ink);
+}
+.quoteBadgeSchool + *,
+.quoteBadgeSummer + * {
+  display: block;
+}

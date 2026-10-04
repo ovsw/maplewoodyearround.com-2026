@@ -2,6 +2,7 @@ import { groq } from "next-sanity";
 import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
 import { minimalRichTextQuery } from "./shared/minimal-rich-text";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const stackedTimelineQuery = groq`
@@ -30,6 +31,7 @@ export const stackedTimelineQuery = groq`
       title,
       meta,
       text,
+      body[]{${simpleRichTextQuery}},
       image {
         ${imageQuery}
       }

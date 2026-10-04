@@ -74,6 +74,7 @@ export const sectionTraits: Record<Block["_type"], SectionTrait> = {
   parentDashboardSection: {},
   summerDocumentList: {},
   tabbedHero: { hero: true },
+  iconCards: {},
   benefitCards: {},
   bigImageList: {},
   ctaBanner: { tuck: true },

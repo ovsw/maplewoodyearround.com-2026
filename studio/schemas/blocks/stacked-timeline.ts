@@ -26,7 +26,17 @@ const item = defineArrayMember({
       type: "string",
       description:
         "One sentence on what happens here. Explain any camp jargon.",
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as { body?: unknown[] } | undefined;
+          return value || parent?.body?.length ? true : "Add one line or the text below";
+        }),
+    }),
+    defineField({
+      name: "body",
+      title: "Text with links",
+      type: "simpleRichText",
+      description: "Optional paragraphs with links. They replace the one line.",
     }),
     defineField({
       name: "image",

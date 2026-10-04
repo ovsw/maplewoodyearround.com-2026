@@ -26,6 +26,7 @@ export default defineType({
         list: [
           { title: "Detailed profiles", value: "profiles" },
           { title: "Compact roster", value: "roster" },
+          { title: "Tour invitation", value: "tour" },
         ],
       },
     }),

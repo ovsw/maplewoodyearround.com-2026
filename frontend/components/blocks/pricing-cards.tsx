@@ -8,9 +8,11 @@ import {
   type DataAttribute,
   innerCss as css,
   SectionTagline,
+  SourceCopy,
   SourceIcon,
   visibleActions,
 } from "./maplewood-inner";
+import { simpleRichTextComponents } from "@/components/simple-rich-text";
 
 type PricingCardsProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -28,8 +30,11 @@ const splitPrice = (value?: string | null) => {
 export default function PricingCards({
   _key,
   background,
+  checklistNote,
+  checklists,
   dataAttribute,
   description,
+  intro,
   plans,
   tagline,
   title,
@@ -47,12 +52,40 @@ export default function PricingCards({
           <h2 className={css.h2} data-sanity={dataAttribute?.("title")} id={headingId}>
             {title}
           </h2>
-          {stegaClean(description)?.trim() ? (
+          {intro?.length ? (
+            <SourceCopy className={[css.medium, css.pricingIntro].join(" ")} dataSanity={dataAttribute?.("intro")} value={intro} />
+          ) : stegaClean(description)?.trim() ? (
             <p className={[css.medium, css.pricingIntro].join(" ")} data-sanity={dataAttribute?.("description")}>
               {description}
             </p>
           ) : null}
         </div>
+        {checklists?.length ? (
+          <div className={css.checklists} data-sanity={dataAttribute?.("checklists")}>
+            {checklists.map((list) => (
+              <div className={accentClass(list.accent)} key={list._key}>
+                {stegaClean(list.title)?.trim() ? <p className={css.checklistTitle}>{list.title}</p> : null}
+                <div className={css.checklist}>
+                  <PortableText
+                    components={{
+                      ...simpleRichTextComponents,
+                      block: {
+                        normal: ({ children }) => (
+                          <p>
+                            <SourceIcon icon={list.icon} />
+                            <span>{children}</span>
+                          </p>
+                        ),
+                      },
+                    }}
+                    value={list.items ?? []}
+                  />
+                </div>
+              </div>
+            ))}
+            <SourceCopy className={css.checklistNote} dataSanity={dataAttribute?.("checklistNote")} value={checklistNote} />
+          </div>
+        ) : null}
         <div className={css.pricingGrid}>
           {plans.map((plan) => {
             const [amount, period] = splitPrice(plan.price);

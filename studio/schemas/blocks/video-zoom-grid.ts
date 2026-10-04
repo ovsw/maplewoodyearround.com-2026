@@ -3,6 +3,7 @@ import { defineField, defineType } from "sanity";
 import {
   sectionTitleField,
   sectionDescriptionField,
+  taglineField,
   sectionActionsField,
   sectionVideoFields,
 } from "./shared/maplewood-fields";
@@ -13,6 +14,7 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    taglineField,
     sectionTitleField,
     defineField({
       name: "highlightText",

@@ -19,14 +19,13 @@ type TabbedHeroProps = Extract<
  * School Year header (Webflow header103): one photo, heading and buttons per
  * tab. The client part switches tabs; this part renders their content.
  */
-export default function TabbedHero({ _key, anchorId, breadcrumbs, dataAttribute, tabs }: TabbedHeroProps) {
+export default function TabbedHero({ _key, breadcrumbs, dataAttribute, tabs }: TabbedHeroProps) {
   const visible = (tabs ?? []).filter((tab) => stegaClean(tab.title)?.trim() && stegaClean(tab.label)?.trim());
   if (!visible.length) return null;
   const id = `tabbed-hero-${stegaClean(_key)}`;
 
   return (
     <TabbedHeroTabs
-      anchorId={stegaClean(anchorId) || undefined}
       id={id}
       images={visible.map((tab, index) => (
         <SourceImage

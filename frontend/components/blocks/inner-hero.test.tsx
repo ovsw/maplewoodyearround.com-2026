@@ -5,7 +5,7 @@ import InnerHero from "./inner-hero";
 
 it("keeps all three source Dates and Rates actions", () => {
   const hero: ComponentProps<typeof InnerHero> = {
-    _key: "rates", _type: "innerHero", body: null, breadcrumbs: null, eyebrow: null, facts: null, highlightText: null, image: null, linksLabel: null,
+    _key: "rates", _type: "innerHero", body: null, breadcrumbs: null, eyebrow: null, facts: null, highlightText: null, image: null, linksLabel: null, poster: null, videoMp4Url: null, videoWebmUrl: null,
     title: [{_key:"title",_type:"block",style:"normal",markDefs:null,children:[{_key:"text",_type:"span",marks:[],text:"Dates and Rates"}]}],
     buttons: ["Rates", "Calendar", "Enroll"].map((text, index) => ({_key:String(index),_type:"button",text,href:`/action-${index}`,icon:null,openInNewTab:false,variant:"outline"})),
   };
@@ -18,7 +18,7 @@ it("shows the highlighted words of the heading on their own span", () => {
   render(
     <InnerHero
       _key="hub" _type="innerHero" body={null} breadcrumbs={null} buttons={null} eyebrow={null} facts={null}
-      highlightText="Summer Camp" image={null} linksLabel={null}
+      highlightText="Summer Camp" image={null} linksLabel={null} poster={null} videoMp4Url={null} videoWebmUrl={null}
       title={[{_key:"title",_type:"block",style:"normal",markDefs:null,children:[{_key:"text",_type:"span",marks:[],text:"Maplewood Summer Camp"}]}]}
     />,
   );

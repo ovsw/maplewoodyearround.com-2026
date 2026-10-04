@@ -13,13 +13,11 @@ type Tab = { key: string; label: string; dataSanity?: string };
  * focusing the hero. Visitors who prefer reduced motion get no rotation.
  */
 export default function TabbedHeroTabs({
-  anchorId,
   id,
   images,
   panels,
   tabs,
 }: {
-  anchorId?: string;
   id: string;
   images: React.ReactNode[];
   panels: React.ReactNode[];
@@ -66,7 +64,6 @@ export default function TabbedHeroTabs({
   return (
     <header
       className={styles.hero}
-      id={anchorId}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
       }}
