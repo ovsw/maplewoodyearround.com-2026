@@ -22,7 +22,7 @@ const navigationIcon = defineField({
   },
   fields: [
     defineField({
-      description: "The public name shown with this item.",
+      description: "The Lucide icon name chosen in the icon picker.",
       name: "name",
       title: "Name",
       type: "string",
