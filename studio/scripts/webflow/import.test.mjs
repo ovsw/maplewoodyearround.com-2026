@@ -7,7 +7,7 @@ import { webflowReader } from './source.mjs';
 import { assetCollector, destination, portableText, htmlDocument } from './html.mjs';
 import { staticTextNodes } from './pages.mjs';
 import { cmsDocuments, identityMap, mapItem } from './collections.mjs';
-import { mediaAliases, buildPlan } from './plan.mjs';
+import { mediaAliases, buildPlan, assertPublicPageCoverage } from './plan.mjs';
 import { changes, equal, materialize, writeDocuments, verifyTarget, backupDataset, savePrivate } from './write.mjs';
 import { argumentsFor } from '../import-webflow.mjs';
 
@@ -93,7 +93,7 @@ test('writer leaves foreign content untouched and avoids a transaction commit on
   const doc={_id:'wf-a',_type:'page',title:'Title'};let committed=0;
   const client={fetch:async()=>[{...doc,_rev:'1'}],transaction:()=>({serialize:()=>[],commit:async()=>{committed++;}})};
   await assert.rejects(writeDocuments(client,[doc],{ownedIds:[]}),/outside importer ownership/);
-  assert.equal((await writeDocuments(client,[doc],{ownedIds:['wf-a']})).unchanged,1);assert.equal(committed,0);
+  assert.equal((await writeDocuments(client,[doc],{ownedIds:['wf-a'],documentRevisions:{'wf-a':'1'}})).unchanged,1);assert.equal(committed,0);
 });
 
 test('asset replacement fails on missing mapping',()=>{
@@ -123,4 +123,41 @@ test('dry run is default and cannot combine with write modes',()=>{
   assert.throws(()=>argumentsFor(['--dry-run','--apply']),/write mode/);
   assert.throws(()=>argumentsFor(['--capture','/tmp/source','--apply']),/separate/);
   assert.throws(()=>argumentsFor(['--capture',process.cwd()+'/source.json']),/outside/);
+});
+
+
+test('published static pages must be captured; only source system routes are exempt',()=>{
+  const page={publishedPath:'/new-page',draft:false,archived:false};
+  assert.throws(()=>assertPublicPageCoverage({pages:[],pageRecords:[page]}),/published source page/);
+  assert.throws(()=>assertPublicPageCoverage({pages:[{path:'/new-page',status:404}],pageRecords:[page]}),/published source page/);
+  assertPublicPageCoverage({pages:[{path:'/new-page',status:200}],pageRecords:[page]});
+  assertPublicPageCoverage({pages:[],pageRecords:[{...page,draft:true},{...page,archived:true},{...page,collectionId:'cms'},{...page,publishedPath:'/401'},{...page,publishedPath:'/404'}]});
+});
+
+test('writer refuses editor changes, deletions, and missing revision history before transactions',async()=>{
+  const doc={_id:'drafts.wf-a',_type:'page',title:'Editor change',_rev:'editor-rev'};
+  const client={fetch:async()=>[doc],transaction:()=>{throw new Error('Must not start transaction');}};
+  const manifest={ownedIds:[doc._id],documentRevisions:{[doc._id]:'import-rev'}};
+  await assert.rejects(writeDocuments(client,[{...doc,title:'Source change'}],manifest),/edited or removed/);
+  await assert.rejects(writeDocuments(client,[],manifest),/edited or removed/);
+  await assert.rejects(writeDocuments(client,[doc],{ownedIds:[doc._id]}),/no recorded revision/);
+  await assert.rejects(writeDocuments({...client,fetch:async()=>[]},[doc],manifest),/edited or removed/);
+});
+
+test('writer records transaction revisions and guards a later source update',async()=>{
+  const source={_id:'wf-a',_type:'page',title:'Source'};let current=[];let guarded;
+  const manifest={ownedIds:[],assets:{}};
+  const transaction={create(){return this;},patch(id,callback){callback({ifRevisionId(rev){guarded=rev;return this;},set(){return this;},unset(){return this;}});return this;},serialize:()=>[],commit:async(options)=>{assert.equal(options.returnDocuments,true);current=[{...source,_rev:current.length?'import-2':'import-1'}];return current;}};
+  const client={fetch:async()=>current,transaction:()=>transaction};
+  assert.equal((await writeDocuments(client,[source],manifest)).created,1);
+  assert.equal(manifest.documentRevisions['wf-a'],'import-1');
+  assert.equal((await writeDocuments(client,[{...source,title:'Updated source'}],manifest)).changed,1);
+  assert.equal(guarded,'import-1');assert.equal(manifest.documentRevisions['wf-a'],'import-2');
+});
+
+test('source asset URLs fail before even fetching target documents',async()=>{
+  const client={fetch:async()=>{throw new Error('Must not fetch');}};
+  for(const url of ['https://cdn.prod.website-files.com/site/missed.jpg','https://s3.amazonaws.com/webflow-prod-assets/site/missed.pdf']) {
+    await assert.rejects(writeDocuments(client,[{_id:'page',link:url}],{ownedIds:[]}),/Webflow asset URL remains/);
+  }
 });

@@ -26,14 +26,20 @@ Static public pages retain their source section patterns and exact copy.
 Unpublished template and system pages are preserved as drafts with editable
 text and media; their layouts are not reconstructed or published. Deleted
 template-library images that the Webflow API no longer supplies are reported.
-The 2026-10-04 capture has four such template image IDs. The importer preserves
+The 2026-10-04 capture has four such template image IDs. One of them also
+appears as an empty-alt close-modal icon on two public pages. Its CDN returns
+403, and no planned content refers to it. This exact decorative URL is omitted
+from the asset sweep and reported; other failed downloads still stop apply. The importer preserves
 their available alternative text. Their original IDs remain in the private
 source snapshot; it does not create broken image references or invent images.
 
 The shared settings, navigation and footer are read from public HTML. Existing
 editor-owned drafts remain intact. The importer stops on an unexpected target
 document rather than replacing it. It changes or removes only IDs recorded in
-its private ownership manifest, and checks revisions before changing content.
+its private ownership manifest. Each successful write records the returned
+revision. A rerun stops if an editor changed or removed an owned document,
+including drafts. It also stops if the manifest lacks revision evidence.
+Concurrent edits are protected by revision guards on the transaction.
 A complete snapshot is required before a removal or unpublication.
 
 Assets are deduplicated by source URL and known source aliases. Sanity also

@@ -83,11 +83,21 @@ export function materialize(documents, refs) {
   });
 }
 
+export function assertNoSourceAssetUrls(documents) {
+  if (/https?:[^"\s]*(?:website-files\.com|webflow-prod-assets)/i.test(JSON.stringify(documents))) throw new Error('Webflow asset URL remains in imported page content');
+}
+
 export async function writeDocuments(client, documents, manifest) {
+  assertNoSourceAssetUrls(documents);
   const ids=[...new Set([...documents.map((doc)=>doc._id),...manifest.ownedIds])];
   const current=await client.fetch('*[_id in $ids]',{ids});
   const owned=new Set(manifest.ownedIds);
   if(current.some((doc)=>!owned.has(doc._id)))throw new Error('A target document already exists outside importer ownership; no content was changed');
+  // Compare to the last imported revision, not the revision just fetched. The
+  // transaction guards below then protect edits made after this preflight.
+  const revisions=manifest.documentRevisions??{};
+  if(current.some((doc)=>!revisions[doc._id]||revisions[doc._id]!==doc._rev)||
+    manifest.ownedIds.some((id)=>!current.some((doc)=>doc._id===id)))throw new Error('Importer-owned content was edited or removed, or has no recorded revision; no content was changed');
   const delta=changes(documents,current,manifest.ownedIds);
   const existing=new Map(current.map((doc)=>[doc._id,doc]));
   const transaction=client.transaction();
@@ -102,8 +112,13 @@ export async function writeDocuments(client, documents, manifest) {
   // One atomic transaction resolves cyclic source references without publishing
   // temporary placeholder documents. Stop before writes if this exceeds budget.
   if(Buffer.byteLength(JSON.stringify(transaction.serialize()))>8*1024*1024)throw new Error('Import transaction exceeds safe size; split by dependency groups before applying');
-  if(delta.created.length+delta.changed.length+delta.removed.length)await transaction.commit({visibility:'sync'});
+  let written=[];
+  if(delta.created.length+delta.changed.length+delta.removed.length)written=await transaction.commit({visibility:'sync',returnDocuments:true});
+  const imported=new Map(current.map((doc)=>[doc._id,doc._rev]));
+  for(const doc of written)if(doc?._id)imported.set(doc._id,doc._rev);
+  if(documents.some((doc)=>!imported.get(doc._id)))throw new Error('Import committed without all document revisions; reconcile the verified transaction before retrying');
   manifest.ownedIds=documents.map((doc)=>doc._id);
+  manifest.documentRevisions=Object.fromEntries(documents.map((doc)=>[doc._id,imported.get(doc._id)]));
   return {created:delta.created.length,changed:delta.changed.length,removed:delta.removed.length,unchanged:delta.unchanged};
 }
 
@@ -123,8 +138,7 @@ export async function verifyImport(client, documents, counts, manifest) {
     const response=await request(url,{method:'HEAD'});
     if(!response.ok)throw new Error(`Imported CDN asset is unavailable: HTTP ${response.status}`);
   }
-  const serialized=JSON.stringify(documents);
-  if(/https?:[^"\s]*(?:website-files\.com|webflow-prod-assets)/i.test(serialized))throw new Error('Webflow asset URL remains in imported page content');
+  assertNoSourceAssetUrls(documents);
   return {collections:comparisons,cdnFilesChecked:urls.length};
 }
 

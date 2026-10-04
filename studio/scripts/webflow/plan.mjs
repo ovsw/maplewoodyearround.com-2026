@@ -3,6 +3,20 @@ import { mappings, identityMap, cmsDocuments } from './collections.mjs';
 import { pageContext, staticPages, pageId } from './pages.mjs';
 import { SITE_ID } from './source.mjs';
 import { globalDocuments } from './globals.mjs';
+import { assertNoSourceAssetUrls } from './write.mjs';
+
+export function assertPublicPageCoverage(snapshot) {
+  const publicPaths=new Set(snapshot.pages.filter((page)=>page.status===200).map((page)=>page.path));
+  const systemPaths=new Set(['/401','/404']);
+  if(snapshot.pageRecords.some((page)=>!page.collectionId&&!page.draft&&!page.archived&&!systemPaths.has(page.publishedPath)&&!publicPaths.has(page.publishedPath)))throw new Error('A published source page is absent from the captured public routes');
+}
+
+// Confirmed deleted template icon: HTTP 403 on the public CDN, no asset API
+// record. It is decorative and absent from every planned document. Keep the
+// private source evidence and report its omission; never skip other failures.
+const unavailableTemplateIds=new Set(['624380709031626fc14aee84','6244257bf98bf0e23bb25fec','624380709031625abc4aee65','6294195f2d0c46815fb2259c']);
+const unavailableDecorativeUrl='https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg';
+
 
 function summerDocuments(snapshot, context) {
   const pages = ['/summer-camp/summer-group-schedules', '/summer-camp/summer-camp-welcome-letters'].map((path) => context.pageDocuments.get(path));
@@ -80,6 +94,7 @@ export function buildPlan(snapshot, schema) {
     const record=snapshot.pageRecords.find((record)=>record.publishedPath===page.path);
     if(record&&!record.draft&&!record.archived)throw new Error('A public source page is unavailable without a matching unpublished source state');
   }
+  assertPublicPageCoverage(snapshot);
   const names = snapshot.collections.map((c) => c.displayName).sort();
   if (JSON.stringify(names) !== JSON.stringify(Object.keys(mappings).sort())) throw new Error('The snapshot does not contain all mapped collections');
   for (const collection of snapshot.collections) for (const version of ['staged','live']) {
@@ -127,6 +142,13 @@ export function buildPlan(snapshot, schema) {
   }
   documents.forEach(visit);
   if (unknownRefs.length) throw new Error(`${new Set(unknownRefs).size} unresolved target references`);
+  assertNoSourceAssetUrls(documents);
+  const unavailable=context.assets.get(unavailableDecorativeUrl);
+  if(unavailable) {
+    if(JSON.stringify(documents).includes(unavailable.token))throw new Error('Unavailable decorative source asset is now referenced by planned content');
+    context.assets.delete(unavailableDecorativeUrl);
+    context.warnings.add('unavailable-decorative-close-modal-icon');
+  }
   return {documents,assets:[...context.assets.values()],counts:cms.counts,coverage:pages.coverage,gaps:pages.gaps,warnings:[...context.warnings],missingRoutes:snapshot.pages.filter((p)=>p.status!==200).map((p)=>({path:p.path,status:p.status}))};
 }
 
@@ -145,6 +167,7 @@ function unpublishedPages(snapshot, context) {
           const asset=assets.get(node.image.assetId);
           if(asset)richText.push({...context.asset(asset.hostedUrl,'image',node.image.alt??asset.altText??''),_key:key(prefix)});
           else if(node.image.assetId) {
+            if(!unavailableTemplateIds.has(node.image.assetId))throw new Error('An unrecognized source template image is missing from the asset API');
             // Webflow templates can retain deleted library-image IDs. The API
             // cannot supply these assets; retain any authored alternative text.
             context.warnings.add('unpublished-template-image-unavailable');
