@@ -646,9 +646,13 @@
   color: var(--maplewood-ink);
   cursor: pointer;
 }
-.sliderButton:hover {
+.sliderButton:hover:not(:disabled) {
   background: var(--maplewood-green);
   color: var(--maplewood-cream);
+}
+.sliderButton:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 .sliderButton:focus-visible {
   outline: 3px solid var(--maplewood-focus);
@@ -662,8 +666,19 @@
 .sliderDotActive {
   width: 1.25em;
   height: 1.25em;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   background: #3532331a;
+  cursor: pointer;
+}
+.sliderDot:hover {
+  background: #35323340;
+}
+.sliderDot:focus-visible,
+.sliderDotActive:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 2px;
 }
 .sliderDotActive {
   background: var(--maplewood-gold-mid);
@@ -677,6 +692,12 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   list-style: none;
+  cursor: grab;
+  user-select: none;
+}
+.sliderTrack[data-dragging] {
+  cursor: grabbing;
+  scroll-snap-type: none;
 }
 .sliderTrack:focus-visible {
   outline: 3px solid var(--maplewood-focus);
