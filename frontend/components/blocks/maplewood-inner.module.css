@@ -594,6 +594,9 @@
 .sectionSmall {
   padding-block: 3rem;
 }
+.sectionMedium {
+  padding-block: 5rem;
+}
 .sliderHeading {
   display: grid;
   grid-template-columns: 1fr max-content;
@@ -903,6 +906,12 @@
   .sliderHeading {
     column-gap: 3rem;
   }
+  .sectionMedium {
+    padding-block: 4rem;
+  }
+  .sectionSmall {
+    padding-block: 3rem;
+  }
   .sliderCard {
     flex-basis: calc((100% - 2rem) / 2.6);
   }
@@ -969,6 +978,13 @@
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+  /* Phones always show the copy first, then the photo. */
+  .storyImageLeft .storyMedia {
+    order: 0;
+  }
+  .points {
+    grid-template-columns: 1fr;
+  }
   .rateNotes {
     font-size: 1.5rem;
     line-height: 1.4;
@@ -1005,6 +1021,9 @@
   }
   .sectionSmall {
     padding-block: 2rem;
+  }
+  .sectionMedium {
+    padding-block: 3rem;
   }
   .sliderHeading {
     grid-template-columns: 1fr;

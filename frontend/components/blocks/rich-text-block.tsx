@@ -28,7 +28,7 @@ export default function RichTextBlock({
   return (
     <section
       aria-labelledby={headingId}
-      className={[css.section, stegaClean(background) === "cream" ? css.cream : css.white].join(" ")}
+      className={[css.section, css.sectionMedium, stegaClean(background) === "cream" ? css.cream : css.white].join(" ")}
     >
       <div className={[css.narrow, centered ? css.richCenter : ""].join(" ")}>
         <SectionTagline dataAttribute={dataAttribute} tagline={tagline} />

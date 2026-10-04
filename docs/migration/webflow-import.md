@@ -1,20 +1,21 @@
 # Webflow import
 
-## Home review draft
+## Page review drafts
 
-Issue #8 adds source-specific home mappings to the normal importer. To refresh
-the home review draft from a captured snapshot after a verified dataset backup:
+Issue #8 adds source-specific home mappings to the normal importer; issue #10
+adds the shared inner-page section slots. To refresh one page's review draft
+from a captured snapshot after a verified dataset backup:
 
 ```sh
-HOME_SOURCE_SNAPSHOT=/private/path/source.json pnpm --dir studio page:seed studio/scripts/home-page-seed.mjs
-HOME_SOURCE_SNAPSHOT=/private/path/source.json pnpm --dir studio page:seed studio/scripts/home-page-seed.mjs --apply
+SOURCE_SNAPSHOT=/private/path/source.json SOURCE_PAGE=/ pnpm --dir studio page:seed studio/scripts/source-page-seed.mjs
+SOURCE_SNAPSHOT=/private/path/source.json SOURCE_PAGE=/summer-camp/facilities pnpm --dir studio page:seed studio/scripts/source-page-seed.mjs --apply
 ```
 
 The seed reads the existing private asset manifest and reuses uploaded assets.
-It writes only `drafts.homePage`, preserves the singleton type, and does not
+It writes only the page's draft, preserves the document type, and does not
 publish or change importer ownership. The regular final import applies the
-same home mappings to the source's published home; refresh this review draft
-from that final snapshot too, so it cannot retain older source copy.
+same mappings to the source's published pages; refresh these review drafts
+from that final snapshot too, so they cannot retain older source copy.
 
 To compare the authenticated draft with the committed live references, set
 `REF_STORAGE_STATE` to a private, ignored Playwright storage-state file from

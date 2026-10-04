@@ -214,7 +214,7 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'stackedTimeline') block.items = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'stackedTimelineItem', title: card.title, text: card.description, image: card.image }));
       if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
       if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
-      if (page.path !== '/') mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors });
+      if (page.path !== '/') mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html: page.html });
       if (page.path === '/') {
         // The home composition has distinct intro, label, body and action slots.
         // Preserve those slots on every import, including the final frozen run.

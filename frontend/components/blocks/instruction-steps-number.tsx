@@ -4,23 +4,30 @@ import { useEffect, useState } from "react";
 import css from "./maplewood-inner.module.css";
 
 /*
- * The large step number beside the steps: it shows the step nearest the
- * middle of the screen. The steps keep their own numbers on phones.
+ * The large step number beside the steps: it shows the last step whose top
+ * has passed the middle of the screen. The steps keep their own numbers on phones.
  */
 export default function InstructionStepsNumber({ stepIds }: { stepIds: string[] }) {
   const [active, setActive] = useState(0);
   useEffect(() => {
-    const steps = stepIds.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(steps.indexOf(entry.target as HTMLElement));
-        }
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    steps.forEach((step) => observer.observe(step));
-    return () => observer.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const middle = window.innerHeight / 2;
+      const passed = stepIds.filter((id) => (document.getElementById(id)?.getBoundingClientRect().top ?? Infinity) <= middle);
+      setActive(Math.max(0, passed.length - 1));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
   }, [stepIds]);
   return (
     <div aria-hidden="true" className={css.stepsNumber}>

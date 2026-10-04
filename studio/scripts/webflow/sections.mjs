@@ -6,8 +6,8 @@ import { key, text, destination, customUrl, plainBlocks, portableText, reference
 const ACCENTS = new Set(['blue', 'red', 'purple', 'mint', 'yellow']);
 const PROGRAM_CLASSES = { 'summer-camp': 'summerCamp', 'school-year': 'schoolYear' };
 
-// Section backgrounds resolved from the live stylesheet's rule order and
-// specificity. Unlisted components keep the importer's generic choice.
+// Section backgrounds from the live stylesheet's rule order and specificity.
+// Unlisted components keep the importer's generic choice.
 const BACKGROUNDS = {
   section_layout10: 'cream', section_layout203: 'white', section_layout30: 'white',
   section_comparison8: 'cream', 'section_k-9-sessions-table_comparison6': 'white',
@@ -15,6 +15,21 @@ const BACKGROUNDS = {
   section_layout486: 'white', section_cta39: 'white', section_team4: 'white',
   section_content30: 'white', section_gallery1: 'white',
 };
+
+// Most source pages carry custom code that alternates <section> backgrounds:
+// odd sections show the cream page, even ones are white, dark ones keep theirs.
+const ALTERNATING = /main section:nth-of-type\(odd\)/;
+
+function backgroundOf(selector, node, html) {
+  if (ALTERNATING.test(html) && node.tagName === 'SECTION' && node.getAttribute('data-theme') !== 'dark') {
+    let position = 1;
+    for (let sibling = node.previousElementSibling; sibling; sibling = sibling.previousElementSibling) if (sibling.tagName === 'SECTION') position += 1;
+    return position % 2 ? 'cream' : 'white';
+  }
+  if (selector === 'section_faq3') return node.classList.contains('alt') ? 'cream' : 'white';
+  if (selector === 'section_blog66' && node.classList.contains('background-color-white')) return 'white';
+  return BACKGROUNDS[selector];
+}
 
 // Icon artwork must pass the Website's SVG allowlist. Keep drawing elements
 // and presentation attributes; drop everything else rather than escape it.
@@ -137,14 +152,9 @@ function faqCategory(original, snapshot) {
   return exact.length === 1 && field?.validations?.collectionId ? reference(documentId(field.validations.collectionId, exact[0])) : undefined;
 }
 
-function backgroundOf(selector, node) {
-  if (selector === 'section_faq3') return node.classList.contains('alt') ? 'cream' : 'white';
-  if (selector === 'section_blog66' && node.classList.contains('background-color-white')) return 'white';
-  return BACKGROUNDS[selector];
-}
-
-export function mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors }) {
-  if (backgroundOf(selector, original) && 'background' in block) block.background = backgroundOf(selector, original);
+export function mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html }) {
+  const background = backgroundOf(selector, original, html);
+  if (background && 'background' in block) block.background = background;
   if (original.id && anchors.get(original.id) === original) block.anchorId = original.id;
   const title = headingOf(staticNode);
 
