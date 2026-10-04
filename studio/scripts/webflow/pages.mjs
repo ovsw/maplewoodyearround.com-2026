@@ -188,8 +188,11 @@ export function staticPages(snapshot, context, schema) {
       if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
       if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
       if (type === 'rateTable' && !original.querySelector('.comparison6_top-row,.comparison8_top-row,table')) type = 'richTextBlock';
-      if (type === 'richTextBlock' && /summer-group-schedules|summer-camp-welcome-letters/.test(page.path)) type = 'summerDocumentList';
-      else if (type === 'richTextBlock' && original.querySelector('iframe,script[src*="cognitoforms"]')) type = 'embedSection';
+      if (type === 'richTextBlock' && /summer-group-schedules|summer-camp-welcome-letters/.test(page.path)) {
+        type = 'summerDocumentList';
+        // Grade labels are imported as Summer documents headings, not page copy.
+        staticNode.querySelectorAll('.content30_content > div:not([class])').forEach((node) => node.remove());
+      } else if (type === 'richTextBlock' && original.querySelector('iframe,script[src*="cognitoforms"]')) type = 'embedSection';
       const rawText = text(staticNode);
       const title = headingText(staticNode);
       const block = { _type: type, _key: original.id ? `${original.id}-${index}` : key(prefix) };

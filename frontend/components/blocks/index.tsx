@@ -262,7 +262,9 @@ export default function Blocks({
                     }).toString()
                 : undefined,
             }
-          : block._type === "cardSlider" || block._type === "programCards"
+          : block._type === "cardSlider" ||
+              block._type === "programCards" ||
+              block._type === "summerDocumentList"
             ? {
                 dataAttribute,
                 itemDataAttribute: stega

@@ -299,6 +299,12 @@
 .heroContent {
   max-width: 60%;
 }
+.heroInnerNarrow {
+  max-width: 48rem;
+}
+.heroInnerNarrow .heroContent {
+  max-width: none;
+}
 .breadcrumbs {
   display: flex;
   flex-wrap: wrap;

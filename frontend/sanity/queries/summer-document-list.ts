@@ -8,7 +8,7 @@ export const summerDocumentListQuery = groq`
     kind,
     "documents": documents->{
       _id, seasonLabel,
-      gradeGroups[]{_key, grade->{_id, title}, entries[
+      gradeGroups[]{_key, heading, grade->{_id, title}, entries[
         kind == ^.^.^.kind
         && (!defined(group._ref) || (defined(group->_id) && group->visible != false))
       ]{

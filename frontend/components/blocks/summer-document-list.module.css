@@ -1,0 +1,47 @@
+/* Summer document pages (content30 with grade lists) from the live site. */
+
+.intro {
+  margin: 0 0 1.5rem;
+}
+.grade + .grade {
+  margin-top: 1.5rem;
+}
+.heading {
+  margin: 0;
+  font: inherit;
+}
+.list {
+  margin: 0;
+  padding-left: 2rem;
+  list-style: disc;
+}
+.item {
+  margin-bottom: 0.5rem;
+}
+.item::marker {
+  font-size: 0.875em;
+}
+/* The live site's highlighted link: `p a, .bullet-list-item a`. */
+.link {
+  padding: 0 0.15em;
+  border-radius: 0.25em;
+  background-color: rgb(255 255 58 / 0.3);
+  color: inherit;
+  text-decoration: underline;
+}
+.link:hover {
+  color: var(--maplewood-green);
+}
+.icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.25rem;
+  vertical-align: -0.125em;
+}
+
+@media (max-width: 767px) {
+  .grade + .grade {
+    margin-top: 1.25rem;
+  }
+}

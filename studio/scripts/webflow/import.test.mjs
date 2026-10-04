@@ -7,7 +7,7 @@ import { webflowReader } from './source.mjs';
 import { assetCollector, destination, portableText, htmlDocument } from './html.mjs';
 import { staticTextNodes } from './pages.mjs';
 import { cmsDocuments, identityMap, mapItem } from './collections.mjs';
-import { mediaAliases, buildPlan, assertPublicPageCoverage } from './plan.mjs';
+import { mediaAliases, buildPlan, assertPublicPageCoverage, summerDocuments } from './plan.mjs';
 import { changes, equal, materialize, writeDocuments, verifyTarget, backupDataset, savePrivate } from './write.mjs';
 import { argumentsFor } from '../import-webflow.mjs';
 
@@ -160,4 +160,22 @@ test('source asset URLs fail before even fetching target documents',async()=>{
   for(const url of ['https://cdn.prod.website-files.com/site/missed.jpg','https://s3.amazonaws.com/webflow-prod-assets/site/missed.pdf']) {
     await assert.rejects(writeDocuments(client,[{_id:'page',link:url}],{ownedIds:[]}),/Webflow asset URL remains/);
   }
+});
+
+test('summer documents follow the public grade labels and link order',()=>{
+  const pdf=(name)=>`https://cdn.prod.website-files.com/site/${name}.pdf`;
+  const list=(label,names)=>`<div><div class="text-rich-text"><p>${label}</p></div><div class="w-dyn-list">${names.map((name)=>`<a href="${pdf(name)}">${name}</a>`).join('')}</div></div>`;
+  const page=(suffix,order=['b','a'])=>htmlDocument(`<main><header>updated July 9th 2026</header><section><div class="content30_content"><p>Intro</p>${list('Preschool:',order.map((id)=>id+suffix))}${list('8th &amp; 9th Grades:',['cit'+suffix])}</div></section></main>`);
+  const grade=(id,name)=>({id,fieldData:{name}});
+  const group=(id,grades)=>({id,fieldData:{name:id.toUpperCase(),'entering-grade-2':grades,'group-schedule-pdf':{url:pdf(id)},'welcome-letter-pdf':{url:pdf(`${id}-welcome`)}}});
+  const grades=[grade('g9','9th Grade'),grade('g8','8th Grade'),grade('pre','Preschool')];
+  const groups=[group('a',['pre']),group('b',['pre']),group('cit',['g8','g9'])];
+  const snapshot={collections:[{id:'grades',displayName:'SC Grades',live:grades,staged:grades},{id:'groups',displayName:'SC Groups',live:groups,staged:groups}]};
+  const pageDocuments=new Map([['/summer-camp/summer-group-schedules',page('')],['/summer-camp/summer-camp-welcome-letters',page('-welcome')]]);
+  const [document]=summerDocuments(snapshot,{...context(),pageDocuments});
+  assert.equal(document.seasonLabel,'Summer 2026');
+  assert.deepEqual(document.gradeGroups.map((group)=>[group.grade._ref,group.heading]),[['wf-grades-pre',undefined],['wf-grades-g8','8th & 9th Grades']]);
+  assert.deepEqual(document.gradeGroups[0].entries.map((entry)=>`${entry.title} ${entry.kind}`),['B schedule','B welcomeLetter','A schedule','A welcomeLetter']);
+  pageDocuments.set('/summer-camp/summer-camp-welcome-letters',page('-welcome',['a','b']));
+  assert.throws(()=>summerDocuments(snapshot,{...context(),pageDocuments}),/order "Preschool" groups differently/);
 });

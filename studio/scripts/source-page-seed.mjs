@@ -36,9 +36,22 @@ if (!source) throw new Error(`The source has no page at ${pagePath}`);
 const [page] = materialize([source], refs);
 // Program cards list the page-authored program records; refresh their drafts
 // with the page so the preview shows the same card groups as the final import.
-const documents = source.blocks.some((block) => block._type === "programCards")
-  ? materialize(plan.documents.filter((document) => document._id.startsWith("wf-authored-program-")), refs)
-  : [];
+// Summer document lists read the summer's grade groups; refresh that draft too.
+// A staged source version is the importer's draft, so prefer it.
+const supporting = (type, matches) =>
+  source.blocks.some((block) => block._type === type)
+    ? plan.documents.filter(matches)
+    : [];
+const summerDraft = (document) =>
+  plan.documents.find((draft) => draft._id === `drafts.${document._id}`) ?? document;
+const documents = materialize(
+  [
+    ...supporting("programCards", (document) => document._id.startsWith("wf-authored-program-")),
+    ...supporting("summerDocumentList", (document) => document._type === "summerDocuments" && !document._id.startsWith("drafts."))
+      .map((document) => ({ ...summerDraft(document), _id: document._id })),
+  ],
+  refs,
+);
 if (JSON.stringify([page, documents]).includes("import-asset-"))
   throw new Error("Page media must already exist in Maplewood Sanity");
 export default { page, documents };
