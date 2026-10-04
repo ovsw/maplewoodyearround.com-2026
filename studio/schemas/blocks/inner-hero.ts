@@ -1,5 +1,6 @@
 import { Mountain } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { breadcrumbsField, highlightTextField } from "./shared/maplewood-fields";
 
 /** Flatten a minimalRichText value into plain text for the Studio preview. */
 const richTextToPlainText = (value: unknown): string => {
@@ -51,13 +52,7 @@ export default defineType({
       description:
         'Short label above the heading.',
     }),
-    defineField({
-      name: "breadcrumbs",
-      title: "Breadcrumbs",
-      type: "array",
-      description: "The trail of links above the heading, in order.",
-      of: [defineArrayMember({ type: "breadcrumb" })],
-    }),
+    breadcrumbsField,
     defineField({
       name: "title",
       title: "Heading",
@@ -66,6 +61,7 @@ export default defineType({
         "The page heading. Use italic for the one word or phrase that gets the handwritten amber style.",
       validation: (rule) => rule.required(),
     }),
+    highlightTextField,
     defineField({
       name: "body",
       title: "Supporting line",

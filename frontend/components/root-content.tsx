@@ -35,6 +35,8 @@ function PageContent({
   const needsTitleHeader =
     blocks[0]?._type !== "hero" &&
     blocks[0]?._type !== "innerHero" &&
+    // Program cards with breadcrumbs are the page header, as on /summer-camp/programs.
+    !(blocks[0]?._type === "programCards" && blocks[0].breadcrumbs?.length) &&
     stegaClean(page.title)?.trim();
   const rootDataAttribute = stega
     ? (path: "description" | "title") =>

@@ -546,12 +546,12 @@
 }
 /* Match the live site's shorter testimonial wall on smaller screens. */
 @media (width < 62rem) {
-  .quote:nth-child(n + 10) {
+  .testimonials:not([data-full-list]) .quote:nth-child(n + 10) {
     display: none;
   }
 }
 @media (width < 31rem) {
-  .quote:nth-child(n + 7) {
+  .testimonials:not([data-full-list]) .quote:nth-child(n + 7) {
     display: none;
   }
 }

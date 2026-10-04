@@ -1,7 +1,7 @@
 import { BookOpenText } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
-import { sectionAnchorField, taglineField } from "./shared/maplewood-fields";
+import { featureItemsField, sectionAnchorField, taglineField } from "./shared/maplewood-fields";
 
 const richTextToPlainText = (value: unknown): string => {
   if (!Array.isArray(value)) return "";
@@ -119,14 +119,7 @@ export default defineType({
       },
     }),
     storyRichTextField,
-    defineField({
-      name: "features",
-      title: "Points",
-      type: "array",
-      description: "Optional short points with icons, shown below the text.",
-      of: [defineArrayMember({ type: "featureItem" })],
-      validation: (rule) => rule.max(4),
-    }),
+    { ...featureItemsField, description: "Optional short points with icons, shown below the text." },
     defineField({
       name: "buttons",
       title: "Buttons",

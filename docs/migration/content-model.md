@@ -43,7 +43,7 @@ importer mapping, so later page issues inherit them:
 - `rateTable.intro`, `columns[]` objects (heading, note, detail and photo) and
   `notes` for the reminder above the buttons. Phones repeat each column
   heading beside its price; the importer stores the price only. A table has
-  3 or 4 columns (row headings, then 2 or 3 programs). Studio edits the rows
+  2 to 4 columns (row headings, then 1 to 3 programs). Studio edits the rows
   as a grid whose columns come from that list, and validation requires one
   value per program column.
 - `pricingCards.plans[].icon` and `accent`; `faqAccordion.actions`;
@@ -57,6 +57,42 @@ alternates `<section>` backgrounds (odd cream, even white); the pages without
 it use the stylesheet colours. The FAQ list uses the one category whose
 questions match the displayed list exactly. Rate-table columns stored as plain
 text were converted to column objects with the same text.
+
+## Summer Camp hub and program pages (issue #9)
+
+No new section type was needed. The importer now maps these source slots on
+every non-home page:
+
+- `programOffering.label` ("Ages 3-5") and `linkLabel` ("Details"); the
+  description keeps only the card paragraph. The two season cards on
+  `/maplewood-seasons` use `listingGroup = seasons`, so they no longer appear
+  among the Summer Camp programs. `programCards` gained breadcrumbs, a tagline
+  and an anchor; with breadcrumbs it is the page heading
+  (`/summer-camp/programs` has no hero).
+- `innerHero.highlightText`: the yellow words of the heading, such as
+  "Summer Camp".
+- `electiveCards`: tagline, lead sentence (`description`), text (`content`),
+  coloured points (`features`) and photo. `historyStory`: tagline and points.
+- The enrollment timeline (`stackedTimeline`) keeps each step's label
+  ("Step 1") in `meta`, its name in `title` and its paragraph in `text`.
+- Inner testimonial walls (`quoteWall`): the yellow first line in `eyebrow`,
+  the introduction in `subtitle`, the closing lines in `description` (one per
+  line) and the program photo from the stylesheet. They show every
+  testimonial on all screens; only the home wall is shortened on phones.
+- Collection sliders gained a `grade` filter. The daily-schedule sliders use
+  sample schedules by age group; Special Events use the activity category and,
+  where the source list is narrower, the grade named in the section label.
+- A rate table may have one unnamed price column (the K–9 tables); its
+  heading row is then hidden.
+- A heading inside a section's points is not the section heading.
+
+`pnpm page:seed` with `source-page-seed.mjs` also refreshes the
+page-authored program records as drafts when the page shows program cards.
+
+Known differences: the live Special Events order is not the source order
+field (the Webflow list sort is not available from the API), so the slider
+uses the order field; the inline "See all activities" link in the slider
+introductions is plain text (the button beside it keeps the link).
 
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 

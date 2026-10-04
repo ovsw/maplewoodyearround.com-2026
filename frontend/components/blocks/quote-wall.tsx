@@ -3,12 +3,17 @@ import { Star } from "lucide-react";
 import { urlFor } from "@/sanity/lib/image";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import type { SectionProps } from "./maplewood-section";
+import { stegaClean } from "next-sanity";
 import css from "./maplewood-home.module.css";
+import programs from "./maplewood-programs.module.css";
 type Props = SectionProps<"quoteWall"> & {
   testimonialDataAttribute?: (id: string, path: string) => string | undefined;
 };
 export default function QuoteWall({
+  anchorId,
+  eyebrow,
   heading,
+  subtitle,
   description,
   backgroundImage,
   testimonials,
@@ -23,7 +28,11 @@ export default function QuoteWall({
   return (
     <section
       className={css.testimonials}
-      id="testimonials"
+      // A source anchor is set on the section's wrapper instead.
+      id={stegaClean(anchorId) ? undefined : "testimonials"}
+      // Only the home wall shortens its list on tablets and phones; inner
+      // pages (which carry a source anchor) show every testimonial, as live.
+      data-full-list={stegaClean(anchorId) ? "" : undefined}
       style={
         backgroundImage?.asset
           ? {
@@ -34,6 +43,11 @@ export default function QuoteWall({
     >
       <div className={css.container}>
         <h2 data-sanity={dataAttribute?.("heading")}>
+          {stegaClean(eyebrow)?.trim() ? (
+            <span className={programs.quoteHighlight} data-sanity={dataAttribute?.("eyebrow")}>
+              {eyebrow}
+            </span>
+          ) : null}
           <PortableText
             value={heading || []}
             components={{
@@ -41,6 +55,11 @@ export default function QuoteWall({
             }}
           />
         </h2>
+        {stegaClean(subtitle)?.trim() ? (
+          <p className={programs.quoteSubtitle} data-sanity={dataAttribute?.("subtitle")}>
+            {subtitle}
+          </p>
+        ) : null}
         <div className={css.quoteGrid}>
           {cards.map((card) => (
             <figure
@@ -72,7 +91,17 @@ export default function QuoteWall({
             </figure>
           ))}
         </div>
-        {description ? (
+        {description && stegaClean(description).includes("\n") ? (
+          // Closing lines: a large first line, then smaller ones.
+          <div className={programs.quoteClosing} data-sanity={dataAttribute?.("description")}>
+            {stegaClean(description)
+              .split("\n")
+              .filter((line) => line.trim())
+              .map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+          </div>
+        ) : description ? (
           <p
             className={css.quoteClosing}
             data-sanity={dataAttribute?.("description")}

@@ -4,6 +4,9 @@ import {
   sectionTitleField,
   sectionDescriptionField,
   programFilterField,
+  breadcrumbsField,
+  sectionAnchorField,
+  taglineField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -12,6 +15,9 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
+    breadcrumbsField,
+    taglineField,
     sectionTitleField,
     sectionDescriptionField,
     programFilterField,
@@ -21,7 +27,7 @@ export default defineType({
       type: "string",
       description:
         "Show offerings from this card group. Leave empty for all groups.",
-      options: { list: ["main", "additional", "enrichment"] },
+      options: { list: ["main", "additional", "enrichment", "seasons"] },
     }),
   ],
   preview: {

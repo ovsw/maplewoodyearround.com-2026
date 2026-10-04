@@ -1,0 +1,342 @@
+/*
+ * Summer Camp hub and program-page sections, ported from the live Webflow
+ * components: program cards, additional programs, enrollment timeline and
+ * the testimonial closing lines. Shared type and colours are in
+ * maplewood-inner.module.css.
+ */
+
+/* Program cards (summer-camp_programs) */
+.intro {
+  max-width: 48rem;
+}
+.description {
+  margin: 1.5rem 0 0;
+}
+.cards {
+  display: flex;
+  gap: 2rem;
+  margin: 5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.card {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 70vh;
+  transition: flex-grow 0.4s ease;
+}
+.cardInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 2rem;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  color: #fff;
+  text-decoration: none;
+}
+.cardInner:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
+}
+.cardImage {
+  position: absolute;
+  inset: 0;
+}
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 102 1 / 0);
+  background-image: radial-gradient(
+    circle farthest-corner at 0% 100%,
+    var(--maplewood-green) 17%,
+    rgb(0 102 1 / 0)
+  );
+  transition: background-color 0.4s ease;
+}
+.cardContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 19rem;
+}
+.cardLabel {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.cardMore {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-top: 1rem;
+}
+.cardMoreInner {
+  display: grid;
+  gap: 1.5rem;
+  min-height: 0;
+}
+.cardMore p {
+  margin: 0;
+}
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: underline;
+}
+
+/* Desktop: the hovered or focused card widens and shows its text. */
+@media (min-width: 992px) {
+  .card:is(:hover, :focus-within) {
+    flex-grow: 1.4;
+  }
+  .card:is(:hover, :focus-within) .cardOverlay {
+    background-color: rgb(0 102 1 / 0.3);
+  }
+  .cardMore {
+    grid-template-rows: 0fr;
+    margin-top: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(100%);
+    transition:
+      grid-template-rows 0.4s ease,
+      margin-top 0.4s ease,
+      opacity 0.4s ease,
+      transform 0.4s ease;
+  }
+  .card:is(:hover, :focus-within) .cardMore {
+    grid-template-rows: 1fr;
+    margin-top: 1rem;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .cardOverlay,
+  .cardMore {
+    transition: none;
+  }
+}
+
+/* Additional programs */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem 3rem;
+  margin: 5rem 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+.column h3 {
+  margin: 0 0 1rem;
+}
+.column p {
+  margin: 0;
+}
+.columnImage {
+  margin-bottom: 2rem;
+}
+.columnImage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+/* Elective and history sections */
+.lead {
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+.h3 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+.whiteCard {
+  border-color: #fff;
+  box-shadow: 6px 6px 0 0 #fff;
+}
+
+/* Enrollment timeline (summer-camp_timeline) */
+.timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
+.timelineIntro {
+  position: sticky;
+  top: 5rem;
+  padding-right: 1rem;
+}
+.timelineIntro h2 {
+  margin-bottom: 1.5rem;
+}
+.timelineIntro p {
+  margin: 0;
+}
+.timelineSteps {
+  position: relative;
+  display: grid;
+  gap: 5rem;
+  margin: 0;
+  padding: 0 0 0 0;
+  list-style: none;
+}
+.timelineSteps::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4rem;
+  width: 3px;
+  background: #c9dbc2;
+  content: "";
+}
+.timelineStep {
+  position: relative;
+}
+.timelineStep::before {
+  position: absolute;
+  top: 2rem;
+  left: calc(-4rem - 6px);
+  width: 0.9375rem;
+  height: 0.9375rem;
+  border-radius: 100%;
+  background: var(--maplewood-green);
+  box-shadow: 0 0 0 8px var(--maplewood-cream);
+  content: "";
+}
+.stepLabel {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--maplewood-green);
+}
+.timelineStep h3 {
+  margin: 0 0 0.5rem;
+}
+.timelineStep p {
+  margin: 0;
+}
+
+/* Testimonial heading and closing lines (testimonial11) */
+.quoteHighlight {
+  display: block;
+  color: var(--maplewood-gold-mid);
+}
+.quoteSubtitle {
+  margin: -40px 0 64px;
+  font-size: 1.125rem;
+}
+.quoteClosing {
+  margin: 64px 0 0;
+  text-align: center;
+}
+.quoteClosing p {
+  margin: 0;
+}
+.quoteClosing p:first-child {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.quoteClosing p + p {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Sample schedule cards: time above the activity */
+.time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 991px) {
+  .cards {
+    flex-direction: column;
+  }
+  .card {
+    min-height: 70vh;
+  }
+  .columns {
+    gap: 4rem 2rem;
+  }
+  .timeline {
+    gap: 6rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .cards {
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .cardInner {
+    padding: 1.5rem;
+  }
+  .cardTitle {
+    font-size: 1.5rem;
+  }
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+  .h3 {
+    font-size: 2rem;
+  }
+  .timeline {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .timelineIntro {
+    position: static;
+    padding-right: 0;
+  }
+  .timelineSteps {
+    gap: 3rem;
+    padding-left: 3rem;
+  }
+  .timelineSteps::before {
+    left: 0.6rem;
+  }
+  .timelineStep::before {
+    top: 0.75rem;
+    left: calc(-3rem + 0.6rem - 6px);
+  }
+  .stepLabel {
+    font-size: 2rem;
+  }
+  .quoteClosing p:first-child {
+    font-size: 2rem;
+  }
+  .quoteClosing p + p {
+    font-size: 1.25rem;
+  }
+}

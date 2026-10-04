@@ -36,6 +36,8 @@ export default function RateTable({
   const [rowHeading, ...valueColumns] = columns;
   const stacked = valueColumns.length > 2;
   const template = { "--rate-columns": valueColumns.length } as React.CSSProperties;
+  // A table with one unnamed price column has no heading row on the live site.
+  const showHead = columns.some((column) => stegaClean(column.label)?.trim() || column.image?.asset?._id);
 
   return (
     <section
@@ -61,7 +63,7 @@ export default function RateTable({
           role="table"
           style={template}
         >
-          <div className={css.rateHead} role="row">
+          <div className={[css.rateHead, showHead ? "" : css.rateHeadHidden].join(" ")} role="row">
             <div className={[css.rateHeadTitle, css.h6].join(" ")} role="columnheader">
               {rowHeading.label}
             </div>
@@ -103,7 +105,7 @@ export default function RateTable({
                   key={column._key}
                   role="cell"
                 >
-                  {stacked ? (
+                  {stacked && stegaClean(column.label)?.trim() ? (
                     <span aria-hidden="true" className={css.rateCellLabel}>
                       {column.label}:
                     </span>

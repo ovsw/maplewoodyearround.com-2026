@@ -1,10 +1,9 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import { stegaClean } from "next-sanity";
-import { getSafeLinkHref } from "@/lib/safe-href";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import {
+  Breadcrumbs,
   type DataAttribute,
+  HighlightedHeading,
   innerCss as css,
   SourceButtons,
   SourceImage,
@@ -33,6 +32,7 @@ export default function InnerHero({
   buttons,
   dataAttribute,
   eyebrow,
+  highlightText,
   image,
   linksLabel,
   title,
@@ -40,7 +40,6 @@ export default function InnerHero({
   const heading = plain(title);
   if (!heading) return null;
   const headingId = `inner-hero-${stegaClean(_key)}-title`;
-  const crumbs = (breadcrumbs ?? []).filter((crumb) => stegaClean(crumb.label)?.trim());
 
   return (
     <header aria-labelledby={headingId} className={css.hero} data-sanity={dataAttribute?.("image")}>
@@ -53,42 +52,14 @@ export default function InnerHero({
       <div className={css.heroContain}>
         <div className={css.heroInner}>
           <div className={css.heroContent}>
-            {crumbs.length ? (
-              <nav aria-label="Breadcrumb" data-sanity={dataAttribute?.("breadcrumbs")}>
-                <ol className={css.breadcrumbs}>
-                  {crumbs.map((crumb) => {
-                    const href = getSafeLinkHref(crumb.destination?.href);
-                    const program = stegaClean(crumb.program);
-                    const label = (
-                      <span
-                        className={
-                          program === "schoolYear"
-                            ? css.badgeSchool
-                            : program === "summerCamp"
-                              ? css.badgeSummer
-                              : undefined
-                        }
-                      >
-                        {crumb.label}
-                      </span>
-                    );
-                    return (
-                      <li key={crumb._key}>
-                        {href && href !== "#" ? <Link href={href}>{label}</Link> : label}
-                        <ChevronRight aria-hidden size={16} />
-                      </li>
-                    );
-                  })}
-                </ol>
-              </nav>
-            ) : null}
+            <Breadcrumbs breadcrumbs={breadcrumbs} dataAttribute={dataAttribute} />
             {stegaClean(eyebrow)?.trim() ? (
               <p className={css.heroEyebrow} data-sanity={dataAttribute?.("eyebrow")}>
                 {eyebrow}
               </p>
             ) : null}
             <h1 className={css.heroTitle} data-sanity={dataAttribute?.("title")} id={headingId}>
-              {heading}
+              <HighlightedHeading className={css.heroHighlight} highlight={highlightText} text={heading} />
             </h1>
             {stegaClean(body)?.trim() ? (
               <p className={css.heroBody} data-sanity={dataAttribute?.("body")}>
