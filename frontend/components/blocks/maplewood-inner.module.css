@@ -77,8 +77,9 @@
   background: var(--maplewood-gold-mid);
   color: var(--maplewood-ink);
 }
+/* A shade darker than the live purple so the label keeps 4.5:1 contrast. */
 .badgeSchool {
-  background: var(--maplewood-purple-dark);
+  background: #9b3cc6;
   color: var(--maplewood-cream);
 }
 
@@ -339,9 +340,11 @@
 .breadcrumbsLight a {
   color: var(--maplewood-ink);
 }
-.breadcrumbs .badgeSummer,
-.breadcrumbs .badgeSchool {
+.breadcrumbs .badgeSummer {
   color: var(--maplewood-ink);
+}
+.breadcrumbs .badgeSchool {
+  color: var(--maplewood-cream);
 }
 .breadcrumbs .badgeSchool {
   color: var(--maplewood-cream);

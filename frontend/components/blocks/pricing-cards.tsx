@@ -112,6 +112,7 @@ export default function PricingCards({
                     <PortableText
                       components={{
                         block: { normal: ({ children }) => <p>{children}</p> },
+                        marks: simpleRichTextComponents.marks,
                         list: { bullet: ({ children }) => <ul>{children}</ul> },
                         listItem: {
                           bullet: ({ children }) => (

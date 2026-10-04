@@ -1,4 +1,5 @@
-import { key, text, destination } from './html.mjs';
+import { key, text, destination, reference } from './html.mjs';
+import { pageId } from './pages.mjs';
 
 export function globalDocuments(snapshot, context) {
   const dom=context.pageDocuments.get('/');
@@ -57,5 +58,16 @@ export function globalDocuments(snapshot, context) {
   const notFoundNode=snapshot.pageDom[notFoundPage?.id]?.find((node)=>node.type==='image'&&node.image.assetId);
   const notFoundAsset=snapshot.assets.find((asset)=>asset.id===notFoundNode?.image.assetId);
   if(notFoundAsset)settings.notFoundImage=context.asset(notFoundAsset.hostedUrl,'image',notFoundNode.image.alt??notFoundAsset.altText??'');
-  return [settings,navigation,footerDoc];
+  return [settings,navigation,footerDoc,...sourceRedirects(context)];
+}
+
+// Webflow site redirects are not in the Data API snapshot. The live site
+// answers these old paths with a 301 (checked 2026-10-04).
+const SOURCE_REDIRECTS=[['/school-year/programs/indoor-outdoor-playground','/school-year/programs/indoor-outdoor-play-center']];
+
+export function sourceRedirects(context) {
+  return SOURCE_REDIRECTS.map(([source,target])=>{
+    if(!context.routes?.has(target))throw new Error(`A redirect target is not an imported page: ${target}`);
+    return {_id:`wf-redirect-${key(source)}`,_type:'redirect',status:'active',source:{_type:'slug',current:source},destinationReference:reference(pageId(target)),permanent:'true'};
+  });
 }

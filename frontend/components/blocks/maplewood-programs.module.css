@@ -394,7 +394,7 @@
   border-radius: 0.4em;
 }
 .quoteBadgeSchool {
-  background: var(--maplewood-purple-dark);
+  background: #9b3cc6;
   color: var(--maplewood-cream);
 }
 .quoteBadgeSummer {
