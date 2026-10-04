@@ -3,6 +3,21 @@ import test from "node:test";
 
 import { validateBlocks } from "./page-builder.ts";
 
+test("the FAQ page can keep separate Summer Camp and School Year answers", () => {
+  assert.equal(validateBlocks([
+    { _type: "faqAccordion", program: "summerCamp" },
+    { _type: "faqAccordion", program: "schoolYear" },
+  ]), true);
+  assert.equal(validateBlocks([
+    { _type: "faqAccordion", program: "summerCamp" },
+    { _type: "faqAccordion", program: "summerCamp" },
+  ]), "Add no more than one FAQ section");
+  assert.equal(validateBlocks([
+    { _type: "faqAccordion", program: "summerCamp" },
+    { _type: "faqAccordion" },
+  ]), "Add no more than one FAQ section");
+});
+
 test("allows one Team Members section and preserves its stable team anchor", () => {
   assert.equal(validateBlocks([{ _type: "teamMembers" }]), true);
 });
