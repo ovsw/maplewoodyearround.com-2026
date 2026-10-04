@@ -1,6 +1,10 @@
 import { MessageCircle } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import { programFilterField } from "./shared/maplewood-fields";
+import {
+  programFilterField,
+  sectionActionsField,
+  sectionAnchorField,
+} from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
 const richTextToPlainText = (value: unknown): string => {
@@ -28,6 +32,7 @@ export default defineType({
   },
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
     defineField({
       name: "eyebrow",
       type: "string",
@@ -47,6 +52,7 @@ export default defineType({
       title: "Intro line",
       description: "Optional. One or two sentences under the heading.",
     }),
+    sectionActionsField,
     programFilterField,
     defineField({
       name: "category",

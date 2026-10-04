@@ -7,8 +7,9 @@ import {
 // @sanity-typegen-ignore
 export const instructionStepsQuery = groq`
   _type == "instructionSteps" => {
+    anchorId,
     title,
     description,
-${contentCardsProjection}, ${contentActionsProjection}
+    ${contentCardsProjection}, ${contentActionsProjection}
   }
 `;

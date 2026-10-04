@@ -8,6 +8,7 @@ import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 import styles from "./cta-banner.module.css";
+import CtaCard from "./cta-card";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -131,7 +132,13 @@ function nudgeCardClass(theme: SectionTheme) {
   return "card-cream border-foreground/10";
 }
 
-export default function CtaBanner({
+export default function CtaBanner(props: CtaBannerProps) {
+  // With a photo, the banner is the live site's green card (Webflow cta39).
+  if (props.image?.asset?._id) return <CtaCard {...props} />;
+  return <CtaBand {...props} />;
+}
+
+function CtaBand({
   _key,
   background,
   buttons,

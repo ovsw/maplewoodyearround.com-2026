@@ -1,5 +1,9 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { programOptions } from "../../documents/maplewood-fields";
+import NavigationIconInput, {
+  createNavigationIconPreview,
+} from "../../inputs/navigation-icon-input";
+import { isNavigationIconName } from "../../inputs/lucide-icon-catalog";
 
 export const sectionDescriptionField = defineField({
   name: "description",
@@ -207,4 +211,160 @@ export const contentCardsField = defineField({
   type: "array",
   description: "Cards in their display order.",
   of: [defineArrayMember({ type: "contentCard" })],
+});
+
+/** The colour names the live site uses for icons, cards and highlights. */
+export const accentOptions = [
+  { title: "Green", value: "green" },
+  { title: "Blue", value: "blue" },
+  { title: "Red", value: "red" },
+  { title: "Purple", value: "purple" },
+  { title: "Mint", value: "mint" },
+  { title: "Yellow", value: "yellow" },
+];
+
+export const accentField = defineField({
+  name: "accent",
+  title: "Colour",
+  type: "string",
+  description: "The colour of the icon and highlighted words.",
+  options: { list: accentOptions },
+});
+
+/** Section label: an optional program badge followed by optional text. */
+export const tagline = defineType({
+  name: "tagline",
+  title: "Label",
+  type: "object",
+  fields: [
+    defineField({
+      name: "label",
+      title: "Badge text",
+      type: "string",
+      description:
+        'Text in the coloured badge, such as "Summer Camp". Leave empty for plain text only.',
+    }),
+    defineField({
+      name: "program",
+      title: "Badge colour",
+      type: "string",
+      description: "The program colour of the badge.",
+      options: { list: programOptions },
+    }),
+    defineField({
+      name: "text",
+      title: "Text after the badge",
+      type: "string",
+      description: 'For example "Swimming".',
+    }),
+  ],
+  preview: {
+    select: { label: "label", text: "text" },
+    prepare: ({ label, text }) => ({
+      title: [label, text].filter(Boolean).join(" – ") || "Label",
+    }),
+  },
+});
+
+export const taglineField = defineField({
+  name: "tagline",
+  title: "Label",
+  type: "tagline",
+  description: "Optional short label above the heading.",
+});
+
+export const sectionAnchorField = defineField({
+  name: "anchorId",
+  title: "Link anchor",
+  type: "string",
+  description:
+    'Lets a link jump to this section, such as "bus-map" for #bus-map. Use lowercase letters, numbers and hyphens.',
+  validation: (rule) =>
+    rule.regex(/^[a-z0-9][a-z0-9-]*$/, { name: "anchor" }),
+});
+
+export const iconField = defineField({
+  name: "icon",
+  title: "Icon",
+  type: "object",
+  description: "Choose an icon from the picker.",
+  components: { input: NavigationIconInput },
+  fields: [
+    defineField({ name: "name", title: "Name", type: "string" }),
+    // The icon artwork is stored with the content, so the Website does not
+    // bundle an icon set. Imported source icons keep their own artwork.
+    defineField({
+      name: "svg",
+      title: "SVG markup",
+      type: "string",
+      hidden: true,
+    }),
+  ],
+  validation: (rule) =>
+    rule.custom((value) => {
+      const icon = value as { name?: string; svg?: string } | undefined;
+      if (!icon?.name) return true;
+      if (!isNavigationIconName(icon.name)) return "Choose an icon from the icon picker";
+      if (!icon.svg) return "Re-pick this icon so its artwork is stored with the document";
+      return true;
+    }),
+});
+
+/** A short point with an icon, such as "Safety First" beside a story. */
+export const featureItem = defineType({
+  name: "featureItem",
+  title: "Point",
+  type: "object",
+  fields: [
+    iconField,
+    accentField,
+    defineField({
+      name: "title",
+      title: "Heading",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "body",
+      title: "Text",
+      type: "simpleRichText",
+      description: "Bold words appear in the point's colour.",
+    }),
+  ],
+  preview: {
+    select: { title: "title", icon: "icon" },
+    prepare: ({ title, icon }) => ({
+      title: title || "Point",
+      media: icon?.name ? createNavigationIconPreview(icon) : undefined,
+    }),
+  },
+});
+
+/** One step in a page's breadcrumb trail. */
+export const breadcrumb = defineType({
+  name: "breadcrumb",
+  title: "Breadcrumb",
+  type: "object",
+  fields: [
+    defineField({
+      name: "label",
+      title: "Text",
+      type: "string",
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "destination",
+      title: "Destination",
+      type: "contentDestination",
+      description: "Leave empty to show the text without a link.",
+    }),
+    defineField({
+      name: "program",
+      title: "Badge colour",
+      type: "string",
+      description: "Show this step as a program badge.",
+      options: { list: programOptions },
+    }),
+  ],
+  preview: { select: { title: "label" } },
 });

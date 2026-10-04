@@ -24,8 +24,11 @@ import parentDashboard, {
 } from "./schemas/documents/parent-dashboard";
 import contentDestination from "./schemas/blocks/shared/content-destination";
 import {
+  breadcrumb,
   contentAction,
   contentCard,
+  featureItem,
+  tagline,
 } from "./schemas/blocks/shared/maplewood-fields";
 import page from "./schemas/documents/page";
 import post from "./schemas/documents/post";
@@ -127,6 +130,9 @@ export const schemaTypes = [
   contentDestination,
   contentAction,
   contentCard,
+  tagline,
+  featureItem,
+  breadcrumb,
   // documents
   page,
   post,

@@ -37,6 +37,8 @@ export function assetCollector(aliases = new Map()) {
 export function destination(raw, context) {
   if (!raw || !raw.trim() || raw.trim() === '#') return undefined;
   const value = raw.trim();
+  // A link to a section of the same page keeps its fragment only.
+  if (/^#[A-Za-z][\w-]*$/.test(value)) return { _type: 'contentDestination', kind: 'external', external: value };
   let url;
   try { url = new URL(value, SOURCE_ORIGIN); } catch { context.warnings.add('invalid-destination'); return undefined; }
   if (!['https:', 'http:', 'mailto:', 'tel:'].includes(url.protocol) || url.hostname.toLowerCase() === 'seasons' || url.username || url.password) {

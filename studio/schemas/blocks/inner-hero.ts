@@ -52,6 +52,13 @@ export default defineType({
         'Short label above the heading.',
     }),
     defineField({
+      name: "breadcrumbs",
+      title: "Breadcrumbs",
+      type: "array",
+      description: "The trail of links above the heading, in order.",
+      of: [defineArrayMember({ type: "breadcrumb" })],
+    }),
+    defineField({
       name: "title",
       title: "Heading",
       type: "minimalRichText",
@@ -67,9 +74,16 @@ export default defineType({
       description: "One plain sentence or two under the heading.",
     }),
     defineField({
+      name: "linksLabel",
+      title: "Label before the links",
+      type: "string",
+      description: 'Optional, such as "On this page:". Shown before the link-style buttons.',
+    }),
+    defineField({
       name: "buttons",
       type: "array",
-      description: "Call-to-action buttons in display order.",
+      description:
+        'Buttons in display order. Use the "Link" style for links to sections of this page.',
       of: [defineArrayMember({ type: "button" })],
     }),
     defineField({

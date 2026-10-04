@@ -5,6 +5,8 @@ import {
   sectionDescriptionField,
   sectionActionsField,
   embedUrlField,
+  sectionAnchorField,
+  taglineField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -13,8 +15,16 @@ export default defineType({
   type: "object",
   fields: [
     sectionBackgroundField,
+    sectionAnchorField,
+    taglineField,
     sectionTitleField,
     sectionDescriptionField,
+    defineField({
+      name: "body",
+      title: "Text",
+      type: "richTextContent",
+      description: "Optional paragraphs and lists shown before the embed.",
+    }),
     embedUrlField,
     defineField({
       name: "sentFrom",

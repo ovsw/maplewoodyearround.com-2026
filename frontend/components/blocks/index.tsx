@@ -6,7 +6,7 @@ import {
   resolveSectionBoundaries,
 } from "@/components/blocks/section-boundaries";
 import { type LivePerspective } from "next-sanity/live";
-import { createDataAttribute } from "next-sanity";
+import { createDataAttribute, stegaClean } from "next-sanity";
 import LatestArticles from "@/components/blocks/latest-articles";
 import FaqAccordion from "@/components/blocks/faq-accordion";
 import StoryFeature from "@/components/blocks/story-feature";
@@ -265,6 +265,8 @@ export default function Blocks({
     return (
       <div
         data-sanity={dataSanity}
+        // Source anchors such as #bus-map let links jump to a section.
+        id={"anchorId" in block ? stegaClean(block.anchorId) || undefined : undefined}
         data-seam-top={boundary.seamTop ? "" : undefined}
         data-seam-bottom={boundary.seamBottom ? "" : undefined}
         data-mirror={boundary.mirror ? "" : undefined}

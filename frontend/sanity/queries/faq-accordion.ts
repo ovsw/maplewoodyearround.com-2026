@@ -1,10 +1,11 @@
 import { groq } from "next-sanity";
+import { contentActionsProjection } from "./shared/maplewood";
 import { richTextContentQuery } from "./shared/rich-text-content";
 
 // @sanity-typegen-ignore
 export const faqAccordionQuery = groq`
   _type == "faqAccordion" => {
-    eyebrow, title[]{...}, subtitle,
+    anchorId, eyebrow, title[]{...}, subtitle, ${contentActionsProjection},
     "faqs": *[
       _type == "faq"
       && (!defined(^.program) || program == ^.program)
