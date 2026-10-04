@@ -14,7 +14,7 @@ function Logo({ logo }: { logo: FooterLogoModel }) {
       src={logo.image.src}
       width={logo.image.width}
       height={logo.image.height}
-      sizes="180px"
+      sizes="128px"
       className={styles.logo}
     />
   );
@@ -47,15 +47,15 @@ export function SiteFooter({
             {contact ? (
               <address>
                 <p>
-                {contact.phone && (
+                  {contact.phone && (
                     <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`}>
                       {contact.phone}
                     </a>
-                )}
-                {contact.phone && contact.email && " – "}
-                {contact.email && (
+                  )}
+                  {contact.phone && contact.email && " – "}
+                  {contact.email && (
                     <a href={`mailto:${contact.email}`}>{contact.email}</a>
-                )}
+                  )}
                 </p>
                 {contact.fax && <p>Fax: {contact.fax}</p>}
                 {contact.addressLines?.length ? (
@@ -138,7 +138,8 @@ export function SiteFooter({
             <span data-sanity={dataAttribute?.("copyrightOwner")}>
               {model.copyrightOwner}
             </span>
-            <br />All rights reserved.
+            <br />
+            All rights reserved.
           </p>
           <nav aria-label="Legal">
             <ul>

@@ -2,7 +2,7 @@
   background: oklch(0.32 0.3 135);
   color: oklch(0.85 0.1 135);
   padding: 5rem 0;
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 .inner {
@@ -55,8 +55,8 @@
 .columns a {
   display: inline-flex;
   align-items: center;
-  gap: .75rem;
-  padding-block: .5rem;
+  gap: 0.75rem;
+  padding-block: 0.5rem;
 }
 .socialIcon {
   height: 1.5rem;
@@ -74,7 +74,10 @@
   font-weight: 700;
   margin: 3rem 0;
   text-align: center;
-  letter-spacing: -.13em;
+  letter-spacing: -0.13em;
+  text-shadow:
+    0 0.15ch 15px oklch(0.25 0.2 135),
+    0 -3px 0 oklch(0.98 0.05 135);
 }
 .legal {
   border-top: 1px solid oklch(0.85 0.1 135 / 0.3);
@@ -86,9 +89,15 @@
   gap: 2rem;
   font-size: 0.875rem;
 }
-.legal > p { order: -1; }
-.legal nav { justify-self: end; }
-.legal a { text-decoration: underline; }
+.legal > p {
+  order: -1;
+}
+.legal nav {
+  justify-self: end;
+}
+.legal a {
+  text-decoration: underline;
+}
 .legal ul {
   display: flex;
   flex-wrap: wrap;
@@ -100,20 +109,31 @@
 @media (max-width: 991px) {
   .top {
     gap: 2rem;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 1fr;
   }
   .columns {
     gap: 1rem;
   }
   .legal {
+    display: flex;
     flex-wrap: wrap;
+  }
+  .mobileLogos {
+    display: flex;
+    margin-top: 2rem;
+  }
+  .desktopLogos,
+  .wordmark {
+    display: none;
   }
 }
 @media (max-width: 767px) {
   .footer {
     padding-block: 3rem;
   }
-  .business { font-size: 1.25rem; }
+  .business {
+    font-size: 1.25rem;
+  }
   .top,
   .columns {
     grid-template-columns: 1fr;
@@ -136,7 +156,9 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-  .legal > p { order: 1; }
+  .legal > p {
+    order: 1;
+  }
   .legal ul {
     flex-direction: column;
     gap: 0.5rem;
