@@ -79,6 +79,12 @@ export default function CardSliderTrack({
     const node = track.current;
     const state = drag.current;
     if (!node || !state || state.id !== event.pointerId) return;
+    // The button was released outside the track before the drag started.
+    if ((event.buttons & 1) === 0) {
+      drag.current = null;
+      delete node.dataset.dragging;
+      return;
+    }
     const distance = event.clientX - state.x;
     if (!state.moved && Math.abs(distance) < 4) return;
     if (!state.moved) {

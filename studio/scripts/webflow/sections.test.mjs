@@ -59,3 +59,10 @@ test('an FAQ list uses the one category whose questions are exactly the ones sho
   mapSourceSections({ type: 'faqAccordion', selector: 'section_faq3', original, staticNode: original.cloneNode(true), block, context: context(), prefix: 'p', snapshot: { collections: [faqs] }, anchors: new Map(), html: '' });
   assert.deepEqual(block.category, { _type: 'reference', _ref: 'wf-cats-payment' });
 });
+
+test('a rate table built from an HTML table keeps the generic table mapping', () => {
+  const original = body('<section class="section_comparison8"><h2>Rates</h2><table><tr><th>Weeks</th><th>Price</th></tr><tr><td>2</td><td>$1</td></tr></table></section>').querySelector('section');
+  const block = { _type: 'rateTable', columns: ['Weeks', 'Price'], rows: [] };
+  assert.doesNotThrow(() => mapSourceSections({ type: 'rateTable', selector: 'section_comparison8', original, staticNode: original.cloneNode(true), block, context: context(), prefix: 'p', snapshot: {}, anchors: new Map(), html: '' }));
+  assert.deepEqual(block.columns, ['Weeks', 'Price']);
+});

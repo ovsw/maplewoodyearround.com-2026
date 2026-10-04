@@ -198,6 +198,8 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
 
   if (type === 'rateTable') {
     const top = bySuffix(staticNode, '_top-row')[0];
+    // A plain HTML table keeps the importer's generic table mapping.
+    if (!top) return;
     // Paragraphs before the table introduce it; those after it close it.
     const paragraphs = [...staticNode.querySelectorAll('p')].filter((p) => !p.closest('[class*="_row"]'));
     const before = paragraphs.filter((p) => p.compareDocumentPosition(top) & 4);

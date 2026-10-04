@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
 import { faqAnswerComponents } from "./faq-item";
-import { type DataAttribute, innerCss as css, SourceActions } from "./maplewood-inner";
+import { type DataAttribute, innerCss as css, sectionBackground, SourceActions } from "./maplewood-inner";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -46,7 +46,7 @@ export default function FaqAccordion({
   return (
     <section
       aria-labelledby={headingId}
-      className={[css.section, stegaClean(background) === "white" ? css.white : css.cream].join(" ")}
+      className={[css.section, sectionBackground(background, "cream")].join(" ")}
     >
       <div className={[css.container, css.faq].join(" ")}>
         <div className={css.faqIntro}>

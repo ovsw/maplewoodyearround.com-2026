@@ -19,6 +19,9 @@
   background: var(--maplewood-green);
   color: #fff;
 }
+.green :is(.h2, .h4, .h5, .h6, .inlineLink) {
+  color: var(--maplewood-cream);
+}
 .container {
   max-width: 80rem;
   margin-inline: auto;

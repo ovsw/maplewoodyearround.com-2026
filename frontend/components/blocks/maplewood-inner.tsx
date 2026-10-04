@@ -48,6 +48,12 @@ export function SectionTagline({
   );
 }
 
+/** The section field class for an editor background, with a default. */
+export const sectionBackground = (background?: string | null, fallback = "white") => {
+  const value = stegaClean(background) || fallback;
+  return value === "green" ? css.green : value === "cream" ? css.cream : css.white;
+};
+
 export const accentClass = (accent?: string | null) =>
   css[`accent-${stegaClean(accent) || "green"}`] ?? css["accent-green"];
 

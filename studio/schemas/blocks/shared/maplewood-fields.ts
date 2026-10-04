@@ -332,10 +332,10 @@ export const featureItem = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", icon: "icon" },
+    select: { title: "title", icon: "icon.name" },
     prepare: ({ title, icon }) => ({
       title: title || "Point",
-      media: icon?.name ? createNavigationIconPreview(icon) : undefined,
+      media: icon ? createNavigationIconPreview(icon) : undefined,
     }),
   },
 });

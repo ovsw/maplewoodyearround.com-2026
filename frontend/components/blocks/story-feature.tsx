@@ -6,6 +6,7 @@ import {
   accentClass,
   type DataAttribute,
   innerCss as css,
+  sectionBackground,
   SectionTagline,
   SourceButtons,
   SourceCopy,
@@ -49,7 +50,7 @@ export default function StoryFeature({
   return (
     <section
       aria-labelledby={headingId}
-      className={[css.section, stegaClean(background) === "cream" ? css.cream : css.white].join(" ")}
+      className={[css.section, sectionBackground(background, "white")].join(" ")}
     >
       <div
         className={[
