@@ -14,6 +14,11 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     sectionTitleField,
+    defineField({
+      name: "highlightText",
+      title: "Highlighted phrase",
+      type: "string",
+    }),
     defineField({ name: "eyebrow", title: "Short label", type: "string" }),
     defineField({
       name: "body",

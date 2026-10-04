@@ -163,6 +163,11 @@
 }
 .testimonials {
   background: linear-gradient(#69a461, #006601);
+  background-position:
+    0 0,
+    50% 0;
+  background-size: auto, cover;
+  background-attachment: scroll, fixed;
   color: white;
   padding: 240px 0 112px;
 }
@@ -263,9 +268,11 @@
   padding-inline: 0;
 }
 .yearRound {
+  position: relative;
+  z-index: 2;
   overflow: hidden;
   background: #006601;
-  color: #ffd700;
+  color: #fffbf0;
   padding: 112px 0;
 }
 .reveal {
@@ -280,6 +287,29 @@
 .revealText h2 {
   max-width: 12ch;
 }
+.revealText .highlight {
+  color: #ffb000;
+}
+.revealText .eyebrow,
+.summerBadge,
+.schoolBadge {
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.4em;
+}
+.revealText .eyebrow,
+.summerBadge {
+  background: #ffb000;
+  color: #171717;
+}
+.schoolBadge {
+  background: #ae4dd5;
+  color: #fffbf0;
+}
+.summerBadge,
+.schoolBadge {
+  text-decoration: underline;
+}
 .revealText .body {
   color: #fff;
 }
@@ -287,6 +317,8 @@
   position: relative;
   aspect-ratio: 1;
   border-radius: 0.8em;
+  border: 3px solid #fffbf0;
+  box-shadow: 6px 6px 0 #fffbf0;
   overflow: hidden;
 }
 .revealImage img {
@@ -317,7 +349,8 @@
 .newsFeatured {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border: 1px solid #006601;
+  border: 3px solid #006601;
+  box-shadow: 6px 6px 0 #006601;
   border-radius: 0.8em;
   overflow: hidden;
   margin-bottom: 80px;
@@ -346,9 +379,10 @@
 }
 .newsCategory {
   width: fit-content;
-  padding: 3px 8px;
+  padding: 4px 8px;
   background: #b1e0da;
-  color: #00551b;
+  color: #000;
+  border: 1px solid #aaaaaaad;
   border-radius: 0.3em;
   font-size: 14px;
 }
@@ -360,7 +394,8 @@
 .newsCard {
   display: flex;
   flex-direction: column;
-  border: 1px solid #006601;
+  border: 3px solid #006601;
+  box-shadow: 6px 6px 0 #006601;
   border-radius: 0.8em;
   overflow: hidden;
 }
@@ -417,6 +452,9 @@
   }
 }
 @media (max-width: 767px) {
+  .schoolBadge {
+    background: #a749cc;
+  }
   .heroContent {
     padding-block: 64px;
   }

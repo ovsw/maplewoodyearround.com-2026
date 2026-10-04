@@ -24,7 +24,14 @@ function NewsArticle({
       />
       <div className={css.newsContent}>
         {article.category?.title ? (
-          <span className={css.newsCategory}>{article.category.title}</span>
+          <span
+            className={css.newsCategory}
+            style={{
+              backgroundColor: stegaClean(article.category.color) || undefined,
+            }}
+          >
+            {article.category.title}
+          </span>
         ) : null}
         <h3>
           {slug ? (
@@ -60,13 +67,14 @@ export default function HomeNews({
   description,
   selectedArticles,
   articles,
+  limit,
   dataAttribute,
 }: SectionProps<"latestArticles">) {
   const posts = (
     selectedArticles?.length
       ? selectedArticles.filter((post) => post !== null)
       : articles || []
-  ).slice(0, 4);
+  ).slice(0, Math.max(1, Math.min(12, limit ?? 4)));
   return (
     <section className={css.news} id="blog-header-7">
       <div className={css.container}>

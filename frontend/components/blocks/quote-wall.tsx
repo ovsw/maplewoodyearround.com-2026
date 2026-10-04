@@ -1,5 +1,6 @@
 import { PortableText } from "@portabletext/react";
 import { Star } from "lucide-react";
+import { urlFor } from "@/sanity/lib/image";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import type { SectionProps } from "./maplewood-section";
 import css from "./maplewood-home.module.css";
@@ -9,6 +10,7 @@ type Props = SectionProps<"quoteWall"> & {
 export default function QuoteWall({
   heading,
   description,
+  backgroundImage,
   testimonials,
   dataAttribute,
   testimonialDataAttribute,
@@ -19,7 +21,17 @@ export default function QuoteWall({
     ) ?? [];
   if (!cards.length) return null;
   return (
-    <section className={css.testimonials} id="testimonials">
+    <section
+      className={css.testimonials}
+      id="testimonials"
+      style={
+        backgroundImage?.asset
+          ? {
+              backgroundImage: `linear-gradient(180deg, #00660199, #006601), url("${urlFor(backgroundImage).width(1920).url()}")`,
+            }
+          : undefined
+      }
+    >
       <div className={css.container}>
         <h2 data-sanity={dataAttribute?.("heading")}>
           <PortableText
@@ -37,8 +49,8 @@ export default function QuoteWall({
               data-sanity={testimonialDataAttribute?.(card._id, "body")}
             >
               <div
-              className={css.stars}
-              role="img"
+                className={css.stars}
+                role="img"
                 aria-label={`${card.rating || 5} out of 5 stars`}
               >
                 {Array.from({ length: card.rating || 5 }, (_, i) => (

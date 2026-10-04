@@ -53,6 +53,25 @@ function environment(reduced: boolean) {
   };
 }
 describe("BackgroundVideo motion preferences", () => {
+  it("allows a visitor to explicitly play and pause with reduced motion enabled", async () => {
+    const env = environment(true);
+    render(<BackgroundVideo mp4="/camp.mp4" poster="/poster.jpg" />);
+    env.visible(true);
+    expect(env.play).not.toHaveBeenCalled();
+    fireEvent.click(
+      screen.getByRole("button", { name: "Play background video" }),
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Pause background video" }),
+      ).toBeVisible(),
+    );
+    expect(env.play).toHaveBeenCalledTimes(1);
+    fireEvent.click(
+      screen.getByRole("button", { name: "Pause background video" }),
+    );
+    expect(env.pause).toHaveBeenCalled();
+  });
   it("keeps the static poster when reduced motion is requested", () => {
     const env = environment(true);
     render(<BackgroundVideo mp4="/camp.mp4" poster="/poster.jpg" />);

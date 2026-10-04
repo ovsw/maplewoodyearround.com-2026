@@ -50,9 +50,14 @@ describe("Maplewood collection projections", () => {
       quoteWallQuery,
       {
         _type: "quoteWall",
-        selectedTestimonials: [ref("second"), ref("first")],
+        selectedTestimonials: [ref("second"), ref("hidden"), ref("first")],
       },
-      [quote("first", 0), quote("second", 100), quote("unplaced", 1)],
+      [
+        quote("first", 0),
+        quote("second", 100),
+        quote("unplaced", 1),
+        { ...quote("hidden", 2), visible: false },
+      ],
     );
     expect(
       section.testimonials.map(

@@ -246,11 +246,16 @@ export function staticPages(snapshot, context, schema) {
           delete block.description;
         }
         if (type === 'quoteWall') {
+          // This source photo is declared in Webflow's stylesheet, not its HTML.
+          block.backgroundImage = context.asset('https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a5d0a3369797b17dbfc98b_summer-camp-maplewood-wow-testimonies-1.avif', 'image');
           const source = snapshot.collections.find((collection) => collection.displayName === 'Testimonials');
-          const normalized = (value) => value.replace(/\s+/g, ' ').trim();
+          const normalized = (value) => (typeof value === 'string' ? value : '').replace(/\s+/g, ' ').trim();
           block.selectedTestimonials = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
             const content = normalized(text(node));
-            const item = source.live.find((item) => content.includes(normalized(item.fieldData['testimonial-text'])));
+            const item = source.live.find((item) => {
+              const quote = normalized(item.fieldData['testimonial-text']);
+              return quote.length > 0 && content.includes(quote);
+            });
             if (!item) throw new Error('A home testimonial has no live source record');
             return { ...reference(documentId(source.id, item.id)), _key: key(item.id) };
           });
@@ -260,8 +265,11 @@ export function staticPages(snapshot, context, schema) {
           closing.querySelectorAll('h1,h2,h3').forEach((node) => node.remove());
           block.description = text(closing);
         }
-        if (type === 'busMap') block.cards = block.cards.map((card) => ({ ...card, description: card.description.slice(card.title.length) }));
-        if (type === 'imageReveal') block.body = portableText(paragraphs(staticNode), context, prefix);
+        if (type === 'busMap') block.cards = block.cards.map((card) => ({ ...card, description: card.title && card.description.startsWith(card.title) ? card.description.slice(card.title.length).trim() : card.description }));
+        if (type === 'imageReveal') {
+          block.body = portableText(paragraphs(staticNode), context, prefix);
+          block.highlightText = text(staticNode.querySelector('h2 .text-color-brand-secondary'));
+        }
         if (type === 'latestArticles') {
           const posts = snapshot.collections.find((collection) => collection.displayName === 'Blog Posts');
           const names = [...original.querySelectorAll('.blog7_featured-item h2,.blog7_item h2')].map(text);

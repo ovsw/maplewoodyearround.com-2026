@@ -68,6 +68,7 @@ export default function BackgroundVideo({
             video.current?.pause();
             setPlaying(false);
           } else {
+            // A visitor can opt in; reduced motion prevents automatic playback.
             manuallyPaused.current = false;
             void video.current
               ?.play()

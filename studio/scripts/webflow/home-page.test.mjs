@@ -14,13 +14,15 @@ const fixture = `<html><head><title>Home SEO</title><meta name="description" con
 <section class="section_blog7"><div class="text-style-tagline">Blog</div><h1>News</h1><p>News intro.</p><div class="w-dyn-list"><div class="blog7_featured-item"><h2>Featured</h2></div><div class="blog7_item"><h2>Card</h2></div></div><div class="u-display-hidden"><a href="#">Hidden filter</a></div></section>
 </main></body></html>`;
 
-function plan(path = "/") {
-  const dom = htmlDocument(fixture);
+function plan(path = "/", html = fixture) {
+  const dom = htmlDocument(html);
   const collections = [
     {
       id: "quotes",
       displayName: "Testimonials",
       live: [
+        { id: "empty", fieldData: { "testimonial-text": "   " } },
+        { id: "missing", fieldData: {} },
         { id: "one", fieldData: { "testimonial-text": "First quote." } },
         { id: "two", fieldData: { "testimonial-text": "Second quote." } },
         { id: "unplaced", fieldData: { "testimonial-text": "Never placed." } },
@@ -41,11 +43,12 @@ function plan(path = "/") {
     routes: new Map([["/camp", "camp"]]),
     pageDocuments: new Map([[path, dom]]),
   };
-  return staticPages(
+  const result = staticPages(
     { pages: [{ path, status: 200 }], collections },
     context,
     schema,
   );
+  return { ...result, assets: [...context.assets.values()] };
 }
 test("home keeps prose, inline links, labels, actions and device-specific media in separate editable slots", () => {
   const result = plan();
@@ -75,12 +78,32 @@ test("home selects source testimonial and news records in visible order, excludi
     ["wf-quotes-two", "wf-quotes-one"],
   );
   assert.equal(blocks[2].description, "Closing text.");
+  const background = plan().assets.find(
+    (asset) => asset.token === blocks[2].backgroundImage.asset._ref,
+  );
+  assert.equal(
+    background.url,
+    "https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a5d0a3369797b17dbfc98b_summer-camp-maplewood-wow-testimonies-1.avif",
+  );
+  assert.equal(background.kind, "image");
   assert.deepEqual(
     blocks[3].selectedPosts.map((ref) => ref._ref),
     ["wf-posts-featured", "wf-posts-card"],
   );
   assert.equal(blocks[3].featuredFirst, true);
   assert.doesNotMatch(JSON.stringify(blocks[3]), /Unrelated|Hidden filter/);
+});
+test("bus cards only remove a heading when it is the description prefix", () => {
+  const html = `<html><body><main><section class="section_transportation_contact14">
+    <h2>Bus service</h2><div class="bus_card"><h3>Door to door</h3><p>Ride with us.</p></div>
+    <div class="bus_card"><p>Keep this introduction.</p><h3>Our routes</h3><p>See all stops.</p></div>
+  </section></main></body></html>`;
+  const [first, second] = plan("/", html).documents[0].blocks[0].cards;
+  assert.equal(first.description, "Ride with us.");
+  assert.equal(
+    second.description,
+    "Keep this introduction.Our routesSee all stops.",
+  );
 });
 test("home parsing changes do not change other pages using the same section types", () => {
   const blocks = plan("/other").documents[0].blocks;

@@ -15,7 +15,7 @@ export const latestArticlesQuery = groq`
     description,
     limit,
     featuredFirst,
-    "selectedArticles": selectedPosts[]->{${blogPostProjection}},
+    "selectedArticles": selectedPosts[]->{${blogPostProjection}, category->{_id, title, slug, color}},
     buttons[]{
       _key,
       _type,
@@ -38,7 +38,7 @@ export const latestArticlesQuery = groq`
       seoHideFromLists != true &&
       seoNoIndex != true
     ] | order(${blogPostOrder})[0...12]{
-      ${blogPostProjection}
+      ${blogPostProjection}, category->{_id, title, slug, color}
     }
   }
 `;

@@ -25,6 +25,13 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     defineField({
+      name: "backgroundImage",
+      title: "Background image",
+      type: "image",
+      options: { hotspot: true },
+      description: "Decorative photo behind the testimonials.",
+    }),
+    defineField({
       name: "selectedTestimonials",
       title: "Selected testimonials",
       type: "array",
