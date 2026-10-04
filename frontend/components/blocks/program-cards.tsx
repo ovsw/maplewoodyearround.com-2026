@@ -54,6 +54,7 @@ export default function ProgramCards({
   const edit = (item: Offering, path: string) => itemDataAttribute?.(item._id, "programOffering", path);
   // With breadcrumbs the section opens the page, so its heading is the page heading.
   const Heading = breadcrumbs?.length ? "h1" : "h2";
+  const ItemHeading = breadcrumbs?.length ? "h2" : "h3";
 
   return (
     <section
@@ -80,9 +81,9 @@ export default function ProgramCards({
                 <div className={[css.cardSmall, programs.columnImage].join(" ")} data-sanity={edit(item, "image")}>
                   <SourceImage image={item.image} sizes="(max-width: 767px) 90vw, 30vw" width={800} />
                 </div>
-                <h3 className={css.h5} data-sanity={edit(item, "title")}>
+                <ItemHeading className={css.h5} data-sanity={edit(item, "title")}>
                   {item.title}
-                </h3>
+                </ItemHeading>
                 {item.description ? <p data-sanity={edit(item, "description")}>{item.description}</p> : null}
               </li>
             ))}
@@ -103,9 +104,9 @@ export default function ProgramCards({
                         {item.label}
                       </p>
                     ) : null}
-                    <h3 className={programs.cardTitle} data-sanity={edit(item, "title")}>
+                    <ItemHeading className={programs.cardTitle} data-sanity={edit(item, "title")}>
                       {item.title}
-                    </h3>
+                    </ItemHeading>
                     <div className={programs.cardMore}>
                       <div className={programs.cardMoreInner}>
                         {item.description ? <p data-sanity={edit(item, "description")}>{item.description}</p> : null}

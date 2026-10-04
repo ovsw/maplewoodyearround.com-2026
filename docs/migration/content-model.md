@@ -43,7 +43,7 @@ importer mapping, so later page issues inherit them:
 - `rateTable.intro`, `columns[]` objects (heading, note, detail and photo) and
   `notes` for the reminder above the buttons. Phones repeat each column
   heading beside its price; the importer stores the price only. A table has
-  3 or 4 columns (row headings, then 2 or 3 programs). Studio edits the rows
+  2 to 4 columns (row headings, then 1 to 3 programs). Studio edits the rows
   as a grid whose columns come from that list, and validation requires one
   value per program column.
 - `pricingCards.plans[].icon` and `accent`; `faqAccordion.actions`;

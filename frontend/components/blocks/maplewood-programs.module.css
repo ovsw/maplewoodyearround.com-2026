@@ -37,6 +37,10 @@
   color: #fff;
   text-decoration: none;
 }
+.cardInner:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
+}
 .cardImage {
   position: absolute;
   inset: 0;

@@ -136,7 +136,8 @@ function inferFilter(node, snapshot, allowedTypes) {
       const shown = node.querySelectorAll('.w-dyn-item').length;
       const fits = [...values].filter((value) => {
         const items = found.collection.live.filter((item) => item.fieldData[sourceField] === value);
-        return items.length === shown && items.every((item) => found.matches.includes(item));
+        const ids = new Set(found.matches.map((match) => match.id));
+        return items.length === shown && items.every((item) => ids.has(item.id));
       });
       if (fits.length === 1) filter[target] = field?.validations?.options?.find((o) => o.id === fits[0])?.name;
     }

@@ -44,9 +44,12 @@ export default function StoryFeature({
   if (!heading && !features?.length && !richText?.length) return null;
   const headingId = heading ? `story-feature-${stegaClean(_key)}-title` : undefined;
   const small = stegaClean(headingSize) === "small";
+  // Without a heading (points only, as in the program overviews) the block is
+  // a plain container, not an unnamed section.
+  const Wrapper = heading ? "section" : "div";
 
   return (
-    <section
+    <Wrapper
       aria-labelledby={headingId}
       className={[css.section, sectionBackground(background, "white")].join(" ")}
     >
@@ -85,6 +88,6 @@ export default function StoryFeature({
           </div>
         ) : null}
       </div>
-    </section>
+    </Wrapper>
   );
 }

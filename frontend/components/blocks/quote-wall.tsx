@@ -94,9 +94,12 @@ export default function QuoteWall({
         {description && stegaClean(description).includes("\n") ? (
           // Closing lines: a large first line, then smaller ones.
           <div className={programs.quoteClosing} data-sanity={dataAttribute?.("description")}>
-            {description.split("\n").map((line, index) => (
-              <p key={index}>{line}</p>
-            ))}
+            {stegaClean(description)
+              .split("\n")
+              .filter((line) => line.trim())
+              .map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
           </div>
         ) : description ? (
           <p
