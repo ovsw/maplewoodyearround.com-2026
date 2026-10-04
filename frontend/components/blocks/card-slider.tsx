@@ -42,7 +42,7 @@ export default function CardSlider({
           <div className={css.sliderIntro}>
             <SectionTagline dataAttribute={dataAttribute} tagline={tagline} />
             <div className={[css.sliderTitle, accentClass(accent)].join(" ")}>
-              <SourceIcon icon={icon} />
+              <SourceIcon dataSanity={dataAttribute?.("icon")} icon={icon} />
               <h2 className={css.h2} data-sanity={dataAttribute?.("title")} id={headingId}>
                 {title}
               </h2>

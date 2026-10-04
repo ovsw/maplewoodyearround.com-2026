@@ -51,12 +51,15 @@ export function SectionTagline({
 export const accentClass = (accent?: string | null) =>
   css[`accent-${stegaClean(accent) || "green"}`] ?? css["accent-green"];
 
+/** Icon artwork; `dataSanity` makes a click in Presentation open its field. */
 export function SourceIcon({
   icon,
   className,
+  dataSanity,
 }: {
   icon?: { svg?: string | null } | null;
   className?: string;
+  dataSanity?: string;
 }) {
   const svg = stegaClean(icon?.svg)?.trim();
   if (!svg || !isSafeIconSvg(svg)) return null;
@@ -64,6 +67,7 @@ export function SourceIcon({
     <span
       aria-hidden="true"
       className={[css.icon, className].filter(Boolean).join(" ")}
+      data-sanity={dataSanity}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );

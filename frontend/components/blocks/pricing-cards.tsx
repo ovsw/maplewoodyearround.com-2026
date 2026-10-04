@@ -63,7 +63,7 @@ export default function PricingCards({
                 key={plan._key}
               >
                 <div className={css.pricingIcon}>
-                  <SourceIcon icon={plan.icon} />
+                  <SourceIcon dataSanity={dataAttribute?.(`${path}.icon`)} icon={plan.icon} />
                 </div>
                 <h3 className={css.pricingTitle}>{plan.title}</h3>
                 <p className={css.pricingPrice}>

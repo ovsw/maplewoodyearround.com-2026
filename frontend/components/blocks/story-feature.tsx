@@ -80,7 +80,10 @@ export default function StoryFeature({
                   data-sanity={dataAttribute?.(`features[_key=="${feature._key}"]`)}
                   key={feature._key}
                 >
-                  <SourceIcon icon={feature.icon} />
+                  <SourceIcon
+                    dataSanity={dataAttribute?.(`features[_key=="${feature._key}"].icon`)}
+                    icon={feature.icon}
+                  />
                   <h3 className={css.h6}>{feature.title}</h3>
                   {feature.body?.length ? (
                     <div className={css.copy}>
