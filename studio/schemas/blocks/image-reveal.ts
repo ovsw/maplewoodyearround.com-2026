@@ -15,7 +15,11 @@ export default defineType({
     sectionBackgroundField,
     sectionTitleField,
     defineField({ name: "eyebrow", title: "Short label", type: "string" }),
-    defineField({ name: "body", title: "Text and links", type: "richTextContent" }),
+    defineField({
+      name: "body",
+      title: "Text and links",
+      type: "richTextContent",
+    }),
     sectionDescriptionField,
     imageField(),
     sectionActionsField,

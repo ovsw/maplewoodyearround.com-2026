@@ -61,7 +61,10 @@ async function CachedIndexPage({ perspective, stega }: DynamicFetchOptions) {
 
   const blocks = page.blocks ?? [];
   const hasHero = blocks.some(
-    (block) => block._type === "homeHero" || block._type === "hero",
+    (block) =>
+      block._type === "homeHero" ||
+      block._type === "hero" ||
+      block._type === "videoHero",
   );
 
   return (

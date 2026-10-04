@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { sectionThemeClass } from "./section-theme";
+import HomeNews from "./home-news";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -66,9 +67,29 @@ export default function LatestArticles({
   description,
   eyebrow,
   fallbackImage,
+  featuredFirst,
+  selectedArticles,
   limit,
   title,
 }: LatestArticlesProps) {
+  if (featuredFirst && !blogListing)
+    return (
+      <HomeNews
+        _type="latestArticles"
+        _key={_key}
+        title={title}
+        eyebrow={eyebrow}
+        description={description}
+        selectedArticles={selectedArticles}
+        articles={articles}
+        background={background}
+        buttons={buttons}
+        fallbackImage={fallbackImage}
+        limit={limit}
+        featuredFirst={featuredFirst}
+        dataAttribute={dataAttribute}
+      />
+    );
   const posts = blogListing
     ? blogListing.posts
     : (articles ?? []).slice(0, resolvePostLimit(limit));
@@ -110,7 +131,10 @@ export default function LatestArticles({
             </h2>
             {hasText(description) ? (
               <p
-                className={cn("mt-5 max-w-xl text-pretty text-lg/relaxed", field.description)}
+                className={cn(
+                  "mt-5 max-w-xl text-pretty text-lg/relaxed",
+                  field.description,
+                )}
                 data-sanity={dataAttribute?.("description")}
               >
                 {description}
@@ -122,7 +146,11 @@ export default function LatestArticles({
               className="focus-ring group/link inline-flex w-fit shrink-0 items-center gap-2 font-semibold text-prose-link underline-offset-4 decoration-current/40 hover:text-prose-link-hover hover:underline"
               data-sanity={dataAttribute?.(`buttons[_key=="${button._key}"]`)}
               href={buttonHref}
-              rel={stegaClean(button.openInNewTab) ? "noopener noreferrer" : undefined}
+              rel={
+                stegaClean(button.openInNewTab)
+                  ? "noopener noreferrer"
+                  : undefined
+              }
               target={stegaClean(button.openInNewTab) ? "_blank" : undefined}
             >
               {buttonLabel}

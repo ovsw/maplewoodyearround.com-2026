@@ -1,166 +1,209 @@
 .root {
-	position: relative;
-	width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .scrollTrack {
-	position: relative;
-	width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .stickyViewport {
-	position: sticky;
-	top: 0;
-	height: 100vh;
-	overflow: hidden;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .gridTargetStage {
-	position: absolute;
-	inset: 0;
-	display: grid;
-	place-items: center;
-	padding: clamp(0.75rem, 2vw, 1.25rem);
-	pointer-events: none;
-	visibility: hidden;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .desktopGrid,
 .mobileGrid {
-	width: 100vw;
-	height: 100vh;
-	gap: clamp(0.45rem, 1vw, 0.8rem);
+  width: 100vw;
+  height: 100vh;
+  gap: clamp(0.45rem, 1vw, 0.8rem);
 }
 
 .desktopGrid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	grid-template-rows: repeat(3, minmax(0, 1fr));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
 .mobileGrid {
-	display: none;
-	grid-template-columns: minmax(0, 1fr);
-	grid-template-rows: repeat(3, minmax(0, 1fr));
+  display: none;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
 .measurementTile {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .tile {
-	position: relative;
-	overflow: hidden;
-	border-radius: clamp(0.65rem, 1.2vw, 1rem);
-	background: rgb(22 25 20 / 55%);
-	transform-origin: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(0.65rem, 1.2vw, 1rem);
+  background: rgb(22 25 20 / 55%);
+  transform-origin: center;
 }
 
 .mediaTile {
-	opacity: 0;
-	transform: translate3d(0, 2rem, 0) scale(0.9);
-	transition: none;
+  opacity: 0;
+  transform: translate3d(0, 2rem, 0) scale(0.9);
+  transition: none;
 }
 
 .mediaTileVisible {
-	opacity: 1;
-	transform: translate3d(0, 0, 0) scale(1);
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .tileImage {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .videoTarget {
-	position: relative;
-	z-index: 2;
+  position: relative;
+  z-index: 2;
 }
 
 .floatingScene {
-	position: absolute;
-	inset: 0;
-	z-index: 3;
-	will-change: top, left, width, height;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  will-change: top, left, width, height;
 }
 
 .sceneDesktopGrid,
 .sceneMobileGrid {
-	width: 100%;
-	height: 100%;
-	gap: clamp(0.45rem, 1vw, 0.8rem);
+  width: 100%;
+  height: 100%;
+  gap: clamp(0.45rem, 1vw, 0.8rem);
 }
 
 .sceneDesktopGrid {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
-	grid-template-rows: repeat(3, minmax(0, 1fr));
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
 .sceneMobileGrid {
-	display: none;
-	grid-template-columns: minmax(0, 1fr);
-	grid-template-rows: repeat(3, minmax(0, 1fr));
+  display: none;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: repeat(3, minmax(0, 1fr));
 }
 
 .floatingVideoEl {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .videoOverlay {
-	position: absolute;
-	inset: 0;
-	background-color: var(--brand-overlay, rgb(20 23 18 / 60%));
+  position: absolute;
+  inset: 0;
+  background-color: var(--brand-overlay, rgb(20 23 18 / 60%));
 }
 
 .contentLayer {
-	position: absolute;
-	inset: 0;
-	z-index: 4;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: clamp(1rem, 4vw, 2rem);
-	pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2rem);
+  pointer-events: none;
 }
 
 .contentInner {
-	max-width: min(80ch, 88vw);
-	text-align: center;
+  max-width: min(80ch, 88vw);
+  text-align: center;
 }
 
 @media (max-width: 767px) {
-	.desktopGrid {
-		display: none;
-	}
+  .desktopGrid {
+    display: none;
+  }
 
-	.mobileGrid {
-		display: grid;
-	}
+  .mobileGrid {
+    display: grid;
+  }
 
-	.sceneDesktopGrid {
-		display: none;
-	}
+  .sceneDesktopGrid {
+    display: none;
+  }
 
-	.sceneMobileGrid {
-		display: grid;
-	}
+  .sceneMobileGrid {
+    display: grid;
+  }
 }
 
 /* Static view keeps the full activity grid and its introduction readable. */
-.reduced .scrollTrack { height: auto !important; }
-.reduced .stickyViewport { position: relative; height: auto; overflow: visible; }
-.reduced .floatingScene { position: relative; left: 0 !important; top: 0 !important; width: 100% !important; height: 100vh !important; }
-.reduced .contentLayer { position: relative; padding: 4rem 5%; background: #006601; }
-.root { background: #006601; color: white; }
-.videoOverlay { background: #006601; pointer-events: none; }
-.tile { border-radius: 0; }
-.contentInner { width: 48rem; max-width: 90vw; }
-.contentInner h2 { font-family: var(--font-poppins), sans-serif; font-size: 4rem; line-height: 1; font-weight: 700; max-width: 12ch; margin: 0 auto; }
-.contentInner p { font-size: 1.25rem; margin: 1.5rem 0; }
-@media (max-width:767px) { .contentInner h2 { font-size: 3rem; } .contentInner p { font-size: 1.125rem; } }
-
+.reduced .scrollTrack {
+  height: auto !important;
+}
+.reduced .stickyViewport {
+  position: relative;
+  height: auto;
+  overflow: visible;
+}
+.reduced .floatingScene {
+  position: relative;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+}
+.reduced .contentLayer {
+  position: relative;
+  padding: 4rem 5%;
+  background: #006601;
+}
+.root {
+  background: #fffbf0;
+  color: white;
+}
+.videoOverlay {
+  background: #006601;
+  pointer-events: none;
+}
+.tile {
+  border-radius: 0;
+}
+.contentInner {
+  width: 48rem;
+  max-width: 90vw;
+}
+.contentInner h2 {
+  font-family: var(--font-poppins), sans-serif;
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 700;
+  max-width: 12ch;
+  margin: 0 auto;
+}
+.contentInner p {
+  font-size: 1.25rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 767px) {
+  .contentInner h2 {
+    font-size: 3rem;
+  }
+  .contentInner p {
+    font-size: 1.125rem;
+  }
+}

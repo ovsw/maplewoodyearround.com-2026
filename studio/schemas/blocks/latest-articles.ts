@@ -11,8 +11,20 @@ export default defineType({
     "Lists the newest published Blog Posts. On the Blog page it lists every post with pagination.",
   fields: [
     sectionBackgroundField,
-    defineField({ name: "featuredFirst", title: "Feature the first post", type: "boolean", initialValue: false }),
-    defineField({ name: "selectedPosts", title: "Selected posts", type: "array", description: "Optional ordered selection. Leave empty to show the latest posts.", of: [defineArrayMember({ type: "reference", to: [{ type: "post" }] })] }),
+    defineField({
+      name: "featuredFirst",
+      title: "Feature the first post",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "selectedPosts",
+      title: "Selected posts",
+      type: "array",
+      description:
+        "Optional ordered selection. Leave empty to show the latest posts.",
+      of: [defineArrayMember({ type: "reference", to: [{ type: "post" }] })],
+    }),
     defineField({
       name: "eyebrow",
       type: "string",

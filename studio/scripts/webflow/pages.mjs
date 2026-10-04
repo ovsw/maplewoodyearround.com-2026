@@ -246,6 +246,16 @@ export function staticPages(snapshot, context, schema) {
           delete block.description;
         }
         if (type === 'quoteWall') {
+          const source = snapshot.collections.find((collection) => collection.displayName === 'Testimonials');
+          const normalized = (value) => value.replace(/\s+/g, ' ').trim();
+          block.selectedTestimonials = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
+            const content = normalized(text(node));
+            const item = source.live.find((item) => content.includes(normalized(item.fieldData['testimonial-text'])));
+            if (!item) throw new Error('A home testimonial has no live source record');
+            return { ...reference(documentId(source.id, item.id)), _key: key(item.id) };
+          });
+          const captions = [...original.querySelectorAll('.wall-of-love_item')].map((node) => text(node).slice(-40));
+          if (captions.length && captions.every((caption) => caption.endsWith('Summer Camp'))) block.program = 'summerCamp';
           const closing = staticNode.cloneNode(true);
           closing.querySelectorAll('h1,h2,h3').forEach((node) => node.remove());
           block.description = text(closing);

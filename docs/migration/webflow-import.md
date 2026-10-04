@@ -1,5 +1,27 @@
 # Webflow import
 
+## Home review draft
+
+Issue #8 adds source-specific home mappings to the normal importer. To refresh
+the home review draft from a captured snapshot after a verified dataset backup:
+
+```sh
+HOME_SOURCE_SNAPSHOT=/private/path/source.json pnpm --dir studio page:seed studio/scripts/home-page-seed.mjs
+HOME_SOURCE_SNAPSHOT=/private/path/source.json pnpm --dir studio page:seed studio/scripts/home-page-seed.mjs --apply
+```
+
+The seed reads the existing private asset manifest and reuses uploaded assets.
+It writes only `drafts.homePage`, preserves the singleton type, and does not
+publish or change importer ownership. The regular final import applies the
+same home mappings to the source's published home; refresh this review draft
+from that final snapshot too, so it cannot retain older source copy.
+
+To compare the authenticated draft with the committed live references, set
+`REF_STORAGE_STATE` to a private, ignored Playwright storage-state file from
+the normal draft-mode flow, then run `pnpm ref:compare /`. The command requires
+Sanity edit targets in the rendered draft and labels its manifest perspective.
+Never commit the state file or a preview secret.
+
 The importer reads Maplewood Webflow site `673ebf0eedfc15a41bedc0c3` and writes
 only Sanity project `193h5qm1`, dataset `production`. It never writes to Webflow
 or Airtable. Keep `WEBFLOW_API_TOKEN` in the local secrets file and

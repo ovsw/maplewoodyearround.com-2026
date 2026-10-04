@@ -110,6 +110,11 @@ async function main() {
   ]);
 
   const base = draft ?? published;
+  const pageType = base?._type ?? pageFields._type ?? "page";
+  if (!["page", "homePage", "blogIndex"].includes(pageType) ||
+      (pageFields._type && pageFields._type !== pageType)) {
+    usage("A seed must preserve the existing page document type.");
+  }
   if (!base && !(slug && pageFields.title)) {
     usage(`Page ${pageId} does not exist; a new page needs slug and title in the seed.`);
   }
@@ -117,7 +122,7 @@ async function main() {
     ...(base ?? { _type: "page", slug: { _type: "slug", current: slug } }),
     ...pageFields,
     _id: draftId,
-    _type: "page",
+    _type: pageType,
   });
   delete pageDocument._rev;
   delete pageDocument._createdAt;
