@@ -165,6 +165,14 @@ export const contentCard = defineType({
   title: "Card",
   type: "object",
   fields: [
+    defineField({ name: "eyebrow", title: "Short label", type: "string" }),
+    defineField({
+      name: "mobileImage",
+      title: "Mobile image",
+      type: "image",
+      options: { hotspot: true },
+      fields: [{ name: "alt", title: "Image description", type: "string" }],
+    }),
     sectionTitleField,
     sectionDescriptionField,
     defineField({

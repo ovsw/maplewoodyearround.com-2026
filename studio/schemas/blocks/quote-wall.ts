@@ -25,10 +25,26 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     defineField({
+      name: "backgroundImage",
+      title: "Background image",
+      type: "image",
+      options: { hotspot: true },
+      description: "Decorative photo behind the testimonials.",
+    }),
+    defineField({
+      name: "selectedTestimonials",
+      title: "Selected testimonials",
+      type: "array",
+      description:
+        "Optional source selection in display order. Leave empty to use the program filter.",
+      of: [{ type: "reference", to: [{ type: "testimonial" }] }],
+    }),
+    defineField({
       name: "description",
       title: "Supporting text",
       type: "text",
-      description: "The source introduction and closing text shown with these testimonials.",
+      description:
+        "The source introduction and closing text shown with these testimonials.",
     }),
     defineField({
       name: "eyebrow",

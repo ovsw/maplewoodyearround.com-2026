@@ -7,7 +7,7 @@ import {
 // @sanity-typegen-ignore
 export const videoHeroQuery = groq`
   _type == "videoHero" => {
-    title,
+    title, highlightText,
     description,
 overlayOpacity, ${sectionVideoProjection}, ${contentActionsProjection}
   }

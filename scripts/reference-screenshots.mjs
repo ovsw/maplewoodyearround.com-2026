@@ -60,21 +60,25 @@ export async function settlePage(page) {
   await page.waitForTimeout(1800);
 }
 
-async function screenshot(browser, url, viewport, destination) {
-  const context = await browser.newContext({viewport, deviceScaleFactor: 1});
+async function screenshot(browser, url, viewport, destination, storageState) {
+  const context = await browser.newContext({viewport, deviceScaleFactor: 1, ...(storageState ? {storageState} : {})});
   const page = await context.newPage();
   try {
     console.log(`Loading ${url} at ${viewport.width}px`);
     const response = await page.goto(url, {waitUntil: 'domcontentloaded', timeout: 90000});
     if (!response?.ok()) throw new Error(`${url}: HTTP ${response?.status() ?? 'no response'}`);
     await settlePage(page);
+    if (storageState && !await page.locator('[data-sanity]').count()) {
+      throw new Error('Draft comparison requires an authenticated preview with Sanity editing targets.');
+    }
     const details = await page.evaluate(() => ({
       title: document.title,
       finalUrl: location.href,
       documentWidth: document.documentElement.scrollWidth,
       documentHeight: document.documentElement.scrollHeight,
-      failedImages: [...document.images].filter((image) => !image.complete || image.naturalWidth === 0)
+      failedImages: [...document.images].filter((image) => (image.complete && image.naturalWidth === 0) || (!image.complete && image.checkVisibility()))
         .map((image) => ({src: image.currentSrc || image.src, alt: image.alt, visible: image.checkVisibility()})),
+      pendingHiddenImages: [...document.images].filter((image) => !image.complete && !image.checkVisibility()).length,
       horizontalOverflow: document.documentElement.scrollWidth > innerWidth,
     }));
     await mkdir(path.dirname(destination), {recursive: true});
@@ -151,7 +155,7 @@ export async function captureRoute(manifest, route, capture, {refresh = false, d
 
 const escapeHtml = (text) => text.replace(/[&<>"']/g, (character) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[character]));
 
-export async function compare(route, origin) {
+export async function compare(route, origin, storageState) {
   route = pagePath(route);
   const manifest = JSON.parse(await readFile(path.join(referenceDir, 'manifest.json'), 'utf8'));
   const references = viewports.map((viewport) => {
@@ -178,8 +182,8 @@ export async function compare(route, origin) {
     for (const reference of references) {
       const width = reference.viewport.width;
       await copyFile(path.join(referenceDir, reference.file), path.join(output, `reference-${width}.png`));
-      const details = await screenshot(browser, `${base.origin}${route}`, reference.viewport, path.join(output, `current-${width}.png`));
-      results.push({width, referenceCapturedAt: reference.capturedAt, ...details});
+      const details = await screenshot(browser, `${base.origin}${route}`, reference.viewport, path.join(output, `current-${width}.png`), storageState);
+      results.push({width, perspective: storageState ? 'drafts' : 'published', referenceCapturedAt: reference.capturedAt, ...details});
     }
   } finally {
     await browser.close();
@@ -260,7 +264,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       await captureReferences(process.argv.includes('--resume'), pathIndex === -1 ? undefined : process.argv[pathIndex + 1]);
     }
     else if (mode === 'states') await captureScrollStates();
-    else if (mode === 'compare') await compare(route, process.env.REF_BASE_URL);
+    else if (mode === 'compare') await compare(route, process.env.REF_BASE_URL, process.env.REF_STORAGE_STATE);
     else throw new Error('Use pnpm ref:capture or pnpm ref:compare <path>.');
   } catch (error) {
     console.error(error.message);

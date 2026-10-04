@@ -23,10 +23,15 @@ type BlogIndexBlock = NonNullable<
 >[number];
 
 /** Stands in until the Blog page holds its own Latest Posts section. */
-const fallbackListingSection: Extract<BlogIndexBlock, { _type: "latestArticles" }> = {
+const fallbackListingSection: Extract<
+  BlogIndexBlock,
+  { _type: "latestArticles" }
+> = {
   _key: "blog-listing-fallback",
   _type: "latestArticles",
   articles: [],
+  selectedArticles: null,
+  featuredFirst: null,
   background: "white",
   buttons: null,
   description: null,
@@ -43,7 +48,8 @@ const fallbackListingSection: Extract<BlogIndexBlock, { _type: "latestArticles" 
  */
 export function withBlogListingSection(blocks: BlogIndexBlock[]) {
   if (blocks.some((block) => block._type === "latestArticles")) return blocks;
-  const heroCount = blocks[0]?._type === "hero" || blocks[0]?._type === "innerHero" ? 1 : 0;
+  const heroCount =
+    blocks[0]?._type === "hero" || blocks[0]?._type === "innerHero" ? 1 : 0;
   return [
     ...blocks.slice(0, heroCount),
     fallbackListingSection,

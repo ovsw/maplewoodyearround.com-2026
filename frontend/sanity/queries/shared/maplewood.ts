@@ -20,7 +20,7 @@ export const contentActionsProjection = `actions[]{
 }`;
 
 export const contentCardsProjection = `cards[]{
-  _key, title, description, image{${imageQuery}},
+  _key, title, eyebrow, description, image{${imageQuery}}, mobileImage{${imageQuery}},
   body[]{${richTextContentQuery}},
   ${contentActionsProjection}
 }`;

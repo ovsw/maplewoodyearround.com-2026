@@ -1,5 +1,29 @@
 # Maplewood content model
 
+## Home page composition (issue #8)
+
+The home page uses the seven imported section types in source order. The
+preserved video hero and zoom-grid geometry are ported to their existing
+renderers. GSAP drives the zoom, four image/text panels and year-round image
+reveal. Reduced motion shows static content and paused background videos.
+Visitors can also pause each video.
+
+The hero and zoom grid add an editable highlighted phrase. Scroll cards
+retain separate labels, paragraph bodies, buttons and desktop/mobile photos.
+The bus map adds its source label; the year-round section adds its source
+label and rich text, including its inline links.
+
+The testimonial wall's optional ordered references preserve the 17 displayed
+source records without copying their content. Without a selection, its existing
+program filter still applies. News has an optional ordered post selection and
+a featured-first layout. The home import selects the featured record and three
+cards from the live source, rather than letting staged-only posts enter the
+home preview. Post links use each selected record's existing canonical slug.
+
+All these source slots are mapped in the importer, restricted to the home
+path. A full plan comparison confirms that no other imported document changes.
+SEO retains the inventory title, description and Sanity copy of the OG image.
+
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 
 ## Import rules

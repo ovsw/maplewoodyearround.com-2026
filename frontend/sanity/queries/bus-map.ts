@@ -7,7 +7,7 @@ import {
 // @sanity-typegen-ignore
 export const busMapQuery = groq`
   _type == "busMap" => {
-    title,
+    title, eyebrow,
     description,
 embedUrl, ${contentCardsProjection}, ${contentActionsProjection}
   }

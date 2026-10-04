@@ -12,6 +12,20 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     defineField({
+      name: "featuredFirst",
+      title: "Feature the first post",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "selectedPosts",
+      title: "Selected posts",
+      type: "array",
+      description:
+        "Optional ordered selection. Leave empty to show the latest posts.",
+      of: [defineArrayMember({ type: "reference", to: [{ type: "post" }] })],
+    }),
+    defineField({
       name: "eyebrow",
       type: "string",
       description: "Optional short label shown before the section title.",

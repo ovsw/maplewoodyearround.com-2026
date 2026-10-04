@@ -1,47 +1,37 @@
-import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
-import { stegaClean } from "next-sanity";
-
-type PageBlock =
-  | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
-  | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
-
-type VideoZoomGridProps = Extract<PageBlock, { _type: "videoZoomGrid" }> & {
-  dataAttribute?: (path: string) => string | undefined;
-};
-
+import { urlFor } from "@/sanity/lib/image";
+import {
+  HighlightedTitle,
+  SectionActions,
+  type SectionProps,
+} from "./maplewood-section";
+import VideoZoomGridScene from "./video-zoom-grid-scene";
 export default function VideoZoomGrid({
-  _key,
-  dataAttribute,
-  description,
   title,
-}: VideoZoomGridProps) {
-  if (!title) return null;
-
-  const headingId = `video-zoom-grid-${stegaClean(_key)}-title`;
-
+  highlightText,
+  description,
+  actions,
+  dataAttribute,
+  poster,
+  videoMp4Url,
+  videoWebmUrl,
+  gridImages,
+  mobileImages,
+}: SectionProps<"videoZoomGrid">) {
   return (
-    <section
-      aria-labelledby={headingId}
-      className="section-pad"
-      id={`video-zoom-grid-${stegaClean(_key)}`}
+    <VideoZoomGridScene
+      videoMp4Url={videoMp4Url}
+      videoWebmUrl={videoWebmUrl}
+      posterUrl={poster?.asset ? urlFor(poster).width(1600).url() : undefined}
+      gridImages={gridImages}
+      mobileImages={mobileImages}
     >
-      <div className="container-content">
-        <h2
-          className="typo-section-heading"
-          data-sanity={dataAttribute?.("title")}
-          id={headingId}
-        >
-          {title}
-        </h2>
-        {description ? (
-          <p
-            className="mt-5 typo-body-editorial"
-            data-sanity={dataAttribute?.("description")}
-          >
-            {description}
-          </p>
-        ) : null}
-      </div>
-    </section>
+      <h2 data-sanity={dataAttribute?.("title")}>
+        <HighlightedTitle title={title} highlightText={highlightText} />
+      </h2>
+      {description ? (
+        <p data-sanity={dataAttribute?.("description")}>{description}</p>
+      ) : null}
+      <SectionActions actions={actions} dataAttribute={dataAttribute} />
+    </VideoZoomGridScene>
   );
 }
