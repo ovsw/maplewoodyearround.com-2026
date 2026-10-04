@@ -1,5 +1,6 @@
 import { urlFor } from "@/sanity/lib/image";
 import { getSafeLinkHref } from "@/lib/safe-href";
+import type { NewsletterCopy } from "../newsletter/newsletter";
 
 export type FooterLinkModel = {
   key: string;
@@ -22,7 +23,7 @@ export type FooterLogoModel = {
     width: number;
     height: number;
   };
-  link: FooterLinkModel;
+  link: FooterLinkModel | null;
 };
 
 export type FooterContactIcon = "pin" | "phone" | "email";
@@ -33,6 +34,8 @@ export type FooterContactLinkModel = {
 };
 
 export type FooterModel = {
+  contact?: FooterSettings["contact"];
+  newsletter?: NewsletterCopy;
   eyebrow: string;
   heading: string;
   accent: string;
@@ -62,6 +65,7 @@ type RawImage = {
 };
 
 export type RawFooter = {
+  newsletter?: NewsletterCopy | null;
   _id?: string | null;
   eyebrow?: string | null;
   heading?: string | null;
@@ -88,6 +92,15 @@ export type RawFooter = {
   copyrightStartYear?: number | null;
   copyrightOwner?: string | null;
 } | null;
+
+export type FooterSettings = {
+  contact?: {
+    email?: string | null;
+    phone?: string | null;
+    fax?: string | null;
+    addressLines?: string[] | null;
+  } | null;
+};
 
 function text(value: string | null | undefined): string | null {
   return value?.trim() || null;
@@ -148,6 +161,7 @@ function isContactIcon(value: string): value is FooterContactIcon {
 export function createFooterModel(
   raw: RawFooter,
   currentYear: number,
+  settings?: FooterSettings | null,
 ): FooterModel | null {
   const eyebrow = text(raw?.eyebrow);
   const heading = text(raw?.heading);
@@ -156,9 +170,6 @@ export function createFooterModel(
   const startYear = raw?.copyrightStartYear;
   if (
     raw?._id !== "footer" ||
-    !eyebrow ||
-    !heading ||
-    !accent ||
     !owner ||
     !Number.isInteger(startYear) ||
     !Number.isInteger(currentYear)
@@ -176,7 +187,7 @@ export function createFooterModel(
         ? { _key: item._key, label: item.alt, destination: item.destination }
         : null,
     );
-    return key && alt && logoImage && logoLink
+    return key && alt && logoImage
       ? [{ key, alt, image: logoImage, link: logoLink }]
       : [];
   });
@@ -198,14 +209,16 @@ export function createFooterModel(
   const copyrightYears =
     startYear! < currentYear ? `${startYear}-${currentYear}` : `${currentYear}`;
 
-  if (!actions.length || !logos.length || !contactLinks.length || !columns.length) {
+  if (!columns.length) {
     return null;
   }
 
   return {
-    eyebrow,
-    heading,
-    accent,
+    eyebrow: eyebrow ?? "",
+    heading: heading ?? "",
+    accent: accent ?? "",
+    contact: settings?.contact,
+    newsletter: raw.newsletter ?? undefined,
     actions,
     logos,
     contactLinks,

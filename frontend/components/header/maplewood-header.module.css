@@ -1,0 +1,241 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  width: 100%;
+  background: #fff;
+  color: var(--maplewood-ink);
+  transition: transform 0.3s ease;
+}
+.header[data-visible="false"] {
+  transform: translateY(-100%);
+}
+.bar {
+  width: 90%;
+  max-width: 1280px;
+  height: var(--header-height);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.brand {
+  flex-shrink: 0;
+  display: block;
+  max-width: 48%;
+}
+.controls,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 2px solid var(--maplewood-green);
+  border-radius: 0.8em;
+  padding: 0.5rem 1.25rem;
+  line-height: 1.5;
+  color: var(--maplewood-green);
+  background: transparent;
+}
+.action:first-child {
+  background: var(--maplewood-green);
+  color: white;
+}
+.action svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  color: inherit;
+  padding: 0;
+}
+.toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.header a:focus-visible,
+.dialog a:focus-visible,
+.toggle:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 4px;
+}
+.dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: var(--maplewood-cream);
+  color: var(--maplewood-ink);
+  overflow-y: auto;
+  outline: none;
+}
+.dialog .bar {
+  position: sticky;
+  top: 0;
+  background: var(--maplewood-cream);
+  z-index: 1;
+}
+.menu {
+  width: 90%;
+  max-width: 1280px;
+  min-height: calc(100dvh - var(--header-height));
+  margin: auto;
+  display: grid;
+  align-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "featured groups" "contact groups";
+  column-gap: 5rem;
+  row-gap: 4rem;
+  padding: 4rem 0;
+}
+.featured {
+  grid-area: featured;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 1.5rem;
+  align-content: start;
+}
+.featuredLink {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  min-height: 2.75rem;
+}
+.featuredLink > .featuredIcon {
+  color: var(--maplewood-green);
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.featuredLink svg {
+  width: 100%;
+  height: 100%;
+}
+.featuredLink[data-accent="purple"] > .featuredIcon {
+  color: var(--maplewood-purple);
+}
+.featuredLink[data-accent="blue"] > .featuredIcon {
+  color: var(--maplewood-blue-dark);
+}
+.featuredLink[data-accent="yellow"] > .featuredIcon {
+  color: var(--maplewood-gold-mid);
+}
+.featuredLink[data-accent="mint"] > .featuredIcon {
+  color: var(--maplewood-mint);
+}
+.featuredLink[data-accent="red"] > .featuredIcon {
+  color: var(--maplewood-focus);
+}
+.groups {
+  grid-area: groups;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem 2rem;
+}
+.group h2 {
+  font: inherit;
+  font-weight: 700;
+  color: var(--maplewood-green);
+  margin-bottom: 1rem;
+}
+.group ul {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+.group a:hover,
+.contact a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.contact {
+  grid-area: contact;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+.socials {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 1.25rem;
+  min-height: 1.5rem;
+}
+.socials svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.mobileActions {
+  display: none;
+}
+@media (max-width: 991px) {
+  .menu {
+    column-gap: 2rem;
+  }
+  .featured {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .action svg {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .actions {
+    display: none;
+  }
+  .menu {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-areas: "featured" "groups" "contact";
+    padding: 1rem 0 4rem;
+    row-gap: 3rem;
+  }
+  .mobileActions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    grid-column: 1 / -1;
+    margin-bottom: 0.5rem;
+  }
+  .mobileActions .action {
+    width: 100%;
+  }
+  .featured {
+    gap: 1.5rem;
+  }
+  .featuredLink {
+    font-size: 1rem;
+    min-height: 3.5rem;
+  }
+  .groups {
+    gap: 3rem 1.5rem;
+  }
+  .socials a {
+    min-height: 2.75rem;
+    min-width: 2rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: none;
+  }
+}
