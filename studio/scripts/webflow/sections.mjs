@@ -168,6 +168,27 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
   if (original.id && anchors.get(original.id) === original) block.anchorId = original.id;
   let title = headingOf(staticNode);
 
+  if (type === 'tabbedHero') {
+    // One tab per Webflow tab pane, named by its tab-menu link.
+    const names = new Map([...original.querySelectorAll('.w-tab-menu [data-w-tab]')].map((link) => [link.getAttribute('data-w-tab'), text(link)]));
+    block.breadcrumbs = breadcrumbs(staticNode, context, prefix);
+    block.tabs = [...staticNode.querySelectorAll('.w-tab-pane')].map((pane, i) => {
+      const heading = headingOf(pane);
+      const image = pane.querySelector('img');
+      return {
+        _key: key(`${prefix}-tab${i}`), _type: 'heroTab',
+        label: names.get(pane.getAttribute('data-w-tab')) ?? pane.getAttribute('data-w-tab'),
+        title: text(heading),
+        ...(highlightOf(heading) ? { highlightText: highlightOf(heading) } : {}),
+        description: [...pane.querySelectorAll('p')].map(lines).filter(Boolean).join('\n'),
+        buttons: sourceButtons(buttonLinks(pane), context, `${prefix}-tab${i}`),
+        ...(image ? { image: context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '') } : {}),
+      };
+    });
+    for (const field of ['title', 'description', 'cards']) delete block[field];
+    return;
+  }
+
   if (type === 'innerHero') {
     const content = staticNode.querySelector('[class*="_content-wrap"]') ?? staticNode;
     block.breadcrumbs = breadcrumbs(content, context, prefix);
@@ -278,8 +299,12 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     if (icon) block.icon = icon;
     const accent = accentOf(sourceHeading.querySelector('.button-group [class*="u-color-accent"]'));
     if (accent) block.accent = accent;
-    block.description = [...heading.querySelectorAll('p')].map(text).filter(Boolean).join('\n');
+    block.description = [...heading.querySelectorAll('p')].map(lines).filter(Boolean).join('\n');
     block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    // Calendar days show each character with the template's visit time.
+    const characterTime = [...original.querySelectorAll('.event19_meta-wrapper [class="display-inlineflex"]')]
+      .map(text).find((value) => /^–\s*\S/.test(value) && /\d/.test(value));
+    if (block.source === 'playgroundEvent' && characterTime) block.characterTime = characterTime.replace(/^–\s*/, '');
     return;
   }
 

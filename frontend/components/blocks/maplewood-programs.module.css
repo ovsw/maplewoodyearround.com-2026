@@ -340,3 +340,47 @@
     font-size: 1.25rem;
   }
 }
+
+/* Play Center calendar days (event19 cards in blog66) */
+.calendarFile {
+  margin: 2rem 0 0;
+}
+.calendarFile a {
+  background: #fff3b0;
+}
+.calendarPhotos {
+  display: flex;
+  aspect-ratio: 1;
+}
+.calendarPhotos img {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+}
+.calendarPhotos img + img {
+  border-left: 2px solid var(--maplewood-green);
+}
+.calendarDay {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-left: 0.5rem;
+}
+.calendarIcon {
+  flex: none;
+  color: var(--maplewood-green);
+}
+.calendarLines,
+.calendarAgenda ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+.calendarAgenda p:empty {
+  display: none;
+}
+.calendarActions {
+  margin-top: 4rem;
+}

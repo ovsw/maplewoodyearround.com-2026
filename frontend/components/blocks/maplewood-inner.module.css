@@ -118,30 +118,43 @@
 }
 
 /* Accents: the live site's u-accent-* colours. Text uses a darker shade of
-   the same hue so it keeps a 4.5:1 contrast on cream and white. */
+   the same hue so it keeps a 4.5:1 contrast on cream and white; a filled
+   button pairs its fill with a text colour of at least 4.5:1. */
 .accent-green {
   --accent: var(--maplewood-green);
   --accent-text: var(--maplewood-green);
+  --accent-fill: var(--maplewood-green);
+  --accent-on: var(--maplewood-cream);
 }
 .accent-blue {
   --accent: var(--maplewood-blue-dark);
   --accent-text: #1d6fa5;
+  --accent-fill: #1d6fa5;
+  --accent-on: #fff;
 }
 .accent-red {
   --accent: #e64420;
   --accent-text: #c2361a;
+  --accent-fill: #c2361a;
+  --accent-on: #fff;
 }
 .accent-purple {
   --accent: var(--maplewood-purple);
   --accent-text: #9b3cc6;
+  --accent-fill: var(--maplewood-purple);
+  --accent-on: var(--maplewood-ink);
 }
 .accent-mint {
   --accent: var(--maplewood-mint);
   --accent-text: #1f7a5c;
+  --accent-fill: var(--maplewood-mint);
+  --accent-on: var(--maplewood-ink);
 }
 .accent-yellow {
   --accent: var(--maplewood-gold-mid);
   --accent-text: #946000;
+  --accent-fill: var(--maplewood-gold-mid);
+  --accent-on: var(--maplewood-ink);
 }
 .icon {
   display: inline-flex;
@@ -547,7 +560,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 3rem;
   font-weight: 700;
   line-height: 1.2;
@@ -581,6 +594,31 @@
 }
 .pricingDetails p {
   margin: 0 0 0.5rem;
+}
+/* The plan's buttons fill the card width in its colour (is-accent). */
+.pricingActions {
+  display: grid;
+  gap: 1rem;
+  margin-top: auto;
+}
+.pricingAction {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.8em;
+  background: var(--accent-fill, var(--maplewood-green));
+  color: var(--accent-on, var(--maplewood-cream));
+  font-family: var(--font-body);
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  transition: filter 0.2s;
+}
+.pricingAction:hover {
+  filter: brightness(0.92);
+}
+.pricingAction:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 2px;
 }
 
 /* FAQ (faq3) */
@@ -641,8 +679,12 @@
 }
 .sliderDescription {
   margin: 1.5rem 0 0;
-  padding-left: 4rem;
   opacity: 0.8;
+  white-space: pre-line;
+}
+/* Beside a heading icon the introduction lines up with the heading text. */
+.sliderIndent {
+  padding-left: 4rem;
 }
 .sliderControls {
   display: flex;
@@ -1081,7 +1123,7 @@
     grid-template-columns: 1fr;
     row-gap: 2rem;
   }
-  .sliderDescription {
+  .sliderIndent {
     padding-left: 0;
   }
   .sliderTitle {

@@ -43,7 +43,10 @@ export const collectionItemsProjection = `
     && (!defined(^.facilityCategory._ref) || ^.facilityCategory._ref in categories[]._ref)
     && (!defined(^.activityCategory._ref) || category._ref == ^.activityCategory._ref)
     && (!defined(^.grade._ref) || ^.grade._ref in groups[]->grades[]._ref || ^.grade._ref in grades[]._ref)
-  ] | order(coalesce(order, 2147483647) asc, title asc, _id asc) {
+  ]
+  // Calendar days run by date. Webflow lists sorted by order show records
+  // without an order number first.
+  | order(date asc, defined(order) asc, order asc, title asc, _id asc) {
     _id, _type, title, slug, description, program, location, activity, audience,
     availability, gradeLabel, groupText, playgroundLabel,
     image{${imageQuery}},

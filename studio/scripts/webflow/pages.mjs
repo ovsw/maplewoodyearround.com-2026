@@ -86,11 +86,16 @@ function cards(node, context, prefix) {
 
 function collectionFor(node, snapshot, types) {
   const html = node.innerHTML;
+  const headings = [...node.querySelectorAll('.w-dyn-item')].map(headingText);
+  const named = (item) => [item.fieldData.name, item.fieldData.activity].some((name) => typeof name === 'string' && headings.includes(name.replace(/\s+/g, ' ').trim()));
   const scored = snapshot.collections.filter((c) => types.includes(mappings[c.displayName]?.[0])).map((c) => {
-    const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) ||
-      [...node.querySelectorAll('.w-dyn-item')].some((element) => [item.fieldData.name, item.fieldData.activity].some((name) => typeof name === 'string' && name.replace(/\s+/g, ' ').trim() === headingText(element))));
-    return { collection: c, matches };
-  }).sort((a, b) => b.matches.length - a.matches.length);
+    const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) || named(item));
+    // A sample schedule shows its time (name) beside its activity heading.
+    const detailed = matches.filter((item) => named(item) && [item.fieldData.name, item.fieldData.activity].every((value) => typeof value === 'string' && html.includes(value.trim()))).length;
+    return { collection: c, matches, named: matches.filter(named).length, detailed };
+  // Collections can share photos and item names, so a tie goes to the one
+  // whose displayed items show more of each record's own text.
+  }).sort((a, b) => b.matches.length - a.matches.length || b.named - a.named || b.detailed - a.detailed);
   return scored[0]?.matches.length ? scored[0] : undefined;
 }
 
@@ -118,6 +123,24 @@ function activityFilters(node, snapshot, found) {
   return grade ? { ...filter, grade: reference(documentId(grades.id, grade.id)) } : filter;
 }
 
+// A School Year list can show the activities of one program, such as a
+// class's activities or the birthday add-ons. Use the program whose
+// activities, within the location filter, are exactly the displayed list.
+function programFilter(node, found, filter) {
+  const field = found.collection.fields.find((f) => f.slug === 'programs');
+  if (!field?.validations?.collectionId) return {};
+  const location = found.collection.fields.find((f) => f.slug === 'indoor-outdoor-special');
+  const inLocation = (item) => !filter.location || location?.validations?.options?.find((o) => o.id === item.fieldData['indoor-outdoor-special'])?.name === filter.location;
+  const pool = found.collection.live.filter((item) => item.fieldData.live !== false && inLocation(item));
+  // Compare names: a hidden record can share a displayed name.
+  const shown = [...node.querySelectorAll('.w-dyn-item')].map(headingText);
+  const same = (items) => items.length === shown.length && items.every((item) => shown.includes(item.fieldData.name.replace(/\s+/g, ' ').trim()));
+  if (same(pool)) return {};
+  const programs = [...new Set(found.matches.flatMap((item) => item.fieldData.programs ?? []))];
+  const exact = programs.filter((id) => same(pool.filter((item) => (item.fieldData.programs ?? []).includes(id))));
+  return exact.length === 1 ? { programOffering: reference(documentId(field.validations.collectionId, exact[0])) } : {};
+}
+
 function inferFilter(node, snapshot, allowedTypes) {
   const found = collectionFor(node, snapshot, allowedTypes);
   if (!found) return {};
@@ -142,7 +165,7 @@ function inferFilter(node, snapshot, allowedTypes) {
       if (fits.length === 1) filter[target] = field?.validations?.options?.find((o) => o.id === fits[0])?.name;
     }
   }
-  if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found));
+  if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found), programFilter(node, found, filter));
   if (source === 'facility') {
     const field = found.collection.fields.find((f) => ['category', 'category-multi'].includes(f.slug));
     const shared = found.matches.reduce((ids, item) => ids.filter((id) => item.fieldData[field.slug]?.includes(id)), found.matches[0].fieldData[field.slug] ?? []);
@@ -224,7 +247,10 @@ export function staticPages(snapshot, context, schema) {
           block.mobileImages = images.filter((image) => !image.parentElement.classList.contains('hide-mobile-landscape')).map(mapped);
         }
       }
-      if (['cardSlider', 'filterableCards'].includes(type)) {
+      // A calendar list shows dated days with their guest and character; its
+      // heading also lists the calendar PDFs, which the Website adds itself.
+      if (type === 'cardSlider' && original.querySelector('.event19_meta-wrapper')) Object.assign(block, { source: 'playgroundEvent' });
+      else if (['cardSlider', 'filterableCards'].includes(type)) {
         Object.assign(block, inferFilter(original, snapshot, ['activity', 'facility', 'sampleSchedule', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar']));
         if (page.path === '/school-year/facilities') Object.assign(block, { source: 'facility', program: 'schoolYear' });
         if (!block.source) gaps.push({ path: page.path, section: index + 1, reason: 'collection source not resolved' });

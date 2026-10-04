@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Check } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
@@ -7,8 +8,8 @@ import {
   type DataAttribute,
   innerCss as css,
   SectionTagline,
-  SourceActions,
   SourceIcon,
+  visibleActions,
 } from "./maplewood-inner";
 
 type PricingCardsProps = Extract<
@@ -92,10 +93,22 @@ export default function PricingCards({
                     />
                   </div>
                 ) : null}
-                <SourceActions
-                  actions={plan.actions}
-                  dataAttribute={(field) => dataAttribute?.(`${path}.${field}`)}
-                />
+                {visibleActions(plan.actions).length ? (
+                  <div className={css.pricingActions}>
+                    {visibleActions(plan.actions).map((action) => (
+                      <Link
+                        className={css.pricingAction}
+                        data-sanity={dataAttribute?.(`${path}.actions[_key=="${action._key}"]`)}
+                        href={action.href}
+                        key={action._key}
+                        rel={stegaClean(action.destination?.openInNewTab) ? "noopener noreferrer" : undefined}
+                        target={stegaClean(action.destination?.openInNewTab) ? "_blank" : undefined}
+                      >
+                        {action.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
               </article>
             );
           })}

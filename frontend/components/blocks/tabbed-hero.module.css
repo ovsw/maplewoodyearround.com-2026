@@ -1,0 +1,157 @@
+/* School Year tabbed header (Webflow header103) */
+.hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--maplewood-green);
+  color: #fff;
+}
+.images {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.imageLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+.imageLayer[data-active] {
+  opacity: 1;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, #006601 0%, #006601cc 45%, #00660166);
+}
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: calc(80rem + 10%);
+  margin-inline: auto;
+  padding: 7rem 5% 3rem;
+}
+.panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.panel[hidden] {
+  display: none;
+}
+.content {
+  max-width: 37rem;
+  animation: enter 0.4s ease-out;
+}
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+.highlight {
+  color: var(--maplewood-gold-mid);
+}
+.text {
+  margin: 1.5rem 0 2rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.tabList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 13rem));
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.5rem 0 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.tab:focus-visible {
+  outline: 3px solid var(--maplewood-focus);
+  outline-offset: 4px;
+}
+.progress {
+  display: block;
+  height: 4px;
+  background: #ffffff4d;
+}
+.progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #fff;
+}
+.tab[aria-selected="true"] .progress span {
+  width: 100%;
+}
+.tab[data-rotating] .progress span {
+  animation: fill 6s linear;
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageLayer {
+    transition: none;
+  }
+  .content {
+    animation: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .inner {
+    padding: 5rem 1.25rem 3rem;
+  }
+  .title {
+    font-size: 2.75rem;
+  }
+  .tabList {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .tab {
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
