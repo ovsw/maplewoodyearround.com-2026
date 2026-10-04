@@ -67,8 +67,7 @@ export async function captureSource(token, referencePages, { fetcher = fetch, pr
   // Keep API DOM too, so static text that is not currently rendered is auditable.
   const pageDom = {};
   const componentDom = {};
-  const usedPages = new Set(referencePages.map((p) => p.webflow?.page).filter(Boolean));
-  for (const page of pageRecords.filter((p) => usedPages.has(p.id) && !p.collectionId)) {
+  for (const page of pageRecords.filter((p) => !p.collectionId)) {
     const nodes = await api.list(`/pages/${page.id}/dom`, 'nodes');
     pageDom[page.id] = nodes;
     const componentIds = new Set(nodes.filter((n) => n.type === 'component-instance').map((n) => n.componentId));

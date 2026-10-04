@@ -124,7 +124,7 @@ export function cmsDocuments(snapshot, context) {
         drafts++;
       }
     }
-    counts.push({ collection: collection.displayName, staged: staged.size, live: live.size, unique: new Set([...live.keys(), ...staged.keys()]).size, publishedDocuments: live.size, draftDocuments: drafts });
+    counts.push({ collection: collection.displayName, prefix:`wf-${collection.id}-`, staged: staged.size, live: live.size, unique: new Set([...live.keys(), ...staged.keys()]).size, publishedDocuments: live.size, draftDocuments: drafts });
   }
   return { documents, counts };
 }

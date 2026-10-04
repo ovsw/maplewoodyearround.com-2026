@@ -16,16 +16,19 @@ export function mediaUrl(value, base = SOURCE_ORIGIN) {
   return url.href;
 }
 
-export function assetCollector() {
+export function assetCollector(aliases = new Map()) {
   const assets = new Map();
   function asset(value, kind = 'image', alt) {
     const raw = typeof value === 'string' ? value : value?.url;
     if (!raw) return undefined;
-    const url = mediaUrl(raw);
+    const source = mediaUrl(raw);
+    const url = aliases.get(source) ?? source;
     if (!url) throw new Error('A source media URL has an unsupported host');
     const token = `import-asset-${key(url)}`;
     if (assets.has(url) && assets.get(url).kind !== kind) throw new Error('Media kind conflict');
-    assets.set(url, { url, token, kind });
+    const known = assets.get(url) ?? { url, token, kind, aliases: [] };
+    if (source !== url && !known.aliases.includes(source)) known.aliases.push(source);
+    assets.set(url, known);
     return { _type: kind, asset: reference(token), ...(kind === 'image' ? { alt: alt ?? value?.alt ?? '' } : {}) };
   }
   return { assets, asset };
@@ -100,6 +103,7 @@ export function portableText(html, context, prefix = 'html') {
   }
   function walk(node, level = 0) {
     if (node.nodeType === 3) { if (node.nodeValue.trim()) emit(node); return; }
+    if (node.nodeType !== 1) return;
     if (skipped.has(node.tagName)) return;
     if (node.tagName === 'IMG') {
       const image = context.asset(node.getAttribute('src'), 'image', node.getAttribute('alt') ?? '');

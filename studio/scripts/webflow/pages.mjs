@@ -1,0 +1,216 @@
+import { documentId, key, reference, htmlDocument, text, mediaUrl, destination, customUrl, plainBlocks, portableText } from './html.mjs';
+import { mappings } from './collections.mjs';
+
+const patterns = {
+  section_header33: 'videoHero', section_header83: 'videoZoomGrid', section_layout515: 'scrollPanels',
+  section_testimonials_testimonial11: 'quoteWall', section_transportation_contact14: 'busMap', section_layout412: 'imageReveal',
+  section_blog7: 'latestArticles', section_layout355: 'directorIntro', header50_wrap: 'innerHero', header11o_wrap: 'innerHero', header50c_wrap: 'innerHero',
+  'section_summer-camp_programs': 'programCards', 'section_summer-camp_additional-programs': 'programCards',
+  'section_summer-camp_club-day-electives': 'electiveCards', section_layout302: 'storyFeature', section_layout30: 'storyFeature',
+  'section_summer-camp_history': 'historyStory', 'section_summer-camp_enrollment-process-timeline': 'stackedTimeline',
+  section_faq3: 'faqAccordion', section_comparison8: 'rateTable', 'section_k-9-sessions-table_comparison6': 'rateTable',
+  section_pricing19: 'pricingCards', section_header103: 'tabbedHero', section_blog66: 'cardSlider', section_layout248: 'featureCards',
+  section_stats14: 'statistics', section_layout59: 'storyFeature', section_layout311: 'programCards', section_team4: 'teamMembers',
+  section_cta13: 'ctaBanner', section_filters5: 'filterableCards', section_layout486: 'instructionSteps', section_cta39: 'ctaBanner',
+  section_layout10: 'storyFeature', section_layout203: 'storyFeature', section_gallery1: 'embedSection', section_team14: 'teamMembers',
+  section_contact21: 'contactDetailsSection', section_career12: 'jobList', section_layout398: 'parentDashboardSection', section_timeline11: 'stackedTimeline',
+  section_content30: 'richTextBlock',
+};
+
+export const pageId = (path) => path === '/' ? 'homePage' : path === '/news' ? 'blogIndex' : `wf-page-${key(path)}`;
+const prune = (node, selector) => { const clone = node.cloneNode(true); clone.querySelectorAll(selector).forEach((e) => e.remove()); return clone; };
+const headingText = (node) => text(node.querySelector('h1,h2,h3,h4,h5,h6'));
+export function contentStrings(value) {
+  if (typeof value === 'string') return [value.replace(/\s+/g, ' ').trim()];
+  if (!value || typeof value !== 'object') return [];
+  const strings = value._type === 'block' ? [value.children.map((span) => span.text ?? '').join('').replace(/\s+/g, ' ').trim()] : [];
+  for (const [name, child] of Object.entries(value)) if (!name.startsWith('_')) strings.push(...contentStrings(child));
+  return strings;
+}
+const imageNodes = (node) => [...node.querySelectorAll('img[src]')];
+const firstImage = (node, context) => {
+  const image = imageNodes(node).find((e) => mediaUrl(e.getAttribute('src')));
+  return image ? context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '') : undefined;
+};
+
+export function pageContext(snapshot, context) {
+  context.routes = new Map(snapshot.pages.filter((p) => p.status === 200 && !p.path.startsWith('/post/')).map((p) => [p.path, pageId(p.path)]));
+  context.routes.set('/parent-dashboard', 'parentDashboard');
+  for (const c of snapshot.collections.filter((c) => c.displayName === 'Blog Posts')) {
+    for (const item of [...c.staged, ...c.live]) context.routes.set(`/post/${item.fieldData.slug}`, documentId(c.id, item.id));
+  }
+  context.pageDocuments = new Map(snapshot.pages.filter((p) => p.status === 200).map((p) => [p.path, htmlDocument(p.html)]));
+  context.dashboardLinks = new Map();
+  const cards = snapshot.collections.find((c) => c.displayName === 'Parent Dashboard Cards');
+  const dashboard = context.pageDocuments.get('/parent-dashboard');
+  for (const item of cards?.live ?? []) {
+    const node = [...(dashboard?.querySelectorAll('.w-dyn-item') ?? [])].find((node) => text(node).includes(item.fieldData.name.trim()));
+    const anchor = node?.matches('a') ? node : node?.querySelector('a[href]:not(.w-condition-invisible)');
+    if (anchor) context.dashboardLinks.set(item.fieldData.slug, anchor.getAttribute('href'));
+  }
+  const jobs = context.pageDocuments.get('/staff-opportunities');
+  context.jobApplication = [...(jobs?.querySelectorAll('a[href]') ?? [])].find((a) => /apply/i.test(text(a)))?.getAttribute('href');
+  context.programListingGroup = (item) => /enrichment|gymnastics|arts?\b|sports|flying.solo/i.test(item.fieldData.name) ? 'enrichment' : 'main';
+  return context;
+}
+
+function actions(node, context, prefix) {
+  return [...node.querySelectorAll('a[href]')].filter((a) => text(a)).map((a, i) => ({
+    _key: key(`${prefix}-a${i}`), _type: 'contentAction', label: text(a), destination: destination(a.getAttribute('href'), context),
+  })).filter((a) => a.destination);
+}
+const buttons = (items) => items.map((item) => ({ _key: item._key, _type: 'button', text: item.label, variant: 'default', url: customUrl(item.destination) }));
+
+function cardNodes(node) {
+  const candidates = [...node.querySelectorAll('[class*="_card"], [class*="_item"], .w-tab-pane')].filter((n) => n.querySelector('h2,h3,h4,h5,h6') && !n.closest('.w-dyn-list'));
+  return candidates.filter((n) => !candidates.some((other) => other !== n && n.contains(other)));
+}
+
+function cards(node, context, prefix) {
+  return cardNodes(node).map((n, i) => ({
+    _key: key(`${prefix}-c${i}`), _type: 'contentCard', title: headingText(n),
+    description: text(prune(n, 'script,style,svg')), image: firstImage(n, context),
+    body: portableText(prune(n, 'script,style,svg'), context, `${prefix}-c${i}`), actions: actions(n, context, `${prefix}-c${i}`),
+  }));
+}
+
+function collectionFor(node, snapshot, types) {
+  const html = node.innerHTML;
+  const scored = snapshot.collections.filter((c) => types.includes(mappings[c.displayName]?.[0])).map((c) => {
+    const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) ||
+      [...node.querySelectorAll('.w-dyn-item')].some((element) => headingText(element) === item.fieldData.name));
+    return { collection: c, matches };
+  }).sort((a, b) => b.matches.length - a.matches.length);
+  return scored[0]?.matches.length ? scored[0] : undefined;
+}
+
+function inferFilter(node, snapshot, allowedTypes) {
+  const found = collectionFor(node, snapshot, allowedTypes);
+  if (!found) return {};
+  const [source, program] = mappings[found.collection.displayName];
+  const filter = { source, ...(program ? { program } : {}) };
+  // Filter only when every displayed item shares a source value. Do not use a
+  // rendered item count as a list limit or copy selected items into the page.
+  for (const [sourceField, target] of [['indoor-outdoor', 'location'], ['indoor-outdoor-special', 'location'], ['program', 'audience']]) {
+    const values = new Set(found.matches.map((item) => item.fieldData[sourceField]).filter(Boolean));
+    if (values.size === 1 && found.matches.every((item) => item.fieldData[sourceField])) {
+      const field = found.collection.fields.find((f) => f.slug === sourceField);
+      filter[target] = field?.validations?.options?.find((o) => o.id === [...values][0])?.name;
+    }
+  }
+  if (source === 'facility') {
+    const field = found.collection.fields.find((f) => ['category', 'category-multi'].includes(f.slug));
+    const shared = found.matches.reduce((ids, item) => ids.filter((id) => item.fieldData[field.slug]?.includes(id)), found.matches[0].fieldData[field.slug] ?? []);
+    if (shared.length === 1) filter.facilityCategory = reference(documentId(field.validations.collectionId, shared[0]));
+  }
+  return filter;
+}
+
+function embed(node) {
+  const iframe = node.querySelector('iframe[src]');
+  const cognito = node.querySelector('script[src*="cognitoforms.com"]');
+  const calendar = node.querySelector('script[src*="elfsight"],script[src*="events"]');
+  if (cognito) {
+    const accountId = cognito.getAttribute('data-key');
+    const providerId = cognito.getAttribute('data-form');
+    const sentFrom = node.textContent.match(/Cognito\.prefill\(\s*\{\s*"SentFrom"\s*:\s*"([^"]+)"/)?.[1];
+    return { provider: 'cognito', embedUrl: cognito.getAttribute('src'), accountId, providerId, sentFrom, frameTitle: 'Schedule a tour' };
+  }
+  if (calendar) return { provider: 'eventsCalendar', embedUrl: calendar.getAttribute('src'), providerId: calendar.getAttribute('data-id') ?? calendar.getAttribute('data-calendar'), frameTitle: 'Maplewood calendar' };
+  if (iframe) return { provider: iframe.src.includes('airtable') ? 'airtable' : 'other', embedUrl: iframe.getAttribute('src'), frameTitle: iframe.getAttribute('title') || headingText(node) };
+  return {};
+}
+
+export function staticPages(snapshot, context, schema) {
+  const documents = [], coverage = [], gaps = [];
+  const types = new Map(schema.map((entry) => [entry.name, entry.value ?? entry]));
+  const typeOf = (type, field) => types.get(type)?.attributes?.[field]?.value;
+  for (const page of snapshot.pages.filter((p) => p.status === 200 && !p.path.startsWith('/post/'))) {
+    const dom = context.pageDocuments.get(page.path);
+    const main = dom.querySelector('main');
+    if (!main) throw new Error(`Missing main content on ${page.path}`);
+    const sectionNodes = [...main.querySelectorAll('section,header,.w-embed.w-iframe')].filter((n) => !n.parentElement?.closest('main section,main header,.w-embed.w-iframe'));
+    const blocks = [];
+    for (const [index, original] of sectionNodes.entries()) {
+      const prefix = `${page.path}-${index}`;
+      const selector = [...original.classList].find((name) => patterns[name]);
+      let type = patterns[selector] ?? (original.matches('.w-embed.w-iframe') ? 'embedSection' : undefined);
+      const staticNode = prune(original, '.w-dyn-list,script,style,svg,noscript');
+      if (!type && !text(staticNode) && !staticNode.querySelector('img,iframe,video')) continue;
+      if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
+      if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
+      if (type === 'richTextBlock' && /summer-group-schedules|summer-camp-welcome-letters/.test(page.path)) type = 'summerDocumentList';
+      else if (type === 'richTextBlock' && original.querySelector('iframe,script[src*="cognitoforms"]')) type = 'embedSection';
+      const rawText = text(staticNode);
+      const title = headingText(staticNode);
+      const block = { _type: type, _key: original.id ? `${original.id}-${index}` : key(prefix) };
+      if (typeOf(type, 'background')) block.background = original.className.includes('dark') ? 'forest' : 'white';
+      const rich = portableText(staticNode, context, prefix);
+      const textual = rich.filter((entry) => entry._type === 'block');
+      const bodyField = ['richText', 'body', 'notes', 'intro', 'description', 'subtitle'].find((field) => typeOf(type, field));
+      if (bodyField) block[bodyField] = typeOf(type, bodyField).type === 'array' || typeOf(type, bodyField).name === 'richTextContent' ? (typeOf(type, bodyField).name === 'richTextContent' ? rich : textual) : rawText;
+      const titleField = typeOf(type, 'title') ? 'title' : typeOf(type, 'heading') ? 'heading' : undefined;
+      if (titleField && title) block[titleField] = typeOf(type, titleField).type === 'array' || typeOf(type, titleField).name === 'minimalRichText' ? plainBlocks(title, `${prefix}-title`) : title;
+      const links = actions(staticNode, context, prefix);
+      if (typeOf(type, 'actions')) block.actions = links;
+      if (typeOf(type, 'buttons')) block.buttons = buttons(links);
+      if (typeOf(type, 'image')) block.image = firstImage(staticNode, context);
+      if (typeOf(type, 'cards')) block.cards = cards(staticNode, context, prefix);
+      if (['videoHero', 'videoZoomGrid', 'directorIntro'].includes(type)) {
+        const video = original.querySelector('video');
+        const bg = original.querySelector('[data-poster-url]');
+        for (const source of video?.querySelectorAll('source[src]') ?? []) {
+          if (/\.mp4(?:\?|$)/i.test(source.src)) block.videoMp4 = context.asset(source.src, 'file');
+          if (/\.webm(?:\?|$)/i.test(source.src)) block.videoWebm = context.asset(source.src, 'file');
+        }
+        const poster = video?.getAttribute('poster') || bg?.getAttribute('data-poster-url');
+        if (poster) block.poster = context.asset(poster, 'image');
+        if (type === 'videoZoomGrid') {
+          const images = imageNodes(staticNode).map((image, i) => ({ ...context.asset(image.src, 'image', image.alt), _key: key(`${prefix}-i${i}`) }));
+          block.gridImages = images.filter((_, i) => i < 8);
+          block.mobileImages = images.filter((_, i) => i >= 8);
+        }
+      }
+      if (['cardSlider', 'filterableCards'].includes(type)) {
+        Object.assign(block, inferFilter(original, snapshot, ['activity', 'facility', 'sampleSchedule', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar']));
+        if (page.path === '/school-year/facilities') Object.assign(block, { source: 'facility', program: 'schoolYear' });
+        if (!block.source) gaps.push({ path: page.path, section: index + 1, reason: 'collection source not resolved' });
+      }
+      if (['programCards', 'teamMembers', 'quoteWall', 'faqAccordion', 'jobList'].includes(type)) {
+        const inferred = inferFilter(original, snapshot, [{programCards:'programOffering',teamMembers:'staffMember',quoteWall:'testimonial',faqAccordion:'faq',jobList:'jobOpportunity'}[type]]);
+        if (inferred.program) block.program = inferred.program;
+        else if (page.path.startsWith('/summer-camp')) block.program = 'summerCamp';
+        else if (page.path.startsWith('/school-year')) block.program = 'schoolYear';
+      }
+      if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : 'roster'; }
+      if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : 'main';
+      if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
+      if (['embedSection', 'busMap'].includes(type)) Object.assign(block, embed(original));
+      if (type === 'rateTable') {
+        const rows = [...original.querySelectorAll('tr,[class*="comparison"][class*="row"]')];
+        block.columns = rows.length ? [...rows[0].children].map(text).filter(Boolean) : [];
+        block.rows = rows.slice(1).map((row, i) => ({ _key: key(`${prefix}-r${i}`), _type: 'rateRow', label: text(row.firstElementChild), cells: [...row.children].map(text) }));
+      }
+      if (type === 'pricingCards') block.plans = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'pricingPlan', title: card.title, details: card.body, actions: card.actions }));
+      if (type === 'stackedTimeline') block.items = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'stackedTimelineItem', title: card.title, text: card.description, image: card.image }));
+      if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
+      if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
+      // Every remaining static text node must be present in an editable field.
+      // An unsupported fit is reported, never hidden in an opaque source blob.
+      const strings = contentStrings(block);
+      const leaves = [...staticNode.querySelectorAll('*')].filter((n) => !n.children.length && !['IMG','IFRAME','VIDEO','SOURCE'].includes(n.tagName)).map(text).filter(Boolean);
+      const missing = leaves.filter((value) => !strings.some((stored) => stored.includes(value)));
+      if (missing.length) gaps.push({ path: page.path, section: index + 1, reason: 'static copy does not fit section fields', missing });
+      coverage.push({ path: page.path, section: index + 1, type, textNodes: leaves.length, covered: leaves.length - missing.length });
+      blocks.push(block);
+    }
+    const metaDescription = dom.querySelector('meta[name="description"]')?.content;
+    const metadata = { title: dom.title, description: metaDescription };
+    const shareImage = dom.querySelector('meta[property="og:image"]')?.content;
+    if (shareImage && mediaUrl(shareImage)) metadata.image = context.asset(shareImage, 'image');
+    if (page.path === '/parent-dashboard') {
+      documents.push({ _id:'parentDashboard', _type:'parentDashboard', title:headingText(main), intro:text(prune(main,'.w-dyn-list,script,style,svg')), schoolYearLabel:text(main.querySelector('[data-w-tab="School Year"]')), summerCampLabel:text(main.querySelector('[data-w-tab="Summer Camp"]')) });
+    } else documents.push({ _id: pageId(page.path), _type: page.path === '/' ? 'homePage' : page.path === '/news' ? 'blogIndex' : 'page', title: headingText(main) || dom.title, ...(page.path !== '/' && page.path !== '/news' ? { slug: { _type:'slug', current:page.path.slice(1) } } : {}), description:metaDescription, meta:metadata, blocks });
+  }
+  return { documents, coverage, gaps };
+}
