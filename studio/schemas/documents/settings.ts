@@ -116,6 +116,7 @@ const settings = defineType({
           title: "For light backgrounds",
           type: "image",
           options: { hotspot: true },
+          fields: [defineField({ name: "alt", title: "Image description", type: "string" })],
         }),
         defineField({
           description: "The logo shown on dark backgrounds.",
@@ -123,6 +124,7 @@ const settings = defineType({
           title: "For dark backgrounds",
           type: "image",
           options: { hotspot: true },
+          fields: [defineField({ name: "alt", title: "Image description", type: "string" })],
         }),
       ],
     }),

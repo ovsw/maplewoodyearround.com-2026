@@ -52,6 +52,7 @@ export default defineType({
               { title: "Strong", value: "strong" },
               { title: "Emphasis", value: "em" },
             ],
+            annotations: [defineArrayMember({ type: "customLink" })],
           },
         }),
       ],

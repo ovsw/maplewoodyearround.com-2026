@@ -198,7 +198,8 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : 'roster'; }
       if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : 'main';
       if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
-      if (['embedSection', 'busMap'].includes(type)) Object.assign(block, embed(original));
+      if (type === 'embedSection') Object.assign(block, embed(original));
+      if (type === 'busMap') block.embedUrl = embed(original).embedUrl;
       if (type === 'rateTable') {
         const header = original.querySelector('.comparison6_top-row,.comparison8_top-row,thead tr');
         const rows = [...original.querySelectorAll('.comparison6_row,.comparison8_row,tbody tr')];

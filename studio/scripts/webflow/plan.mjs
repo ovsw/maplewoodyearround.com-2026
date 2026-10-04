@@ -187,7 +187,7 @@ function unpublishedPages(snapshot, context) {
     if(!page.publishedPath)throw new Error('Unpublished source page has no route');
     return {_id:`drafts.${pageId(page.publishedPath)}`,_type:'page',title:page.title,slug:{_type:'slug',current:page.publishedPath.slice(1)},
       description:`Preserved Webflow ${page.draft?'draft':'system page'}. Source text and media are editable. Its layout has not been reconstructed.`,
-      meta:{title:page.seo?.title,description:page.seo?.description,noIndex:true},
+      meta:{title:page.seo?.title,description:page.seo?.description,noindex:true},
       blocks:[{_key:key(page.id),_type:'richTextBlock',richText}]};
   });
 }

@@ -64,3 +64,14 @@ Each apply takes its own verified backup.
 Page appearance and interactive behavior are verified by the later page
 issues. Source text coverage and schema validation do not establish visual
 parity. Keep the known source 404 news route unpublished.
+
+Studio validation can warn about source-long SEO titles, absent images on
+text-only source sections, and the same source slug used in School Year and
+Summer Camp collections. The program filter distinguishes these collection
+records; their retained slugs do not create pages. Preserve source values.
+Unknown fields and broken references must be corrected before acceptance.
+
+For a local draft check, open
+http://localhost:3341/presentation?preview=%2F%3Fsanity-preview-perspective%3Ddrafts.
+Keep the draft perspective inside the preview URL. An outer
+`perspective=drafts` parameter is not a valid document version in this Studio.

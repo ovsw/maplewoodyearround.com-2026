@@ -31,9 +31,11 @@ export function globalDocuments(snapshot, context) {
   const copyright=credit.match(/©\s*(\d{4})\s*(.*?)\s*All rights reserved\./);
   if(!copyright)throw new Error('Footer copyright source shape changed');
   const aca=footer.querySelector('.aca-logo');
+  const footerImage=aca?context.asset(aca.src,'image',aca.alt):undefined;
+  if(footerImage)delete footerImage.alt; // The footerLogo parent owns its alt field.
   const footerDoc={_id:'footer',_type:'footer',columns,legalLinks:links(footer,'.footer16_legal-link','footerLink','legal'),
     copyrightStartYear:Number(copyright[1]),copyrightOwner:copyright[2],
-    logos:aca?[{_key:'aca',_type:'footerLogo',alt:aca.alt,image:context.asset(aca.src,'image',aca.alt)}]:[],
+    logos:aca?[{_key:'aca',_type:'footerLogo',alt:aca.alt,image:footerImage}]:[],
     newsletter:{heading:'',description:text(footer.querySelector('.footer16_left-wrapper > .text-size-small')),successMessage:text(footer.querySelector('.w-form-done')),errorMessage:text(footer.querySelector('.w-form-fail'))}};
   const contactNode=footer.querySelector('.display-inlineflex .text-size-small');
   const contactText=text(contactNode);
