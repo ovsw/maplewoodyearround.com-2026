@@ -145,6 +145,8 @@ export function staticPages(snapshot, context, schema) {
       const selector = [...original.classList].find((name) => patterns[name]);
       let type = patterns[selector] ?? (original.matches('.w-embed.w-iframe') ? 'embedSection' : undefined);
       const staticNode = prune(original, '.w-dyn-list,script,style,svg,noscript');
+      // Hidden source filter links are not part of the home page's interface.
+      if (page.path === '/') staticNode.querySelectorAll('.u-display-hidden').forEach((node) => node.remove());
       if (!type && !text(staticNode) && !staticNode.querySelector('img,iframe,video')) continue;
       if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
       if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
@@ -210,6 +212,58 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'stackedTimeline') block.items = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'stackedTimelineItem', title: card.title, text: card.description, image: card.image }));
       if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
       if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
+      if (page.path === '/') {
+        // The home composition has distinct intro, label, body and action slots.
+        // Preserve those slots on every import, including the final frozen run.
+        const paragraphs = (node) => {
+          const wrapper = node.ownerDocument.createElement('div');
+          node.querySelectorAll('p').forEach((paragraph) => wrapper.append(paragraph.cloneNode(true)));
+          return wrapper;
+        };
+        if (['videoHero', 'videoZoomGrid', 'busMap', 'imageReveal', 'latestArticles'].includes(type)) {
+          block.description = text(staticNode.querySelector('p'));
+          const label = text(staticNode.querySelector('.text-style-tagline'));
+          if (label && typeOf(type, 'eyebrow')) block.eyebrow = label;
+          if (typeOf(type, 'actions')) block.actions = actions(staticNode, context, prefix, '.button[href]');
+        }
+        if (['videoHero', 'videoZoomGrid'].includes(type)) {
+          const heading = staticNode.querySelector('h1,h2');
+          block.highlightText = text(heading?.querySelector('.text-color-brand-secondary'));
+          const copy = heading?.cloneNode(true);
+          copy?.querySelectorAll('br').forEach((node) => node.replaceWith(' '));
+          block.title = [...(copy?.childNodes ?? [])].map(text).filter(Boolean).join(' ');
+        }
+        if (type === 'scrollPanels') {
+          const desktopImages = [...staticNode.querySelectorAll('.layout515_content-right img')];
+          block.cards = [...staticNode.querySelectorAll('.layout515_item')].map((node, i) => ({
+            _key: key(`${prefix}-c${i}`), _type: 'contentCard',
+            title: headingText(node), eyebrow: text(node.querySelector('.text-style-tagline')),
+            body: portableText(paragraphs(node), context, `${prefix}-c${i}`),
+            image: desktopImages[i] ? context.asset(desktopImages[i].src, 'image', desktopImages[i].alt) : firstImage(node, context),
+            mobileImage: firstImage(node, context),
+            actions: actions(node, context, `${prefix}-c${i}`, '.button[href]'),
+          }));
+          delete block.description;
+        }
+        if (type === 'quoteWall') {
+          const closing = staticNode.cloneNode(true);
+          closing.querySelectorAll('h1,h2,h3').forEach((node) => node.remove());
+          block.description = text(closing);
+        }
+        if (type === 'busMap') block.cards = block.cards.map((card) => ({ ...card, description: card.description.slice(card.title.length) }));
+        if (type === 'imageReveal') block.body = portableText(paragraphs(staticNode), context, prefix);
+        if (type === 'latestArticles') {
+          const posts = snapshot.collections.find((collection) => collection.displayName === 'Blog Posts');
+          const names = [...original.querySelectorAll('.blog7_featured-item h2,.blog7_item h2')].map(text);
+          block.selectedPosts = names.map((name) => {
+            const item = posts.live.find((item) => item.fieldData.name.trim() === name);
+            if (!item) throw new Error('A home news item has no live source record');
+            return { ...reference(documentId(posts.id, item.id)), _key: key(item.id) };
+          });
+          block.featuredFirst = true;
+          block.limit = 4;
+        }
+      }
       // Every remaining static text node must be present in an editable field.
       // An unsupported fit is reported, never hidden in an opaque source blob.
       const strings = contentStrings(block);

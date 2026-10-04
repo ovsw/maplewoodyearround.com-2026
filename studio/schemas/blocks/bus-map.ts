@@ -1,5 +1,5 @@
 import { sectionBackgroundField } from "./shared/section-background";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import {
   sectionTitleField,
   sectionDescriptionField,
@@ -15,6 +15,7 @@ export default defineType({
   fields: [
     sectionBackgroundField,
     sectionTitleField,
+    defineField({ name: "eyebrow", title: "Short label", type: "string" }),
     sectionDescriptionField,
     embedUrlField,
     contentCardsField,

@@ -14,6 +14,8 @@ export const latestArticlesQuery = groq`
     title,
     description,
     limit,
+    featuredFirst,
+    "selectedArticles": selectedPosts[]->{${blogPostProjection}},
     buttons[]{
       _key,
       _type,
