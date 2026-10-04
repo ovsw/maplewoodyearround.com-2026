@@ -76,6 +76,10 @@ export function buildPlan(snapshot, schema) {
     complete.collections?.length !== snapshot.collections?.length || complete.routes?.length !== snapshot.pages?.length ||
     complete.routes.some((path) => !snapshot.pages.some((page) => page.path === path)) ||
     snapshot.pageRecords.some((page) => !page.collectionId && !Array.isArray(snapshot.pageDom?.[page.id]))) throw new Error('Source snapshot completeness check failed');
+  for(const page of snapshot.pages.filter((page)=>page.status===404&&!page.path.startsWith('/post/'))) {
+    const record=snapshot.pageRecords.find((record)=>record.publishedPath===page.path);
+    if(record&&!record.draft&&!record.archived)throw new Error('A public source page is unavailable without a matching unpublished source state');
+  }
   const names = snapshot.collections.map((c) => c.displayName).sort();
   if (JSON.stringify(names) !== JSON.stringify(Object.keys(mappings).sort())) throw new Error('The snapshot does not contain all mapped collections');
   for (const collection of snapshot.collections) for (const version of ['staged','live']) {
@@ -115,7 +119,10 @@ export function buildPlan(snapshot, schema) {
   const unknownRefs = [];
   function visit(value) {
     if (!value || typeof value !== 'object') return;
-    if (value._type === 'reference' && !value._ref.startsWith('import-asset-') && !ids.has(value._ref) && !ids.has(`drafts.${value._ref}`)) unknownRefs.push(value._ref);
+    if (value._type === 'reference' && !value._ref.startsWith('import-asset-') && !ids.has(value._ref)) {
+      if(ids.has(`drafts.${value._ref}`))value._weak=true;
+      else unknownRefs.push(value._ref);
+    }
     for (const child of Object.values(value)) visit(child);
   }
   documents.forEach(visit);
