@@ -27,6 +27,9 @@ export const SETTINGS_QUERY = defineQuery(`
       _key,
       label,
       url
+    },
+    notFoundImage{
+      ${imageQuery}
     }
   }
 `);

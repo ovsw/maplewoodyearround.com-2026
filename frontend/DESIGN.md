@@ -38,4 +38,4 @@ The controlled menu follows the legacy navigation's dialog pattern. Its actual l
 
 The newsletter is visible because issue #5 requires it; the source currently hides it. Keep its exact source success and failure messages. Analytics load only on production, outside draft mode.
 
-The 404 photo is copied from the public Webflow asset `67a4e0af5d7340bd41e402e3_leprechaun_staff.avif`. Its source copy and home link remain unchanged.
+The 404 photo comes from the public Webflow asset `67a4e0af5d7340bd41e402e3_leprechaun_staff.avif` and is stored in Sanity. Editors can replace it in Global Settings. Its source copy and home link remain unchanged.
