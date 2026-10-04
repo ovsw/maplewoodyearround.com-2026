@@ -15,6 +15,14 @@ export default defineType({
   ],
   fields: [
     defineField({
+      name: "color",
+      title: "Label color",
+      type: "string",
+      group: "content",
+      description: "The source color used for this news category label.",
+    }),
+    defineField({
+      description: "The title used to identify this content.",
       name: "title",
       title: "Title",
       type: "string",
@@ -22,6 +30,8 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      description:
+        "The unique URL name. Use lowercase words separated by hyphens.",
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -29,6 +39,7 @@ export default defineType({
       validation: (Rule) => Rule.required().custom(uniqueCategorySlug),
     }),
     defineField({
+      description: "A short introduction or summary for this content.",
       name: "description",
       title: "Description",
       type: "text",

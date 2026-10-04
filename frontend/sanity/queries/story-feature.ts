@@ -31,6 +31,7 @@ export const storyFeatureQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
+        url.type == "file" => url.file.asset->url,
         url.href
       )
     }

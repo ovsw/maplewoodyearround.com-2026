@@ -1,4 +1,5 @@
 import { LibraryBig } from "lucide-react";
+import { programFilterField } from "./shared/maplewood-fields";
 import { defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
 
@@ -34,6 +35,7 @@ export default defineType({
     emptyState: "No question matches that search yet.",
   },
   fields: [
+    programFilterField,
     sectionBackgroundField,
     defineField({
       name: "eyebrow",

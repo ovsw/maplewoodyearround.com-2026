@@ -6,6 +6,8 @@ export const SETTINGS_QUERY = defineQuery(`
     _id,
     _type,
     siteName,
+    gaMeasurementId,
+    hotjarSiteId,
     logo{
       light{
         ${imageQuery}
@@ -17,6 +19,8 @@ export const SETTINGS_QUERY = defineQuery(`
     contact{
       email,
       phone,
+      fax,
+      menuAddress,
       addressLines
     },
     socialLinks[]{

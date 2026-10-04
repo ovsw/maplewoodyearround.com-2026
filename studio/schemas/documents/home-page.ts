@@ -14,12 +14,14 @@ export default defineType({
   ],
   fields: [
     defineField({
+      description: "The title used to identify this content.",
       name: "title",
       type: "string",
       group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "A short introduction or summary for this content.",
       name: "description",
       title: "Description",
       type: "text",

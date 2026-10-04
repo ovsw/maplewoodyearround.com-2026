@@ -6,6 +6,7 @@ export const customLinkProjection = groq`
   "href": select(
     customLink.type == "internal" => ${customLinkInternalHref},
     customLink.type == "external" => customLink.external,
+    customLink.type == "file" => customLink.file.asset->url,
     customLink.href
   ),
   "openInNewTab": customLink.openInNewTab

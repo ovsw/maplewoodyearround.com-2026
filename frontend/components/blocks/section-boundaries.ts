@@ -53,6 +53,27 @@ export type SectionTrait = {
  * value never changes a boundary; `photo` records what the design intends.
  */
 export const sectionTraits: Record<Block["_type"], SectionTrait> = {
+  videoHero: { hero: true },
+  videoZoomGrid: {},
+  scrollPanels: {},
+  busMap: {},
+  imageReveal: {},
+  directorIntro: { hero: true },
+  programCards: {},
+  electiveCards: {},
+  historyStory: {},
+  rateTable: {},
+  pricingCards: {},
+  cardSlider: {},
+  statistics: {},
+  filterableCards: {},
+  instructionSteps: {},
+  embedSection: {},
+  contactDetailsSection: {},
+  jobList: {},
+  parentDashboardSection: {},
+  summerDocumentList: {},
+  tabbedHero: { hero: true },
   benefitCards: {},
   bigImageList: {},
   ctaBanner: { tuck: true },
@@ -72,7 +93,6 @@ export const sectionTraits: Record<Block["_type"], SectionTrait> = {
   storyFeature: { alternate: true },
   teamMembers: {},
   quoteWall: {},
-
 };
 
 export type SectionBoundary = {
@@ -94,22 +114,26 @@ export type SectionBoundary = {
  * omits `background` for these, so the type guard below has to exclude them
  * by `_type`; keep this list and the table's `background` entries in step.
  */
-type FixedBackgroundType =
-  | "hero"
-  | "homeHero"
-  | "innerHero";
+type FixedBackgroundType = "hero" | "homeHero" | "innerHero";
 
 /** Blocks whose GROQ projection carries the editor `background` field. */
-export type EditorBackgroundBlock = Exclude<Block, { _type: FixedBackgroundType }>;
+export type EditorBackgroundBlock = Exclude<
+  Block,
+  { _type: FixedBackgroundType }
+>;
 
-export function hasEditorBackground(block: Block): block is EditorBackgroundBlock {
+export function hasEditorBackground(
+  block: Block,
+): block is EditorBackgroundBlock {
   return sectionTraits[block._type].background === undefined;
 }
 
 export function isEditorBackground(
   background: SectionBackground,
 ): background is EditorBackground {
-  return background === "white" || background === "cream" || background === "green";
+  return (
+    background === "white" || background === "cream" || background === "green"
+  );
 }
 
 /**
@@ -117,12 +141,20 @@ export function isEditorBackground(
  * that predate the `background` field.
  */
 export function resolveEditorBackground(block: Block): EditorBackground {
-  const background = "background" in block ? stegaClean(block.background) : undefined;
-  if (background === "cream" || background === "green" || background === "white") {
+  const background =
+    "background" in block ? stegaClean(block.background) : undefined;
+  if (
+    background === "cream" ||
+    background === "green" ||
+    background === "white"
+  ) {
     return background;
   }
 
-  const legacyBlock = block as Block & { useCreamBackground?: boolean | null; variant?: string | null };
+  const legacyBlock = block as Block & {
+    useCreamBackground?: boolean | null;
+    variant?: string | null;
+  };
   const cream = legacyBlock.useCreamBackground === true;
   const legacyBackground: EditorBackground =
     block._type === "teamMembers"
@@ -133,7 +165,12 @@ export function resolveEditorBackground(block: Block): EditorBackground {
         ? legacyBlock.useCreamBackground === false
           ? "green"
           : "cream"
-        : ["benefitCards", "storyFeature", "featureCards", "stackedTimeline"].includes(block._type)
+        : [
+              "benefitCards",
+              "storyFeature",
+              "featureCards",
+              "stackedTimeline",
+            ].includes(block._type)
           ? cream
             ? "cream"
             : "green"
@@ -141,15 +178,11 @@ export function resolveEditorBackground(block: Block): EditorBackground {
             ? stegaClean(legacyBlock.variant) === "nudge"
               ? "white"
               : "green"
-            : [
-                  "bigImageList",
-                  "largeSlides",
-                ].includes(block._type)
+            : ["bigImageList", "largeSlides"].includes(block._type)
               ? "green"
-              : [
-                    "imageCollageFeature",
-                    "stackedFeatureRows",
-                  ].includes(block._type)
+              : ["imageCollageFeature", "stackedFeatureRows"].includes(
+                    block._type,
+                  )
                 ? "cream"
                 : "white";
 
@@ -157,7 +190,9 @@ export function resolveEditorBackground(block: Block): EditorBackground {
 }
 
 export function resolveSectionBackground(block: Block): SectionBackground {
-  return sectionTraits[block._type].background ?? resolveEditorBackground(block);
+  return (
+    sectionTraits[block._type].background ?? resolveEditorBackground(block)
+  );
 }
 
 /**
@@ -166,7 +201,9 @@ export function resolveSectionBackground(block: Block): SectionBackground {
  * taking a position in it.
  */
 function hasPhoto(block: Block): boolean {
-  const image = (block as Block & { image?: { asset?: { _id?: string } | null } | null }).image;
+  const image = (
+    block as Block & { image?: { asset?: { _id?: string } | null } | null }
+  ).image;
   return Boolean(image?.asset?._id);
 }
 
@@ -182,7 +219,9 @@ function hasPhoto(block: Block): boolean {
  *   affects run membership: an editor may alternate cream and green inside a
  *   run and still get the flip.
  */
-export function resolveSectionBoundaries(blocks: readonly Block[]): SectionBoundary[] {
+export function resolveSectionBoundaries(
+  blocks: readonly Block[],
+): SectionBoundary[] {
   const sections = blocks.map((block) => {
     const trait = sectionTraits[block._type];
     return {
@@ -199,22 +238,30 @@ export function resolveSectionBoundaries(blocks: readonly Block[]): SectionBound
   const mirrors = sections.map((section, index) => {
     const above = sections[index - 1];
     const continues =
-      section.alternating && above?.alternating === true && above.type === section.type;
+      section.alternating &&
+      above?.alternating === true &&
+      above.type === section.type;
     runPosition = section.alternating ? (continues ? runPosition + 1 : 0) : -1;
     return runPosition % 2 === 1;
   });
   const tucks = sections.map(
     (section, index) =>
-      section.tucker && index > 0 && sections[index - 1].background !== section.background,
+      section.tucker &&
+      index > 0 &&
+      sections[index - 1].background !== section.background,
   );
 
   return sections.map((section, index) => {
     const above = sections[index - 1];
     const below = sections[index + 1];
     const seamTop =
-      above !== undefined && !above.hero && above.background === section.background;
+      above !== undefined &&
+      !above.hero &&
+      above.background === section.background;
     const seamBottom =
-      below !== undefined && !section.hero && below.background === section.background;
+      below !== undefined &&
+      !section.hero &&
+      below.background === section.background;
     return {
       background: section.background,
       seamTop,
@@ -242,7 +289,9 @@ export type SectionBand = {
  * the stylesheet paints surface texture once per band rather than once per
  * section. A boundary that is an edge always starts a new band.
  */
-export function resolveSectionBands(boundaries: readonly SectionBoundary[]): SectionBand[] {
+export function resolveSectionBands(
+  boundaries: readonly SectionBoundary[],
+): SectionBand[] {
   const bands: SectionBand[] = [];
   boundaries.forEach((boundary, index) => {
     const current = bands[bands.length - 1];

@@ -139,18 +139,19 @@ describe("blog index", () => {
       "data-sanity",
       postAttribute?.("publishedAt"),
     );
-    expect(screen.getByRole("heading", { name: post.title ?? "" })).toHaveAttribute(
-      "data-sanity",
-      postAttribute?.("title"),
-    );
+    expect(
+      screen.getByRole("heading", { name: post.title ?? "" }),
+    ).toHaveAttribute("data-sanity", postAttribute?.("title"));
     expect(screen.getByText("A week at camp.")).toHaveAttribute(
       "data-sanity",
       postAttribute?.("excerpt"),
     );
-    expect(screen.queryByRole("link", { name: "News" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "News" }),
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Summer update" })).toHaveAttribute(
       "href",
-      "/blog/summer-update",
+      "/post/summer-update",
     );
   });
 
@@ -180,8 +181,10 @@ describe("blog index", () => {
     expect(cards[0].closest("a")).toBeNull();
     expect(
       within(cards[0] as HTMLElement).getByRole("link", { name: "Post one" }),
-    ).toHaveAttribute("href", "/blog/one");
-    expect(screen.queryByRole("link", { name: "News" })).not.toBeInTheDocument();
+    ).toHaveAttribute("href", "/post/one");
+    expect(
+      screen.queryByRole("link", { name: "News" }),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Pagination" })).toBeNull();
   });
 
@@ -189,9 +192,9 @@ describe("blog index", () => {
     render(<PostCard post={post} stega={false} />);
 
     const renderedImage = screen.getByRole("img", { name: "Campers paddling" });
-    expect(decodeURIComponent(renderedImage.getAttribute("src") ?? "")).toContain(
-      "w=1200",
-    );
+    expect(
+      decodeURIComponent(renderedImage.getAttribute("src") ?? ""),
+    ).toContain("w=1200");
     expect(renderedImage).toHaveAttribute(
       "sizes",
       "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",
@@ -247,9 +250,9 @@ describe("blog index", () => {
         { slug: "tutorials", publishedPostCount: 13 },
       ]),
     ).toEqual([{ page: "2", slug: "tutorials" }]);
-    expect(getCategoryStaticParams([{ slug: "/tutorials" }, { slug: "2" }])).toEqual([
-      { slug: "__missing-category__" },
-    ]);
+    expect(
+      getCategoryStaticParams([{ slug: "/tutorials" }, { slug: "2" }]),
+    ).toEqual([{ slug: "__missing-category__" }]);
   });
 
   it("uses one category indexability rule for post count, description, and noindex", () => {
@@ -314,7 +317,9 @@ describe("blog index", () => {
       posts: [],
     });
     // No Hero section: the page still has its heading for assistive tech.
-    expect(screen.getByRole("heading", { level: 1, name: "Blog" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Blog" }),
+    ).toBeInTheDocument();
   });
 
   it("lists the posts even when the Blog page has no Latest Posts section yet", () => {
@@ -353,7 +358,7 @@ describe("blog index", () => {
 
     expect(screen.getByRole("link", { name: "Summer update" })).toHaveAttribute(
       "href",
-      "/blog/summer-update",
+      "/post/summer-update",
     );
     expect(screen.getByText("No more posts yet.")).toBeInTheDocument();
   });
@@ -382,9 +387,8 @@ describe("blog index", () => {
       "aria-current",
       "page",
     );
-    expect(screen.getByRole("link", { name: "Go to previous page" })).toHaveAttribute(
-      "href",
-      "/blog#latest-posts",
-    );
+    expect(
+      screen.getByRole("link", { name: "Go to previous page" }),
+    ).toHaveAttribute("href", "/blog#latest-posts");
   });
 });

@@ -5,12 +5,14 @@ const destinationProjection = `{
   openInNewTab,
   "href": select(
     kind == "internal" => select(
+      internal->_type == "parentDashboard" => "/parent-dashboard",
       internal->_id == "homePage" || internal->_type == "homePage" => "/",
-      internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/blog",
-      internal->_type == "post" && defined(internal->slug.current) => "/blog/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
+      internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",
+      internal->_type == "post" && defined(internal->slug.current) => "/post/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")
     ),
+    kind == "file" => file.asset->url,
     kind == "external" => external
   )
 }`;
@@ -27,6 +29,7 @@ export const FOOTER_QUERY = defineQuery(`
     eyebrow,
     heading,
     accent,
+    newsletter{heading, description, successMessage, errorMessage},
     actions[]${linkProjection},
     logos[]{
       _key,

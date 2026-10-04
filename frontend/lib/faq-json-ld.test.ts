@@ -46,11 +46,18 @@ function hubFaq(id: string, title: string, answer: string): HubFaq {
   const { _id, title: question, answer: body } = faq(id, title, answer);
   return {
     _id,
+    program: null,
+    categories: [],
     title: question,
     answer: body,
     answerText: answer,
     order: null,
-    category: { _id: "cat-1", title: "Getting there", slug: "getting-there", order: 10 },
+    category: {
+      _id: "cat-1",
+      title: "Getting there",
+      slug: "getting-there",
+      order: 10,
+    },
   };
 }
 
@@ -72,11 +79,11 @@ describe("createFaqPageJsonLd", () => {
       mainEntity: [
         {
           "@type": "Question",
-            name: "What is onboarding?",
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: "A setup review.",
-            },
+          name: "What is onboarding?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "A setup review.",
+          },
         },
       ],
     });
@@ -97,9 +104,7 @@ describe("createFaqPageJsonLd", () => {
   it("strips stega characters from titles and answers", () => {
     const stega = "\u200b\u200c\u200d\ufeff";
     const result = createFaqPageJsonLd([
-      faqBlock([
-        faq("faq-1", `Question?${stega}`, `Answer.${stega}`),
-      ]),
+      faqBlock([faq("faq-1", `Question?${stega}`, `Answer.${stega}`)]),
     ]);
 
     expect(result?.mainEntity[0]).toMatchObject({
