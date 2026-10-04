@@ -60,17 +60,53 @@ const model: FooterModel = {
 };
 
 describe("SiteFooter", () => {
-  it("renders sign-off, logos, navigation, and linked contact rows", () => {
+  it.each([{}, { phone: "  ", email: " ", fax: " ", addressLines: [" "] }])(
+    "keeps legacy contact links when settings have no displayable contact",
+    (contact) => {
+      render(<SiteFooter model={{ ...model, contact }} />);
+      expect(
+        screen.getByRole("link", { name: "hello@example.com" }),
+      ).toHaveAttribute("href", "mailto:hello@example.com");
+      expect(document.querySelector("address")).not.toBeInTheDocument();
+    },
+  );
+
+  it("prefers displayable settings contact and renders authored actions safely", () => {
+    const { rerender } = render(
+      <SiteFooter model={{ ...model, contact: { phone: " 555-0100 " } }} />,
+    );
+    expect(screen.getByRole("link", { name: "555-0100" })).toHaveAttribute(
+      "href",
+      "tel:5550100",
+    );
+    expect(
+      screen.queryByRole("link", { name: "hello@example.com" }),
+    ).not.toBeInTheDocument();
+    const action = within(
+      screen.getByRole("navigation", { name: "Footer actions" }),
+    ).getByRole("link", { name: "Enroll" });
+    expect(action).toHaveAttribute("href", "https://example.com");
+    expect(action).toHaveAttribute("target", "_blank");
+    expect(action).toHaveAttribute("rel", "noopener noreferrer");
+    rerender(<SiteFooter model={{ ...model, actions: [] }} />);
+    expect(
+      screen.queryByRole("navigation", { name: "Footer actions" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders contact, logos, navigation, and newsletter", () => {
     render(<SiteFooter model={model} />);
     const footer = screen.getByRole("contentinfo");
 
     expect(
-      within(footer).getByRole("heading", { name: /Until next summer/ }),
-    ).toHaveAttribute("id", "site-footer-heading");
+      within(footer).getByText(
+        "Maplewood Country Day Camp and Enrichment Center Inc.",
+      ),
+    ).toBeInTheDocument();
     expect(
-      within(footer).getByRole("img", {
+      within(footer).getAllByRole("img", {
         name: "Maplewood Year Round logo",
-      }),
+      })[0],
     ).toBeInTheDocument();
     expect(
       within(footer).getByRole("heading", { name: "Company" }),
@@ -108,8 +144,8 @@ describe("SiteFooter", () => {
     render(<SiteFooter dataAttribute={dataAttribute} model={model} />);
 
     expect(
-      document.querySelector('[data-sanity="field:eyebrow"]'),
-    ).toHaveTextContent("Your next chapter");
+      screen.getByRole("textbox", { name: "Email address" }),
+    ).toBeInTheDocument();
     expect(
       document.querySelector('[data-sanity="field:copyrightStartYear"]'),
     ).toHaveTextContent("2024-2026");

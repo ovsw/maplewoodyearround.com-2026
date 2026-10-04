@@ -1,73 +1,27 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import { siteName } from "@/lib/site-name";
-import { Mail, MapPin, Phone } from "lucide-react";
 import { FooterLink } from "./footer-link";
 import { FooterIcon, socialIconFor } from "./icons";
-import type {
-  FooterColumnModel,
-  FooterLinkModel,
-  FooterModel,
-} from "./model";
+import { Newsletter } from "../newsletter/newsletter";
+import type { FooterModel, FooterLogoModel } from "./model";
+import styles from "./maplewood-footer.module.css";
 
-const contactIcons = { email: Mail, phone: Phone, pin: MapPin } as const;
-
-function LinkList({ links }: { links: FooterLinkModel[] }) {
-  return (
-    <ul className="flex flex-col items-start gap-[13px]">
-      {links.map((link) => {
-        const socialIcon = socialIconFor(link.href);
-
-        return (
-          <li key={link.key}>
-            <FooterLink link={link} dataSanity={undefined}>
-              <span className="flex items-center gap-2.5 text-[14.5px] text-foreground/75 transition-colors duration-200 hover:text-link">
-                {socialIcon ? (
-                  <FooterIcon className="size-4 shrink-0" name={socialIcon} />
-                ) : null}
-                {link.label}
-              </span>
-            </FooterLink>
-          </li>
-        );
-      })}
-    </ul>
+function Logo({ logo }: { logo: FooterLogoModel }) {
+  const picture = (
+    <Image
+      alt={logo.alt}
+      src={logo.image.src}
+      width={logo.image.width}
+      height={logo.image.height}
+      sizes="128px"
+      className={styles.logo}
+    />
   );
-}
-
-function FooterColumn({ column }: { column: FooterColumnModel }) {
-  const headingId = `footer-column-${column.key}`;
-  return (
-    <section aria-labelledby={headingId}>
-      <h2
-        className="mb-[19px] font-display text-[15px] font-bold tracking-[0.02em] text-foreground"
-        id={headingId}
-      >
-        {column.heading}
-      </h2>
-      <LinkList links={column.links} />
-    </section>
-  );
-}
-
-function FooterAction({
-  link,
-  primary,
-}: {
-  link: FooterLinkModel;
-  primary: boolean;
-}) {
-  return (
-    <FooterLink link={link}>
-      <span
-        className={
-          primary
-            ? "inline-flex items-center rounded-pill bg-primary px-[30px] py-4 font-bold text-primary-foreground transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-            : "inline-flex items-center rounded-pill border-[1.5px] border-foreground/50 px-[30px] py-[15.5px] font-semibold text-foreground transition-[border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-foreground/90 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-        }
-      >
-        {link.label}
-      </span>
-    </FooterLink>
+  return logo.link ? (
+    <FooterLink link={logo.link}>{picture}</FooterLink>
+  ) : (
+    picture
   );
 }
 
@@ -78,121 +32,144 @@ export function SiteFooter({
   dataAttribute?: (path: string) => string | undefined;
   model: FooterModel;
 }) {
+  const contact = {
+    phone: model.contact?.phone?.trim(),
+    email: model.contact?.email?.trim(),
+    fax: model.contact?.fax?.trim(),
+    addressLines: model.contact?.addressLines
+      ?.map((line) => line.trim())
+      .filter(Boolean),
+  };
+  const hasContact = Boolean(
+    contact.phone ||
+    contact.email ||
+    contact.fax ||
+    contact.addressLines?.length,
+  );
   return (
-    <footer
-      className="relative z-[1] -mt-(--section-overlap) field-night rounded-t-section px-content-x pb-8 pt-16 text-foreground/75 phone:pb-10 phone:pt-[100px]"
-      data-footer-state="ready"
-    >
-      <div className="mx-auto max-w-[1320px]">
-        <div className="flex flex-wrap items-end justify-between gap-[34px] pb-[70px]">
-          <div>
-            <p
-              className="text-eyebrow mb-5 text-link"
-              data-sanity={dataAttribute?.("eyebrow")}
-            >
-              {model.eyebrow}
+    <footer className={styles.footer} data-footer-state="ready">
+      <div className={styles.inner}>
+        <div className={styles.top}>
+          <section
+            className={styles.contact}
+            aria-label={`${siteName} contact information`}
+          >
+            <p className={styles.business}>
+              Maplewood Country Day Camp and Enrichment Center Inc.
             </p>
-            <h2
-              className="text-headline font-display text-foreground"
-              id="site-footer-heading"
-            >
-              <span data-sanity={dataAttribute?.("heading")}>{model.heading}</span>
-              <br />
-              <span
-                className="font-accent text-[1.15em] font-semibold text-emphasis"
-                data-sanity={dataAttribute?.("accent")}
+            {hasContact ? (
+              <address>
+                <p>
+                  {contact.phone && (
+                    <a href={`tel:${contact.phone.replace(/[^+\d]/g, "")}`}>
+                      {contact.phone}
+                    </a>
+                  )}
+                  {contact.phone && contact.email && " – "}
+                  {contact.email && (
+                    <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                  )}
+                </p>
+                {contact.fax && <p>Fax: {contact.fax}</p>}
+                {contact.addressLines?.length ? (
+                  <p className={styles.address}>
+                    {contact.addressLines.map((line, index) => (
+                      <Fragment key={index}>
+                        {index > 0 && <br />}
+                        {line}
+                      </Fragment>
+                    ))}
+                  </p>
+                ) : null}
+              </address>
+            ) : (
+              <ul>
+                {model.contactLinks.map(({ link }) => (
+                  <li key={link.key}>
+                    <FooterLink link={link}>{link.label}</FooterLink>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className={styles.mobileLogos}>
+              {model.logos.map((logo) => (
+                <Logo key={logo.key} logo={logo} />
+              ))}
+            </div>
+          </section>
+          <div className={styles.columns}>
+            {model.columns.map((column) => (
+              <section
+                key={column.key}
+                aria-labelledby={`footer-${column.key}`}
               >
-                {model.accent}
-              </span>
-            </h2>
-          </div>
-          <div className="flex flex-wrap items-center gap-3.5">
-            {model.actions.map((action, index) => (
-              <FooterAction
-                key={action.key}
-                link={action}
-                primary={index === model.actions.length - 1}
-              />
+                <h2 id={`footer-${column.key}`}>{column.heading}</h2>
+                <ul>
+                  {column.links.map((link) => {
+                    const icon = socialIconFor(link.href);
+                    return (
+                      <li key={link.key}>
+                        <FooterLink link={link}>
+                          {icon && (
+                            <FooterIcon
+                              name={icon}
+                              className={styles.socialIcon}
+                            />
+                          )}
+                          {link.label}
+                        </FooterLink>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
             ))}
           </div>
         </div>
-
-        {/* Below 1280px the contact block takes its own row. The four link
-            columns stay together until they pair up below tablet width. */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-11 border-y border-border py-[60px] tablet:grid-cols-4 min-[1280px]:grid-cols-[1.5fr_repeat(4,1fr)] min-[1280px]:gap-12">
-          <section
-            aria-label={`${siteName} contact information`}
-            className="col-span-full min-[1280px]:col-span-1"
-          >
-            <div className="mb-[26px] flex items-center gap-3">
-              {model.logos.map((logo) => (
-                <FooterLink key={logo.key} link={logo.link}>
-                  <span className="flex h-[72px] items-center justify-center">
-                    <Image
-                      alt={logo.alt}
-                      className="max-h-[72px] w-auto max-w-[86px] object-contain"
-                      data-sanity={dataAttribute?.(
-                        `logos[_key==\"${logo.key}\"].image`,
-                      )}
-                      height={logo.image.height}
-                      sizes="86px"
-                      src={logo.image.src}
-                      width={logo.image.width}
-                    />
-                  </span>
-                </FooterLink>
-              ))}
-            </div>
-            <ul className="grid grid-cols-[20px_1fr] items-start gap-x-3.5 gap-y-3">
-              {model.contactLinks.map(({ icon, link }) => {
-                const ContactIcon = contactIcons[icon];
-                return (
-                <li className="contents" key={link.key}>
-                  <ContactIcon
-                    aria-hidden="true"
-                    className="mt-px size-4 text-foreground/55"
-                    strokeWidth={1.8}
-                  />
-                  <FooterLink link={link}>
-                    <span className="whitespace-pre-line font-mono text-sm leading-6 tracking-[0.02em] text-foreground/75 transition-colors duration-200 hover:text-link">
-                      <span className="sr-only">
-                        {icon === "pin"
-                          ? "Address: "
-                          : icon === "phone"
-                            ? "Phone: "
-                            : "Email: "}
-                      </span>
-                      {link.label}
-                    </span>
-                  </FooterLink>
-                </li>
-                );
-              })}
-            </ul>
-          </section>
-
-          {model.columns.map((column) => (
-            <FooterColumn column={column} key={column.key} />
-          ))}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-x-[26px] gap-y-3 pt-7 text-[14px] text-foreground/75">
-          <p className="desktop:mr-auto">
-            ©
+        {model.actions.length > 0 && (
+          <nav aria-label="Footer actions" className={styles.actions}>
+            {model.actions.map((action) => (
+              <FooterLink key={action.key} link={action} />
+            ))}
+          </nav>
+        )}
+        <Newsletter
+          copy={
+            model.newsletter ?? {
+              description:
+                "Join our newsletter to stay in touch. No spam, ever.",
+            }
+          }
+        />
+        <p className={styles.wordmark} aria-hidden="true">
+          Maplewood
+        </p>
+        <div className={styles.legal}>
+          <div className={styles.desktopLogos}>
+            {model.logos.map((logo) => (
+              <Logo key={logo.key} logo={logo} />
+            ))}
+          </div>
+          <p>
+            ©{" "}
             <span data-sanity={dataAttribute?.("copyrightStartYear")}>
               {model.copyrightYears}
             </span>{" "}
             <span data-sanity={dataAttribute?.("copyrightOwner")}>
               {model.copyrightOwner}
             </span>
+            <br />
+            All rights reserved.
           </p>
-          {model.legalLinks.map((link) => (
-            <FooterLink key={link.key} link={link}>
-              <span className="transition-colors duration-200 hover:text-link">
-                {link.label}
-              </span>
-            </FooterLink>
-          ))}
+          <nav aria-label="Legal">
+            <ul>
+              {model.legalLinks.map((link) => (
+                <li key={link.key}>
+                  <FooterLink link={link} />
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </footer>

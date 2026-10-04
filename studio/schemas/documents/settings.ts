@@ -1,5 +1,6 @@
 import { Contact, Globe2, ImageIcon, Settings } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { imageField } from "./maplewood-fields";
 
 const socialLink = defineType({
   name: "socialLink",
@@ -167,6 +168,10 @@ const settings = defineType({
         }),
       ],
     }),
+    {
+      ...imageField("notFoundImage", "Page not found photo"),
+      group: "identity",
+    },
   ],
   preview: {
     select: { media: "logo.light", title: "siteName" },

@@ -1,33 +1,46 @@
-/* Neutral scaffold. The Maplewood design issue supplies the final theme. */
+/* Maplewood tokens from the live Webflow reference. */
 @import "tailwindcss";
 
 :root {
-  --neutral-highlight: oklch(76.3% 0 0);
-  --neutral-highlight-hover: oklch(67.3% 0 0);
-  --neutral-highlight-muted: oklch(84% 0 0);
+  --maplewood-green: #006601;
+  --maplewood-green-dark: #004201;
+  --maplewood-cream: #fffbf0;
+  --maplewood-ink: #243021;
+  --maplewood-gold: #ffd700;
+  --maplewood-gold-mid: #ffb000;
+  --maplewood-gold-dark: #ff8400;
+  --maplewood-mint: #43af89;
+  --maplewood-mint-dark: #00a341;
+  --maplewood-purple: #d779fc;
+  --maplewood-purple-dark: #ae4dd5;
+  --maplewood-blue: #87ceeb;
+  --maplewood-blue-dark: #2795d5;
+  --maplewood-focus: #e64420;
+  --neutral-highlight: var(--maplewood-gold);
+  --neutral-highlight-hover: var(--maplewood-gold-mid);
+  --neutral-highlight-muted: #fff0a0;
 
-  --neutral-link: oklch(50.7% 0 0);
-  --neutral-link-hover: oklch(40.7% 0 0);
-  --neutral-surface-tint: oklch(86.4% 0 0);
-  --neutral-accent-light: oklch(78% 0 0);
+  --neutral-link: var(--maplewood-green);
+  --neutral-link-hover: var(--maplewood-green-dark);
+  --neutral-surface-tint: #e5f3df;
+  --neutral-accent-light: var(--maplewood-mint);
 
-  --neutral-ink: oklch(22.8% 0 0);
-  --neutral-surface-dark: oklch(37.7% 0 0);
-  --neutral-panel-dark: oklch(30% 0 0);
-  --neutral-surface-muted: oklch(95.2% 0 0);
-  --neutral-surface-white: oklch(97.6% 0 0);
-  --neutral-surface-deep: oklch(20% 0 0);
+  --neutral-ink: var(--maplewood-ink);
+  --neutral-surface-dark: var(--maplewood-green);
+  --neutral-panel-dark: var(--maplewood-green-dark);
+  --neutral-surface-muted: var(--maplewood-cream);
+  --neutral-surface-white: #fff;
+  --neutral-surface-deep: #003a25;
 
-  --neutral-ink-muted: oklch(50% 0 0);
-  --neutral-ink-soft: oklch(44.5% 0 0);
+  --neutral-ink-muted: #53614f;
+  --neutral-ink-soft: #42513c;
 
-  --neutral-danger: oklch(53.5% 0 0);
+  --neutral-danger: #b32d13;
 
   --neutral-shadow-ink: color-mix(in srgb, var(--neutral-ink) 58%, black);
 }
 
 @theme {
-
   --color-background: var(--neutral-surface-muted);
   --color-foreground: var(--neutral-ink);
   --color-soft-foreground: var(--neutral-ink-soft);
@@ -39,7 +52,7 @@
   --color-popover-foreground: var(--neutral-ink);
   --color-border: color-mix(in oklab, var(--neutral-ink) 12%, transparent);
   --color-input: color-mix(in oklab, var(--neutral-ink) 20%, transparent);
-  --color-ring: var(--neutral-highlight);
+  --color-ring: var(--maplewood-focus);
   --color-link: var(--neutral-link);
   --color-link-hover: var(--neutral-link-hover);
   --color-link-foreground: var(--neutral-surface-muted);
@@ -49,9 +62,9 @@
   --color-accent: color-mix(in oklab, var(--neutral-link) 8%, transparent);
   --color-accent-foreground: var(--neutral-ink);
 
-  --color-primary: var(--neutral-highlight);
-  --color-primary-foreground: var(--neutral-ink);
-  --color-primary-hover: var(--neutral-highlight-hover);
+  --color-primary: var(--maplewood-green);
+  --color-primary-foreground: #fff;
+  --color-primary-hover: var(--maplewood-green-dark);
   --color-secondary: var(--neutral-panel-dark);
   --color-secondary-foreground: var(--neutral-surface-muted);
   --color-destructive: var(--neutral-danger);
@@ -82,34 +95,39 @@
   --color-fill-lake-foreground: var(--neutral-surface-muted);
   --color-scrim: var(--neutral-shadow-ink);
 
-  --font-display: ui-sans-serif, system-ui, sans-serif;
-  --font-body: ui-sans-serif, system-ui, sans-serif;
-  --font-accent: ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, Menlo, "Cascadia Mono", "Segoe UI Mono",
-    "Liberation Mono", monospace;
+  --font-display: var(--font-poppins), sans-serif;
+  --font-body: var(--font-lato), sans-serif;
+  --font-accent: var(--font-halant), serif;
+  --font-mono:
+    ui-monospace, Menlo, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
+    monospace;
 
-  --radius-xs: 3px;
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-xl: 26px;
-  --radius-section: 44px;
+  --radius-xs: 0.4em;
+  --radius-sm: 0.4em;
+  --radius-md: 0.8em;
+  --radius-lg: 0.8em;
+  --radius-xl: 0.8em;
+  --radius-section: 0px;
   --radius-pill: 999px;
 
   --spacing-gutter: 56px;
 
-  --shadow-lift: 0 40px 70px -22px color-mix(in oklab, var(--neutral-shadow-ink) 65%, transparent);
-  --shadow-media-rest: 0 36px 70px color-mix(in oklab, var(--neutral-shadow-ink) 45%, transparent);
+  --shadow-lift: 0 40px 70px -22px
+    color-mix(in oklab, var(--neutral-shadow-ink) 65%, transparent);
+  --shadow-media-rest: 0 36px 70px
+    color-mix(in oklab, var(--neutral-shadow-ink) 45%, transparent);
   --shadow-globe-rest: 0 42px 84px rgba(0, 0, 0, 0.5);
-  --shadow-card-rest-cream: 0 22px 44px color-mix(in oklab, var(--neutral-ink) 12%, transparent);
-  --shadow-stamp: 0 10px 24px color-mix(in oklab, var(--neutral-shadow-ink) 35%, transparent);
+  --shadow-card-rest-cream: 0 22px 44px
+    color-mix(in oklab, var(--neutral-ink) 12%, transparent);
+  --shadow-stamp: 0 10px 24px
+    color-mix(in oklab, var(--neutral-shadow-ink) 35%, transparent);
   --shadow-hero-cta: 0 12px 32px rgba(0, 0, 0, 0.35);
 
-  --container-content: 1320px;
+  --container-content: 1280px;
 
-  --breakpoint-phone: 640px;
+  --breakpoint-phone: 480px;
   --breakpoint-tablet: 768px;
-  --breakpoint-desktop: 1024px;
+  --breakpoint-desktop: 992px;
 
   --ease-reveal: cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -122,9 +140,9 @@
 }
 
 :root {
-  --gutter: 56px;
-  --section-pad: 120px;
-  --header-height: 80px;
+  --gutter: 5vw;
+  --section-pad: 112px;
+  --header-height: 72px;
 
   --section-overlap: var(--radius-section);
 
@@ -139,27 +157,17 @@
   --grain-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 991px) {
   :root {
-    --gutter: 32px;
     --section-pad: 96px;
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
   :root {
-    --gutter: 20px;
-    --section-pad: 72px;
+    --section-pad: 64px;
+    --header-height: 64px;
   }
-}
-
-body:has([data-header-overlay]) header[data-site-header] {
-  margin-bottom: calc(var(--header-height) * -1);
-}
-
-body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
-  background-color: transparent;
-  border-color: transparent;
 }
 
 [data-seam-top] {
@@ -271,24 +279,21 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 }
 
 @utility text-display-hero {
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  line-height: 0.96;
-  letter-spacing: -0.025em;
-  font-variation-settings: "opsz" 96;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1.2;
+  font-weight: 700;
 }
 
 @utility text-display-page {
-  font-size: clamp(2.625rem, 6vw, 4.875rem);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-  font-variation-settings: "opsz" 96;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  line-height: 1.2;
+  font-weight: 700;
 }
 
 @utility text-headline {
-  font-size: clamp(2.25rem, 5vw, 3.625rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.25rem, 3.34vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 @utility text-title {
@@ -420,22 +425,42 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 @utility field-green {
   --color-background: var(--neutral-surface-dark);
   --color-foreground: var(--neutral-surface-muted);
-  --color-soft-foreground: color-mix(in oklab, var(--neutral-surface-muted) 85%, transparent);
-  --color-muted-foreground: color-mix(in oklab, var(--neutral-surface-muted) 72%, transparent);
+  --color-soft-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 85%,
+    transparent
+  );
+  --color-muted-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 72%,
+    transparent
+  );
   --color-muted: var(--neutral-panel-dark);
   --color-card: var(--neutral-panel-dark);
   --color-card-foreground: var(--neutral-surface-muted);
   --color-popover: var(--neutral-panel-dark);
   --color-popover-foreground: var(--neutral-surface-muted);
-  --color-border: color-mix(in oklab, var(--neutral-surface-muted) 12%, transparent);
-  --color-input: color-mix(in oklab, var(--neutral-surface-muted) 28%, transparent);
+  --color-border: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 12%,
+    transparent
+  );
+  --color-input: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 28%,
+    transparent
+  );
   --color-link: var(--neutral-highlight);
   --color-link-hover: var(--neutral-highlight-hover);
   --color-link-foreground: var(--neutral-ink);
   --color-prose-link: var(--neutral-accent-light);
   --color-prose-link-hover: var(--neutral-surface-tint);
   --color-emphasis: var(--neutral-highlight);
-  --color-accent: color-mix(in oklab, var(--neutral-surface-muted) 6%, transparent);
+  --color-accent: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 6%,
+    transparent
+  );
   --color-accent-foreground: var(--neutral-surface-muted);
   --section-accent: var(--color-link);
   --section-surface: var(--color-background);
@@ -446,22 +471,42 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 @utility field-night {
   --color-background: var(--neutral-ink);
   --color-foreground: var(--neutral-surface-muted);
-  --color-soft-foreground: color-mix(in oklab, var(--neutral-surface-muted) 85%, transparent);
-  --color-muted-foreground: color-mix(in oklab, var(--neutral-surface-muted) 72%, transparent);
+  --color-soft-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 85%,
+    transparent
+  );
+  --color-muted-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 72%,
+    transparent
+  );
   --color-muted: var(--neutral-panel-dark);
   --color-card: var(--neutral-panel-dark);
   --color-card-foreground: var(--neutral-surface-muted);
   --color-popover: var(--neutral-panel-dark);
   --color-popover-foreground: var(--neutral-surface-muted);
-  --color-border: color-mix(in oklab, var(--neutral-surface-muted) 15%, transparent);
-  --color-input: color-mix(in oklab, var(--neutral-surface-muted) 28%, transparent);
+  --color-border: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 15%,
+    transparent
+  );
+  --color-input: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 28%,
+    transparent
+  );
   --color-link: var(--neutral-highlight);
   --color-link-hover: var(--neutral-highlight-hover);
   --color-link-foreground: var(--neutral-ink);
   --color-prose-link: var(--neutral-accent-light);
   --color-prose-link-hover: var(--neutral-surface-tint);
   --color-emphasis: var(--neutral-highlight);
-  --color-accent: color-mix(in oklab, var(--neutral-surface-muted) 6%, transparent);
+  --color-accent: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 6%,
+    transparent
+  );
   --color-accent-foreground: var(--neutral-surface-muted);
   --section-accent: var(--color-link);
   --section-surface: var(--color-background);
@@ -493,22 +538,42 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 
 @utility on-dark {
   --color-foreground: var(--neutral-surface-muted);
-  --color-soft-foreground: color-mix(in oklab, var(--neutral-surface-muted) 85%, transparent);
-  --color-muted-foreground: color-mix(in oklab, var(--neutral-surface-muted) 72%, transparent);
+  --color-soft-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 85%,
+    transparent
+  );
+  --color-muted-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 72%,
+    transparent
+  );
   --color-muted: var(--neutral-panel-dark);
   --color-card: var(--neutral-panel-dark);
   --color-card-foreground: var(--neutral-surface-muted);
   --color-popover: var(--neutral-panel-dark);
   --color-popover-foreground: var(--neutral-surface-muted);
-  --color-border: color-mix(in oklab, var(--neutral-surface-muted) 15%, transparent);
-  --color-input: color-mix(in oklab, var(--neutral-surface-muted) 28%, transparent);
+  --color-border: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 15%,
+    transparent
+  );
+  --color-input: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 28%,
+    transparent
+  );
   --color-link: var(--neutral-highlight);
   --color-link-hover: var(--neutral-highlight-hover);
   --color-link-foreground: var(--neutral-ink);
   --color-prose-link: var(--neutral-accent-light);
   --color-prose-link-hover: var(--neutral-surface-tint);
   --color-emphasis: var(--neutral-highlight);
-  --color-accent: color-mix(in oklab, var(--neutral-surface-muted) 6%, transparent);
+  --color-accent: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 6%,
+    transparent
+  );
   --color-accent-foreground: var(--neutral-surface-muted);
   color: var(--color-foreground);
 }
@@ -517,16 +582,32 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
   background-color: var(--color-fill-panel);
   color: var(--color-fill-panel-foreground);
   --color-foreground: var(--neutral-surface-muted);
-  --color-soft-foreground: color-mix(in oklab, var(--neutral-surface-muted) 85%, transparent);
-  --color-muted-foreground: color-mix(in oklab, var(--neutral-surface-muted) 72%, transparent);
-  --color-border: color-mix(in oklab, var(--neutral-surface-muted) 12%, transparent);
+  --color-soft-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 85%,
+    transparent
+  );
+  --color-muted-foreground: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 72%,
+    transparent
+  );
+  --color-border: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 12%,
+    transparent
+  );
   --color-link: var(--neutral-highlight);
   --color-link-hover: var(--neutral-highlight-hover);
   --color-link-foreground: var(--neutral-ink);
   --color-prose-link: var(--neutral-accent-light);
   --color-prose-link-hover: var(--neutral-surface-tint);
   --color-emphasis: var(--neutral-highlight);
-  --color-accent: color-mix(in oklab, var(--neutral-surface-muted) 6%, transparent);
+  --color-accent: color-mix(
+    in oklab,
+    var(--neutral-surface-muted) 6%,
+    transparent
+  );
   --color-accent-foreground: var(--neutral-surface-muted);
 }
 
@@ -582,7 +663,11 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 }
 
 @utility card-moss-tint {
-  background-color: color-mix(in oklab, var(--color-fill-moss-tint) 40%, var(--color-fill-cream));
+  background-color: color-mix(
+    in oklab,
+    var(--color-fill-moss-tint) 40%,
+    var(--color-fill-cream)
+  );
   color: var(--color-fill-moss-tint-foreground);
   --color-foreground: var(--neutral-ink);
   --color-soft-foreground: var(--neutral-ink-soft);
@@ -617,6 +702,8 @@ body:has([data-header-overlay]) header[data-site-header][data-at-top="true"] {
 
 body {
   font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--color-foreground);
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;

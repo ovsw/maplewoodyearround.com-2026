@@ -1,25 +1,34 @@
 import { describe, expect, it } from "vitest";
-import {
-  createHeaderBrandModel,
-  createHeaderNavigationModel,
-} from "./model";
+import { createHeaderBrandModel, createHeaderNavigationModel } from "./model";
 import { siteName } from "@/lib/site-name";
 
 const testSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 22h18"></path></svg>';
 
 describe("createHeaderNavigationModel", () => {
-  it.each(["\\evil.example", "/\\evil.example", "//evil.example", "/\t/evil.example", "/\n/evil.example"])(
-    "omits unsafe authored destinations: %j",
-    (href) => {
-      const model = createHeaderNavigationModel({
-        items: [{ _key: "unsafe", kind: "link", label: "Unsafe", destination: { href } }],
-        actions: [{ _key: "unsafe-action", label: "Unsafe", destination: { href } }],
-      });
-      expect(model.items).toEqual([]);
-      expect(model.actions).toEqual([]);
-    },
-  );
+  it.each([
+    "\\evil.example",
+    "/\\evil.example",
+    "//evil.example",
+    "/\t/evil.example",
+    "/\n/evil.example",
+  ])("omits unsafe authored destinations: %j", (href) => {
+    const model = createHeaderNavigationModel({
+      items: [
+        {
+          _key: "unsafe",
+          kind: "link",
+          label: "Unsafe",
+          destination: { href },
+        },
+      ],
+      actions: [
+        { _key: "unsafe-action", label: "Unsafe", destination: { href } },
+      ],
+    });
+    expect(model.items).toEqual([]);
+    expect(model.actions).toEqual([]);
+  });
 
   it("maps direct links, rich groups, actions, and normalized destinations", () => {
     const model = createHeaderNavigationModel({
@@ -98,7 +107,7 @@ describe("createHeaderNavigationModel", () => {
     });
   });
 
-  it("keeps one configurable action", () => {
+  it("keeps both configurable actions", () => {
     const model = createHeaderNavigationModel({
       _id: "navigation",
       items: [],
@@ -116,15 +125,9 @@ describe("createHeaderNavigationModel", () => {
       ],
     });
 
-    expect(model.actions).toEqual([
-      {
-        key: "enroll",
-        link: {
-          href: "https://example.com/enroll",
-          label: "Enroll",
-          openInNewTab: false,
-        },
-      },
+    expect(model.actions.map((action) => action.link.href)).toEqual([
+      "https://example.com/enroll",
+      "/extra",
     ]);
   });
 

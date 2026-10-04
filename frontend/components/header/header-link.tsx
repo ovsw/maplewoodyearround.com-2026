@@ -7,15 +7,18 @@ export function HeaderLink({
   className,
   link,
   onClick,
+  accent,
 }: {
   children?: ReactNode;
   className?: string;
   link: HeaderLinkModel;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  accent?: string;
 }) {
   return (
     <Link
       className={className}
+      data-accent={accent}
       href={link.href}
       onClick={onClick}
       rel={link.openInNewTab ? "noopener noreferrer" : undefined}

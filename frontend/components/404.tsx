@@ -1,19 +1,39 @@
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import Link from "next/link";
+import styles from "./404.module.css";
+import { fetchSanitySettings } from "@/sanity/lib/fetch";
+import { getDynamicFetchOptions } from "@/sanity/lib/live";
+import { urlFor } from "@/sanity/lib/image";
 
-export default function Custom404() {
+export default async function Custom404() {
+  const options = await getDynamicFetchOptions();
+  const settings = await fetchSanitySettings(options);
+  const photo = settings?.notFoundImage;
+  const dimensions = photo?.asset?.metadata?.dimensions;
   return (
-    <div className="relative z-20 min-h-[80vh] flex items-center justify-center">
-      <div className="relative px-8 md:px-0 py-[4rem] sm:py-[5rem] md:py-[6.25rem] mx-auto sm:max-w-[37.5rem] md:max-w-[40.625rem] lg:max-w-[53.125rem] xl:max-w-[70rem]">
-        <h1 className="font-bold text-[9.9vw] md:text-[4.5rem] sm:text-[3.4375rem] lg:text-[6rem] xl:text-[8rem] leading-[1.12]">
-          Page not found
-        </h1>
-        <div className="mt-5 text-center">
-          <Button asChild>
-            <Link href="/">Back to Home page</Link>
-          </Button>
-        </div>
+    <section className={styles.page} aria-labelledby="not-found-title">
+      <div className={styles.card}>
+        {photo?.asset && dimensions?.width && dimensions.height && (
+          <Image
+            src={urlFor(photo).width(800).url()}
+            alt={photo.alt ?? ""}
+            width={dimensions.width}
+            height={dimensions.height}
+            sizes="(max-width: 479px) 84vw, 400px"
+            className={styles.photo}
+          />
+        )}
+        <h1 id="not-found-title">😅 Oops!</h1>
+        <p>
+          The page you are looking for doesn&apos;t exist
+          <br />
+          or has been moved...
+        </p>
+        <h2>Better luck next time!🍀</h2>
+        <Link href="/" className={styles.home}>
+          Back to Homepage
+        </Link>
       </div>
-    </div>
+    </section>
   );
 }

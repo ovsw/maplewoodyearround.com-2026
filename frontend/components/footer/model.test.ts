@@ -51,16 +51,33 @@ const rawFooter: RawFooter = {
 };
 
 describe("createFooterModel", () => {
-  it.each(["\\evil.example", "/\\evil.example", "//evil.example", "/\t/evil.example", "/\n/evil.example"])(
-    "omits unsafe authored destinations: %j",
-    (href) => {
-      const model = createFooterModel({
+  it.each([
+    "\\evil.example",
+    "/\\evil.example",
+    "//evil.example",
+    "/\t/evil.example",
+    "/\n/evil.example",
+  ])("omits unsafe authored destinations: %j", (href) => {
+    const model = createFooterModel(
+      {
         ...rawFooter,
-        columns: [{ _key: "links", heading: "Links", links: [rawLink("safe", "About", "/about"), rawLink("unsafe", "Unsafe", href)] }],
-      }, 2026);
-      expect(model?.columns[0]?.links.map((item) => item.href)).toEqual(["/about"]);
-    },
-  );
+        columns: [
+          {
+            _key: "links",
+            heading: "Links",
+            links: [
+              rawLink("safe", "About", "/about"),
+              rawLink("unsafe", "Unsafe", href),
+            ],
+          },
+        ],
+      },
+      2026,
+    );
+    expect(model?.columns[0]?.links.map((item) => item.href)).toEqual([
+      "/about",
+    ]);
+  });
 
   it("builds the footer from authored links, logos, and contact rows", () => {
     const model = createFooterModel(rawFooter, 2026);
@@ -86,6 +103,24 @@ describe("createFooterModel", () => {
     expect(
       createFooterModel({ ...rawFooter, copyrightOwner: null }, 2026),
     ).toBeNull();
-    expect(createFooterModel({ ...rawFooter, logos: [] }, 2026)).toBeNull();
+    expect(createFooterModel({ ...rawFooter, columns: [] }, 2026)).toBeNull();
+  });
+
+  it("accepts a footer without the starter sign-off or linked badge", () => {
+    const model = createFooterModel(
+      {
+        ...rawFooter,
+        eyebrow: null,
+        heading: null,
+        accent: null,
+        actions: [],
+        logos: rawFooter.logos?.map((logo) => ({ ...logo, destination: null })),
+      },
+      2026,
+      { contact: { fax: "508-238-1154" } },
+    );
+    expect(model?.logos).toHaveLength(1);
+    expect(model?.logos[0].link).toBeNull();
+    expect(model?.contact?.fax).toBe("508-238-1154");
   });
 });
