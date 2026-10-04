@@ -4,6 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { PortableText, type PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import { createCustomLinkMarkRenderer } from "@/components/portable-text/custom-link-mark";
+import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import { isSafeIconSvg } from "@/components/header/safe-icon-svg";
 import { getSafeLinkHref } from "@/lib/safe-href";
 import { urlFor } from "@/sanity/lib/image";
@@ -291,6 +292,119 @@ export function SourceImage({
       src={urlFor(image as any).width(width).url()}
       width={image.asset.metadata?.dimensions?.width || 1000}
     />
+  );
+}
+
+type Point = {
+  _key: string;
+  accent?: string | null;
+  icon?: { svg?: string | null } | null;
+  title?: string | null;
+  body?: PortableTextProps["value"] | null;
+};
+
+/** Short points with an icon and colour, such as "3:1 Ratio" beside a story. */
+export function SourcePoints({
+  points,
+  dataAttribute,
+}: {
+  points?: Point[] | null;
+  dataAttribute?: DataAttribute;
+}) {
+  if (!points?.length) return null;
+  return (
+    <div className={css.points}>
+      {points.map((point) => (
+        <div
+          className={[css.point, accentClass(point.accent)].join(" ")}
+          data-sanity={dataAttribute?.(`features[_key=="${point._key}"]`)}
+          key={point._key}
+        >
+          <SourceIcon
+            dataSanity={dataAttribute?.(`features[_key=="${point._key}"].icon`)}
+            icon={point.icon}
+          />
+          <h3 className={css.h6}>{point.title}</h3>
+          {point.body ? (
+            <div className={css.copy}>
+              <PortableText components={simpleRichTextComponents} value={point.body} />
+            </div>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+type Breadcrumb = {
+  _key: string;
+  label?: string | null;
+  program?: string | null;
+  destination?: { href?: string | null } | null;
+};
+
+/** A page's breadcrumb trail; a program step shows as its badge. */
+export function Breadcrumbs({
+  breadcrumbs,
+  dataAttribute,
+  onLight,
+}: {
+  breadcrumbs?: Breadcrumb[] | null;
+  dataAttribute?: DataAttribute;
+  onLight?: boolean;
+}) {
+  const crumbs = (breadcrumbs ?? []).filter((crumb) => stegaClean(crumb.label)?.trim());
+  if (!crumbs.length) return null;
+  return (
+    <nav aria-label="Breadcrumb" data-sanity={dataAttribute?.("breadcrumbs")}>
+      <ol className={[css.breadcrumbs, onLight ? css.breadcrumbsLight : ""].join(" ")}>
+        {crumbs.map((crumb) => {
+          const href = usableHref(crumb.destination?.href);
+          const program = stegaClean(crumb.program);
+          const label = (
+            <span
+              className={
+                program === "schoolYear"
+                  ? css.badgeSchool
+                  : program === "summerCamp"
+                    ? css.badgeSummer
+                    : undefined
+              }
+            >
+              {crumb.label}
+            </span>
+          );
+          return (
+            <li key={crumb._key}>
+              {href ? <Link href={href}>{label}</Link> : label}
+              <ChevronRight aria-hidden size={16} />
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+/** A heading with its highlighted words in the live highlight colour. */
+export function HighlightedHeading({
+  text,
+  highlight,
+  className,
+}: {
+  text: string;
+  highlight?: string | null;
+  className: string;
+}) {
+  const words = stegaClean(highlight)?.trim();
+  const index = words ? text.lastIndexOf(words) : -1;
+  if (!words || index < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, index)}
+      <span className={className}>{words}</span>
+      {text.slice(index + words.length)}
+    </>
   );
 }
 

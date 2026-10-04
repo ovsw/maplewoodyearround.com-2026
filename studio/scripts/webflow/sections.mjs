@@ -342,6 +342,10 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
   }
 
   if (type === 'quoteWall') {
+    // The program photos are declared in the Webflow stylesheet, not the HTML.
+    const photo = original.classList.contains('is-summer-camp') ? '67a5d0a3369797b17dbfc98b_summer-camp-maplewood-wow-testimonies-1.avif'
+      : original.classList.contains('is-school-year') ? '67a393b21ae00bf865cee52e_maplewood-preschooler.avif' : undefined;
+    if (photo) block.backgroundImage = context.asset(`https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/${photo}`, 'image');
     const heading = staticNode.querySelector('h2');
     const highlight = highlightOf(heading);
     if (highlight) block.eyebrow = highlight;

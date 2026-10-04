@@ -317,6 +317,9 @@
   color: #fff;
   text-decoration: none;
 }
+.breadcrumbsLight a {
+  color: var(--maplewood-ink);
+}
 .breadcrumbs .badgeSummer,
 .breadcrumbs .badgeSchool {
   color: var(--maplewood-ink);
@@ -335,6 +338,11 @@
   font-weight: 700;
   line-height: 1;
   color: #fff;
+}
+/* Highlighted words (text-color-brand-secondary-mid) start their own line. */
+.heroHighlight {
+  display: block;
+  color: var(--maplewood-gold-mid);
 }
 .heroBody {
   margin: 1.5rem 0 0;
@@ -359,6 +367,9 @@
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 4rem 5rem;
+}
+.storyTextOnly {
+  grid-template-columns: minmax(0, 48rem);
 }
 .storyImageLeft .storyMedia {
   order: -1;
@@ -1121,4 +1132,9 @@
   .sliderControls {
     display: flex;
   }
+}
+
+/* A rate table without column headings (one unnamed price column). */
+.rateHead.rateHeadHidden {
+  display: none;
 }

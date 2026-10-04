@@ -1,4 +1,6 @@
+import { Clock } from "lucide-react";
 import { stegaClean } from "next-sanity";
+import programs from "./maplewood-programs.module.css";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import CardSliderTrack from "./card-slider-track";
 import {
@@ -69,9 +71,22 @@ export default function CardSlider({
                 <SourceImage image={item.image} sizes="(max-width: 767px) 80vw, 20rem" width={640} />
               </div>
               <div className={css.sliderCardText}>
-                <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
-                  {item.title}
-                </h3>
+                {item._type === "sampleSchedule" ? (
+                  // A sample schedule entry is named by its time; the activity is its heading.
+                  <>
+                    <p className={programs.time} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
+                      <Clock aria-hidden size={20} />
+                      {item.title}
+                    </p>
+                    <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "activity")}>
+                      {item.activity}
+                    </h3>
+                  </>
+                ) : (
+                  <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
+                    {item.title}
+                  </h3>
+                )}
                 {item.description ? (
                   <p data-sanity={itemDataAttribute?.(item._id, item._type, "description")}>{item.description}</p>
                 ) : null}

@@ -34,6 +34,11 @@ const refs = new Map(
 const source = plan.documents.find((document) => document._id === pageId(pagePath));
 if (!source) throw new Error(`The source has no page at ${pagePath}`);
 const [page] = materialize([source], refs);
-if (JSON.stringify(page).includes("import-asset-"))
+// Program cards list the page-authored program records; refresh their drafts
+// with the page so the preview shows the same card groups as the final import.
+const documents = source.blocks.some((block) => block._type === "programCards")
+  ? materialize(plan.documents.filter((document) => document._id.startsWith("wf-authored-program-")), refs)
+  : [];
+if (JSON.stringify([page, documents]).includes("import-asset-"))
   throw new Error("Page media must already exist in Maplewood Sanity");
-export default { page };
+export default { page, documents };

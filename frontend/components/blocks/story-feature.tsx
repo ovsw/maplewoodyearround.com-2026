@@ -1,17 +1,14 @@
-import { PortableText } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
-import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import {
-  accentClass,
   type DataAttribute,
   innerCss as css,
   sectionBackground,
   SectionTagline,
   SourceButtons,
   SourceCopy,
-  SourceIcon,
   SourceImage,
+  SourcePoints,
 } from "./maplewood-inner";
 
 type StoryFeatureProps = Extract<
@@ -43,8 +40,9 @@ export default function StoryFeature({
   title,
 }: StoryFeatureProps) {
   const heading = plain(title);
-  if (!heading) return null;
-  const headingId = `story-feature-${stegaClean(_key)}-title`;
+  const hasImage = Boolean(image?.asset?._id);
+  if (!heading && !features?.length && !richText?.length) return null;
+  const headingId = heading ? `story-feature-${stegaClean(_key)}-title` : undefined;
   const small = stegaClean(headingSize) === "small";
 
   return (
@@ -57,51 +55,35 @@ export default function StoryFeature({
           css.container,
           css.story,
           stegaClean(imagePosition) === "left" ? css.storyImageLeft : "",
+          hasImage ? "" : css.storyTextOnly,
         ].join(" ")}
       >
         <div className={css.storyCopy}>
           <SectionTagline dataAttribute={dataAttribute} tagline={tagline} />
-          <h2
-            className={small ? css.h4 : css.h2}
-            data-sanity={dataAttribute?.("title")}
-            id={headingId}
-          >
-            {heading}
-          </h2>
+          {heading ? (
+            <h2
+              className={small ? css.h4 : css.h2}
+              data-sanity={dataAttribute?.("title")}
+              id={headingId}
+            >
+              {heading}
+            </h2>
+          ) : null}
           <SourceCopy
             className={small ? css.storyTextSmall : css.storyText}
             dataSanity={dataAttribute?.("richText")}
             value={richText}
           />
-          {features?.length ? (
-            <div className={css.points}>
-              {features.map((feature) => (
-                <div
-                  className={[css.point, accentClass(feature.accent)].join(" ")}
-                  data-sanity={dataAttribute?.(`features[_key=="${feature._key}"]`)}
-                  key={feature._key}
-                >
-                  <SourceIcon
-                    dataSanity={dataAttribute?.(`features[_key=="${feature._key}"].icon`)}
-                    icon={feature.icon}
-                  />
-                  <h3 className={css.h6}>{feature.title}</h3>
-                  {feature.body?.length ? (
-                    <div className={css.copy}>
-                      <PortableText components={simpleRichTextComponents} value={feature.body} />
-                    </div>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ) : null}
+          <SourcePoints dataAttribute={dataAttribute} points={features} />
           <div className={css.storyButtons}>
             <SourceButtons buttons={buttons} dataAttribute={dataAttribute} />
           </div>
         </div>
-        <div className={[css.storyMedia, css.card].join(" ")} data-sanity={dataAttribute?.("image")}>
-          <SourceImage image={image} />
-        </div>
+        {hasImage ? (
+          <div className={[css.storyMedia, css.card].join(" ")} data-sanity={dataAttribute?.("image")}>
+            <SourceImage image={image} />
+          </div>
+        ) : null}
       </div>
     </section>
   );

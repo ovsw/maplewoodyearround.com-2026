@@ -11,6 +11,7 @@ export const innerHeroQuery = groq`
       _key, label, program, destination${contentDestinationProjection}
     }),
     linksLabel,
+    highlightText,
     title[]{
       ...
     },

@@ -88,7 +88,7 @@ function collectionFor(node, snapshot, types) {
   const html = node.innerHTML;
   const scored = snapshot.collections.filter((c) => types.includes(mappings[c.displayName]?.[0])).map((c) => {
     const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) ||
-      [...node.querySelectorAll('.w-dyn-item')].some((element) => [item.fieldData.name, item.fieldData.activity].includes(headingText(element))));
+      [...node.querySelectorAll('.w-dyn-item')].some((element) => [item.fieldData.name, item.fieldData.activity].some((name) => typeof name === 'string' && name.replace(/\s+/g, ' ').trim() === headingText(element))));
     return { collection: c, matches };
   }).sort((a, b) => b.matches.length - a.matches.length);
   return scored[0]?.matches.length ? scored[0] : undefined;
@@ -127,9 +127,18 @@ function inferFilter(node, snapshot, allowedTypes) {
   // rendered item count as a list limit or copy selected items into the page.
   for (const [sourceField, target] of [['indoor-outdoor', 'location'], ['indoor-outdoor-special', 'location'], ['program', 'audience']]) {
     const values = new Set(found.matches.map((item) => item.fieldData[sourceField]).filter(Boolean));
+    const field = found.collection.fields.find((f) => f.slug === sourceField);
     if (values.size === 1 && found.matches.every((item) => item.fieldData[sourceField])) {
-      const field = found.collection.fields.find((f) => f.slug === sourceField);
       filter[target] = field?.validations?.options?.find((o) => o.id === [...values][0])?.name;
+    } else if (values.size > 1) {
+      // Several groups share item names (such as "Lunch"). Use the one group
+      // whose whole list is exactly the displayed list.
+      const shown = node.querySelectorAll('.w-dyn-item').length;
+      const fits = [...values].filter((value) => {
+        const items = found.collection.live.filter((item) => item.fieldData[sourceField] === value);
+        return items.length === shown && items.every((item) => found.matches.includes(item));
+      });
+      if (fits.length === 1) filter[target] = field?.validations?.options?.find((o) => o.id === fits[0])?.name;
     }
   }
   if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found));
