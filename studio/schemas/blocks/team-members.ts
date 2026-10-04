@@ -1,5 +1,6 @@
 import { UsersRound } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { programFilterField } from "./shared/maplewood-fields";
 import { sectionBackgroundField } from "./shared/section-background";
 
 export default defineType({
@@ -7,8 +8,7 @@ export default defineType({
   title: "Team Members",
   type: "object",
   icon: UsersRound,
-  description:
-    "A team section that displays selected Team Member documents.",
+  description: "A staff section selected by program and profile group.",
   fields: [
     sectionBackgroundField,
     defineField({
@@ -56,23 +56,26 @@ export default defineType({
         }),
       ],
     }),
+    programFilterField,
     defineField({
-      name: "members",
-      type: "array",
-      title: "Members",
-      description:
-        "The team member profiles to show, in the order they should appear.",
-      of: [
-        defineArrayMember({
-          type: "reference",
-          to: [{ type: "teamMember" }],
-        }),
-      ],
-      validation: (rule) =>
-        rule
-          .required()
-          .min(1)
-          .error("Add at least one team member to this section."),
+      name: "profileGroup",
+      title: "Profile group",
+      type: "string",
+      description: "Choose the staff roster or authored leadership profiles.",
+      initialValue: "roster",
+      options: { list: ["roster", "leadership"] },
+    }),
+    defineField({
+      name: "preschoolOnly",
+      title: "Preschool teachers only",
+      type: "boolean",
+      description: "Only show preschool teachers.",
+    }),
+    defineField({
+      name: "tourGuidesOnly",
+      title: "Tour guides only",
+      type: "boolean",
+      description: "Only show School Year tour guides.",
     }),
   ],
   preview: {

@@ -14,10 +14,10 @@ const socialLink = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "The full public website URL.",
       name: "url",
       type: "url",
-      validation: (rule) =>
-        rule.required().uri({ scheme: ["http", "https"] }),
+      validation: (rule) => rule.required().uri({ scheme: ["http", "https"] }),
     }),
   ],
   preview: { select: { title: "label", subtitle: "url" } },
@@ -29,13 +29,30 @@ const contactDetails = defineType({
   type: "object",
   icon: Contact,
   fields: [
-    defineField({ name: "email", type: "email" }),
+    defineField({
+      name: "email",
+      type: "email",
+      description: "The public contact email.",
+    }),
+    defineField({
+      name: "menuAddress",
+      title: "Menu address",
+      type: "string",
+      description: "The public location address shown in the main menu.",
+    }),
+    defineField({
+      name: "fax",
+      title: "Fax",
+      type: "string",
+      description: "The public fax number shown in contact details.",
+    }),
     defineField({
       name: "phone",
       type: "string",
       description: "Include the country or area code visitors should dial.",
     }),
     defineField({
+      description: "The public postal address, with one entry for each line.",
       name: "addressLines",
       title: "Address",
       type: "array",
@@ -57,6 +74,26 @@ const settings = defineType({
   ],
   fields: [
     defineField({
+      name: "gaMeasurementId",
+      title: "Google Analytics ID",
+      type: "string",
+      group: "seo",
+      description:
+        "The public GA4 measurement ID. Analytics runs only in production.",
+      validation: (rule) => rule.regex(/^G-[A-Z0-9]+$/),
+    }),
+    defineField({
+      name: "hotjarSiteId",
+      title: "Hotjar site ID",
+      type: "string",
+      group: "seo",
+      description:
+        "The numeric public Hotjar site ID. Analytics runs only in production.",
+      validation: (rule) => rule.regex(/^[0-9]+$/),
+    }),
+    defineField({
+      description:
+        "The public website name used in navigation and search results.",
       name: "siteName",
       title: "Site name",
       type: "string",
@@ -73,12 +110,14 @@ const settings = defineType({
         "Optional. When no logo is supplied, the header uses the site name as text.",
       fields: [
         defineField({
+          description: "The logo shown on light backgrounds.",
           name: "light",
           title: "For light backgrounds",
           type: "image",
           options: { hotspot: true },
         }),
         defineField({
+          description: "The logo shown on dark backgrounds.",
           name: "dark",
           title: "For dark backgrounds",
           type: "image",
@@ -87,11 +126,13 @@ const settings = defineType({
       ],
     }),
     defineField({
+      description: "Public contact details for the website.",
       name: "contact",
       type: "contactDetails",
       group: "contact",
     }),
     defineField({
+      description: "Add and order links to public social profiles.",
       name: "socialLinks",
       title: "Social links",
       type: "array",

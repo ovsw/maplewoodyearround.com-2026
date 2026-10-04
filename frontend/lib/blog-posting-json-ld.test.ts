@@ -36,7 +36,7 @@ function meta(
 function post(
   overrides: Partial<BlogPostingJsonLdPost> = {},
 ): BlogPostingJsonLdPost {
-    return {
+  return {
     title: "  Service Guide  ",
     excerpt: "  A practical guide for service teams.  ",
     image: image("https://cdn.sanity.io/images/post.jpg"),
@@ -53,9 +53,7 @@ function post(
 
 describe("createBlogPostingJsonLd", () => {
   it("builds a complete BlogPosting referencing the site organization by @id only", () => {
-    expect(
-      createBlogPostingJsonLd(post(), "https://example.com/"),
-    ).toEqual({
+    expect(createBlogPostingJsonLd(post(), "https://example.com/")).toEqual({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
       headline: "Service Guide",
@@ -63,10 +61,10 @@ describe("createBlogPostingJsonLd", () => {
       image: "https://cdn.sanity.io/images/post.jpg",
       datePublished: "2025-04-01T12:00:00.000Z",
       dateModified: "2025-04-03T15:30:00.000Z",
-      url: "https://example.com/blog/service-guide",
+      url: "https://example.com/post/service-guide",
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": "https://example.com/blog/service-guide",
+        "@id": "https://example.com/post/service-guide",
       },
       author: {
         "@type": "Organization",
@@ -115,22 +113,26 @@ describe("createBlogPostingJsonLd", () => {
     ["publishedAt", post({ publishedAt: null })],
     ["slug", post({ slug: null })],
   ])("returns null when %s is missing", (_field, input) => {
-    expect(
-      createBlogPostingJsonLd(input, "https://example.com"),
-    ).toBeNull();
+    expect(createBlogPostingJsonLd(input, "https://example.com")).toBeNull();
   });
 
-  it.each(["", "   ", "/", "///", " / / ", "two/segments", "Uppercase", "under_score"])(
-    "returns null for an unusable slug (%j)",
-    (current) => {
-      expect(
-        createBlogPostingJsonLd(
-          post({ slug: { _type: "slug", current } }),
-          "https://example.com",
-        ),
-      ).toBeNull();
-    },
-  );
+  it.each([
+    "",
+    "   ",
+    "/",
+    "///",
+    " / / ",
+    "two/segments",
+    "Uppercase",
+    "under_score",
+  ])("returns null for an unusable slug (%j)", (current) => {
+    expect(
+      createBlogPostingJsonLd(
+        post({ slug: { _type: "slug", current } }),
+        "https://example.com",
+      ),
+    ).toBeNull();
+  });
 
   it("strips stega characters from strings", () => {
     const stega = "\u200b\u200c\u200d\ufeff";

@@ -5,7 +5,7 @@ import meta from "../blocks/shared/meta";
 
 export default defineType({
   name: "blogIndex",
-  title: "Blog Index",
+  title: "News",
   type: "document",
   icon: Newspaper,
   groups: [
@@ -14,6 +14,7 @@ export default defineType({
   ],
   fields: [
     defineField({
+      description: "The title used to identify this content.",
       name: "title",
       type: "string",
       group: "content",
@@ -39,8 +40,8 @@ export default defineType({
   preview: {
     select: { title: "title", subtitle: "description" },
     prepare: ({ subtitle, title }) => ({
-      title: title || "Untitled Blog Index",
-      subtitle: subtitle || "/blog",
+      title: title || "Untitled News",
+      subtitle: subtitle || "/news",
     }),
   },
 });

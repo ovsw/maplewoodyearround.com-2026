@@ -26,7 +26,7 @@ test("resolves a normal page slug to a canonical path", () => {
 });
 
 test("resolves a normal post slug to a canonical path", () => {
-  assert.equal(getPresentationPath("post", "first-post"), "/blog/first-post");
+  assert.equal(getPresentationPath("post", "first-post"), "/post/first-post");
 });
 
 test("resolves a category slug under the blog category namespace", () => {
@@ -34,11 +34,33 @@ test("resolves a category slug under the blog category namespace", () => {
     getPresentationPath("category", "categories"),
     "/blog/category/categories",
   );
-  assert.equal(resolveCategoryPath("/categories/"), "/blog/category/categories");
+  assert.equal(
+    resolveCategoryPath("/categories/"),
+    "/blog/category/categories",
+  );
 });
 
 test("resolves the Blog Index singleton without an authored slug", () => {
-  assert.equal(getPresentationPath("blogIndex"), "/blog");
+  assert.equal(getPresentationPath("blogIndex"), "/news");
+});
+
+test("opens parent resources at their public page locations", () => {
+  assert.equal(getPresentationPath("parentDashboard"), "/parent-dashboard");
+  assert.equal(
+    getPresentationPath("summerDocuments"),
+    "/summer-camp/summer-group-schedules",
+  );
+  assert.equal(isPresentationDocumentType("summerDocuments"), true);
+  const locations = resolve.locations.summerDocuments.resolve({
+    title: "Summer 2026",
+  }).locations;
+  assert.deepEqual(
+    locations.map(({ href }) => href),
+    [
+      "/summer-camp/summer-group-schedules",
+      "/summer-camp/summer-camp-welcome-letters",
+    ],
+  );
 });
 
 test("missing and empty slugs disable Presentation navigation", () => {

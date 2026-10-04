@@ -6,24 +6,34 @@ Read `CONTEXT.md` and the current issue's acceptance criteria before editing.
 
 ## Work loop
 
-- Astra coordinates up to three Astra or Sol 6.1 workers.
+- Astra coordinates at most two Astra or Sol 6.1 workers. Each worker owns a
+  different issue.
 - Take the lowest-numbered open `ready-for-agent` issue whose blockers are
-  closed. Assign it to yourself and comment "taking this".
-- Use one worktree and a branch from current `main` per issue. Coordinate
-  shared files and preserve other workers' changes.
+  closed. Check for an existing branch, worktree or "taking this" comment
+  first. Continue existing work. Assign and comment only for an unclaimed issue.
+- Keep one worktree and one branch per issue. Start new branches from current
+  `main`. Preserve other workers' changes.
+- Commit and push at least every 30 minutes and before stopping. Use checkpoint
+  commits for unfinished work.
 - Use Conventional Commits. Run `pnpm verify` before opening each PR.
   Include `Closes #N` and `Part of #1` in the description.
 - Require a green `Release gate` on the current PR head. Resolve required
   findings, squash-merge and delete the branch. Never bypass the gate.
-- The only paid CodeRabbit review in this project is on the content-model PR
-  for issue #6. Keep automatic reviews off. No other CLI or PR reviews.
+- Architectural changes, stored data, authentication, permissions, migrations
+  or money get one CodeRabbit PR review. Other logic changes get one CLI review
+  before the PR. Looks, copy and content-only changes need no review.
+- Run at most one review per PR. Use one route and do not repeat the review
+  after fixes. Keep automatic reviews off; trigger required PR reviews once.
+- Review Maplewood changes only. Exclude unchanged CAC code and already-merged
+  work unless Ovi asks for its review.
 - For a credential or decision only Ovi can supply, add `ready-for-human`
   and comment with the exact need. Take another eligible issue.
   Never invent a replacement for a missing credential.
 - Post one two-line daily comment on the Basecamp document named in the spec:
   what works now, then what puts 2026-10-15 at risk.
-- Stop after issue #19. Post "ready to launch" only after its checks pass.
-  Ovi owns DNS, client invitations, client contact and service cancellation.
+- Stop this run when #5, #6 and #7 are merged. Do not start #8 or claim launch
+  readiness. A later authorized run ends after #19 passes.
+- Ovi owns DNS, client invitations, client contact and service cancellation.
 
 ## Public repository
 

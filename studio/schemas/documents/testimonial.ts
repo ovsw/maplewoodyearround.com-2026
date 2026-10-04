@@ -1,5 +1,13 @@
 import { Quote } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import {
+  orderField,
+  programField,
+  slugField,
+  switchField,
+  textField,
+  visibleField,
+} from "./maplewood-fields";
 
 export default defineType({
   name: "testimonial",
@@ -12,6 +20,20 @@ export default defineType({
     rating: 5,
   },
   fields: [
+    textField(
+      "internalTitle",
+      "Internal title",
+      "The source CMS record name; the visitor sees the author name below.",
+    ),
+    slugField,
+    programField,
+    switchField(
+      "pluralParents",
+      "Quote from parents",
+      "Use the plural parent label for this quote.",
+    ),
+    orderField,
+    visibleField,
     defineField({
       name: "name",
       title: "Name",
@@ -24,13 +46,14 @@ export default defineType({
       title: "Role or relation",
       type: "string",
       description:
-        "Who this person is to the camp, e.g. \"Parent of a first-year camper\" or \"Camper, age 12\".",
+        'Who this person is to the camp, e.g. "Parent of a first-year camper" or "Camper, age 12".',
     }),
     defineField({
       name: "origin",
       title: "Origin",
       type: "string",
-      description: "Optional city or country shown after the role, e.g. \"Toronto\" or \"Mexico City\".",
+      description:
+        'Optional city or country shown after the role, e.g. "Toronto" or "Mexico City".',
     }),
     defineField({
       name: "image",
@@ -41,6 +64,7 @@ export default defineType({
       options: { hotspot: true },
       fields: [
         defineField({
+          description: "Describe the image for people who cannot see it.",
           name: "alt",
           type: "string",
           title: "Alt Text",

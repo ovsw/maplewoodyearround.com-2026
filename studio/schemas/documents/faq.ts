@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { ListCollapse } from "lucide-react";
+import { programField, referencesField, slugField } from "./maplewood-fields";
 
 export default defineType({
   name: "faq",
@@ -9,6 +10,14 @@ export default defineType({
   description:
     "A reusable question and answer that can be selected in FAQ sections.",
   fields: [
+    slugField,
+    programField,
+    referencesField(
+      "categories",
+      "Categories",
+      "faqCategory",
+      "Every topic this question appears under. Select all that apply.",
+    ),
     defineField({
       name: "title",
       type: "string",
@@ -28,7 +37,11 @@ export default defineType({
       type: "reference",
       to: [{ type: "faqCategory" }],
       description: "The topic this question appears under on the FAQ hub.",
-      validation: (Rule) => Rule.required(),
+      hidden: true,
+      readOnly: true,
+      deprecated: {
+        reason: "Use Categories. The importer keeps every source category.",
+      },
     }),
     defineField({
       name: "order",

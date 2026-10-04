@@ -16,15 +16,30 @@ test("resolves every routed document type without an ending slash", () => {
     pagePath("/staff/available-positions/"),
     "/staff/available-positions",
   );
-  assert.equal(postPath("/first-post/"), "/blog/first-post");
+  assert.equal(postPath("/first-post/"), "/post/first-post");
   assert.equal(categoryPath("/news/"), "/blog/category/news");
 });
 
 test("rejects missing and malformed routed slugs", () => {
-  for (const slug of [undefined, "", "/", "Uppercase", "under_score", "two//segments", "two/Bad"]) {
+  for (const slug of [
+    undefined,
+    "",
+    "/",
+    "Uppercase",
+    "under_score",
+    "two//segments",
+    "two/Bad",
+  ]) {
     assert.equal(pagePath(slug), null, String(slug));
   }
-  for (const slug of [undefined, "", "/", "two/segments", "Uppercase", "under_score"]) {
+  for (const slug of [
+    undefined,
+    "",
+    "/",
+    "two/segments",
+    "Uppercase",
+    "under_score",
+  ]) {
     assert.equal(postPath(slug), null, String(slug));
     assert.equal(categoryPath(slug), null, String(slug));
   }
@@ -54,11 +69,11 @@ test("recognizes application-owned routes", () => {
     assert.equal(isApplicationPath(path), true, path);
   }
   assert.equal(isApplicationPath("/about"), false);
-  assert.equal(isApplicationPath("/blog/first-post"), false);
+  assert.equal(isApplicationPath("/post/first-post"), false);
   assert.equal(isApplicationPath("/blog/category/news"), false);
 });
 
 test("reserves the blog namespace from editor-created pages", () => {
-  assert.equal(isReservedPagePath("/blog/first-post"), true);
+  assert.equal(isReservedPagePath("/post/first-post"), true);
   assert.equal(isReservedPagePath("/staff/available-positions"), false);
 });

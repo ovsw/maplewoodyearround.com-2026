@@ -25,6 +25,7 @@ export default defineType({
   ],
   fields: [
     defineField({
+      description: "The title used to identify this content.",
       name: "title",
       title: "Title",
       type: "string",
@@ -32,6 +33,8 @@ export default defineType({
       validation: (Rule) => Rule.required().max(96),
     }),
     defineField({
+      description:
+        "The unique URL name. Use lowercase words separated by hyphens.",
       name: "slug",
       title: "Slug",
       type: "slug",
@@ -65,6 +68,7 @@ export default defineType({
       ],
     }),
     defineField({
+      description: "Choose the author shown with this article.",
       name: "author",
       title: "Author",
       type: "reference",
@@ -72,6 +76,7 @@ export default defineType({
       to: { type: "author" },
     }),
     defineField({
+      description: "The original publication date used to order articles.",
       name: "publishedAt",
       title: "Published At",
       type: "datetime",
@@ -79,6 +84,8 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      description:
+        "The image shown with this item. Set the crop and focal point.",
       name: "image",
       title: "Image",
       type: "image",
@@ -88,11 +95,13 @@ export default defineType({
       },
       fields: [
         defineField({
+          description: "Describe the image for people who cannot see it.",
           name: "alt",
           type: "string",
           title: "Alternative Text",
         }),
         defineField({
+          description: "Optional text shown below the image.",
           name: "caption",
           type: "string",
           title: "Caption",
@@ -100,6 +109,7 @@ export default defineType({
       ],
     }),
     defineField({
+      description: "Choose the topic used to group this article.",
       name: "category",
       title: "Category",
       type: "reference",
@@ -108,6 +118,7 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      description: "The full article text and images.",
       name: "body",
       title: "Body",
       type: "richTextContent",

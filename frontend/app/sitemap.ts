@@ -4,13 +4,19 @@ import { isIndexableCategory } from "@/lib/blog-index";
 import { sanityFetchMetadata } from "@/sanity/lib/live";
 import { publishedPostFilter } from "@/sanity/queries/blog-post-listing";
 
-const VIEWABLE_TYPES = ["homePage", "page", "post", "blogIndex", "category"] as const;
+const VIEWABLE_TYPES = [
+  "homePage",
+  "page",
+  "post",
+  "blogIndex",
+  "category",
+] as const;
 
 const urlQuery = `
   'url': select(
     _id == "homePage" && _type == "homePage" => $baseUrl + "/",
-    _id == "blogIndex" => $baseUrl + "/blog",
-    _type == "post" => $baseUrl + "/blog/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
+    _id == "blogIndex" => $baseUrl + "/news",
+    _type == "post" => $baseUrl + "/post/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     _type == "category" => $baseUrl + "/blog/category/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     $baseUrl + "/" + array::join(string::split(slug.current, "/")[@ != ""], "/")
   )
@@ -57,20 +63,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     perspective: "published",
   });
 
-  return (((data as Array<MetadataRoute.Sitemap[number] & {
-      _type: string;
-      description?: string | null;
-      lastModified?: string | null;
-      metaNoindex?: boolean | null;
-      publishedPostCount?: number;
-    }>) || [])
-    .filter((entry) =>
-      entry._type !== "category" ||
-      isIndexableCategory({
-        description: entry.description,
-        metaNoindex: entry.metaNoindex,
-        publishedPostCount: entry.publishedPostCount || 0,
-      }),
+  return (
+    (data as Array<
+      MetadataRoute.Sitemap[number] & {
+        _type: string;
+        description?: string | null;
+        lastModified?: string | null;
+        metaNoindex?: boolean | null;
+        publishedPostCount?: number;
+      }
+    >) || []
+  )
+    .filter(
+      (entry) =>
+        entry._type !== "category" ||
+        isIndexableCategory({
+          description: entry.description,
+          metaNoindex: entry.metaNoindex,
+          publishedPostCount: entry.publishedPostCount || 0,
+        }),
     )
     .map((entry) => {
       const sitemapEntry: Record<string, unknown> = { ...entry };
@@ -81,5 +92,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       delete sitemapEntry.publishedPostCount;
       delete sitemapEntry.lastModified;
       return lastModified ? { ...sitemapEntry, lastModified } : sitemapEntry;
-    }) as unknown as MetadataRoute.Sitemap);
+    }) as unknown as MetadataRoute.Sitemap;
 }

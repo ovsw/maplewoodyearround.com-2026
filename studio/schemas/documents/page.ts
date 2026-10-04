@@ -63,12 +63,14 @@ export default defineType({
   ],
   fields: [
     defineField({
+      description: "The title used to identify this content.",
       name: "title",
       type: "string",
       group: "content",
       validation: (rule) => rule.required(),
     }),
     defineField({
+      description: "A short introduction or summary for this content.",
       name: "description",
       title: "Description",
       type: "text",
@@ -76,6 +78,8 @@ export default defineType({
       group: "content",
     }),
     defineField({
+      description:
+        "The unique URL name. Use lowercase words separated by hyphens.",
       name: "slug",
       title: "Slug",
       type: "slug",
