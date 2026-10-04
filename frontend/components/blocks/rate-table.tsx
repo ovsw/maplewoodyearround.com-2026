@@ -97,7 +97,12 @@ export default function RateTable({
                 {row.label}
               </div>
               {valueColumns.map((column, index) => (
-                <div className={css.rateCell} key={column._key} role="cell">
+                <div
+                  className={css.rateCell}
+                  data-sanity={dataAttribute?.(`rows[_key=="${row._key}"].cells[${index}]`)}
+                  key={column._key}
+                  role="cell"
+                >
                   {stacked ? (
                     <span aria-hidden="true" className={css.rateCellLabel}>
                       {column.label}:

@@ -61,6 +61,12 @@ type BlockEditingProps = {
     documentId: string,
     path: string,
   ) => string | undefined;
+  /** Edit targets on the collection records a section lists, such as facilities. */
+  itemDataAttribute?: (
+    documentId: string,
+    documentType: string,
+    path: string,
+  ) => string | undefined;
 };
 
 /** Page data a route hands to one section type. */
@@ -256,9 +262,26 @@ export default function Blocks({
                     }).toString()
                 : undefined,
             }
-          : serverFieldEditingBlockTypes.has(block._type)
-            ? { dataAttribute }
-            : {};
+          : block._type === "cardSlider"
+            ? {
+                dataAttribute,
+                itemDataAttribute: stega
+                  ? (itemId: string, itemType: string, path: string) =>
+                      createDataAttribute({
+                        baseUrl:
+                          process.env.NEXT_PUBLIC_STUDIO_URL ||
+                          "http://localhost:3333",
+                        dataset,
+                        id: itemId,
+                        path,
+                        projectId,
+                        type: itemType,
+                      }).toString()
+                  : undefined,
+              }
+            : serverFieldEditingBlockTypes.has(block._type)
+              ? { dataAttribute }
+              : {};
     const pageDataProps: BlockPageDataProps =
       block._type === "latestArticles" && blogListing ? { blogListing } : {};
 

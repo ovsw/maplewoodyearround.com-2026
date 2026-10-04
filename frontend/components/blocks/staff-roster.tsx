@@ -40,8 +40,11 @@ export default function StaffRoster({
         <ul className={css.roster}>
           {members.map(({ document: member }) =>
             member ? (
-              <li data-sanity={memberDataAttribute?.(member._id, "name")} key={member._id}>
-                <div className={[css.cardSmall, css.rosterPhoto].join(" ")}>
+              <li key={member._id}>
+                <div
+                  className={[css.cardSmall, css.rosterPhoto].join(" ")}
+                  data-sanity={memberDataAttribute?.(member._id, "image")}
+                >
                   <SourceImage image={member.image} sizes="(max-width: 767px) 90vw, (max-width: 991px) 45vw, 20rem" width={640} />
                   {member.yearRound || member.formerCamper ? (
                     <div className={css.rosterTags}>
@@ -51,8 +54,10 @@ export default function StaffRoster({
                   ) : null}
                 </div>
                 <div className={css.rosterText}>
-                  <p className={css.rosterName}>{member.name}</p>
-                  {member.role ? <p>{member.role}</p> : null}
+                  <p className={css.rosterName} data-sanity={memberDataAttribute?.(member._id, "name")}>
+                    {member.name}
+                  </p>
+                  {member.role ? <p data-sanity={memberDataAttribute?.(member._id, "role")}>{member.role}</p> : null}
                   {member.yearsAtOrganization != null ? (
                     <p>Years at Maplewood: {member.yearsAtOrganization}</p>
                   ) : null}

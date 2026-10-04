@@ -65,14 +65,16 @@ export default function PricingCards({
                 <div className={css.pricingIcon}>
                   <SourceIcon dataSanity={dataAttribute?.(`${path}.icon`)} icon={plan.icon} />
                 </div>
-                <h3 className={css.pricingTitle}>{plan.title}</h3>
-                <p className={css.pricingPrice}>
+                <h3 className={css.pricingTitle} data-sanity={dataAttribute?.(`${path}.title`)}>
+                  {plan.title}
+                </h3>
+                <p className={css.pricingPrice} data-sanity={dataAttribute?.(`${path}.price`)}>
                   <span>{amount}</span>
                   {period ? <span className={css.pricingPeriod}>{period}</span> : null}
                 </p>
                 <hr className={css.pricingDivider} />
                 {plan.details?.length ? (
-                  <div className={css.pricingDetails}>
+                  <div className={css.pricingDetails} data-sanity={dataAttribute?.(`${path}.details`)}>
                     <PortableText
                       components={{
                         block: { normal: ({ children }) => <p>{children}</p> },

@@ -14,7 +14,10 @@ import {
 type CardSliderProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
   { _type: "cardSlider" }
-> & { dataAttribute?: DataAttribute };
+> & {
+  dataAttribute?: DataAttribute;
+  itemDataAttribute?: (documentId: string, documentType: string, path: string) => string | undefined;
+};
 
 /** Collection cards in a slider (Webflow blog66), such as one facility category. */
 export default function CardSlider({
@@ -25,6 +28,7 @@ export default function CardSlider({
   dataAttribute,
   description,
   icon,
+  itemDataAttribute,
   items,
   tagline,
   title,
@@ -58,12 +62,19 @@ export default function CardSlider({
         <CardSliderTrack count={cards.length} label={stegaClean(title) ?? "Cards"}>
           {cards.map((item) => (
             <li className={css.sliderCard} key={item._id}>
-              <div className={[css.cardSmall, css.sliderImage].join(" ")}>
+              <div
+                className={[css.cardSmall, css.sliderImage].join(" ")}
+                data-sanity={itemDataAttribute?.(item._id, item._type, "image")}
+              >
                 <SourceImage image={item.image} sizes="(max-width: 767px) 80vw, 20rem" width={640} />
               </div>
               <div className={css.sliderCardText}>
-                <h3 className={css.h6}>{item.title}</h3>
-                {item.description ? <p>{item.description}</p> : null}
+                <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
+                  {item.title}
+                </h3>
+                {item.description ? (
+                  <p data-sanity={itemDataAttribute?.(item._id, item._type, "description")}>{item.description}</p>
+                ) : null}
               </div>
             </li>
           ))}
