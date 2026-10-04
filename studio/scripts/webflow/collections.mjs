@@ -1,4 +1,5 @@
 import { documentId, reference, key, destination, plainBlocks, portableText } from './html.mjs';
+import { equal } from './write.mjs';
 
 const common = { name: 'title', slug: 'slug', order: 'order', description: 'description' };
 const facility = { ...common, 'main-image': 'image', published: 'visible', 'indoor-outdoor': 'location' };
@@ -119,7 +120,7 @@ export function cmsDocuments(snapshot, context) {
     let drafts = 0;
     for (const item of collection.staged) {
       const published = live.get(item.id);
-      if (!published || JSON.stringify(item.fieldData) !== JSON.stringify(published.fieldData) || item.isDraft || item.isArchived) {
+      if (!published || !equal(item.fieldData, published.fieldData) || item.isDraft || item.isArchived) {
         documents.push({ ...mapItem(collection, item, context), _id: `drafts.${documentId(collection.id, item.id)}` });
         drafts++;
       }

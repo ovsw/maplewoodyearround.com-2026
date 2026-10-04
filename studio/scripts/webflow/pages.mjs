@@ -50,12 +50,14 @@ export function pageContext(snapshot, context) {
   }
   const jobs = context.pageDocuments.get('/staff-opportunities');
   context.jobApplication = [...(jobs?.querySelectorAll('a[href]') ?? [])].find((a) => /apply/i.test(text(a)))?.getAttribute('href');
-  context.programListingGroup = (item) => /enrichment|gymnastics|arts?\b|sports|flying.solo/i.test(item.fieldData.name) ? 'enrichment' : 'main';
+  const enrichment=context.pageDocuments.get('/school-year/programs/enrichment-classes');
+  const enrichmentPaths=new Set([...(enrichment?.querySelectorAll('main section a[href]')??[])].map((a)=>new URL(a.href).pathname));
+  context.programListingGroup = (item) => item.fieldData['program-page'] && enrichmentPaths.has(new URL(item.fieldData['program-page'],'https://www.maplewoodyearround.com').pathname) ? 'enrichment' : 'main';
   return context;
 }
 
-function actions(node, context, prefix) {
-  return [...node.querySelectorAll('a[href]')].filter((a) => text(a)).map((a, i) => ({
+function actions(node, context, prefix, selector = 'a[href]') {
+  return [...node.querySelectorAll(selector)].filter((a) => text(a) && !a.matches('.breadcrumb-link,.w-tab-link')).map((a, i) => ({
     _key: key(`${prefix}-a${i}`), _type: 'contentAction', label: text(a), destination: destination(a.getAttribute('href'), context),
   })).filter((a) => a.destination);
 }
@@ -114,10 +116,10 @@ function embed(node) {
     const accountId = cognito.getAttribute('data-key');
     const providerId = cognito.getAttribute('data-form');
     const sentFrom = node.textContent.match(/Cognito\.prefill\(\s*\{\s*"SentFrom"\s*:\s*"([^"]+)"/)?.[1];
-    return { provider: 'cognito', embedUrl: cognito.getAttribute('src'), accountId, providerId, sentFrom, frameTitle: 'Schedule a tour' };
+    return { provider: 'Cognito', embedUrl: cognito.src, accountId, providerId, sentFrom, frameTitle: 'Schedule a tour' };
   }
-  if (calendar) return { provider: 'eventsCalendar', embedUrl: calendar.getAttribute('src'), providerId: calendar.getAttribute('data-id') ?? calendar.getAttribute('data-calendar'), frameTitle: 'Maplewood calendar' };
-  if (iframe) return { provider: iframe.src.includes('airtable') ? 'airtable' : 'other', embedUrl: iframe.getAttribute('src'), frameTitle: iframe.getAttribute('title') || headingText(node) };
+  if (calendar) return { provider: 'Events Calendar', embedUrl: calendar.src, providerId: node.querySelector('[data-project-id]')?.getAttribute('data-project-id'), frameTitle: 'Maplewood calendar' };
+  if (iframe) return { provider: iframe.src.includes('airtable') ? 'Airtable' : iframe.src.includes('snazzymaps') ? 'Map' : 'Other', embedUrl: iframe.src, frameTitle: iframe.getAttribute('title') || headingText(node) || 'Maplewood form' };
   return {};
 }
 
@@ -139,12 +141,13 @@ export function staticPages(snapshot, context, schema) {
       if (!type && !text(staticNode) && !staticNode.querySelector('img,iframe,video')) continue;
       if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
       if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
+      if (type === 'rateTable' && !original.querySelector('.comparison6_top-row,.comparison8_top-row,table')) type = 'richTextBlock';
       if (type === 'richTextBlock' && /summer-group-schedules|summer-camp-welcome-letters/.test(page.path)) type = 'summerDocumentList';
       else if (type === 'richTextBlock' && original.querySelector('iframe,script[src*="cognitoforms"]')) type = 'embedSection';
       const rawText = text(staticNode);
       const title = headingText(staticNode);
       const block = { _type: type, _key: original.id ? `${original.id}-${index}` : key(prefix) };
-      if (typeOf(type, 'background')) block.background = original.className.includes('dark') ? 'forest' : 'white';
+      if (typeOf(type, 'background')) block.background = original.className.includes('dark') ? 'green' : 'white';
       const rich = portableText(staticNode, context, prefix);
       const textual = rich.filter((entry) => entry._type === 'block');
       const bodyField = ['richText', 'body', 'notes', 'intro', 'description', 'subtitle'].find((field) => typeOf(type, field));
@@ -153,7 +156,7 @@ export function staticPages(snapshot, context, schema) {
       if (titleField && title) block[titleField] = typeOf(type, titleField).type === 'array' || typeOf(type, titleField).name === 'minimalRichText' ? plainBlocks(title, `${prefix}-title`) : title;
       const links = actions(staticNode, context, prefix);
       if (typeOf(type, 'actions')) block.actions = links;
-      if (typeOf(type, 'buttons')) block.buttons = buttons(links);
+      if (typeOf(type, 'buttons')) block.buttons = buttons(actions(staticNode, context, prefix, 'a.button[href]'));
       if (typeOf(type, 'image')) block.image = firstImage(staticNode, context);
       if (typeOf(type, 'cards')) block.cards = cards(staticNode, context, prefix);
       if (['videoHero', 'videoZoomGrid', 'directorIntro'].includes(type)) {
@@ -166,9 +169,10 @@ export function staticPages(snapshot, context, schema) {
         const poster = video?.getAttribute('poster') || bg?.getAttribute('data-poster-url');
         if (poster) block.poster = context.asset(poster, 'image');
         if (type === 'videoZoomGrid') {
-          const images = imageNodes(staticNode).map((image, i) => ({ ...context.asset(image.src, 'image', image.alt), _key: key(`${prefix}-i${i}`) }));
-          block.gridImages = images.filter((_, i) => i < 8);
-          block.mobileImages = images.filter((_, i) => i >= 8);
+          const images = [...staticNode.querySelectorAll('.header83_image')];
+          const mapped = (image, i) => ({ ...context.asset(image.src, 'image', image.alt), _key: key(`${prefix}-i${i}`) });
+          block.gridImages = images.map(mapped);
+          block.mobileImages = images.filter((image) => !image.parentElement.classList.contains('hide-mobile-landscape')).map(mapped);
         }
       }
       if (['cardSlider', 'filterableCards'].includes(type)) {
@@ -181,15 +185,18 @@ export function staticPages(snapshot, context, schema) {
         if (inferred.program) block.program = inferred.program;
         else if (page.path.startsWith('/summer-camp')) block.program = 'summerCamp';
         else if (page.path.startsWith('/school-year')) block.program = 'schoolYear';
+        else if (type === 'faqAccordion' && original.id === 'summer-camp') block.program = 'summerCamp';
+        else if (type === 'faqAccordion' && original.id === 'school-year') block.program = 'schoolYear';
       }
       if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : 'roster'; }
       if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : 'main';
       if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
       if (['embedSection', 'busMap'].includes(type)) Object.assign(block, embed(original));
       if (type === 'rateTable') {
-        const rows = [...original.querySelectorAll('tr,[class*="comparison"][class*="row"]')];
-        block.columns = rows.length ? [...rows[0].children].map(text).filter(Boolean) : [];
-        block.rows = rows.slice(1).map((row, i) => ({ _key: key(`${prefix}-r${i}`), _type: 'rateRow', label: text(row.firstElementChild), cells: [...row.children].map(text) }));
+        const header = original.querySelector('.comparison6_top-row,.comparison8_top-row,thead tr');
+        const rows = [...original.querySelectorAll('.comparison6_row,.comparison8_row,tbody tr')];
+        block.columns = [...header.children].map(text);
+        block.rows = rows.map((row, i) => ({ _key: key(`${prefix}-r${i}`), _type: 'rateRow', label: text(row.firstElementChild), cells: [...row.children].slice(1).map(text) }));
       }
       if (type === 'pricingCards') block.plans = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'pricingPlan', title: card.title, details: card.body, actions: card.actions }));
       if (type === 'stackedTimeline') block.items = cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'stackedTimelineItem', title: card.title, text: card.description, image: card.image }));

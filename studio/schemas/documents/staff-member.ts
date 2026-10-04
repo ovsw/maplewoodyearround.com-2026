@@ -20,7 +20,9 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     { ...slugField, options: { source: "name" } },
-    programField,
+    { ...programField, validation: (rule) => rule.custom((value, context) =>
+      (context.document?.profileGroup === "leadership" || value) ? true : "Choose a program for roster staff",
+    ) },
     defineField({
       name: "profileGroup",
       title: "Profile group",

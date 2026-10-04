@@ -819,7 +819,7 @@ export type StoryFeature = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "blockquote";
+    style?: "normal" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<
       {
@@ -1510,7 +1510,7 @@ export type Faq = {
     } & FaqCategoryReference
   >;
   title?: string;
-  body?: SimpleRichText;
+  body?: RichTextContent;
   category?: FaqCategoryReference;
   order?: number;
 };
@@ -3906,26 +3906,73 @@ export type BLOG_INDEX_QUERY_RESULT = {
           _id: string;
           _type: "faq";
           title: string | null;
-          answer: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "normal";
-            listItem?: never;
-            markDefs: Array<{
-              _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news" | "/parent-dashboard";
-              openInNewTab: boolean | null;
-            }> | null;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }> | null;
+          answer: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?:
+                  | "blockquote"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "inline"
+                  | "normal";
+                listItem?: "bullet" | "number";
+                markDefs: Array<
+                  | {
+                      _key: string;
+                      _type: "buttonLink";
+                      variant?: "default" | "link" | "outline" | "secondary";
+                      customLink?: CustomUrl;
+                    }
+                  | {
+                      _key: string;
+                      _type: "customLink";
+                      customLink?: CustomUrl;
+                      href: string | null | "/" | "/news" | "/parent-dashboard";
+                      openInNewTab: boolean | null;
+                    }
+                > | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                title?: string;
+                body?: string;
+                _type: "callout";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                title?: string;
+                rows?: Array<{
+                  cells?: Array<string>;
+                  _type: "tableRow";
+                  _key: string;
+                }>;
+                _type: "table";
+                _key: string;
+                markDefs: null;
+              }
+          > | null;
         }>;
       }
     | {
@@ -5908,7 +5955,7 @@ export type BLOG_INDEX_QUERY_RESULT = {
             _type: "span";
             _key: string;
           }>;
-          style?: "blockquote" | "normal";
+          style?: "blockquote" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
           listItem?: "bullet" | "number";
           markDefs: Array<{
             _key: string;
@@ -7812,26 +7859,73 @@ export type HOME_PAGE_QUERY_RESULT = {
           _id: string;
           _type: "faq";
           title: string | null;
-          answer: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "normal";
-            listItem?: never;
-            markDefs: Array<{
-              _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news" | "/parent-dashboard";
-              openInNewTab: boolean | null;
-            }> | null;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }> | null;
+          answer: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?:
+                  | "blockquote"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "inline"
+                  | "normal";
+                listItem?: "bullet" | "number";
+                markDefs: Array<
+                  | {
+                      _key: string;
+                      _type: "buttonLink";
+                      variant?: "default" | "link" | "outline" | "secondary";
+                      customLink?: CustomUrl;
+                    }
+                  | {
+                      _key: string;
+                      _type: "customLink";
+                      customLink?: CustomUrl;
+                      href: string | null | "/" | "/news" | "/parent-dashboard";
+                      openInNewTab: boolean | null;
+                    }
+                > | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                title?: string;
+                body?: string;
+                _type: "callout";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                title?: string;
+                rows?: Array<{
+                  cells?: Array<string>;
+                  _type: "tableRow";
+                  _key: string;
+                }>;
+                _type: "table";
+                _key: string;
+                markDefs: null;
+              }
+          > | null;
         }>;
       }
     | {
@@ -9872,7 +9966,7 @@ export type HOME_PAGE_QUERY_RESULT = {
             _type: "span";
             _key: string;
           }>;
-          style?: "blockquote" | "normal";
+          style?: "blockquote" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
           listItem?: "bullet" | "number";
           markDefs: Array<{
             _key: string;
@@ -11587,26 +11681,73 @@ export type PAGE_QUERY_RESULT = {
           _id: string;
           _type: "faq";
           title: string | null;
-          answer: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "normal";
-            listItem?: never;
-            markDefs: Array<{
-              _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news" | "/parent-dashboard";
-              openInNewTab: boolean | null;
-            }> | null;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }> | null;
+          answer: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?:
+                  | "blockquote"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "inline"
+                  | "normal";
+                listItem?: "bullet" | "number";
+                markDefs: Array<
+                  | {
+                      _key: string;
+                      _type: "buttonLink";
+                      variant?: "default" | "link" | "outline" | "secondary";
+                      customLink?: CustomUrl;
+                    }
+                  | {
+                      _key: string;
+                      _type: "customLink";
+                      customLink?: CustomUrl;
+                      href: string | null | "/" | "/news" | "/parent-dashboard";
+                      openInNewTab: boolean | null;
+                    }
+                > | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                title?: string;
+                body?: string;
+                _type: "callout";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                title?: string;
+                rows?: Array<{
+                  cells?: Array<string>;
+                  _type: "tableRow";
+                  _key: string;
+                }>;
+                _type: "table";
+                _key: string;
+                markDefs: null;
+              }
+          > | null;
         }>;
       }
     | {
@@ -11636,26 +11777,73 @@ export type PAGE_QUERY_RESULT = {
           title: string | null;
           program: "schoolYear" | "summerCamp" | null;
           order: number | null;
-          answer: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "normal";
-            listItem?: never;
-            markDefs: Array<{
-              _key: string;
-              _type: "customLink";
-              customLink?: CustomUrl;
-              href: string | null | "/" | "/news" | "/parent-dashboard";
-              openInNewTab: boolean | null;
-            }> | null;
-            level?: number;
-            _type: "block";
-            _key: string;
-          }> | null;
+          answer: Array<
+            | {
+                children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+                }>;
+                style?:
+                  | "blockquote"
+                  | "h2"
+                  | "h3"
+                  | "h4"
+                  | "h5"
+                  | "h6"
+                  | "inline"
+                  | "normal";
+                listItem?: "bullet" | "number";
+                markDefs: Array<
+                  | {
+                      _key: string;
+                      _type: "buttonLink";
+                      variant?: "default" | "link" | "outline" | "secondary";
+                      customLink?: CustomUrl;
+                    }
+                  | {
+                      _key: string;
+                      _type: "customLink";
+                      customLink?: CustomUrl;
+                      href: string | null | "/" | "/news" | "/parent-dashboard";
+                      openInNewTab: boolean | null;
+                    }
+                > | null;
+                level?: number;
+                _type: "block";
+                _key: string;
+              }
+            | {
+                title?: string;
+                body?: string;
+                _type: "callout";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                asset?: SanityImageAssetReference;
+                media?: unknown;
+                hotspot?: SanityImageHotspot;
+                crop?: SanityImageCrop;
+                alt?: string;
+                caption?: string;
+                _type: "image";
+                _key: string;
+                markDefs: null;
+              }
+            | {
+                title?: string;
+                rows?: Array<{
+                  cells?: Array<string>;
+                  _type: "tableRow";
+                  _key: string;
+                }>;
+                _type: "table";
+                _key: string;
+                markDefs: null;
+              }
+          > | null;
           answerText: string;
           category: {
             _id: string;
@@ -13651,7 +13839,7 @@ export type PAGE_QUERY_RESULT = {
             _type: "span";
             _key: string;
           }>;
-          style?: "blockquote" | "normal";
+          style?: "blockquote" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
           listItem?: "bullet" | "number";
           markDefs: Array<{
             _key: string;

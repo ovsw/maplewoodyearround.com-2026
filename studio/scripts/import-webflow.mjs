@@ -60,7 +60,7 @@ export async function main(args=process.argv.slice(2)) {
     const manifest=await readManifest(manifestPath);
     const stamp=new Date().toISOString().replaceAll(':','-');
     await savePrivate(path.join(privateRoot,`${stamp}-source.json`),snapshot);
-    const media=await importAssets(client,plan.assets,manifest,(progress)=>console.log(JSON.stringify(progress)));
+    const media=await importAssets(client,plan.assets,manifest,(progress)=>console.log(JSON.stringify(progress)),(state)=>savePrivate(manifestPath,state));
     await savePrivate(manifestPath,manifest);
     const documents=materialize(plan.documents,media.refs);
     const delta=await writeDocuments(client,documents,manifest);

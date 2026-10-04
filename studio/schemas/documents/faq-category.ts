@@ -29,7 +29,7 @@ export default defineType({
       title: "Order",
       type: "number",
       description: "Categories with a lower number come first.",
-      validation: (Rule) => Rule.required().integer(),
+      validation: (Rule) => Rule.integer(),
     }),
     defineField({
       name: "description",

@@ -28,7 +28,7 @@ export default defineType({
     defineField({
       name: "body",
       title: "Answer",
-      type: "simpleRichText",
+      type: "richTextContent",
       description: "The reusable answer shown inside FAQ sections.",
     }),
     defineField({

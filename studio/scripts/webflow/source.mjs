@@ -29,8 +29,11 @@ export function webflowReader(token, fetcher = fetch) {
     do {
       const result = await get(`${pathname}${pathname.includes('?') ? '&' : '?'}limit=100&offset=${all.length}`);
       if (!Array.isArray(result[key])) throw new Error(`Missing ${key} in Webflow response`);
+      const reported = result.pagination?.total;
+      if (!Number.isInteger(reported) || reported < 0) throw new Error('Webflow pagination has no total');
+      if (total !== undefined && total !== reported) throw new Error('Webflow count changed during pagination; capture again');
+      total = reported;
       all.push(...result[key]);
-      total = result.pagination?.total ?? all.length;
       if (!result[key].length && all.length < total) throw new Error('Incomplete Webflow pagination');
     } while (all.length < total);
     if (all.length !== total) throw new Error('Webflow count changed during pagination; capture again');
@@ -46,7 +49,10 @@ export async function captureSource(token, referencePages, { fetcher = fetch, pr
   if (site.id !== SITE_ID) throw new Error('Unexpected Webflow site');
   if ((site.locales?.secondary ?? []).length) throw new Error('Multiple locales need an explicit import mapping');
   const collections = [];
-  for (const summary of await api.list(`/sites/${SITE_ID}/collections`, 'collections')) {
+  // Webflow's collection index is not paginated; item, asset and page lists are.
+  const collectionIndex = await api.get(`/sites/${SITE_ID}/collections`);
+  if (!Array.isArray(collectionIndex.collections)) throw new Error('Missing collection index');
+  for (const summary of collectionIndex.collections) {
     const schema = await api.get(`/collections/${summary.id}`);
     const staged = await api.list(`/collections/${summary.id}/items`, 'items');
     const live = await api.list(`/collections/${summary.id}/items/live`, 'items');
@@ -80,5 +86,6 @@ export async function captureSource(token, referencePages, { fetcher = fetch, pr
       pending.push(...children.filter((n) => n.type === 'component-instance').map((n) => n.componentId));
     }
   }
-  return { version: 1, siteId: SITE_ID, startedAt, capturedAt: new Date().toISOString(), collections, pageRecords, assets, pages, pageDom, componentDom };
+  return { version: 1, siteId: SITE_ID, startedAt, capturedAt: new Date().toISOString(), collections, pageRecords, assets, pages, pageDom, componentDom,
+    complete: {collections:collections.map((c)=>({id:c.id,staged:c.staged.length,live:c.live.length})),pageRecords:pageRecords.length,assets:assets.length,routes:referencePages.map((p)=>p.path)} };
 }

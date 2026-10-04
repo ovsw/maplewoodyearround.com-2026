@@ -1,7 +1,8 @@
-import { assetCollector, documentId, key, reference, text, destination, portableText, mediaUrl } from './html.mjs';
+import { assetCollector, documentId, key, reference, text, destination, portableText, plainBlocks, mediaUrl } from './html.mjs';
 import { mappings, identityMap, cmsDocuments } from './collections.mjs';
 import { pageContext, staticPages, pageId } from './pages.mjs';
 import { SITE_ID } from './source.mjs';
+import { globalDocuments } from './globals.mjs';
 
 function summerDocuments(snapshot, context) {
   const pages = ['/summer-camp/summer-group-schedules', '/summer-camp/summer-camp-welcome-letters'].map((path) => context.pageDocuments.get(path));
@@ -11,11 +12,16 @@ function summerDocuments(snapshot, context) {
   const groups = snapshot.collections.find((c) => c.displayName === 'SC Groups');
   const grades = snapshot.collections.find((c) => c.displayName === 'SC Grades');
   const gradeOrder = text(pages[0].querySelector('main'));
+  const links=[...pages[0].querySelectorAll('main a[href]')].map((a)=>a.href);
+  const groupOrder=new Map(groups.live.map((group)=>[group.id,links.indexOf(group.fieldData['group-schedule-pdf']?.url)]));
   const build = (version) => ({
     _id: `wf-summer-documents-${year}`, _type: 'summerDocuments', seasonLabel: `Summer ${year}`,
     gradeGroups: [...grades[version]].sort((a, b) => gradeOrder.indexOf(a.fieldData.name) - gradeOrder.indexOf(b.fieldData.name)).map((grade) => ({
       _key: key(grade.id), _type: 'gradeDocuments', grade: reference(documentId(grades.id, grade.id)),
-      entries: groups[version].filter((group) => group.fieldData['entering-grade-2']?.includes(grade.id)).flatMap((group) =>
+      entries: groups[version].filter((group) => group.fieldData['entering-grade-2']?.includes(grade.id)).sort((a,b)=>{
+        const rank=(group)=>{const index=groupOrder.get(group.id);return index===undefined||index<0?Number.MAX_SAFE_INTEGER:index;};
+        return rank(a)-rank(b)||a.id.localeCompare(b.id);
+      }).flatMap((group) =>
         [['group-schedule-pdf', 'schedule'], ['welcome-letter-pdf', 'welcomeLetter']].flatMap(([field, kind]) => group.fieldData[field]?.url ? [{
           _key: key(`${group.id}-${kind}`), _type: 'summerDocumentEntry', title: group.fieldData.name, kind,
           group: reference(documentId(groups.id, group.id)), file: context.asset(group.fieldData[field], 'file'),
@@ -53,7 +59,7 @@ function authoredCollections(snapshot, context) {
       const content = node.cloneNode(true);
       content.querySelectorAll('img,.team14_title-wrapper').forEach((e) => e.remove());
       documents.set(`wf-authored-leader-${key(name)}`, {
-        _id: `wf-authored-leader-${key(name)}`, _type:'staffMember', name, profileGroup:'leadership', program:'summerCamp', visible:true,
+        _id: `wf-authored-leader-${key(name)}`, _type:'staffMember', name, profileGroup:'leadership', visible:true,
         role:text(wrapper?.lastElementChild), bio:portableText(content,context,`leader-${index}`), order:index,
         ...(image ? {image:context.asset(image.src,'image',image.alt)} : {}),
         ...(node.querySelector('a[href^="mailto:"]') ? {email:node.querySelector('a[href^="mailto:"]').getAttribute('href').slice(7)} : {}),
@@ -65,19 +71,21 @@ function authoredCollections(snapshot, context) {
 
 export function buildPlan(snapshot, schema) {
   if (snapshot.version !== 1 || snapshot.siteId !== SITE_ID || !snapshot.capturedAt) throw new Error('Incomplete or wrong source snapshot');
+  const complete = snapshot.complete;
+  if (!complete || complete.pageRecords !== snapshot.pageRecords?.length || complete.assets !== snapshot.assets?.length ||
+    complete.collections?.length !== snapshot.collections?.length || complete.routes?.length !== snapshot.pages?.length ||
+    complete.routes.some((path) => !snapshot.pages.some((page) => page.path === path)) ||
+    snapshot.pageRecords.some((page) => !page.collectionId && !Array.isArray(snapshot.pageDom?.[page.id]))) throw new Error('Source snapshot completeness check failed');
   const names = snapshot.collections.map((c) => c.displayName).sort();
   if (JSON.stringify(names) !== JSON.stringify(Object.keys(mappings).sort())) throw new Error('The snapshot does not contain all mapped collections');
   for (const collection of snapshot.collections) for (const version of ['staged','live']) {
-    if (!Array.isArray(collection[version]) || new Set(collection[version].map((i) => i.id)).size !== collection[version].length) throw new Error('Incomplete or duplicate source item list');
+    if (!Array.isArray(collection[version]) || complete.collections.find((c) => c.id === collection.id)?.[version] !== collection[version].length || new Set(collection[version].map((i) => i.id)).size !== collection[version].length) throw new Error('Incomplete or duplicate source item list');
   }
-  const aliases = new Map();
-  for (const asset of snapshot.assets) if (asset.contentType?.startsWith('image/')) {
-    for (const variant of asset.variants ?? []) if (variant.hostedUrl) aliases.set(mediaUrl(variant.hostedUrl),mediaUrl(asset.hostedUrl));
-  }
+  const aliases = mediaAliases(snapshot);
   const context = pageContext(snapshot, { ...assetCollector(aliases), identities:identityMap(snapshot), warnings:new Set() });
   const cms = cmsDocuments(snapshot, context);
   const pages = staticPages(snapshot, context, schema);
-  const extras = [...summerDocuments(snapshot, context), ...authoredCollections(snapshot, context)];
+  const extras = [...summerDocuments(snapshot, context), ...authoredCollections(snapshot, context), ...unpublishedPages(snapshot, context), ...globalDocuments(snapshot, context)];
   const summer = extras.find((doc) => doc._type === 'summerDocuments');
   for (const doc of pages.documents) for (const block of doc.blocks ?? []) if (block._type === 'summerDocumentList') block.documents = reference(summer._id);
   // Preserve every CMS media field, including currently unused dashboard files.
@@ -113,4 +121,68 @@ export function buildPlan(snapshot, schema) {
   documents.forEach(visit);
   if (unknownRefs.length) throw new Error(`${new Set(unknownRefs).size} unresolved target references`);
   return {documents,assets:[...context.assets.values()],counts:cms.counts,coverage:pages.coverage,gaps:pages.gaps,warnings:[...context.warnings],missingRoutes:snapshot.pages.filter((p)=>p.status!==200).map((p)=>({path:p.path,status:p.status}))};
+}
+
+function unpublishedPages(snapshot, context) {
+  const publicPaths = new Set(snapshot.pages.filter((p)=>p.status===200).map((p)=>p.path));
+  const assets = new Map(snapshot.assets.map((a)=>[a.id,a]));
+  return snapshot.pageRecords.filter((page)=>!page.collectionId&&!publicPaths.has(page.publishedPath)).map((page)=>{
+    const richText=[];
+    let index=0;
+    const visit=(nodes, ancestors=[])=>{
+      for(const node of nodes) {
+        const prefix=`${page.id}-${index++}`;
+        if(node.type==='text') richText.push(...(node.text.html ? portableText(node.text.html,context,prefix) : plainBlocks(node.text.text,prefix)));
+        if(node.type==='html-embed') richText.push(...portableText(node.html,context,prefix));
+        if(node.type==='image') {
+          const asset=assets.get(node.image.assetId);
+          if(asset)richText.push({...context.asset(asset.hostedUrl,'image',node.image.alt??asset.altText??''),_key:key(prefix)});
+          else if(node.image.assetId) {
+            // Webflow templates can retain deleted library-image IDs. The API
+            // cannot supply these assets; retain any authored alternative text.
+            context.warnings.add('unpublished-template-image-unavailable');
+            richText.push(...plainBlocks(node.image.alt,prefix));
+          }
+        }
+        if(node.type==='component-instance') {
+          if(ancestors.includes(node.componentId))throw new Error('Cyclic source component');
+          const children=snapshot.componentDom[node.componentId];
+          if(!children)throw new Error('Incomplete source component snapshot');
+          visit(children,[...ancestors,node.componentId]);
+          for(const [i,override] of (node.propertyOverrides??[]).entries())if(override.text)richText.push(...(override.text.html?portableText(override.text.html,context,`${prefix}-override-${i}`):plainBlocks(override.text.text,`${prefix}-override-${i}`)));
+        }
+      }
+    };
+    visit(snapshot.pageDom[page.id]);
+    if(!page.publishedPath)throw new Error('Unpublished source page has no route');
+    return {_id:`drafts.${pageId(page.publishedPath)}`,_type:'page',title:page.title,slug:{_type:'slug',current:page.publishedPath.slice(1)},
+      description:`Preserved Webflow ${page.draft?'draft':'system page'}. Source text and media are editable. Its layout has not been reconstructed.`,
+      meta:{title:page.seo?.title,description:page.seo?.description,noIndex:true},
+      blocks:[{_key:key(page.id),_type:'richTextBlock',richText}]};
+  });
+}
+
+// Webflow exposes the same image through its S3 and CDN hosts. Only alias a
+// resized URL when the complete original URL is present in this snapshot.
+export function mediaAliases(snapshot) {
+  const urls = new Set();
+  const scan = (value) => {
+    if (typeof value === 'string') for (const match of value.matchAll(/https:\/\/[^\s"'<>]+/g)) {
+      try { const url = mediaUrl(match[0].replace(/&amp;/g,'&')); if (url) urls.add(url); } catch { /* Not an asset URL. */ }
+    }
+    else if (value && typeof value === 'object') Object.values(value).forEach(scan);
+  };
+  scan(snapshot);
+  const assetPath = (url) => new URL(url).pathname.replace(/^\/webflow-prod-assets\//,'/');
+  const originals = new Map();
+  for (const url of urls) if (!/-p-\d+\.[^/]+$/.test(new URL(url).pathname)) {
+    const pathname = assetPath(url);
+    if (!originals.has(pathname) || new URL(url).hostname.endsWith('website-files.com')) originals.set(pathname,url);
+  }
+  const aliases = new Map();
+  for (const url of urls) {
+    const target = originals.get(assetPath(url).replace(/-p-\d+(\.[^/.]+)$/,'$1'));
+    if (target && target !== url) aliases.set(url,target);
+  }
+  return aliases;
 }

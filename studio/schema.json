@@ -4935,6 +4935,26 @@
                       },
                       {
                         "type": "string",
+                        "value": "h2"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h3"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h4"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h5"
+                      },
+                      {
+                        "type": "string",
+                        "value": "h6"
+                      },
+                      {
+                        "type": "string",
                         "value": "blockquote"
                       }
                     ]
@@ -9180,7 +9200,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "simpleRichText"
+          "name": "richTextContent"
         },
         "optional": true
       },
