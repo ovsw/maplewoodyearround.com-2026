@@ -1,6 +1,7 @@
 import { stegaClean } from "next-sanity";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import CognitoForm from "./cognito-form";
+import EventsCalendar from "./events-calendar";
 import {
   type DataAttribute,
   innerCss as css,
@@ -8,6 +9,7 @@ import {
   SourceActions,
   SourceCopy,
 } from "./maplewood-inner";
+import about from "./maplewood-about.module.css";
 
 type EmbedSectionProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -25,8 +27,9 @@ const httpsUrl = (value?: string | null) => {
 
 /*
  * Provider embeds: the bus stop map (Webflow gallery1), the Airtable form
- * frame and the Cognito tour form (content30). Pasted markup never runs;
- * the Cognito loader is fixed code and the form is chosen by its public IDs.
+ * frame, the Cognito tour form (content30) and the Events Calendar. Pasted
+ * markup never runs; the Cognito and Events Calendar loaders are fixed code,
+ * and the form or calendar is chosen by its public IDs.
  */
 export default function EmbedSection({
   _key,
@@ -45,11 +48,14 @@ export default function EmbedSection({
   title,
 }: EmbedSectionProps) {
   const kind = stegaClean(provider);
-  // The Events Calendar is a loader script, not a frame; its page owns it.
+  // The Events Calendar and Cognito use fixed loaders chosen by public IDs.
+  const calendar = kind === "Events Calendar" ? stegaClean(providerId)?.trim() : undefined;
   const src = kind === "Events Calendar" ? null : httpsUrl(embedUrl);
   const cognito = kind === "Cognito" && stegaClean(accountId) && stegaClean(providerId);
-  if (!cognito && !src) return null;
+  if (!cognito && !src && !calendar) return null;
   const headingId = title ? `embed-${stegaClean(_key)}-title` : undefined;
+  // The calendar page has no hero: its section heading is the page heading.
+  const Heading = calendar ? "h1" : "h2";
   const name = stegaClean(frameTitle) || stegaClean(title) || "Embedded content";
 
   if (kind === "Airtable" && !title && !body?.length) {
@@ -70,9 +76,9 @@ export default function EmbedSection({
           <div className={[css.narrow, css.centerText, css.embedHeading].join(" ")}>
             <SectionTagline dataAttribute={dataAttribute} tagline={tagline} />
             {title ? (
-              <h2 className={css.h2} data-sanity={dataAttribute?.("title")} id={headingId}>
+              <Heading className={css.h2} data-sanity={dataAttribute?.("title")} id={headingId}>
                 {title}
-              </h2>
+              </Heading>
             ) : null}
             {stegaClean(description)?.trim() ? (
               <p className={[css.medium, css.embedDescription].join(" ")} data-sanity={dataAttribute?.("description")}>
@@ -82,7 +88,11 @@ export default function EmbedSection({
           </div>
         ) : null}
         <SourceCopy className={css.embedBody} dataSanity={dataAttribute?.("body")} value={body} />
-        {cognito ? (
+        {calendar ? (
+          <div className={about.calendar} data-sanity={dataAttribute?.("providerId")}>
+            <EventsCalendar projectId={calendar} />
+          </div>
+        ) : cognito ? (
           <div className={css.cognito} data-sanity={dataAttribute?.("providerId")}>
             <CognitoForm
               accountId={stegaClean(accountId) as string}

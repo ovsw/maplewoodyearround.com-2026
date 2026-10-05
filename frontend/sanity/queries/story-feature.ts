@@ -12,6 +12,8 @@ export const storyFeatureQuery = groq`
     anchorId,
     ${taglineProjection},
     imagePosition,
+    videoUrl,
+    videoLabel,
     headingSize,
     features[]{
       _key, ${iconProjection}, accent, title,

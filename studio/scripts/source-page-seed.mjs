@@ -37,9 +37,10 @@ const [page] = materialize([source], refs);
 // Program cards list the page-authored program records; refresh their drafts
 // with the page so the preview shows the same card groups as the final import.
 // Summer document lists read the summer's grade groups; refresh that draft too.
+// Leadership profiles read the page-authored leadership staff records.
 // A staged source version is the importer's draft, so prefer it.
-const supporting = (type, matches) =>
-  source.blocks.some((block) => block._type === type)
+const supporting = (type, matches, group) =>
+  source.blocks.some((block) => block._type === type && (!group || block.profileGroup === group))
     ? plan.documents.filter(matches)
     : [];
 const summerDraft = (document) =>
@@ -47,6 +48,7 @@ const summerDraft = (document) =>
 const documents = materialize(
   [
     ...supporting("programCards", (document) => document._id.startsWith("wf-authored-program-")),
+    ...supporting("teamMembers", (document) => document._id.startsWith("wf-authored-leader-"), "leadership"),
     ...supporting("summerDocumentList", (document) => document._type === "summerDocuments" && !document._id.startsWith("drafts."))
       .map((document) => ({ ...summerDraft(document), _id: document._id })),
   ],

@@ -76,6 +76,21 @@ export default defineType({
     sectionBackgroundField,
     sectionAnchorField,
     defineField({
+      name: "layout",
+      title: "Layout",
+      type: "string",
+      description:
+        "Steps sit beside a sticky introduction. Milestones sit under a centred introduction and alternate sides of the line, each with its photo.",
+      initialValue: "steps",
+      options: {
+        layout: "radio",
+        list: [
+          { title: "Steps", value: "steps" },
+          { title: "Milestones", value: "milestones" },
+        ],
+      },
+    }),
+    defineField({
       name: "eyebrow",
       type: "string",
       description: "Optional short label shown above the heading.",

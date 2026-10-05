@@ -6,13 +6,14 @@ import {
   SectionTagline,
   SourceCopy,
 } from "./maplewood-inner";
+import about from "./maplewood-about.module.css";
 
 type RichTextBlockProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
   { _type: "richTextBlock" }
 > & { dataAttribute?: DataAttribute };
 
-/** Text section: label, heading and copy in a centred reading column. */
+/** Text section: label, heading and copy in a centred reading column, or a policy document. */
 export default function RichTextBlock({
   _key,
   align,
@@ -42,7 +43,8 @@ export default function RichTextBlock({
           </h2>
         ) : null}
         <SourceCopy
-          className={css.medium}
+          // Without a section heading the copy is a document, such as a policy.
+          className={title ? css.medium : about.document}
           dataSanity={dataAttribute?.("richText")}
           value={richText}
         />

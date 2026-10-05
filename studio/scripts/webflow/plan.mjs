@@ -89,12 +89,15 @@ function authoredCollections(snapshot, context) {
       const id = `wf-authored-program-${key(title)}`;
       const image = node.querySelector('img[src]');
       const link = node.matches('a[href]') ? node : node.querySelector('a[href]');
-      const label = text(node.querySelector('.text-style-tagline'));
+      // A season card shows its months in a program badge instead of a label.
+      const badge = node.querySelector('[class*="_card-content"] .summer-camp,[class*="_card-content"] .school-year');
+      const label = text(node.querySelector('.text-style-tagline')) || text(badge);
+      const program = badge?.classList.contains('school-year') ? 'schoolYear' : 'summerCamp';
       const linkLabel = text(node.querySelector('.button'));
       // The seasons page shows the two seasons in the same card component.
       const listingGroup = node.classList.contains('summer-camp_additional-programs_item') ? 'additional' : path === '/maplewood-seasons' ? 'seasons' : 'main';
       const doc = {
-        _id: id, _type: 'programOffering', title, program: 'summerCamp', visible: true, listingGroup,
+        _id: id, _type: 'programOffering', title, program, visible: true, listingGroup,
         ...(label ? { label } : {}),
         description: [...node.querySelectorAll('p')].map(text).filter(Boolean).join('\n') || text(node),
         ...(image ? { image: context.asset(image.src, 'image', image.alt) } : {}),
@@ -114,7 +117,8 @@ function authoredCollections(snapshot, context) {
       content.querySelectorAll('img,.team14_title-wrapper').forEach((e) => e.remove());
       documents.set(`wf-authored-leader-${key(name)}`, {
         _id: `wf-authored-leader-${key(name)}`, _type:'staffMember', name, profileGroup:'leadership', visible:true,
-        role:text(wrapper?.lastElementChild), bio:portableText(content,context,`leader-${index}`), order:index,
+        // The role line sits between the name and the email link.
+        role:text(wrapper?.querySelector('.text-size-medium')), bio:portableText(content,context,`leader-${index}`), order:index,
         ...(image ? {image:context.asset(image.src,'image',image.alt)} : {}),
         ...(node.querySelector('a[href^="mailto:"]') ? {email:node.querySelector('a[href^="mailto:"]').getAttribute('href').slice(7)} : {}),
       });

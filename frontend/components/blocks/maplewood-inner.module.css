@@ -117,6 +117,12 @@
   color: var(--maplewood-green);
   text-decoration: underline;
 }
+/* The live yellow marker on bold words (bg-highlighted). */
+.highlight {
+  background: rgb(255 215 0 / 0.3);
+  color: inherit;
+  font-weight: 700;
+}
 
 /* Accents: the live site's u-accent-* colours. Text uses a darker shade of
    the same hue so it keeps a 4.5:1 contrast on cream and white; a filled

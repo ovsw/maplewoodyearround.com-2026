@@ -94,6 +94,55 @@ field (the Webflow list sort is not available from the API), so the slider
 uses the order field; the inline "See all activities" link in the slider
 introductions is plain text (the button beside it keeps the link).
 
+## About, contact, FAQ, jobs and policy pages (issue #14)
+
+One new section type, `registrationCards`, created with `pnpm page-builder:new`:
+a program label, icon and heading with an introduction and tour button, then
+cards with an icon, colour, heading, text and `links[]` (registration forms,
+waivers). One link shows on its own line; several show as a list. It replaces
+`electiveCards` for the two `/contact` registration lists.
+
+Stored shape changes:
+
+- `directorIntro`: `panels[]` (heading and text) with the existing video and
+  still image; `title`, `description`, `image`, `body` and `actions` are
+  removed. Panels alternate sides over the sticky video; the first heading is
+  the page heading. The video stays still under reduced motion.
+- `contactDetailsSection`: `features[]` contact cards replace the settings
+  projection, `title`, `description` and `actions`. The cards hold the email,
+  telephone and directions links as the page shows them.
+- `jobList`: a rich `intro` replaces `description`. Jobs and Apply links stay
+  on the Job Opportunities records.
+- `stackedTimeline.layout`: `steps` (default) or `milestones` (`/history`:
+  centred intro, dated entries alternating around the line, each with a photo).
+- `statistics.image`: with a photo, the figures sit above the heading and text,
+  beside the photo (`/history`).
+- `storyFeature.videoUrl` and `videoLabel`: a YouTube lightbox on the photo
+  (`/staff`, `/staff-opportunities`; the preschool page gains its video on the
+  next import).
+- `simpleRichText` gains a `highlight` decorator for the live yellow marker
+  (`bg-highlighted`, used only on `/history`).
+
+Import changes: the `/history` timeline is a `div.section_timeline11`, so
+section `div`s with a `section_` class are now read. Leadership records take
+their role from the role line (it held the email address). Leadership
+sections keep no copy of the biographies; the profiles come from the
+leadership staff records, so `/staff` shows the `/leadership` biographies.
+Season cards keep their months as `label` and their badge's program. The bus
+map uses the home mapping on every page. Policy text (`content30`) keeps its
+first heading in the copy. `source-page-seed` also refreshes the leadership
+records for pages that show them.
+
+The calendar section's heading is the page heading (the source has no H1).
+The Events Calendar loader is fixed code; the calendar is chosen by
+`providerId`. The three policy pages are published pages, so the sitemap lists
+them.
+
+Known differences: the calendar introduction's bold line and the seasons
+introduction's badge links are plain text; the director headings use a lighter
+green for contrast on the dark video; the live phone leadership layout (tall
+portraits without biographies) is not copied.
+
 ## School Year hub and program pages (issue #12)
 
 One new section type, `iconCards`, created with `pnpm page-builder:new`: a
@@ -531,7 +580,7 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_transportation_contact14`                       | `busMap`                                                 | Editable map URL, bus benefits and actions.                                                                                    |
 | `section_layout412`                                      | `imageReveal`                                            | Year-round image, heading, text and actions; static complete image when motion is reduced.                                     |
 | `section_blog7`                                          | `latestArticles`                                         | A selected featured post plus published news cards. All featured metadata comes from that post.                                |
-| `section_layout355`                                      | `directorIntro`                                          | Public director story, portrait/video and contact actions.                                                                     |
+| `section_layout355`                                      | `directorIntro`                                          | Director story panels (heading and text) over the background video and still image.                                           |
 | `header50_wrap text-color-alternate`                     | `innerHero`                                              | Repeated image-hero heading, copy and image content.                                                                           |
 | `section_summer-camp_programs`                           | `programCards`                                           | Summer Camp offerings selected by `program` and `listingGroup = main`.                                                         |
 | `section_summer-camp_additional-programs`                | `programCards`                                           | Summer Camp offerings selected by `listingGroup = additional`.                                                                 |
@@ -561,17 +610,17 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_layout203`                                      | `storyFeature`                                           | Bus-process explanation and image.                                                                                             |
 | `section_gallery1`                                       | `embedSection`                                           | Map destination, heading, accessible description and optional actions.                                                         |
 | `section_team14`                                         | `teamMembers` with `profileGroup = leadership`           | Public leadership profiles with biographies and contact links; separate from full SC/SY profiles with `profileGroup = roster`. |
-| `section_contact21`                                      | `contactDetailsSection`                                  | Public contact details from settings, with editable email, telephone and directions destinations.                              |
-| `section_career12`                                       | `jobList`                                                | Visible jobs selected by program, with editable application links.                                                             |
+| `section_contact21`                                      | `contactDetailsSection`                                  | Authored contact cards (icon, colour, heading, text with email, telephone and directions links).                               |
+| `section_career12`                                       | `jobList`                                                | Heading and linked introduction; visible jobs selected by program, with editable application links.                            |
 | `section_layout398`                                      | `parentDashboardSection`                                 | Singleton heading/tab labels plus visible dashboard cards selected through season program. Hide cards without destinations.    |
-| `section_timeline11`                                     | `stackedTimeline`                                        | Ordered history dates and story entries.                                                                                       |
+| `section_timeline11`                                     | `stackedTimeline` with `layout = milestones`             | Ordered history dates, titles, highlighted text and photos.                                                                    |
 | `header50c_wrap text-color-alternate`                    | `innerHero`                                              | Document-page title and introduction.                                                                                          |
 | `section_content30`                                      | `summerDocumentList`, `embedSection`, or `richTextBlock` | Download pages read the selected summer document; tour pages use provider embeds; policy pages use rich text.                  |
 | `w-embed w-iframe`                                       | `embedSection`                                           | Airtable change-notification form URL and accessible frame title.                                                              |
 | `section_blog-post-header3`                              | `post` route                                             | Title, date, author, category and image belong to the article document.                                                        |
 | `section_content29`                                      | `post.body` and author reference                         | Article body and author footer; not a duplicate insertable section.                                                            |
 
-`section_blog66` uses these sources: Play Center calendar days/PDFs; activities by program/location and `activityCategory`; playground characters; birthday-party `playgroundGuest` records; facilities by `facilityCategory`; and sample schedules by program/audience. The two `/contact` registration-card lists are authored cards with editable actions and use `electiveCards`/`featureCards` according to their content structure. Do not create fictional CMS source records to explain a source wrapper.
+`section_blog66` uses these sources: Play Center calendar days/PDFs; activities by program/location and `activityCategory`; playground characters; birthday-party `playgroundGuest` records; facilities by `facilityCategory`; and sample schedules by program/audience. The two `/contact` registration-card lists (`contact24` cards) are authored cards with editable links and use `registrationCards`. Do not create fictional CMS source records to explain a source wrapper.
 
 Summer program cards without a Webflow collection become `programOffering` documents from their public page content. Keep their source/page identity and `listingGroup` explicit. This permits the same filter-based pattern as SY Programs without duplicating a program's text into each page.
 

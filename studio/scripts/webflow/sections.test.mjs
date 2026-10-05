@@ -260,3 +260,84 @@ test('price card checklists keep their heading, icon, colour and a closing note'
   assert.equal(block.intro[0].markDefs[0].customLink.external, 'https://example.com/waiver');
   assert.equal('description' in block, false);
 });
+
+const spans = (blocks) => blocks.map((entry) => entry.children.map((span) => span.text).join('')).join(' | ');
+
+test('director panels read left, right, then left, as the live page shows them', () => {
+  const { block } = mapped('directorIntro', 'section_layout355', `<section class="section_layout355"><div class="layout355_content-left">
+    <div class="layout355_text-wrapper"><h1>Lee's Story</h1><p>One.<br><br>Two.</p></div>
+    <div class="layout355_text-wrapper"><h2>I Love Coming to Work!</h2><p>Four.</p></div></div>
+    <div class="layout355_content-right"><div class="layout355_text-wrapper"><h2>Camp Director</h2><p>Three.</p></div></div></section>`);
+  assert.deepEqual(block.panels.map((panel) => panel.title), ["Lee's Story", 'Camp Director', 'I Love Coming to Work!']);
+  assert.equal(spans(block.panels[0].body), 'One.\n\nTwo.');
+});
+
+test('registration cards keep the heading icon, intro, tour button and each card\'s links', () => {
+  const { block } = mapped('registrationCards', 'section_blog66', `<section class="section_blog66"><div class="blog66_heading-wrapper">
+    <div class="text-style-tagline"><span class="school-year">School Year</span><span>– 2026</span></div>
+    <div class="button-group u-accent-purple"><div class="u-color-accent"><svg viewBox="0 0 24 24"><path d="M1 1"/></svg></div><h2>School Year Registration</h2></div>
+    <div class="w-richtext"><p>Fun doesn't end!</p></div><div class="button-group"><a class="button is-secondary" href="/contact">Schedule a Tour</a></div></div>
+    <div class="contact24_grid-list"><div class="contact24_item u-accent-purple u-accent-red"><svg viewBox="0 0 24 24"><path d="M2 2"/></svg><h3>Play Center</h3><p>Soar!</p>
+    <div class="w-richtext"><ul><li><a href="https://example.com/waiver">Waiver</a><a href="https://example.com/x">‍</a></li><li><a href="https://example.com/book">Book</a></li></ul></div></div></div></section>`);
+  assert.deepEqual([block.title, block.accent, Boolean(block.icon), block.tagline.program], ['School Year Registration', 'purple', true, 'schoolYear']);
+  assert.equal(spans(block.intro), "Fun doesn't end!");
+  assert.deepEqual(block.actions.map((action) => action.label), ['Schedule a Tour']);
+  const [card] = block.cards;
+  assert.deepEqual([card.title, card.accent, spans(card.body)], ['Play Center', 'red', 'Soar!']);
+  assert.deepEqual(card.links.map((link) => [link.label, link.destination.external]), [['Waiver', 'https://example.com/waiver'], ['Book', 'https://example.com/book']]);
+});
+
+test('history milestones keep the year, title, highlighted words and photo', () => {
+  const { block } = mapped('stackedTimeline', 'section_timeline11', `<section class="section_timeline11"><div class="max-width-large">
+    <div class="text-style-tagline">The Maplewood Story</div><h2>A Legacy of Joy</h2><p>How it began.</p></div>
+    <div class="timeline11_item"><div class="timeline11_item-content"><h3>1956</h3><h4>Hal met Sandy</h4>
+    <p>They <span class="text-weight-bold bg-highlighted">fell in love</span>.</p></div>
+    <div class="timeline11_image-wrapper"><img src="https://cdn.prod.website-files.com/a/1956.jpg" alt="Camp"></div></div></section>`);
+  assert.deepEqual([block.layout, block.eyebrow, block.intro], ['milestones', 'The Maplewood Story', 'How it began.']);
+  const [item] = block.items;
+  assert.deepEqual([item.meta, item.title], ['1956', 'Hal met Sandy']);
+  assert.deepEqual(item.body[0].children.map((span) => [span.text, span.marks]), [['They ', []], ['fell in love', ['strong', 'highlight']], ['.', []]]);
+  assert.equal(item.image._type, 'image');
+});
+
+test('policy text keeps its first heading in the copy', () => {
+  const { block } = mapped('richTextBlock', 'section_content30', `<section class="section_content30"><div class="w-richtext">
+    <p>We protect your privacy.</p><h3>Definitions</h3><p>Terms.</p></div></section>`, { _type: 'richTextBlock', title: 'Definitions' });
+  assert.equal(block.title, undefined);
+  assert.deepEqual(block.richText.map((entry) => entry.style), ['normal', 'h3', 'normal']);
+});
+
+test('a lightbox photo keeps its YouTube link and label outside the story text', () => {
+  const lightbox = (url) => `<section class="section_layout30"><h2>Who says Campers have all the fun?</h2><p>Story.</p>
+    <a class="layout30_lightbox w-lightbox" href="#"><img src="https://cdn.prod.website-files.com/a/b.jpg" alt=""><div class="heading-style-h5">2024 Maplewood<br>Staff Video</div>
+    <script type="application/json" class="w-json">{"items":[{"url":"${url}","type":"video"}]}</script></a></section>`;
+  const { block } = mapped('storyFeature', 'section_layout30', lightbox('https://www.youtube.com/watch?v=5ZvRD6I3wnc'));
+  assert.deepEqual([block.videoUrl, block.videoLabel], ['https://www.youtube.com/watch?v=5ZvRD6I3wnc', '2024 Maplewood Staff Video']);
+  assert.equal(spans(block.richText), 'Story.');
+  assert.equal(mapped('storyFeature', 'section_layout30', lightbox('https://example.com/video.mp4')).block.videoUrl, undefined);
+});
+
+test('leadership profiles come from the staff records, not section copy', () => {
+  const { block } = mapped('teamMembers', 'section_team14', `<section class="section_team14"><div class="team14_list">
+    <div class="team14_item"><div class="team14_title-wrapper"><div>Lee</div><div class="text-size-medium">Owner/Director</div></div><p>Bio.</p></div></div></section>`,
+  { _type: 'teamMembers', profileGroup: 'leadership', presentation: 'profiles', richText: [{ _type: 'block' }] });
+  assert.deepEqual(block.richText, []);
+});
+
+test('contact cards keep the icon colour, heading and links', () => {
+  const { block } = mapped('contactDetailsSection', 'section_contact21', `<section class="section_contact21"><div class="contact21_item">
+    <div class="icon-embed-medium u-accent-purple"><svg viewBox="0 0 24 24"><path d="M1 1"/></svg></div><h3>Call / Fax Front Desk</h3>
+    <div><a class="text-style-link" href="tel:5082382387">(508) 238-2387</a><div>Fax: 508-238-1154</div></div></div></section>`);
+  const [card] = block.features;
+  assert.deepEqual([card.title, card.accent, Boolean(card.icon)], ['Call / Fax Front Desk', 'purple', true]);
+  assert.equal(spans(card.body), '(508) 238-2387 | Fax: 508-238-1154');
+  assert.equal(card.body[0].markDefs[0].customLink.external, 'tel:5082382387');
+});
+
+test('a job list keeps its heading and linked introduction', () => {
+  const { block } = mapped('jobList', 'section_career12', `<section class="section_career12"><div class="career12_content-left"><h2>Current Openings</h2>
+    <p>Apply for a <a href="/contact">Summer Camp</a> position.</p></div><div class="career12_list-wrapper w-dyn-list"></div></section>`);
+  assert.equal(block.title, 'Current Openings');
+  assert.equal(spans(block.intro), 'Apply for a Summer Camp position.');
+  assert.equal(block.intro[0].markDefs[0].customLink.internal._ref, 'contact-page');
+});

@@ -92,6 +92,28 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "videoUrl",
+      title: "Video link",
+      type: "url",
+      description:
+        "Optional YouTube link. The image then shows a play button that opens the video.",
+      validation: (rule) =>
+        rule.uri({ scheme: ["https"] }).custom((value) => {
+          if (!value) return true;
+          const host = new URL(value).hostname.replace(/^www\./, "");
+          return ["youtube.com", "youtu.be", "m.youtube.com"].includes(host)
+            ? true
+            : "Use a YouTube link";
+        }),
+    }),
+    defineField({
+      name: "videoLabel",
+      title: "Video label",
+      type: "string",
+      description: "Shown on the image under the play button, such as “2024 Maplewood Staff Video”.",
+      hidden: ({ parent }) => !(parent as { videoUrl?: string } | undefined)?.videoUrl,
+    }),
+    defineField({
       name: "imagePosition",
       title: "Image side",
       type: "string",

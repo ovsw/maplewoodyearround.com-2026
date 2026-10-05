@@ -38,6 +38,7 @@ export const contentPageBuilderBlockTypes = [
   "summerDocumentList",
   "tabbedHero",
   "iconCards",
+  "registrationCards",
   // page-builder-generator:content-types
 ] as const;
 

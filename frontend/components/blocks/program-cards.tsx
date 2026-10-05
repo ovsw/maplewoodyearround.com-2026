@@ -51,6 +51,10 @@ export default function ProgramCards({
   if (!title || !offerings.length) return null;
   const headingId = `program-cards-${stegaClean(_key)}-title`;
   const columns = stegaClean(listingGroup) === "additional";
+  // The season cards show their months as a program badge.
+  const seasons = stegaClean(listingGroup) === "seasons";
+  const badge = (item: Offering) =>
+    seasons ? (stegaClean(item.program) === "schoolYear" ? css.badgeSchool : css.badgeSummer) : "";
   const edit = (item: Offering, path: string) => itemDataAttribute?.(item._id, "programOffering", path);
   // With breadcrumbs the section opens the page, so its heading is the page heading.
   const Heading = breadcrumbs?.length ? "h1" : "h2";
@@ -101,7 +105,7 @@ export default function ProgramCards({
                   <div className={programs.cardContent}>
                     {stegaClean(item.label)?.trim() ? (
                       <p className={programs.cardLabel} data-sanity={edit(item, "label")}>
-                        {item.label}
+                        {seasons ? <span className={badge(item)}>{item.label}</span> : item.label}
                       </p>
                     ) : null}
                     <ItemHeading className={programs.cardTitle} data-sanity={edit(item, "title")}>

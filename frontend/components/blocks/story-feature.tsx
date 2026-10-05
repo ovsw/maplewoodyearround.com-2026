@@ -10,6 +10,7 @@ import {
   SourceImage,
   SourcePoints,
 } from "./maplewood-inner";
+import StoryVideoLightbox from "./story-video-lightbox";
 
 type StoryFeatureProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -25,6 +26,7 @@ const plain = (value: StoryFeatureProps["title"]) =>
 /*
  * Image and text (Webflow layout10, layout203 and layout30): label, heading,
  * copy, up to four icon points and buttons beside a framed square photo.
+ * A photo with a video link opens the video in a dialog.
  */
 export default function StoryFeature({
   _key,
@@ -38,6 +40,8 @@ export default function StoryFeature({
   richText,
   tagline,
   title,
+  videoLabel,
+  videoUrl,
 }: StoryFeatureProps) {
   const heading = plain(title);
   const hasImage = Boolean(image?.asset?._id);
@@ -84,7 +88,13 @@ export default function StoryFeature({
         </div>
         {hasImage ? (
           <div className={[css.storyMedia, css.card].join(" ")} data-sanity={dataAttribute?.("image")}>
-            <SourceImage image={image} />
+            {stegaClean(videoUrl)?.trim() ? (
+              <StoryVideoLightbox label={videoLabel} url={videoUrl as string}>
+                <SourceImage image={image} />
+              </StoryVideoLightbox>
+            ) : (
+              <SourceImage image={image} />
+            )}
           </div>
         ) : null}
       </div>
