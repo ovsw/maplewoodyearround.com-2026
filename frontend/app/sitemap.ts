@@ -10,12 +10,14 @@ const VIEWABLE_TYPES = [
   "post",
   "blogIndex",
   "category",
+  "parentDashboard",
 ] as const;
 
 const urlQuery = `
   'url': select(
     _id == "homePage" && _type == "homePage" => $baseUrl + "/",
     _id == "blogIndex" => $baseUrl + "/news",
+    _id == "parentDashboard" => $baseUrl + "/parent-dashboard",
     _type == "post" => $baseUrl + "/post/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     _type == "category" => $baseUrl + "/blog/category/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),
     $baseUrl + "/" + array::join(string::split(slug.current, "/")[@ != ""], "/")
@@ -29,7 +31,7 @@ const SITEMAP_QUERY = groq`
     && meta.noindex != true
     && (_type != "post" || (${publishedPostFilter}))
     && (
-      (_type != "category" && (defined(slug.current) || _id in ["homePage", "blogIndex"]))
+      (_type != "category" && (defined(slug.current) || _id in ["homePage", "blogIndex", "parentDashboard"]))
       || (_type == "category" && defined(slug.current))
     )
   ] {

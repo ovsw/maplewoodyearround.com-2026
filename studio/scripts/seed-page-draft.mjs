@@ -80,8 +80,11 @@ async function loadSeed(file) {
   const seed = module.default;
   if (!seed?.page?._id) usage("The seed must default-export { page: { _id, ... } }.");
   if (seed.page._id.startsWith("drafts.")) usage("Give the page's published id, without the drafts. prefix.");
-  if (!Array.isArray(seed.page.blocks)) usage("page.blocks must be an array of sections.");
-  for (const block of seed.page.blocks) {
+  // The Parent dashboard has card lists instead of sections.
+  if (seed.page._id !== "parentDashboard" && !Array.isArray(seed.page.blocks)) {
+    usage("page.blocks must be an array of sections.");
+  }
+  for (const block of seed.page.blocks ?? []) {
     if (!block?._type) usage("Every section needs a _type.");
   }
   for (const document of seed.documents ?? []) {
@@ -111,7 +114,7 @@ async function main() {
 
   const base = draft ?? published;
   const pageType = base?._type ?? pageFields._type ?? "page";
-  if (!["page", "homePage", "blogIndex"].includes(pageType) ||
+  if (!["page", "homePage", "blogIndex", "parentDashboard"].includes(pageType) ||
       (pageFields._type && pageFields._type !== pageType)) {
     usage("A seed must preserve the existing page document type.");
   }

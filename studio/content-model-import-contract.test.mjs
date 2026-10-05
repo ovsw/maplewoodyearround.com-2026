@@ -22,7 +22,7 @@ test('mapped collection targets exist with independent Summer Camp and School Ye
   }
   for (const name of ['activityCategory', 'facilityCategory', 'faqCategory', 'grade', 'campGroup',
     'programOffering', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar',
-    'jobOpportunity', 'dashboardCard', 'season', 'summerDocuments', 'post', 'category']) {
+    'jobOpportunity', 'season', 'summerDocuments', 'post', 'category']) {
     definition(name)
   }
 })
@@ -67,7 +67,7 @@ test('testimonial CMS titles do not overwrite the public author name', () => {
 test('pages accept the source-specific interactive and collection sections', () => {
   const sections = field(definition('page'), 'blocks').of.of.map((member) => member.rest.name)
   for (const name of ['videoHero', 'videoZoomGrid', 'tabbedHero', 'scrollPanels', 'busMap',
-    'imageReveal', 'filterableCards', 'cardSlider', 'summerDocumentList', 'parentDashboardSection']) {
+    'imageReveal', 'filterableCards', 'cardSlider', 'summerDocumentList']) {
     assert.ok(sections.includes(name), `Page Builder cannot accept ${name}`)
     definition(name)
   }

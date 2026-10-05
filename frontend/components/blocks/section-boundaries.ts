@@ -71,7 +71,6 @@ export const sectionTraits: Record<Block["_type"], SectionTrait> = {
   embedSection: {},
   contactDetailsSection: {},
   jobList: {},
-  parentDashboardSection: {},
   summerDocumentList: {},
   tabbedHero: { hero: true },
   iconCards: {},

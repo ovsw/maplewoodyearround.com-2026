@@ -19,7 +19,6 @@ import {
   playgroundCalendar,
 } from "./schemas/documents/playground";
 import parentDashboard, {
-  dashboardCard,
   summerDocuments,
 } from "./schemas/documents/parent-dashboard";
 import contentDestination from "./schemas/blocks/shared/content-destination";
@@ -104,7 +103,6 @@ import instructionSteps from "./schemas/blocks/instruction-steps";
 import embedSection from "./schemas/blocks/embed-section";
 import contactDetailsSection from "./schemas/blocks/contact-details-section";
 import jobList from "./schemas/blocks/job-list";
-import parentDashboardSection from "./schemas/blocks/parent-dashboard-section";
 import summerDocumentList from "./schemas/blocks/summer-document-list";
 import tabbedHero from "./schemas/blocks/tabbed-hero";
 import iconCards from "./schemas/blocks/icon-cards";
@@ -128,7 +126,6 @@ export const schemaTypes = [
   playgroundEvent,
   playgroundCalendar,
   parentDashboard,
-  dashboardCard,
   summerDocuments,
   contentDestination,
   contentAction,
@@ -209,7 +206,6 @@ export const schemaTypes = [
   embedSection,
   contactDetailsSection,
   jobList,
-  parentDashboardSection,
   summerDocumentList,
   tabbedHero,
   iconCards,

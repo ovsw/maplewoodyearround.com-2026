@@ -1,6 +1,6 @@
 import { documentId, key, reference, htmlDocument, text, mediaUrl, destination, customUrl, plainBlocks, portableText } from './html.mjs';
-import { mappings } from './collections.mjs';
-import { mapSourceSections, sectionAnchors, selectedTestimonials, tagline } from './sections.mjs';
+import { mappings, program } from './collections.mjs';
+import { iconFromSvg, mapSourceSections, sectionAnchors, selectedTestimonials, tagline } from './sections.mjs';
 
 const patterns = {
   section_header33: 'videoHero', section_header83: 'videoZoomGrid', section_layout515: 'scrollPanels',
@@ -14,7 +14,7 @@ const patterns = {
   section_stats14: 'statistics', section_layout59: 'storyFeature', section_layout311: 'iconCards', section_team4: 'teamMembers',
   section_cta13: 'ctaBanner', section_filters5: 'filterableCards', section_layout486: 'instructionSteps', section_cta39: 'ctaBanner',
   section_layout10: 'storyFeature', section_layout203: 'storyFeature', section_gallery1: 'embedSection', section_team14: 'teamMembers',
-  section_contact21: 'contactDetailsSection', section_career12: 'jobList', section_layout398: 'parentDashboardSection', section_timeline11: 'stackedTimeline',
+  section_contact21: 'contactDetailsSection', section_career12: 'jobList', section_timeline11: 'stackedTimeline',
   section_content30: 'richTextBlock',
 };
 
@@ -41,6 +41,63 @@ const firstImage = (node, context) => {
   return image ? context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '') : undefined;
 };
 
+const ACCENTS = ['green', 'blue', 'red', 'purple', 'mint', 'yellow'];
+
+// The singleton owns one ordered card list per tab. A card in both seasons
+// appears in both lists. Hidden and unpublished source cards are not imported.
+export function parentDashboard(snapshot, context, main, meta) {
+  const header = main.querySelector('.section_layout398 .text-align-center') ?? main;
+  const [intro, prompt] = header.querySelectorAll('p');
+  const collection = snapshot.collections.find((c) => c.displayName === 'Parent Dashboard Cards');
+  const seasons = snapshot.collections.find((c) => c.displayName === 'Seasons');
+  const programs = new Map((seasons?.live ?? []).map((item) => [item.id, program(item.fieldData.name)]));
+  // The public link each card shows, matched by its exact heading.
+  const shown = new Map([...main.querySelectorAll('.w-dyn-item')].flatMap((node) => {
+    const anchor = node.querySelector('a[href]:not(.w-condition-invisible)');
+    return anchor ? [[text(node.querySelector('h3')), anchor.getAttribute('href')]] : [];
+  }));
+  const cards = { schoolYear: [], summerCamp: [] };
+  const items = (collection?.live ?? []).filter((item) => item.fieldData.live !== false)
+    .sort((a, b) => (a.fieldData.order ?? Infinity) - (b.fieldData.order ?? Infinity) || a.fieldData.name.localeCompare(b.fieldData.name));
+  for (const item of items) {
+    const source = item.fieldData;
+    const title = source.name.trim();
+    const file = source['use-attachment'] && source.attachment?.url;
+    const link = source['use-link'] && source['link-url'];
+    let target;
+    if (file && link) {
+      if (!shown.get(title)) throw new Error('Dashboard has conflicting destination modes without a rendered link');
+      target = destination(shown.get(title), context);
+    } else if (file) target = { _type: 'contentDestination', kind: 'file', file: context.asset(source.attachment, 'file') };
+    else if (link) target = destination(link, context);
+    const accent = ACCENTS.find((name) => name === source['color-theme']?.trim().toLowerCase());
+    const icon = source['show-icon'] && source['icon-code'] ? iconFromSvg(htmlDocument(source['icon-code']).querySelector('svg')) : undefined;
+    const card = {
+      _type: 'dashboardCard', title,
+      ...(source['card-text'] ? { text: source['card-text'].trim() } : {}),
+      ...(accent ? { accent } : {}),
+      ...(icon ? { icon } : {}),
+      ...(source['show-image'] && source.image?.url ? { image: context.asset(source.image, 'image') } : {}),
+      link: { _type: 'contentAction', label: source['link-text']?.trim() || 'Visit Page', ...(target ? { destination: target } : {}) },
+    };
+    for (const season of new Set((source.season ?? []).map((id) => programs.get(id)).filter(Boolean))) {
+      cards[season].push({ ...card, _key: key(`dashboard-${season}-${item.id}`) });
+    }
+  }
+  return {
+    _id: 'parentDashboard', _type: 'parentDashboard',
+    ...(tagline(header) ? { tagline: tagline(header) } : {}),
+    title: text(header.querySelector('h1,h2')),
+    intro: text(intro),
+    ...(prompt ? { tabsPrompt: portableText(prompt, context, 'parentDashboard-prompt').filter((entry) => entry._type === 'block') } : {}),
+    schoolYearLabel: text(main.querySelector('[data-w-tab="School Year"]')),
+    summerCampLabel: text(main.querySelector('[data-w-tab="Summer Camp"]')),
+    schoolYearCards: cards.schoolYear,
+    summerCampCards: cards.summerCamp,
+    meta,
+  };
+}
+
 export function pageContext(snapshot, context) {
   context.routes = new Map(snapshot.pages.filter((p) => p.status === 200 && !p.path.startsWith('/post/')).map((p) => [p.path, pageId(p.path)]));
   context.routes.set('/parent-dashboard', 'parentDashboard');
@@ -48,14 +105,6 @@ export function pageContext(snapshot, context) {
     for (const item of [...c.staged, ...c.live]) context.routes.set(`/post/${item.fieldData.slug}`, documentId(c.id, item.id));
   }
   context.pageDocuments = new Map(snapshot.pages.filter((p) => p.status === 200).map((p) => [p.path, htmlDocument(p.html)]));
-  context.dashboardLinks = new Map();
-  const cards = snapshot.collections.find((c) => c.displayName === 'Parent Dashboard Cards');
-  const dashboard = context.pageDocuments.get('/parent-dashboard');
-  for (const item of cards?.live ?? []) {
-    const node = [...(dashboard?.querySelectorAll('.w-dyn-item') ?? [])].find((node) => text(node).includes(item.fieldData.name.trim()));
-    const anchor = node?.matches('a') ? node : node?.querySelector('a[href]:not(.w-condition-invisible)');
-    if (anchor) context.dashboardLinks.set(item.fieldData.slug, anchor.getAttribute('href'));
-  }
   const jobs = context.pageDocuments.get('/staff-opportunities');
   context.jobApplication = [...(jobs?.querySelectorAll('a[href]') ?? [])].find((a) => /apply/i.test(text(a)))?.getAttribute('href');
   const enrichment=context.pageDocuments.get('/school-year/programs/enrichment-classes');
@@ -205,6 +254,8 @@ export function staticPages(snapshot, context, schema) {
       const prefix = `${page.path}-${index}`;
       const selector = [...original.classList].find((name) => patterns[name]);
       let type = patterns[selector] ?? (original.matches('.w-embed.w-iframe') ? 'embedSection' : undefined);
+      // The parentDashboard singleton imports this section (parentDashboard below).
+      if (original.classList.contains('section_layout398')) continue;
       const staticNode = prune(original, '.w-dyn-list,script,style,svg,noscript');
       // Hidden source filter links are not part of the home page's interface.
       if (page.path === '/') staticNode.querySelectorAll('.u-display-hidden').forEach((node) => node.remove());
@@ -361,9 +412,7 @@ export function staticPages(snapshot, context, schema) {
     const metadata = { title: dom.title, description: metaDescription };
     const shareImage = dom.querySelector('meta[property="og:image"]')?.content;
     if (shareImage && mediaUrl(shareImage)) metadata.image = context.asset(shareImage, 'image');
-    if (page.path === '/parent-dashboard') {
-      documents.push({ _id:'parentDashboard', _type:'parentDashboard', title:headingText(main), intro:text(prune(main,'.w-dyn-list,script,style,svg')), schoolYearLabel:text(main.querySelector('[data-w-tab="School Year"]')), summerCampLabel:text(main.querySelector('[data-w-tab="Summer Camp"]')) });
-    } else documents.push({ _id: pageId(page.path), _type: page.path === '/' ? 'homePage' : page.path === '/news' ? 'blogIndex' : 'page', title: headingText(main) || dom.title, ...(page.path !== '/' && page.path !== '/news' ? { slug: { _type:'slug', current:page.path.slice(1) } } : {}), description:metaDescription, meta:metadata, blocks });
+    if (page.path === '/parent-dashboard') documents.push(parentDashboard(snapshot, context, main, metadata)); else documents.push({ _id: pageId(page.path), _type: page.path === '/' ? 'homePage' : page.path === '/news' ? 'blogIndex' : 'page', title: headingText(main) || dom.title, ...(page.path !== '/' && page.path !== '/news' ? { slug: { _type:'slug', current:page.path.slice(1) } } : {}), description:metaDescription, meta:metadata, blocks });
   }
   return { documents, coverage, gaps };
 }

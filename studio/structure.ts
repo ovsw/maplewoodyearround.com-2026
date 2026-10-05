@@ -82,7 +82,6 @@ export const structure: StructureResolver = (S) =>
             .title("Parents")
             .items([
               singleton(S, "parentDashboard", "Parent dashboard"),
-              documents(S, "dashboardCard", "Parent dashboard cards"),
               documents(S, "summerDocuments", "Summer documents"),
               documents(S, "season", "Seasons"),
             ]),

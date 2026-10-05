@@ -1,94 +1,82 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
+import meta from "../blocks/shared/meta";
 import {
-  descriptionField,
-  imageField,
-  orderField,
-  referencesField,
-  slugField,
-  switchField,
-  textField,
-  titleField,
-  visibleField,
-} from "./maplewood-fields";
+  accentField,
+  iconField,
+  taglineField,
+} from "../blocks/shared/maplewood-fields";
+import { descriptionField, imageField, textField, titleField } from "./maplewood-fields";
 
-export const dashboardCard = defineType({
+const dashboardCard = defineArrayMember({
   name: "dashboardCard",
-  title: "Parent dashboard card",
-  type: "document",
-  description: "A link or download shown in one or both Parent dashboard tabs.",
+  title: "Card",
+  type: "object",
   fields: [
     titleField,
-    slugField,
-    descriptionField("text", "Card text"),
-    textField(
-      "colorTheme",
-      "Color theme",
-      "The source card color name used by the Parent dashboard.",
-    ),
-    imageField(),
-    switchField(
-      "showImage",
-      "Show image",
-      "Show the card image when one is set.",
-    ),
-    switchField("showIcon", "Show icon", "Show the selected card icon."),
-    textField(
-      "iconName",
-      "Icon name",
-      "The icon name for the card. Imported icon markup is converted to a supported icon.",
-    ),
+    descriptionField("text", "Text"),
+    accentField,
+    {
+      ...iconField,
+      description: "Optional. Shown above the heading when the card has no image.",
+    },
+    {
+      ...imageField(),
+      description: "Optional. Shown across the top of the card instead of the icon.",
+    },
     defineField({
-      name: "iconCode",
-      title: "Imported icon code",
-      type: "string",
+      name: "link",
+      title: "Link",
+      type: "contentAction",
       description:
-        "Original source icon text, retained for the importer. Never rendered as HTML.",
-      readOnly: true,
-      hidden: true,
+        "Choose a page, another website or an uploaded file. A card without a destination is hidden.",
     }),
-    textField(
-      "linkText",
-      "Link text",
-      "The text visitors click to open this card.",
-    ),
-    defineField({
-      name: "destination",
-      title: "Link or file",
-      type: "contentDestination",
-      description:
-        "Choose a page, external URL or uploaded file. Cards without a destination are hidden.",
-    }),
-    referencesField(
-      "seasons",
-      "Seasons",
-      "season",
-      "Choose the seasons whose Parent dashboard tabs show this card.",
-    ),
-    orderField,
-    visibleField,
   ],
-  preview: { select: { title: "title", subtitle: "linkText", media: "image" } },
+  preview: {
+    select: { title: "title", subtitle: "link.label", media: "image" },
+  },
 });
+
+const cardsField = (name: string, title: string) =>
+  defineField({
+    name,
+    title,
+    type: "array",
+    group: "content",
+    description: "Cards in display order. Drag to reorder.",
+    of: [dashboardCard],
+  });
 
 export default defineType({
   name: "parentDashboard",
   title: "Parent dashboard",
   type: "document",
-  description:
-    "The dashboard heading and tab labels. Cards are managed in Parent dashboard cards.",
+  description: "The Parent dashboard page, with one list of cards for each tab.",
+  groups: [
+    { name: "content", title: "Content", default: true },
+    { name: "seo", title: "SEO" },
+  ],
   fields: [
-    titleField,
-    descriptionField("intro", "Introduction"),
-    textField(
-      "schoolYearLabel",
-      "School Year tab label",
-      "The label of the School Year tab.",
-    ),
-    textField(
-      "summerCampLabel",
-      "Summer Camp tab label",
-      "The label of the Summer Camp tab.",
-    ),
+    { ...taglineField, group: "content" },
+    { ...titleField, title: "Heading", group: "content" },
+    { ...descriptionField("intro", "Introduction"), group: "content" },
+    defineField({
+      name: "tabsPrompt",
+      title: "Text above the tabs",
+      type: "simpleRichText",
+      group: "content",
+      description: 'For example "Select Season:".',
+    }),
+    {
+      ...textField("schoolYearLabel", "School Year tab label", "The label of the School Year tab."),
+      group: "content",
+    },
+    cardsField("schoolYearCards", "School Year cards"),
+    {
+      ...textField("summerCampLabel", "Summer Camp tab label", "The label of the Summer Camp tab. This tab opens first."),
+      group: "content",
+    },
+    cardsField("summerCampCards", "Summer Camp cards"),
+    meta,
   ],
   initialValue: {
     title: "Parent Dashboard",

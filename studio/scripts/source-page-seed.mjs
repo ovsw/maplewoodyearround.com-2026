@@ -31,7 +31,9 @@ const refs = new Map(
     return id ? [[asset.token, id]] : [];
   }),
 );
-const source = plan.documents.find((document) => document._id === pageId(pagePath));
+// The Parent dashboard route is served by its singleton.
+const sourceId = pagePath === "/parent-dashboard" ? "parentDashboard" : pageId(pagePath);
+const source = plan.documents.find((document) => document._id === sourceId);
 if (!source) throw new Error(`The source has no page at ${pagePath}`);
 const [page] = materialize([source], refs);
 // Program cards list the page-authored program records; refresh their drafts
@@ -40,7 +42,7 @@ const [page] = materialize([source], refs);
 // Leadership profiles read the page-authored leadership staff records.
 // A staged source version is the importer's draft, so prefer it.
 const supporting = (type, matches, group) =>
-  source.blocks.some((block) => block._type === type && (!group || block.profileGroup === group))
+  (source.blocks ?? []).some((block) => block._type === type && (!group || block.profileGroup === group))
     ? plan.documents.filter(matches)
     : [];
 const summerDraft = (document) =>

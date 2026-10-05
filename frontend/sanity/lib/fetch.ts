@@ -6,6 +6,7 @@ import { SETTINGS_QUERY } from "@/sanity/queries/settings";
 import { BLOG_POST_SETTINGS_QUERY } from "@/sanity/queries/blog-post-settings";
 import { FOOTER_QUERY } from "@/sanity/queries/footer";
 import { HOME_PAGE_QUERY } from "@/sanity/queries/home-page";
+import { PARENT_DASHBOARD_QUERY } from "@/sanity/queries/parent-dashboard";
 import {
   PUBLISHED_POST_QUERY,
   POST_QUERY,
@@ -19,6 +20,7 @@ import type {
   HOME_PAGE_QUERY_RESULT,
   NAVIGATION_QUERY_RESULT,
   PAGE_QUERY_RESULT,
+  PARENT_DASHBOARD_QUERY_RESULT,
   POSTS_QUERY_RESULT,
   POST_QUERY_RESULT,
   SETTINGS_QUERY_RESULT,
@@ -64,6 +66,13 @@ export function fetchHomePage({
   stega,
 }: DynamicFetchOptions): Promise<HOME_PAGE_QUERY_RESULT> {
   return fetchCached({ query: HOME_PAGE_QUERY, perspective, stega });
+}
+
+export function fetchParentDashboard({
+  perspective,
+  stega,
+}: DynamicFetchOptions): Promise<PARENT_DASHBOARD_QUERY_RESULT> {
+  return fetchCached({ query: PARENT_DASHBOARD_QUERY, perspective, stega });
 }
 
 export function fetchSanityPosts({

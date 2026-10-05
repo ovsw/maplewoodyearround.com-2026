@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { webflowReader } from './source.mjs';
 import { assetCollector, destination, portableText, htmlDocument } from './html.mjs';
-import { staticTextNodes } from './pages.mjs';
+import { parentDashboard, staticTextNodes } from './pages.mjs';
 import { cmsDocuments, identityMap, mapItem } from './collections.mjs';
 import { mediaAliases, buildPlan, assertPublicPageCoverage, summerDocuments } from './plan.mjs';
 import { changes, equal, materialize, writeDocuments, verifyTarget, backupDataset, savePrivate } from './write.mjs';
@@ -178,4 +178,30 @@ test('summer documents follow the public grade labels and link order',()=>{
   assert.deepEqual(document.gradeGroups[0].entries.map((entry)=>`${entry.title} ${entry.kind}`),['B schedule','B welcomeLetter','A schedule','A welcomeLetter']);
   pageDocuments.set('/summer-camp/summer-camp-welcome-letters',page('-welcome',['a','b']));
   assert.throws(()=>summerDocuments(snapshot,{...context(),pageDocuments}),/order "Preschool" groups differently/);
+});
+
+test('dashboard cards split by season, keep order, and match the shown link by exact heading',()=>{
+  const pdf='https://cdn.prod.website-files.com/site/packing-list.pdf';
+  const card=(id,name,order,season,extra={})=>({id,fieldData:{name,order,season,live:true,'link-text':'Visit Page','color-theme':'Green',...extra}});
+  const snapshot={collections:[
+    {displayName:'Seasons',live:[{id:'sy',fieldData:{name:'School Year'}},{id:'sc',fieldData:{name:'Summer Camp'}}]},
+    {displayName:'Parent Dashboard Cards',live:[
+      card('packing','Packing List',2,['sc'],{'use-link':true,'link-url':pdf,'use-attachment':true,attachment:{url:'https://cdn.prod.website-files.com/site/old.pdf'}}),
+      card('vacation','Vacation Camp Packing List & Forms',1,['sc','sy'],{'use-attachment':true}),
+      card('gift','Gift Card',3,['sy','sc'],{'use-link':true,'link-url':'https://shop.example/gift'}),
+      card('hidden','Hidden',0,['sc'],{live:false,'use-link':true,'link-url':'https://example.test'}),
+    ]},
+  ]};
+  const main=htmlDocument(`<main><section class="section_layout398"><div class="text-align-center"><div class="text-style-tagline">Maplewood</div><h2>Parent Dashboard</h2><p>Intro</p><p>Select <a href="/known">Season</a>:</p></div>
+    <a data-w-tab="School Year">School Year</a><a data-w-tab="Summer Camp">Summer Camp</a>
+    <div class="w-dyn-item"><h3>Vacation Camp Packing List &amp; Forms</h3><a href="#">Visit Page</a></div>
+    <div class="w-dyn-item"><h3>Packing List</h3><a href="${pdf}">Download PDF</a></div></section></main>`).querySelector('main');
+  const dashboard=parentDashboard(snapshot,context(),main,{title:'Parent Dashboard | Maplewood'});
+  assert.deepEqual(dashboard.summerCampCards.map((c)=>c.title),['Vacation Camp Packing List & Forms','Packing List','Gift Card']);
+  assert.deepEqual(dashboard.schoolYearCards.map((c)=>c.title),['Vacation Camp Packing List & Forms','Gift Card']);
+  assert.equal(dashboard.summerCampCards[0].link.destination,undefined);
+  assert.equal(dashboard.summerCampCards[1].link.destination.kind,'file');
+  assert.equal(dashboard.summerCampCards[1].accent,'green');
+  assert.equal(dashboard.title,'Parent Dashboard');
+  assert.equal(dashboard.tabsPrompt[0].markDefs[0].customLink.internal._ref,'known-page');
 });
