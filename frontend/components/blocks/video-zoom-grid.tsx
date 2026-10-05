@@ -4,8 +4,10 @@ import {
   SectionActions,
   type SectionProps,
 } from "./maplewood-section";
+import { SectionTagline } from "./maplewood-inner";
 import VideoZoomGridScene from "./video-zoom-grid-scene";
 export default function VideoZoomGrid({
+  tagline,
   title,
   highlightText,
   description,
@@ -25,6 +27,7 @@ export default function VideoZoomGrid({
       gridImages={gridImages}
       mobileImages={mobileImages}
     >
+      <SectionTagline dataAttribute={dataAttribute} tagline={tagline} />
       <h2 data-sanity={dataAttribute?.("title")}>
         <HighlightedTitle title={title} highlightText={highlightText} />
       </h2>

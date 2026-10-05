@@ -181,6 +181,15 @@ export function SourceButtons({
   );
 }
 
+/** The actions that have a label and a usable destination. */
+export function visibleActions<T extends SourceAction>(actions?: T[] | null) {
+  return (actions ?? []).flatMap((action) => {
+    const href = usableHref(action.destination?.href);
+    const label = stegaClean(action.label)?.trim();
+    return href && label ? [{ ...action, href }] : [];
+  });
+}
+
 /** Maplewood `contentAction` objects: the first is primary, others outline. */
 export function SourceActions({
   actions,
@@ -193,11 +202,7 @@ export function SourceActions({
   center?: boolean;
   allOutline?: boolean;
 }) {
-  const visible = (actions ?? []).flatMap((action) => {
-    const href = usableHref(action.destination?.href);
-    const label = stegaClean(action.label)?.trim();
-    return href && label ? [{ ...action, href }] : [];
-  });
+  const visible = visibleActions(actions);
   if (!visible.length) return null;
   return (
     <div className={[css.buttonGroup, center ? css.center : ""].join(" ")}>

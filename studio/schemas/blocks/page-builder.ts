@@ -37,6 +37,7 @@ export const contentPageBuilderBlockTypes = [
   "parentDashboardSection",
   "summerDocumentList",
   "tabbedHero",
+  "iconCards",
   // page-builder-generator:content-types
 ] as const;
 

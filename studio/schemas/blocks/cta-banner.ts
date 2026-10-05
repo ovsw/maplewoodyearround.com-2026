@@ -1,7 +1,7 @@
 import { Megaphone } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
-import { sectionAnchorField } from "./shared/maplewood-fields";
+import { accentField, iconField, sectionAnchorField } from "./shared/maplewood-fields";
 
 export default defineType({
   name: "ctaBanner",
@@ -45,6 +45,8 @@ export default defineType({
       type: "simpleRichText",
       description: "Optional longer text with links, shown instead of the supporting sentence.",
     }),
+    { ...iconField, description: "Optional icon before the heading of a text banner." },
+    accentField,
     defineField({
       name: "image",
       title: "Image",

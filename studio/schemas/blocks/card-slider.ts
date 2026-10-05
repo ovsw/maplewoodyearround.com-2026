@@ -1,5 +1,5 @@
 import { sectionBackgroundField } from "./shared/section-background";
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 import {
   accentField,
   iconField,
@@ -27,6 +27,14 @@ export default defineType({
     sectionActionsField,
     collectionSourceField,
     ...collectionFilterFields,
+    defineField({
+      name: "characterTime",
+      title: "Character visit time",
+      type: "string",
+      description:
+        'For calendar days: shown after each day\'s character, such as "10:30am & 3pm".',
+      hidden: ({ parent }) => parent?.source !== "playgroundEvent",
+    }),
   ],
   preview: {
     select: { title: "title" },

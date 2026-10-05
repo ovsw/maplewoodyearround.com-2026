@@ -6,7 +6,7 @@ import StackedTimeline from "./stacked-timeline";
 type TimelineItem = NonNullable<ComponentProps<typeof StackedTimeline>["items"]>[number];
 
 function item(key: string, title: string, overrides: Partial<TimelineItem> = {}): TimelineItem {
-  return { _key: key, title, meta: null, text: `${title} in one line.`, image: null, ...overrides };
+  return { _key: key, title, meta: null, text: `${title} in one line.`, body: null, image: null, ...overrides };
 }
 
 const items: TimelineItem[] = [

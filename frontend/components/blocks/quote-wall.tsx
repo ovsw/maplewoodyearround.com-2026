@@ -12,6 +12,7 @@ type Props = SectionProps<"quoteWall"> & {
 export default function QuoteWall({
   anchorId,
   eyebrow,
+  eyebrowProgram,
   heading,
   subtitle,
   description,
@@ -44,7 +45,16 @@ export default function QuoteWall({
       <div className={css.container}>
         <h2 data-sanity={dataAttribute?.("heading")}>
           {stegaClean(eyebrow)?.trim() ? (
-            <span className={programs.quoteHighlight} data-sanity={dataAttribute?.("eyebrow")}>
+            <span
+              className={
+                stegaClean(eyebrowProgram) === "schoolYear"
+                  ? programs.quoteBadgeSchool
+                  : stegaClean(eyebrowProgram) === "summerCamp"
+                    ? programs.quoteBadgeSummer
+                    : programs.quoteHighlight
+              }
+              data-sanity={dataAttribute?.("eyebrow")}
+            >
               {eyebrow}
             </span>
           ) : null}

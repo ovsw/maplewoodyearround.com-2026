@@ -8,7 +8,7 @@ import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 import styles from "./cta-banner.module.css";
-import CtaCard from "./cta-card";
+import CtaCard, { CtaReminder } from "./cta-card";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
@@ -135,6 +135,8 @@ function nudgeCardClass(theme: SectionTheme) {
 export default function CtaBanner(props: CtaBannerProps) {
   // With a photo, the banner is the live site's green card (Webflow cta39).
   if (props.image?.asset?._id) return <CtaCard {...props} />;
+  // Longer text without a photo is the live reminder band (Webflow cta13).
+  if (props.body?.length) return <CtaReminder {...props} />;
   return <CtaBand {...props} />;
 }
 

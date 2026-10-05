@@ -59,6 +59,10 @@ const accentOf = (node) => {
   return ACCENTS.has(value) ? value : undefined;
 };
 
+// Icons coloured with a brand text colour instead of a u-accent class.
+const ICON_COLOURS = { 'text-color-brand-quarternary': 'purple', 'text-color-brand-accent-dark': 'blue', 'text-color-brand-secondary-mid': 'yellow' };
+const iconAccent = (node) => Object.entries(ICON_COLOURS).find(([name]) => node?.querySelector(`.${name}`))?.[1];
+
 export function tagline(node) {
   const label = node.querySelector('.text-style-tagline');
   if (!label) return undefined;
@@ -152,6 +156,26 @@ function faqCategory(original, snapshot) {
   return exact.length === 1 && field?.validations?.collectionId ? reference(documentId(field.validations.collectionId, exact[0])) : undefined;
 }
 
+// The displayed testimonials as references, or nothing if one has no record.
+export function selectedTestimonials(original, snapshot) {
+  const source = snapshot.collections?.find((collection) => collection.displayName === 'Testimonials');
+  const normalized = (value) => (typeof value === 'string' ? value : '').replace(/\s+/g, ' ').trim();
+  // A short quote can sit inside a longer displayed one: take the longest
+  // unused match so each testimonial is selected once.
+  const used = new Set();
+  const items = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
+    const content = normalized(text(node));
+    const match = (source?.live ?? [])
+      .map((item) => ({ item, quote: normalized(item.fieldData['testimonial-text']) }))
+      .filter(({ item, quote }) => quote.length > 0 && !used.has(item.id) && content.includes(quote))
+      .sort((a, b) => b.quote.length - a.quote.length)[0]?.item;
+    if (match) used.add(match.id);
+    return match;
+  });
+  if (!items.length || items.some((item) => !item)) return undefined;
+  return items.map((item) => ({ ...reference(documentId(source.id, item.id)), _key: key(item.id) }));
+}
+
 function breadcrumbs(node, context, prefix) {
   return [...node.querySelectorAll('.breadcrumb_component a')].filter((a) => text(a)).map((a, i) => {
     const target = destination(a.getAttribute('href'), context);
@@ -167,6 +191,53 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
   if (background && 'background' in block) block.background = background;
   if (original.id && anchors.get(original.id) === original) block.anchorId = original.id;
   let title = headingOf(staticNode);
+
+  if (type === 'iconCards') {
+    // Heading on the left, introduction on the right, then the cards.
+    const left = bySuffix(staticNode, '_content-left')[0] ?? staticNode;
+    const right = bySuffix(staticNode, '_content-right')[0];
+    block.breadcrumbs = breadcrumbs(left, context, prefix);
+    block.tagline = tagline(left);
+    block.title = text(headingOf(left));
+    block.intro = right ? textBlocks(without(right, `${NON_COPY},[class*="_list"]`), context, prefix) : [];
+    block.cards = bySuffix(original, '_item').filter((item) => item.querySelector('h3')).map((item, i) => {
+      const heading = item.querySelector('h3');
+      const label = item.querySelector('p.text-weight-bold');
+      const link = sourceActions(buttonLinks(item), context, `${prefix}-c${i}`)[0];
+      return {
+        _key: key(`${prefix}-c${i}`), _type: 'iconCard',
+        ...(iconFromSvg(item.querySelector('svg')) ? { icon: iconFromSvg(item.querySelector('svg')) } : {}),
+        ...(accentOf(item.querySelector('[class*="u-accent-"]') ?? item) ?? iconAccent(item) ? { accent: accentOf(item.querySelector('[class*="u-accent-"]') ?? item) ?? iconAccent(item) } : {}),
+        title: lines(heading).replace(/\n/g, ' '),
+        ...(label ? { label: text(label) } : {}),
+        body: textBlocks(without(item, `${NON_COPY},h3,p.text-weight-bold`), context, `${prefix}-c${i}`),
+        ...(link ? { link: { label: link.label, ...(link.destination ? { destination: link.destination } : {}) } } : {}),
+      };
+    });
+    for (const field of ['description', 'groups', 'eyebrow']) delete block[field];
+    return;
+  }
+
+  if (type === 'tabbedHero') {
+    // One tab per Webflow tab pane, named by its tab-menu link.
+    const names = new Map([...original.querySelectorAll('.w-tab-menu [data-w-tab]')].map((link) => [link.getAttribute('data-w-tab'), text(link)]));
+    block.breadcrumbs = breadcrumbs(staticNode, context, prefix);
+    block.tabs = [...staticNode.querySelectorAll('.w-tab-pane')].map((pane, i) => {
+      const heading = headingOf(pane);
+      const image = pane.querySelector('img');
+      return {
+        _key: key(`${prefix}-tab${i}`), _type: 'heroTab',
+        label: names.get(pane.getAttribute('data-w-tab')) ?? pane.getAttribute('data-w-tab'),
+        title: text(heading),
+        ...(highlightOf(heading) ? { highlightText: highlightOf(heading) } : {}),
+        description: [...pane.querySelectorAll('p')].map(lines).filter(Boolean).join('\n'),
+        buttons: sourceButtons(buttonLinks(pane), context, `${prefix}-tab${i}`),
+        ...(image ? { image: context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '') } : {}),
+      };
+    });
+    for (const field of ['title', 'description', 'cards']) delete block[field];
+    return;
+  }
 
   if (type === 'innerHero') {
     const content = staticNode.querySelector('[class*="_content-wrap"]') ?? staticNode;
@@ -237,8 +308,28 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
   if (type === 'pricingCards') {
     block.tagline = tagline(staticNode);
     const plans = bySuffix(original, '_plan');
-    const intro = without(staticNode, `${NON_COPY},[class*="_grid-list"],[class*="_plan"]`);
-    block.description = [...intro.querySelectorAll('p')].map(text).filter(Boolean).join('\n');
+    // The introduction keeps its bold words, line breaks and links.
+    const intro = without(staticNode, `${NON_COPY},[class*="_grid-list"],[class*="_plan"],.check-list_wrap,h1,h2,h3`);
+    block.intro = textBlocks(intro, context, `${prefix}-intro`);
+    delete block.description;
+    // Checklists, such as what a party includes and what to bring.
+    const checklist = (column, i) => {
+      const items = [...column.querySelectorAll('.check-list_item')];
+      const heading = items.find((item) => !item.querySelector('svg'));
+      const listed = items.filter((item) => item.querySelector('svg'));
+      return {
+        _key: key(`${prefix}-list${i}`), _type: 'checklist',
+        ...(heading && items.indexOf(heading) === 0 ? { title: text(heading) } : {}),
+        ...(iconFromSvg(listed[0]?.querySelector('svg')) ? { icon: iconFromSvg(listed[0].querySelector('svg')) } : {}),
+        ...(accentOf(listed[0]) ? { accent: accentOf(listed[0]) } : {}),
+        items: listed.flatMap((item, j) => textBlocks(item, context, `${prefix}-list${i}-${j}`)),
+      };
+    };
+    const columns = [...original.querySelectorAll('.check-list_wrap > [class*="check-list_content"]')];
+    block.checklists = columns.map(checklist);
+    // An item without an icon after the first is a note under the lists.
+    const notes = columns.flatMap((column) => [...column.querySelectorAll('.check-list_item')].filter((item, i) => i > 0 && !item.querySelector('svg')));
+    if (notes.length) block.checklistNote = notes.flatMap((item, j) => textBlocks(item, context, `${prefix}-note${j}`));
     block.plans = plans.map((plan, i) => {
       const heading = plan.querySelector('[class*="heading-style-h6"],h3,h4');
       const price = bySuffix(plan, '_card-title')[0];
@@ -278,8 +369,12 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     if (icon) block.icon = icon;
     const accent = accentOf(sourceHeading.querySelector('.button-group [class*="u-color-accent"]'));
     if (accent) block.accent = accent;
-    block.description = [...heading.querySelectorAll('p')].map(text).filter(Boolean).join('\n');
+    block.description = [...heading.querySelectorAll('p')].map(lines).filter(Boolean).join('\n');
     block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    // Calendar days show each character with the template's visit time.
+    const characterTime = [...original.querySelectorAll('.event19_meta-wrapper [class="display-inlineflex"]')]
+      .map(text).find((value) => /^–\s*\S/.test(value) && /\d/.test(value));
+    if (block.source === 'playgroundEvent' && characterTime) block.characterTime = characterTime.replace(/^–\s*/, '');
     return;
   }
 
@@ -336,7 +431,11 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     // Each step: a large step label, its name and one paragraph.
     block.items = bySuffix(staticNode, '_item').filter((node) => node.querySelector('h3,h4')).map((node, i) => ({
       _key: key(`${prefix}-t${i}`), _type: 'stackedTimelineItem',
-      meta: text(node.querySelector('h3')), title: text(node.querySelector('h4')), text: text(node.querySelector('p')),
+      meta: text(node.querySelector('h3')), title: text(node.querySelector('h4')),
+      // Several paragraphs or a link need the step's rich text.
+      ...(node.querySelectorAll('p').length > 1 || node.querySelector('p a')
+        ? { body: textBlocks(without(node, `${NON_COPY},h3,h4`), context, `${prefix}-t${i}`) }
+        : { text: text(node.querySelector('p')) }),
     }));
     return;
   }
@@ -347,14 +446,20 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
       : original.classList.contains('is-school-year') ? '67a393b21ae00bf865cee52e_maplewood-preschooler.avif' : undefined;
     if (photo) block.backgroundImage = context.asset(`https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/${photo}`, 'image');
     const heading = staticNode.querySelector('h2');
-    const highlight = highlightOf(heading);
+    const badge = heading?.querySelector('.school-year,.summer-camp');
+    const highlight = highlightOf(heading) || text(badge);
     if (highlight) block.eyebrow = highlight;
-    const rest = heading && without(heading, '[class*="text-color-brand-secondary"]');
+    if (badge) block.eyebrowProgram = programOf(badge);
+    const rest = heading && without(heading, '[class*="text-color-brand-secondary"],.school-year,.summer-camp');
     if (rest && text(rest)) block.heading = plainBlocks(text(rest), `${prefix}-title`);
     block.subtitle = text(heading?.closest('.max-width-large')?.querySelector('p')) || undefined;
     // The closing lines under the testimonials, one per line.
     const closing = [...staticNode.querySelectorAll('.text-align-center')].at(-1);
     block.description = closing ? [...closing.children].map(text).filter(Boolean).join('\n') : undefined;
+    // The live wall is a filtered list that ignores the Visible switch, so
+    // keep the displayed testimonials, in order, as the section's selection.
+    const selected = selectedTestimonials(original, snapshot);
+    if (selected) block.selectedTestimonials = selected;
     return;
   }
 
@@ -380,6 +485,44 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     const image = staticNode.querySelector('img');
     if (image) block.image = context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '');
     block.buttons = sourceButtons(buttonLinks(staticNode), context, prefix);
+    // A reminder band (cta13) shows an icon in its accent before the heading.
+    const icon = iconFromSvg(original.querySelector('[class*="_content-left"] svg'));
+    if (icon) block.icon = icon;
+    const accent = accentOf(original.querySelector('[class*="u-accent-"]'));
+    if (icon && accent) block.accent = accent;
+    return;
+  }
+
+  if (type === 'statistics') {
+    const left = bySuffix(staticNode, '_content-left')[0] ?? staticNode;
+    block.tagline = tagline(left);
+    block.title = text(headingOf(left));
+    block.text = textBlocks(withoutTitle(left, headingOf(left), `${NON_COPY},[class*="_item-list"],[class*="team4"]`), context, prefix);
+    block.items = bySuffix(original, '_item').filter((node) => node.querySelector('[class*="_number"]')).map((node, i) => ({
+      _key: key(`${prefix}-s${i}`), _type: 'statistic',
+      value: text(node.querySelector('[class*="_number"]')),
+      label: text(node.querySelector('h3,h4')),
+      text: textBlocks(without(node, `${NON_COPY},[class*="_number"],h3,h4`), context, `${prefix}-s${i}`),
+      ...(accentOf(node) ?? iconAccent(node) ? { accent: accentOf(node) ?? iconAccent(node) } : {}),
+    }));
+    block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    // The staff list under the figures shows the program's preschool teachers.
+    if (original.querySelector('.team4_component .w-dyn-list')) {
+      block.preschoolTeachers = true;
+      if (block.tagline?.program) block.program = block.tagline.program;
+    }
+    delete block.description;
+    return;
+  }
+
+  if (type === 'teamMembers' && block.presentation === 'tour') {
+    // A tour invitation beside the portraits of the staff who give tours.
+    const badge = staticNode.querySelector('.school-year,.summer-camp');
+    if (badge) block.eyebrow = text(badge);
+    block.title = text(title);
+    block.richText = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},.school-year,.summer-camp`), context, prefix);
+    block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    block.tourGuidesOnly = true;
     return;
   }
 

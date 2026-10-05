@@ -6,6 +6,7 @@ import {
   innerCss as css,
   sectionBackground,
   SourceButtons,
+  SourceCopy,
   SourceImage,
 } from "./maplewood-inner";
 import programs from "./maplewood-programs.module.css";
@@ -22,10 +23,11 @@ type TimelineItem = NonNullable<StackedTimelineProps["items"]>[number];
 
 const hasText = (value?: string | null) => Boolean(stegaClean(value)?.trim());
 
-/** Steps the renderer can show: each needs a title and its line of text. */
+/** Steps the renderer can show: each needs a title and its text. */
 export function getRenderableItems(items: StackedTimelineProps["items"]) {
   return (items ?? []).filter(
-    (item): item is TimelineItem => Boolean(item?._key) && hasText(item.title) && hasText(item.text),
+    (item): item is TimelineItem =>
+      Boolean(item?._key) && hasText(item.title) && (hasText(item.text) || Boolean(item.body?.length)),
   );
 }
 
@@ -90,7 +92,11 @@ export default function StackedTimeline({
                 <h3 className={css.h5} data-sanity={dataAttribute?.(`${path}.title`)}>
                   {step.title}
                 </h3>
-                <p data-sanity={dataAttribute?.(`${path}.text`)}>{step.text}</p>
+                {step.body?.length ? (
+                  <SourceCopy dataSanity={dataAttribute?.(`${path}.body`)} value={step.body} />
+                ) : (
+                  <p data-sanity={dataAttribute?.(`${path}.text`)}>{step.text}</p>
+                )}
               </li>
             );
           })}

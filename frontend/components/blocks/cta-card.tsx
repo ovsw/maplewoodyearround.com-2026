@@ -2,7 +2,15 @@ import { PortableText, type PortableTextProps } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import { createCustomLinkMarkRenderer } from "@/components/portable-text/custom-link-mark";
-import { type DataAttribute, innerCss as css, SourceButtons, SourceImage } from "./maplewood-inner";
+import {
+  accentClass,
+  type DataAttribute,
+  innerCss as css,
+  SourceButtons,
+  SourceCopy,
+  SourceIcon,
+  SourceImage,
+} from "./maplewood-inner";
 
 type CtaBannerProps = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -43,6 +51,31 @@ export default function CtaCard({ _key, background, body, buttons, dataAttribute
         </div>
         <div className={css.ctaImage} data-sanity={dataAttribute?.("image")}>
           <SourceImage image={image} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/*
+ * Reminder band (Webflow cta13): an icon and heading on the left, the text
+ * with its links on the right, on the green field.
+ */
+export function CtaReminder({ _key, accent, body, buttons, dataAttribute, icon, title }: CtaBannerProps) {
+  if (!title) return null;
+  const headingId = `cta-reminder-${stegaClean(_key)}-title`;
+  return (
+    <section aria-labelledby={headingId} className={[css.section, css.green, css.reminder, accentClass(accent)].join(" ")}>
+      <div className={[css.container, css.reminderLayout].join(" ")}>
+        <div className={css.reminderHeading}>
+          <SourceIcon dataSanity={dataAttribute?.("icon")} icon={icon} />
+          <h2 className={css.h2} data-sanity={dataAttribute?.("title")} id={headingId}>
+            {title}
+          </h2>
+        </div>
+        <div>
+          <SourceCopy className={[css.medium, css.reminderText].join(" ")} dataSanity={dataAttribute?.("body")} value={body} />
+          <SourceButtons buttons={buttons} dataAttribute={dataAttribute} onDark />
         </div>
       </div>
     </section>

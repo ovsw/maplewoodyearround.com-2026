@@ -94,6 +94,58 @@ field (the Webflow list sort is not available from the API), so the slider
 uses the order field; the inline "See all activities" link in the slider
 introductions is plain text (the button beside it keeps the link).
 
+## School Year hub and program pages (issue #12)
+
+One new section type, `iconCards`, created with `pnpm page-builder:new`: a
+heading (with optional breadcrumbs and label) beside a rich introduction,
+then cards with an icon, colour, short label, text and one link. It replaces
+`featureCards` for `section_layout248` (preschool benefits) and
+`programCards` for `section_layout311` (School Year programs and enrichment
+classes). These cards are static page content on the live site; the SY
+Programs collection records are the activity program tags, not these cards.
+
+Other source slots now mapped on every non-home page:
+
+- `tabbedHero` (`section_header103`): `tabs[]` with the tab name, heading,
+  highlighted words, text, buttons and photo; section breadcrumbs show with
+  the first tab. The old `title`, `description` and `cards` are no longer
+  imported. Tabs advance every 6 seconds until a visitor chooses one, and do
+  not rotate under reduced motion.
+- `statistics` (`section_stats14`): label, text, coloured figures with a
+  sentence, buttons, and `preschoolTeachers` with `program` for the teacher
+  portraits under the figures.
+- A `section_layout30` with staff portraits becomes `teamMembers` with
+  `presentation = tour` and `tourGuidesOnly`.
+- `cardSlider`: a list of calendar days uses `source = playgroundEvent` and
+  `characterTime` (the template's character visit time); the Website links
+  the latest calendar PDF. Activity lists that show one program's activities
+  (class activities, vacation activities, birthday add-ons) use the
+  `programOffering` filter. Sample schedules win a tie with activities that
+  share their photos. Intros keep their line breaks.
+- Collection sliders sort as the live Webflow lists: calendar days by date,
+  then records without an order number first, then by order.
+- `quoteWall`: every wall imports its displayed testimonials as
+  `selectedTestimonials`; selected testimonials show even when their Visible
+  switch is off, because the live School Year lists ignore that switch.
+  `eyebrowProgram` shows the first line as a program badge.
+- `pricingCards`: a rich `intro` (links and bold words) replaces the plain
+  introduction; optional `checklists` and `checklistNote` (birthday pricing).
+  Buttons fill the card width in the plan colour.
+- `stackedTimeline` items take a rich `body` when a step has several
+  paragraphs or links; `ctaBanner` takes an icon and colour (`section_cta13`
+  reminder band); `innerHero` takes an optional background video band
+  (`header11o_wrap`, Play Center); `videoZoomGrid` takes a label on every
+  page.
+- Redirect `/school-year/programs/indoor-outdoor-playground` (301 to the
+  Play Center page) is imported as a `redirect` record. The Webflow site
+  redirects are not in the Data API snapshot, so the importer lists it.
+
+Known differences: the live order among activities without an order number
+follows the Webflow creation date, which is not imported (title order is
+used); calendar days without a guest show the character photo across the
+card instead of the template's fallback photo; slider and FAQ introductions
+show inline links as plain text.
+
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 
 ## Import rules
@@ -496,10 +548,10 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_header103`                                      | `tabbedHero`                                             | Authored School Year program tabs with image, heading, text and action per tab; not a collection carousel.                     |
 | `header11o_wrap`                                         | `innerHero`                                              | Image hero for the Play Center page.                                                                                           |
 | `section_blog66`                                         | `cardSlider`; authored-card exception below              | Repeated collection-card pattern with type, program, location, audience and category filters.                                  |
-| `section_layout248`                                      | `featureCards`                                           | Authored feature grid, such as preschool benefits.                                                                             |
+| `section_layout248`                                      | `iconCards`                                              | Authored icon cards, such as preschool benefits.                                                                               |
 | `section_stats14`                                        | `statistics`                                             | Editable value/label pairs. Decorative count-up is not required.                                                               |
 | `section_layout59`                                       | `storyFeature`                                           | Image and facility explanation with supporting copy/actions.                                                                   |
-| `section_layout311`                                      | `programCards`                                           | School Year program/enrichment cards with program and listing-group filters.                                                   |
+| `section_layout311`                                      | `iconCards`                                              | Authored School Year program and enrichment-class cards.                                                                       |
 | `section_team4`                                          | `teamMembers`                                            | Staff selected by program and optional preschool/tour filters.                                                                 |
 | `section_cta13`                                          | `ctaBanner`                                              | Birthday reminder copy and action.                                                                                             |
 | `section_filters5`                                       | `filterableCards`                                        | Activities/facilities with category, grade, program and search data. #13 supplies native filter behavior.                      |

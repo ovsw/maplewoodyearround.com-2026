@@ -1,6 +1,6 @@
 import { documentId, key, reference, htmlDocument, text, mediaUrl, destination, customUrl, plainBlocks, portableText } from './html.mjs';
 import { mappings } from './collections.mjs';
-import { mapSourceSections, sectionAnchors } from './sections.mjs';
+import { mapSourceSections, sectionAnchors, selectedTestimonials, tagline } from './sections.mjs';
 
 const patterns = {
   section_header33: 'videoHero', section_header83: 'videoZoomGrid', section_layout515: 'scrollPanels',
@@ -10,8 +10,8 @@ const patterns = {
   'section_summer-camp_club-day-electives': 'electiveCards', section_layout302: 'storyFeature', section_layout30: 'storyFeature',
   'section_summer-camp_history': 'historyStory', 'section_summer-camp_enrollment-process-timeline': 'stackedTimeline',
   section_faq3: 'faqAccordion', section_comparison8: 'rateTable', 'section_k-9-sessions-table_comparison6': 'rateTable',
-  section_pricing19: 'pricingCards', section_header103: 'tabbedHero', section_blog66: 'cardSlider', section_layout248: 'featureCards',
-  section_stats14: 'statistics', section_layout59: 'storyFeature', section_layout311: 'programCards', section_team4: 'teamMembers',
+  section_pricing19: 'pricingCards', section_header103: 'tabbedHero', section_blog66: 'cardSlider', section_layout248: 'iconCards',
+  section_stats14: 'statistics', section_layout59: 'storyFeature', section_layout311: 'iconCards', section_team4: 'teamMembers',
   section_cta13: 'ctaBanner', section_filters5: 'filterableCards', section_layout486: 'instructionSteps', section_cta39: 'ctaBanner',
   section_layout10: 'storyFeature', section_layout203: 'storyFeature', section_gallery1: 'embedSection', section_team14: 'teamMembers',
   section_contact21: 'contactDetailsSection', section_career12: 'jobList', section_layout398: 'parentDashboardSection', section_timeline11: 'stackedTimeline',
@@ -86,11 +86,16 @@ function cards(node, context, prefix) {
 
 function collectionFor(node, snapshot, types) {
   const html = node.innerHTML;
+  const headings = [...node.querySelectorAll('.w-dyn-item')].map(headingText);
+  const named = (item) => [item.fieldData.name, item.fieldData.activity].some((name) => typeof name === 'string' && headings.includes(name.replace(/\s+/g, ' ').trim()));
   const scored = snapshot.collections.filter((c) => types.includes(mappings[c.displayName]?.[0])).map((c) => {
-    const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) ||
-      [...node.querySelectorAll('.w-dyn-item')].some((element) => [item.fieldData.name, item.fieldData.activity].some((name) => typeof name === 'string' && name.replace(/\s+/g, ' ').trim() === headingText(element))));
-    return { collection: c, matches };
-  }).sort((a, b) => b.matches.length - a.matches.length);
+    const matches = c.live.filter((item) => Object.values(item.fieldData).some((v) => v?.url && html.includes(v.url)) || named(item));
+    // A sample schedule shows its time (name) beside its activity heading.
+    const detailed = matches.filter((item) => named(item) && [item.fieldData.name, item.fieldData.activity].every((value) => typeof value === 'string' && html.includes(value.trim()))).length;
+    return { collection: c, matches, named: matches.filter(named).length, detailed };
+  // Collections can share photos and item names, so a tie goes to the one
+  // whose displayed items show more of each record's own text.
+  }).sort((a, b) => b.matches.length - a.matches.length || b.named - a.named || b.detailed - a.detailed);
   return scored[0]?.matches.length ? scored[0] : undefined;
 }
 
@@ -118,6 +123,24 @@ function activityFilters(node, snapshot, found) {
   return grade ? { ...filter, grade: reference(documentId(grades.id, grade.id)) } : filter;
 }
 
+// A School Year list can show the activities of one program, such as a
+// class's activities or the birthday add-ons. Use the program whose
+// activities, within the location filter, are exactly the displayed list.
+function programFilter(node, found, filter) {
+  const field = found.collection.fields.find((f) => f.slug === 'programs');
+  if (!field?.validations?.collectionId) return {};
+  const location = found.collection.fields.find((f) => f.slug === 'indoor-outdoor-special');
+  const inLocation = (item) => !filter.location || location?.validations?.options?.find((o) => o.id === item.fieldData['indoor-outdoor-special'])?.name === filter.location;
+  const pool = found.collection.live.filter((item) => item.fieldData.live !== false && inLocation(item));
+  // Compare names: a hidden record can share a displayed name.
+  const shown = [...node.querySelectorAll('.w-dyn-item')].map(headingText);
+  const same = (items) => items.length === shown.length && items.every((item) => shown.includes(item.fieldData.name.replace(/\s+/g, ' ').trim()));
+  if (same(pool)) return {};
+  const programs = [...new Set(found.matches.flatMap((item) => item.fieldData.programs ?? []))];
+  const exact = programs.filter((id) => same(pool.filter((item) => (item.fieldData.programs ?? []).includes(id))));
+  return exact.length === 1 ? { programOffering: reference(documentId(field.validations.collectionId, exact[0])) } : {};
+}
+
 function inferFilter(node, snapshot, allowedTypes) {
   const found = collectionFor(node, snapshot, allowedTypes);
   if (!found) return {};
@@ -142,7 +165,7 @@ function inferFilter(node, snapshot, allowedTypes) {
       if (fits.length === 1) filter[target] = field?.validations?.options?.find((o) => o.id === fits[0])?.name;
     }
   }
-  if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found));
+  if (source === 'activity') Object.assign(filter, activityFilters(node, snapshot, found), programFilter(node, found, filter));
   if (source === 'facility') {
     const field = found.collection.fields.find((f) => ['category', 'category-multi'].includes(f.slug));
     const shared = found.matches.reduce((ids, item) => ids.filter((id) => item.fieldData[field.slug]?.includes(id)), found.matches[0].fieldData[field.slug] ?? []);
@@ -187,6 +210,8 @@ export function staticPages(snapshot, context, schema) {
       if (!type && !text(staticNode) && !staticNode.querySelector('img,iframe,video')) continue;
       if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
       if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
+      // A story beside staff portraits invites families to tour with them.
+      if (type === 'storyFeature' && original.querySelector('.w-dyn-list .team4_image-wrapper')) type = 'teamMembers';
       if (type === 'rateTable' && !original.querySelector('.comparison6_top-row,.comparison8_top-row,table')) type = 'richTextBlock';
       if (type === 'richTextBlock' && /summer-group-schedules|summer-camp-welcome-letters/.test(page.path)) {
         type = 'summerDocumentList';
@@ -208,7 +233,7 @@ export function staticPages(snapshot, context, schema) {
       if (typeOf(type, 'buttons')) block.buttons = buttons(actions(staticNode, context, prefix, 'a.button[href]'));
       if (typeOf(type, 'image')) block.image = firstImage(staticNode, context);
       if (typeOf(type, 'cards')) block.cards = cards(staticNode, context, prefix);
-      if (['videoHero', 'videoZoomGrid', 'directorIntro'].includes(type)) {
+      if (['videoHero', 'videoZoomGrid', 'directorIntro'].includes(type) || (type === 'innerHero' && original.querySelector('video'))) {
         const video = original.querySelector('video');
         const bg = original.querySelector('[data-poster-url]');
         for (const source of video?.querySelectorAll('source[src]') ?? []) {
@@ -224,7 +249,10 @@ export function staticPages(snapshot, context, schema) {
           block.mobileImages = images.filter((image) => !image.parentElement.classList.contains('hide-mobile-landscape')).map(mapped);
         }
       }
-      if (['cardSlider', 'filterableCards'].includes(type)) {
+      // A calendar list shows dated days with their guest and character; its
+      // heading also lists the calendar PDFs, which the Website adds itself.
+      if (type === 'cardSlider' && original.querySelector('.event19_meta-wrapper')) Object.assign(block, { source: 'playgroundEvent' });
+      else if (['cardSlider', 'filterableCards'].includes(type)) {
         Object.assign(block, inferFilter(original, snapshot, ['activity', 'facility', 'sampleSchedule', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar']));
         if (page.path === '/school-year/facilities') Object.assign(block, { source: 'facility', program: 'schoolYear' });
         if (!block.source) gaps.push({ path: page.path, section: index + 1, reason: 'collection source not resolved' });
@@ -237,7 +265,7 @@ export function staticPages(snapshot, context, schema) {
         else if (type === 'faqAccordion' && original.id === 'summer-camp') block.program = 'summerCamp';
         else if (type === 'faqAccordion' && original.id === 'school-year') block.program = 'schoolYear';
       }
-      if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : 'roster'; }
+      if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : selector === 'section_team4' ? 'roster' : 'tour'; }
       if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : page.path === '/maplewood-seasons' ? 'seasons' : 'main';
       if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
       if (type === 'embedSection') Object.assign(block, embed(original));
@@ -253,7 +281,8 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
       if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
       if (page.path !== '/') mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html: page.html });
-      if (page.path === '/') {
+      // The zoom grid has the same label, heading and action slots on every page.
+      if (page.path === '/' || type === 'videoZoomGrid') {
         // The home composition has distinct intro, label, body and action slots.
         // Preserve those slots on every import, including the final frozen run.
         const paragraphs = (node) => {
@@ -268,6 +297,7 @@ export function staticPages(snapshot, context, schema) {
           if (typeOf(type, 'actions')) block.actions = actions(staticNode, context, prefix, '.button[href]');
         }
         if (['videoHero', 'videoZoomGrid'].includes(type)) {
+          if (type === 'videoZoomGrid' && tagline(staticNode)) block.tagline = tagline(staticNode);
           const heading = staticNode.querySelector('h1,h2');
           block.highlightText = text(heading?.querySelector('.text-color-brand-secondary'));
           const copy = heading?.cloneNode(true);
@@ -289,17 +319,8 @@ export function staticPages(snapshot, context, schema) {
         if (type === 'quoteWall') {
           // This source photo is declared in Webflow's stylesheet, not its HTML.
           block.backgroundImage = context.asset('https://cdn.prod.website-files.com/673ebf0eedfc15a41bedc0c3/67a5d0a3369797b17dbfc98b_summer-camp-maplewood-wow-testimonies-1.avif', 'image');
-          const source = snapshot.collections.find((collection) => collection.displayName === 'Testimonials');
-          const normalized = (value) => (typeof value === 'string' ? value : '').replace(/\s+/g, ' ').trim();
-          block.selectedTestimonials = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
-            const content = normalized(text(node));
-            const item = source.live.find((item) => {
-              const quote = normalized(item.fieldData['testimonial-text']);
-              return quote.length > 0 && content.includes(quote);
-            });
-            if (!item) throw new Error('A home testimonial has no live source record');
-            return { ...reference(documentId(source.id, item.id)), _key: key(item.id) };
-          });
+          block.selectedTestimonials = selectedTestimonials(original, snapshot);
+          if (!block.selectedTestimonials) throw new Error('A home testimonial has no live source record');
           const captions = [...original.querySelectorAll('.wall-of-love_item')].map((node) => text(node).slice(-40));
           if (captions.length && captions.every((caption) => caption.endsWith('Summer Camp'))) block.program = 'summerCamp';
           const closing = staticNode.cloneNode(true);

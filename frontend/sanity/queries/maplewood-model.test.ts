@@ -37,7 +37,7 @@ async function project(
 }
 
 describe("Maplewood collection projections", () => {
-  it("shows only the selected source testimonials, in their source order", async () => {
+  it("shows the selected testimonials in their order, even when switched off", async () => {
     const quote = (_id: string, order: number) => ({
       _id,
       _type: "testimonial",
@@ -63,10 +63,10 @@ describe("Maplewood collection projections", () => {
       section.testimonials.map(
         (item: Fixture) => (item.document as Fixture)._id,
       ),
-    ).toEqual(["second", "first"]);
+    ).toEqual(["second", "hidden", "first"]);
     expect(section.testimonials[0].document.body).toHaveLength(1);
   });
-  it("selects facilities by program and category and puts unset order last", async () => {
+  it("selects facilities by program and category and puts unset order first, as Webflow", async () => {
     const facility = (_id: string, extra: Fixture = {}) => ({
       _id,
       _type: "facility",
@@ -94,9 +94,9 @@ describe("Maplewood collection projections", () => {
       ],
     );
     expect(section.items.map((item: Fixture) => item._id)).toEqual([
+      "unset",
       "first",
       "second",
-      "unset",
     ]);
   });
 

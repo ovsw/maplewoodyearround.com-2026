@@ -6,7 +6,7 @@ import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import { Mail, Phone } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
-import StaffRoster from "./staff-roster";
+import StaffRoster, { TourInvitation } from "./staff-roster";
 
 type TeamMembersBlock = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -284,6 +284,21 @@ export default function TeamMembers({
     ) ?? [];
 
   if (!resolvedMembers.length) return null;
+
+  if (stegaClean(presentation) === "tour") {
+    return (
+      <TourInvitation
+        _key={_key}
+        actions={actions}
+        dataAttribute={dataAttribute}
+        eyebrow={eyebrow}
+        memberDataAttribute={memberDataAttribute}
+        members={resolvedMembers}
+        richText={richText}
+        title={title}
+      />
+    );
+  }
 
   if (stegaClean(presentation) === "roster") {
     return (

@@ -1,11 +1,31 @@
 import { groq } from "next-sanity";
-import { contentCardsProjection } from "./shared/maplewood";
+import { contentDestinationProjection } from "./shared/maplewood";
+import { imageQuery } from "./shared/image";
+import { urlInternalHref } from "./shared/internal-href";
 
 // @sanity-typegen-ignore
 export const tabbedHeroQuery = groq`
   _type == "tabbedHero" => {
-    title,
-    description,
-    ${contentCardsProjection}
+    anchorId,
+    "breadcrumbs": array::compact(breadcrumbs[]{
+      _key, label, program, destination${contentDestinationProjection}
+    }),
+    "tabs": array::compact(tabs[]{
+      _key, label, title, highlightText, description,
+      "buttons": array::compact(buttons[]{
+        _key,
+        _type,
+        text,
+        variant,
+        "openInNewTab": url.openInNewTab,
+        "href": select(
+          url.type == "internal" => ${urlInternalHref},
+          url.type == "external" => url.external,
+          url.type == "file" => url.file.asset->url,
+          url.href
+        )
+      }),
+      image{${imageQuery}}
+    })
   }
 `;

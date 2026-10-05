@@ -100,6 +100,29 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "videoMp4",
+      title: "Video above the heading (MP4)",
+      type: "file",
+      description:
+        "Optional background video shown in a band above the heading. Visitors can pause it.",
+      options: { accept: "video/mp4" },
+    }),
+    defineField({
+      name: "videoWebm",
+      title: "Video above the heading (WebM)",
+      type: "file",
+      description: "Optional WebM copy of the same video.",
+      options: { accept: "video/webm" },
+    }),
+    defineField({
+      name: "poster",
+      title: "Video still image",
+      type: "image",
+      description: "Shown before playback and when a visitor requests reduced motion.",
+      options: { hotspot: true },
+      hidden: ({ parent }) => !parent?.videoMp4 && !parent?.videoWebm && !parent?.poster,
+    }),
+    defineField({
       name: "facts",
       title: "Facts",
       type: "array",

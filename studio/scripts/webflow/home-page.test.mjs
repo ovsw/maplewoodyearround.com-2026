@@ -108,7 +108,8 @@ test("bus cards only remove a heading when it is the description prefix", () => 
 test("home parsing changes do not change other pages using the same section types", () => {
   const blocks = plan("/other").documents[0].blocks;
   assert.equal(blocks[0].highlightText, undefined);
-  assert.equal(blocks[2].selectedTestimonials, undefined);
+  // Every testimonial wall keeps its displayed list (issue #12); see sections.test.mjs.
+  assert.deepEqual(blocks[2].selectedTestimonials.map((item) => item._ref), ["wf-quotes-two", "wf-quotes-one"]);
   assert.equal(blocks[3].selectedPosts, undefined);
   assert.match(blocks[0].description, /Camp info/);
 });
