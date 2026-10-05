@@ -58,7 +58,7 @@ export const sectionTraits: Record<Block["_type"], SectionTrait> = {
   scrollPanels: {},
   busMap: {},
   imageReveal: {},
-  directorIntro: { hero: true },
+  directorIntro: { background: "night", hero: true },
   programCards: {},
   electiveCards: {},
   historyStory: {},
@@ -75,6 +75,7 @@ export const sectionTraits: Record<Block["_type"], SectionTrait> = {
   summerDocumentList: {},
   tabbedHero: { hero: true },
   iconCards: {},
+  registrationCards: {},
   benefitCards: {},
   bigImageList: {},
   ctaBanner: { tuck: true },
@@ -115,7 +116,7 @@ export type SectionBoundary = {
  * omits `background` for these, so the type guard below has to exclude them
  * by `_type`; keep this list and the table's `background` entries in step.
  */
-type FixedBackgroundType = "hero" | "homeHero" | "innerHero";
+type FixedBackgroundType = "hero" | "homeHero" | "innerHero" | "directorIntro";
 
 /** Blocks whose GROQ projection carries the editor `background` field. */
 export type EditorBackgroundBlock = Exclude<

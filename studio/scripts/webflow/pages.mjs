@@ -197,7 +197,8 @@ export function staticPages(snapshot, context, schema) {
     const dom = context.pageDocuments.get(page.path);
     const main = dom.querySelector('main');
     if (!main) throw new Error(`Missing main content on ${page.path}`);
-    const sectionNodes = [...main.querySelectorAll('section,header,.w-embed.w-iframe')].filter((n) => !n.parentElement?.closest('main section,main header,.w-embed.w-iframe'));
+    // Most sections are <section>; the /history timeline is a section_ <div>.
+    const sectionNodes = [...main.querySelectorAll('section,header,.w-embed.w-iframe,div[class*="section_"]')].filter((n) => !n.parentElement?.closest('main section,main header,.w-embed.w-iframe,main div[class*="section_"]'));
     const blocks = [];
     const anchors = sectionAnchors(sectionNodes);
     for (const [index, original] of sectionNodes.entries()) {
@@ -209,7 +210,8 @@ export function staticPages(snapshot, context, schema) {
       if (page.path === '/') staticNode.querySelectorAll('.u-display-hidden').forEach((node) => node.remove());
       if (!type && !text(staticNode) && !staticNode.querySelector('img,iframe,video')) continue;
       if (!type) throw new Error(`Unknown static section pattern on ${page.path} section ${index + 1}`);
-      if (type === 'cardSlider' && page.path === '/contact') type = 'electiveCards';
+      // The /contact registration lists are authored link cards, not a collection.
+      if (type === 'cardSlider' && original.querySelector('.contact24_grid-list')) type = 'registrationCards';
       // A story beside staff portraits invites families to tour with them.
       if (type === 'storyFeature' && original.querySelector('.w-dyn-list .team4_image-wrapper')) type = 'teamMembers';
       if (type === 'rateTable' && !original.querySelector('.comparison6_top-row,.comparison8_top-row,table')) type = 'richTextBlock';
@@ -281,8 +283,8 @@ export function staticPages(snapshot, context, schema) {
       if (type === 'featureCards') block.groups = [{ _key: key(prefix), _type: 'featureCardGroup', heading: title, cards: cards(staticNode, context, prefix).map((card) => ({ _key: card._key, _type: 'featureCardItem', title: card.title, text: card.description, image: card.image, ...(card.actions[0] ? { link: { text: card.actions[0].label, url: customUrl(card.actions[0].destination) } } : {}) })) }];
       if (type === 'statistics') block.items = [...original.querySelectorAll('[class*="stats14"][class*="item"]')].map((node, i) => ({ _key: key(`${prefix}-s${i}`), _type: 'statistic', value: text(node.firstElementChild), label: text(node.lastElementChild) }));
       if (page.path !== '/') mapSourceSections({ type, selector, original, staticNode, block, context, prefix, snapshot, anchors, html: page.html });
-      // The zoom grid has the same label, heading and action slots on every page.
-      if (page.path === '/' || type === 'videoZoomGrid') {
+      // The zoom grid and bus map have the same slots on every page.
+      if (page.path === '/' || ['videoZoomGrid', 'busMap'].includes(type)) {
         // The home composition has distinct intro, label, body and action slots.
         // Preserve those slots on every import, including the final frozen run.
         const paragraphs = (node) => {

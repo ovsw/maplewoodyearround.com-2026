@@ -59,6 +59,22 @@ const accentOf = (node) => {
   return ACCENTS.has(value) ? value : undefined;
 };
 
+// With two accent classes, the later one wins in the live stylesheet.
+const lastAccent = (node) => {
+  const value = [...(node?.closest('[class*="u-accent-"]')?.classList ?? [])].filter((name) => name.startsWith('u-accent-')).at(-1)?.slice(9);
+  return ACCENTS.has(value) ? value : undefined;
+};
+
+// A Webflow lightbox lists its media in a JSON script; keep a YouTube link only.
+function lightboxVideo(lightbox) {
+  try {
+    const url = new URL(JSON.parse(lightbox.querySelector('script.w-json')?.textContent ?? '{}').items?.[0]?.url);
+    return url.protocol === 'https:' && /(^|\.)(youtube\.com|youtu\.be)$/.test(url.hostname) ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 // Icons coloured with a brand text colour instead of a u-accent class.
 const ICON_COLOURS = { 'text-color-brand-quarternary': 'purple', 'text-color-brand-accent-dark': 'blue', 'text-color-brand-secondary-mid': 'yellow' };
 const iconAccent = (node) => Object.entries(ICON_COLOURS).find(([name]) => node?.querySelector(`.${name}`))?.[1];
@@ -267,8 +283,102 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     block.imagePosition = image && title && image.compareDocumentPosition(title) & 4 ? 'left' : 'right';
     block.features = featureItems(original, context, prefix);
     bySuffix(staticNode, '_item-list').forEach((node) => node.setAttribute('data-import-features', ''));
-    block.richText = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},[data-import-features]`), context, prefix);
+    // A lightbox photo plays a YouTube video; its label sits on the photo.
+    const lightbox = original.querySelector('a.w-lightbox');
+    const video = lightbox && lightboxVideo(lightbox);
+    if (video) {
+      block.videoUrl = video;
+      const label = lines(staticNode.querySelector('.w-lightbox')).replace(/\n/g, ' ');
+      if (label) block.videoLabel = label;
+    }
+    block.richText = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},[data-import-features],.w-lightbox`), context, prefix);
     block.buttons = sourceButtons(buttonLinks(staticNode), context, prefix);
+    return;
+  }
+
+  if (type === 'directorIntro') {
+    // Panels in reading order: the left and right columns alternate.
+    const column = (suffix) => bySuffix(staticNode, suffix).flatMap((node) => bySuffix(node, '_text-wrapper'));
+    const left = column('_content-left');
+    const right = column('_content-right');
+    const panels = Array.from({ length: Math.max(left.length, right.length) }, (_, i) => [left[i], right[i]]).flat().filter(Boolean);
+    block.panels = panels.map((node, i) => ({
+      _key: key(`${prefix}-p${i}`), _type: 'directorPanel',
+      title: text(headingOf(node)),
+      body: textBlocks(without(node, `${NON_COPY},h1,h2,h3`), context, `${prefix}-p${i}`),
+    }));
+    return;
+  }
+
+  if (type === 'jobList') {
+    // The jobs are Job Opportunities records; the section keeps its introduction.
+    const intro = bySuffix(staticNode, '_content-left')[0] ?? staticNode;
+    block.title = text(headingOf(intro));
+    block.intro = textBlocks(withoutTitle(intro, headingOf(intro), NON_COPY), context, prefix);
+    return;
+  }
+
+  if (type === 'contactDetailsSection') {
+    block.features = bySuffix(original, '_item').filter((item) => item.querySelector('h3')).map((item, i) => ({
+      _key: key(`${prefix}-f${i}`), _type: 'featureItem',
+      ...(iconFromSvg(item.querySelector('svg')) ? { icon: iconFromSvg(item.querySelector('svg')) } : {}),
+      ...(lastAccent(item.querySelector('[class*="u-accent-"]')) ? { accent: lastAccent(item.querySelector('[class*="u-accent-"]')) } : {}),
+      title: text(item.querySelector('h3')),
+      body: textBlocks(without(item, `${NON_COPY},h3`), context, `${prefix}-f${i}`),
+    }));
+    return;
+  }
+
+  if (type === 'registrationCards') {
+    const heading = bySuffix(staticNode, '_heading-wrapper')[0] ?? staticNode;
+    const sourceHeading = bySuffix(original, '_heading-wrapper')[0] ?? original;
+    block.tagline = tagline(heading);
+    // The heading icon sits beside the heading, in the button group's accent.
+    const headingIcon = [...sourceHeading.querySelectorAll('.button-group svg')].find((svg) => !svg.closest('a,.button'));
+    if (iconFromSvg(headingIcon)) block.icon = iconFromSvg(headingIcon);
+    if (accentOf(headingIcon)) block.accent = accentOf(headingIcon);
+    block.title = text(headingOf(heading));
+    const intro = heading.querySelector('.w-richtext');
+    block.intro = intro ? textBlocks(intro, context, `${prefix}-intro`) : [];
+    block.actions = sourceActions(buttonLinks(heading), context, prefix);
+    block.cards = bySuffix(original, '_item').filter((item) => item.querySelector('h3')).map((item, i) => {
+      const links = [...item.querySelectorAll('a[href]')].filter((a) => text(a).replace(/‍/g, '').trim());
+      return {
+        _key: key(`${prefix}-c${i}`), _type: 'registrationCard',
+        ...(iconFromSvg(item.querySelector('svg')) ? { icon: iconFromSvg(item.querySelector('svg')) } : {}),
+        ...(lastAccent(item) ? { accent: lastAccent(item) } : {}),
+        title: text(item.querySelector('h3')),
+        body: textBlocks(without(item, `${NON_COPY},h3,a,ul`), context, `${prefix}-c${i}`),
+        links: sourceActions(links, context, `${prefix}-c${i}`),
+      };
+    });
+    return;
+  }
+
+  if (type === 'stackedTimeline' && selector === 'section_timeline11') {
+    // Dated milestones on alternating sides of a centred line.
+    const intro = staticNode.querySelector('.max-width-large') ?? staticNode;
+    block.layout = 'milestones';
+    block.eyebrow = text(intro.querySelector('.text-style-tagline'));
+    block.intro = [...intro.querySelectorAll('p')].map(lines).filter(Boolean).join('\n');
+    block.buttons = [];
+    block.items = bySuffix(staticNode, '_item').filter((node) => node.querySelector('h3,h4')).map((node, i) => {
+      const image = node.querySelector('img');
+      return {
+        _key: key(`${prefix}-t${i}`), _type: 'stackedTimelineItem',
+        meta: text(node.querySelector('h3')), title: text(node.querySelector('h4')),
+        body: textBlocks(without(node, `${NON_COPY},h3,h4`), context, `${prefix}-t${i}`),
+        ...(image ? { image: context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '') } : {}),
+      };
+    });
+    return;
+  }
+
+  // Policy text (content30) keeps every heading in its copy; the first one
+  // is not a section heading.
+  if (type === 'richTextBlock' && selector === 'section_content30') {
+    delete block.title;
+    block.richText = portableText(without(staticNode, NON_COPY), context, prefix);
     return;
   }
 
@@ -506,6 +616,9 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
       ...(accentOf(node) ?? iconAccent(node) ? { accent: accentOf(node) ?? iconAccent(node) } : {}),
     }));
     block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
+    // A photo beside the text (the /history figures); staff portraits are a list.
+    const image = [...staticNode.querySelectorAll('img')].find((node) => !node.closest('[class*="team4"]'));
+    if (image) block.image = context.asset(image.getAttribute('src'), 'image', image.getAttribute('alt') ?? '');
     // The staff list under the figures shows the program's preschool teachers.
     if (original.querySelector('.team4_component .w-dyn-list')) {
       block.preschoolTeachers = true;
@@ -523,6 +636,13 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     block.richText = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},.school-year,.summer-camp`), context, prefix);
     block.actions = sourceActions(buttonLinks(staticNode), context, prefix);
     block.tourGuidesOnly = true;
+    return;
+  }
+
+  if (type === 'teamMembers' && block.profileGroup === 'leadership') {
+    // The profiles are the leadership staff records, not section copy.
+    bySuffix(staticNode, '_item').forEach((node) => node.remove());
+    block.richText = textBlocks(without(staticNode, NON_COPY), context, prefix);
     return;
   }
 

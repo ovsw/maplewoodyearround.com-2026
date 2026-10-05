@@ -7,6 +7,7 @@ import { Mail, Phone } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
 import StaffRoster, { TourInvitation } from "./staff-roster";
+import LeadershipGrid from "./leadership-grid";
 
 type TeamMembersBlock = Extract<
   NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number],
@@ -296,6 +297,19 @@ export default function TeamMembers({
         members={resolvedMembers}
         richText={richText}
         title={title}
+      />
+    );
+  }
+
+  if (stegaClean(presentation) === "profiles") {
+    return (
+      <LeadershipGrid
+        _key={_key}
+        background={background}
+        dataAttribute={dataAttribute}
+        memberDataAttribute={memberDataAttribute}
+        members={resolvedMembers.map((member) => member.document)}
+        richText={richText}
       />
     );
   }

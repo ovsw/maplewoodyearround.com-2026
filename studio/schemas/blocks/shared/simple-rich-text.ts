@@ -1,8 +1,8 @@
 import { defineArrayMember, defineType } from "sanity";
 
 /**
- * Deliberately minimal rich text: paragraphs with bold, italic, and inline
- * links, nothing else. Use it where copy needs multiple paragraphs but must
+ * Deliberately minimal rich text: paragraphs with bold, italic, the live
+ * site's yellow highlight, and inline links, nothing else. Use it where copy needs multiple paragraphs but must
  * not introduce headings, lists, or embedded media that would break the
  * section's design.
  */
@@ -25,6 +25,7 @@ export default defineType({
         decorators: [
           { title: "Bold", value: "strong" },
           { title: "Italic", value: "em" },
+          { title: "Highlight", value: "highlight" },
         ],
       },
     }),

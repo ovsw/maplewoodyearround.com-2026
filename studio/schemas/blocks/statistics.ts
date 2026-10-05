@@ -63,6 +63,22 @@ export default defineType({
       ],
     }),
     sectionActionsField,
+    defineField({
+      name: "image",
+      title: "Photo",
+      type: "image",
+      description:
+        "Optional. With a photo, the statistics sit above the heading and text, and the photo sits beside them.",
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          description: "What the photo shows, for screen readers.",
+        }),
+      ],
+    }),
     {
       ...programFilterField,
       title: "Staff program",

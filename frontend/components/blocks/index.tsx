@@ -48,6 +48,7 @@ import ParentDashboardSection from "@/components/blocks/parent-dashboard-section
 import SummerDocumentList from "@/components/blocks/summer-document-list";
 import TabbedHero from "@/components/blocks/tabbed-hero";
 import IconCards from "@/components/blocks/icon-cards";
+import RegistrationCards from "@/components/blocks/registration-cards";
 // page-builder-generator:component-imports
 import { dataset, projectId } from "@/sanity/lib/env";
 import type { BlogListing } from "@/lib/blog-index";
@@ -117,6 +118,7 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "summerDocumentList",
   "tabbedHero",
   "iconCards",
+  "registrationCards",
   // page-builder-generator:editing-types
 ]);
 
@@ -166,6 +168,7 @@ const componentMap: Partial<{
   summerDocumentList: SummerDocumentList,
   tabbedHero: TabbedHero,
   iconCards: IconCards,
+  registrationCards: RegistrationCards,
   // page-builder-generator:component-map
 };
 
@@ -267,7 +270,8 @@ export default function Blocks({
             }
           : block._type === "cardSlider" ||
               block._type === "programCards" ||
-              block._type === "summerDocumentList"
+              block._type === "summerDocumentList" ||
+              block._type === "jobList"
             ? {
                 dataAttribute,
                 itemDataAttribute: stega

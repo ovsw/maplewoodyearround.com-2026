@@ -13,6 +13,7 @@ export const statisticsQuery = groq`
     text[]{${simpleRichTextQuery}},
     items[]{_key, value, label, accent, text[]{${simpleRichTextQuery}}},
     ${contentActionsProjection},
+    image{${imageQuery}},
     "members": select(preschoolTeachers == true => *[
       _type == "staffMember" && visible != false && preschoolTeacher == true
       && (!defined(^.program) || program == ^.program)

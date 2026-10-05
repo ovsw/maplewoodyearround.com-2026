@@ -108,6 +108,7 @@ import parentDashboardSection from "./schemas/blocks/parent-dashboard-section";
 import summerDocumentList from "./schemas/blocks/summer-document-list";
 import tabbedHero from "./schemas/blocks/tabbed-hero";
 import iconCards from "./schemas/blocks/icon-cards";
+import registrationCards from "./schemas/blocks/registration-cards";
 // page-builder-generator:block-imports
 
 export const schemaTypes = [
@@ -212,5 +213,6 @@ export const schemaTypes = [
   summerDocumentList,
   tabbedHero,
   iconCards,
+  registrationCards,
   // page-builder-generator:block-types
 ];

@@ -87,6 +87,8 @@ export function portableText(html, context, prefix = 'html') {
     let nextMarks = marks;
     if (['B', 'STRONG'].includes(node.tagName)) nextMarks = [...marks, 'strong'];
     if (['I', 'EM'].includes(node.tagName)) nextMarks = [...marks, 'em'];
+    // The live yellow marker is bold text on a highlight (only /history uses it).
+    if (node.classList?.contains('bg-highlighted')) nextMarks = [...new Set([...marks, 'strong', 'highlight'])];
     if (node.tagName === 'A') {
       const target = destination(node.getAttribute('href'), context);
       if (target) {

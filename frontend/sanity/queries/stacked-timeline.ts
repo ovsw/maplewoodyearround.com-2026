@@ -8,6 +8,7 @@ import { simpleRichTextQuery } from "./shared/simple-rich-text";
 export const stackedTimelineQuery = groq`
   _type == "stackedTimeline" => {
     anchorId,
+    layout,
     eyebrow,
     title[]{
       ${minimalRichTextQuery}

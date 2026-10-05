@@ -239,6 +239,7 @@ const copyComponents: PortableTextProps["components"] = {
   marks: {
     customLink: linkMark,
     link: linkMark,
+    highlight: ({ children }) => <mark className={css.highlight}>{children}</mark>,
   },
   types: {
     image: () => null,

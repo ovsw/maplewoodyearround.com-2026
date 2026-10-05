@@ -1,16 +1,11 @@
 import { groq } from "next-sanity";
-import {
-  contentActionsProjection,
-  sectionVideoProjection,
-} from "./shared/maplewood";
-import { imageQuery } from "./shared/image";
-import { richTextContentQuery } from "./shared/rich-text-content";
+import { sectionVideoProjection } from "./shared/maplewood";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const directorIntroQuery = groq`
   _type == "directorIntro" => {
-    title,
-    description,
-${sectionVideoProjection}, image{${imageQuery}}, body[]{${richTextContentQuery}}, ${contentActionsProjection}
+    panels[]{_key, title, body[]{${simpleRichTextQuery}}},
+    ${sectionVideoProjection}
   }
 `;

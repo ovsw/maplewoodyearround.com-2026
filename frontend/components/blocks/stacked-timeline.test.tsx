@@ -19,6 +19,7 @@ const block: ComponentProps<typeof StackedTimeline> = {
   _key: "enroll",
   _type: "stackedTimeline",
   anchorId: "how-it-works",
+  layout: "steps",
   background: "cream",
   eyebrow: "How to Enroll",
   title: [

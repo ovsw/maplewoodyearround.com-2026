@@ -1,11 +1,13 @@
 import { groq } from "next-sanity";
-import { contentActionsProjection } from "./shared/maplewood";
+import { iconProjection } from "./shared/maplewood";
+import { simpleRichTextQuery } from "./shared/simple-rich-text";
 
 // @sanity-typegen-ignore
 export const contactDetailsSectionQuery = groq`
   _type == "contactDetailsSection" => {
-    title,
-    description,
-"contact": *[_type == "settings" && _id == "settings"][0].contact{email, phone, fax, addressLines}, ${contentActionsProjection}
+    features[]{
+      _key, ${iconProjection}, accent, title,
+      body[]{${simpleRichTextQuery}}
+    }
   }
 `;
