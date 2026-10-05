@@ -37,6 +37,9 @@ function PageContent({
     blocks[0]?._type !== "innerHero" &&
     // Program cards with breadcrumbs are the page header, as on /summer-camp/programs.
     !(blocks[0]?._type === "programCards" && blocks[0].breadcrumbs?.length) &&
+    // The director story and the calendar section carry their page's heading.
+    blocks[0]?._type !== "directorIntro" &&
+    !(blocks[0]?._type === "embedSection" && stegaClean(blocks[0].provider) === "Events Calendar") &&
     stegaClean(page.title)?.trim();
   const rootDataAttribute = stega
     ? (path: "description" | "title") =>

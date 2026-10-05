@@ -288,7 +288,7 @@ export function mapSourceSections({ type, selector, original, staticNode, block,
     const video = lightbox && lightboxVideo(lightbox);
     if (video) {
       block.videoUrl = video;
-      const label = lines(staticNode.querySelector('.w-lightbox')).replace(/\n/g, ' ');
+      const label = lines(without(staticNode.querySelector('.w-lightbox'), 'script')).replace(/\n/g, ' ');
       if (label) block.videoLabel = label;
     }
     block.richText = textBlocks(withoutTitle(staticNode, title, `${NON_COPY},[data-import-features],.w-lightbox`), context, prefix);
