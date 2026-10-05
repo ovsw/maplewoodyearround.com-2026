@@ -120,7 +120,7 @@ export default defineType({
       type: "image",
       description: "Shown before playback and when a visitor requests reduced motion.",
       options: { hotspot: true },
-      hidden: ({ parent }) => !parent?.videoMp4 && !parent?.poster,
+      hidden: ({ parent }) => !parent?.videoMp4 && !parent?.videoWebm && !parent?.poster,
     }),
     defineField({
       name: "facts",

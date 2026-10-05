@@ -240,6 +240,16 @@ test('a testimonial wall keeps the displayed testimonials in order as its select
   assert.deepEqual([block.eyebrow, block.eyebrowProgram], ['School Year', 'schoolYear']);
 });
 
+test('a testimonial wall selects the longest matching quote and each testimonial once', () => {
+  const testimonials = { id: 't', displayName: 'Testimonials', live: [
+    { id: 'short', fieldData: { 'testimonial-text': 'Great camp.' } },
+    { id: 'long', fieldData: { 'testimonial-text': 'Great camp. The staff are kind.' } },
+  ] };
+  const block = mapOne('quoteWall', `<section class="section_testimonials_testimonial11"><h2>Parent Testimonials</h2>
+    <div class="wall-of-love_item">Great camp. The staff are kind. ~ Parent</div><div class="wall-of-love_item">Great camp. ~ Parent</div></section>`, { snapshot: { collections: [testimonials] } });
+  assert.deepEqual(block.selectedTestimonials.map((item) => item._ref), ['wf-t-long', 'wf-t-short']);
+});
+
 test('price card checklists keep their heading, icon, colour and a closing note', () => {
   const item = (text, icon = true) => `<div class="check-list_item">${icon ? '<svg viewBox="0 0 24 24"><path d="M1 1"/></svg>' : ''}<p>${text}</p></div>`;
   const block = mapOne('pricingCards', `<section class="section_pricing19"><h2>Pricing</h2><p>Sign the <a href="https://example.com/waiver">waiver</a>.</p>

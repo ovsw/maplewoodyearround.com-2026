@@ -9,8 +9,9 @@ type Tab = { key: string; label: string; dataSanity?: string };
 
 /*
  * Tab switching for the tabbed hero. As live, the tabs advance every six
- * seconds; a visitor's choice stops the rotation, and so does hovering or
- * focusing the hero. Visitors who prefer reduced motion get no rotation.
+ * seconds. Hovering pauses the rotation; choosing a tab or moving keyboard
+ * focus into the hero stops it for good (WCAG 2.2.2). Visitors who prefer
+ * reduced motion get no rotation.
  */
 export default function TabbedHeroTabs({
   id,
@@ -64,10 +65,7 @@ export default function TabbedHeroTabs({
   return (
     <header
       className={styles.hero}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
-      }}
-      onFocus={() => setPaused(true)}
+      onFocus={() => setRotating(false)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >

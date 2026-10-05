@@ -160,12 +160,17 @@ function faqCategory(original, snapshot) {
 export function selectedTestimonials(original, snapshot) {
   const source = snapshot.collections?.find((collection) => collection.displayName === 'Testimonials');
   const normalized = (value) => (typeof value === 'string' ? value : '').replace(/\s+/g, ' ').trim();
+  // A short quote can sit inside a longer displayed one: take the longest
+  // unused match so each testimonial is selected once.
+  const used = new Set();
   const items = [...original.querySelectorAll('.wall-of-love_item')].map((node) => {
     const content = normalized(text(node));
-    return source?.live.find((item) => {
-      const quote = normalized(item.fieldData['testimonial-text']);
-      return quote.length > 0 && content.includes(quote);
-    });
+    const match = (source?.live ?? [])
+      .map((item) => ({ item, quote: normalized(item.fieldData['testimonial-text']) }))
+      .filter(({ item, quote }) => quote.length > 0 && !used.has(item.id) && content.includes(quote))
+      .sort((a, b) => b.quote.length - a.quote.length)[0]?.item;
+    if (match) used.add(match.id);
+    return match;
   });
   if (!items.length || items.some((item) => !item)) return undefined;
   return items.map((item) => ({ ...reference(documentId(source.id, item.id)), _key: key(item.id) }));
