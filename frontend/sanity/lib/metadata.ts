@@ -2,6 +2,7 @@ import {
   BLOG_INDEX_QUERY_RESULT,
   HOME_PAGE_QUERY_RESULT,
   PAGE_QUERY_RESULT,
+  PARENT_DASHBOARD_QUERY_RESULT,
   POST_QUERY_RESULT,
   SEO_SETTINGS_QUERY_RESULT,
 } from "@/sanity.types";
@@ -154,7 +155,11 @@ export function generatePageMetadata({
   path,
   settings,
 }: {
-  page: HOME_PAGE_QUERY_RESULT | PAGE_QUERY_RESULT | POST_QUERY_RESULT;
+  page:
+    | HOME_PAGE_QUERY_RESULT
+    | PAGE_QUERY_RESULT
+    | POST_QUERY_RESULT
+    | PARENT_DASHBOARD_QUERY_RESULT;
   path: string;
   settings?: SEO_SETTINGS_QUERY_RESULT;
 }) {

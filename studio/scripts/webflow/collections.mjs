@@ -29,7 +29,8 @@ export const mappings = {
   FAQs: ['faq', null, { name: 'title', slug: 'slug', answer: 'body', category: 'categories', order: 'order', grouping: 'program' }],
   'FAQ Categories': ['faqCategory', null, { name: 'title', slug: 'slug' }],
   'Job Opportunities': ['jobOpportunity', null, { name: 'title', slug: 'slug', 'job-description': 'description', 'summer-camp': null, 'school-year': null, seasonal: 'seasonal', live: 'visible', order: 'order' }],
-  'Parent Dashboard Cards': ['dashboardCard', null, { name: 'title', slug: 'slug', 'color-theme': 'colorTheme', image: 'image', 'show-image': 'showImage', 'show-icon': 'showIcon', 'icon-code': 'iconCode', 'card-text': 'text', 'link-text': 'linkText', 'link-url': null, 'use-attachment': null, attachment: null, season: 'seasons', order: 'order', live: 'visible', 'use-link': null }],
+  // Imported into the parentDashboard singleton's card lists (pages.mjs).
+  'Parent Dashboard Cards': [null, null, {}],
   'SY Facility Categories': ['facilityCategory', 'schoolYear', { name: 'title', slug: 'slug' }],
   'SY Facilities': ['facility', 'schoolYear', { ...facility, category: 'categories' }],
   'SC Sample Schedules': ['sampleSchedule', 'summerCamp', schedule],
@@ -95,19 +96,6 @@ export function mapItem(collection, item, context) {
     if (context.jobApplication) result.applyLink = destination(context.jobApplication, context);
   }
   if (type === 'programOffering') result.listingGroup = context.programListingGroup?.(item) ?? 'main';
-  if (type === 'dashboardCard') {
-    const file = source['use-attachment'] && source.attachment?.url;
-    const link = source['use-link'] && source['link-url'];
-    if (file && link) {
-      const shown = context.dashboardLinks?.get(source.slug);
-      if (!shown) throw new Error('Dashboard has conflicting destination modes without a rendered link');
-      result.destination = destination(shown, context);
-    } else if (file) result.destination = { _type: 'contentDestination', kind: 'file', file: context.asset(source.attachment, 'file') };
-    else if (link) result.destination = destination(link, context);
-    if (!result.destination) delete result.destination;
-    // Exact source artwork remains inert; no guessed Lucide replacement.
-    if (source['show-icon'] && source['icon-code']) context.warnings.add('dashboard-source-icon-retained-for-page-implementation');
-  }
   return result;
 }
 
@@ -116,6 +104,7 @@ export function cmsDocuments(snapshot, context) {
   for (const collection of snapshot.collections) {
     const live = new Map(collection.live.map((item) => [item.id, item]));
     const staged = new Map(collection.staged.map((item) => [item.id, item]));
+    if (!mappings[collection.displayName]?.[0]) continue;
     for (const item of collection.live) documents.push(mapItem(collection, item, context));
     let drafts = 0;
     for (const item of collection.staged) {

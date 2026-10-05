@@ -489,28 +489,25 @@ There is no CMS category-order field. Any new `order` value must reflect public 
 
 The application destination is public page content, not a source CMS field. Import it separately into `applyLink` from the observed application link.
 
-### Parent Dashboard Cards → `dashboardCard`
+### Parent Dashboard Cards → `parentDashboard.schoolYearCards[]` and `summerCampCards[]`
 
-| Webflow field    | Sanity field                                                | Meaning                                                                                                          |
-| ---------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `name`           | `title`                                                     | Card heading.                                                                                                    |
-| `slug`           | `slug.current`                                              | Source identity.                                                                                                 |
-| `color-theme`    | `colorTheme`                                                | Source theme label.                                                                                              |
-| `image`          | `image`                                                     | Sanity image asset.                                                                                              |
-| `show-image`     | `showImage`                                                 | Explicit image visibility.                                                                                       |
-| `show-icon`      | `showIcon`                                                  | Explicit icon visibility.                                                                                        |
-| `icon-code`      | `iconCode`                                                  | Preserve inert source text. Map recognized artwork to `iconName` for rendering; never execute the source markup. |
-| `card-text`      | `text`                                                      | Card explanation.                                                                                                |
-| `link-text`      | `linkText`                                                  | Link label.                                                                                                      |
-| `link-url`       | `destination.external` or `destination.internal`            | URL candidate for an internal/external destination.                                                              |
-| `use-attachment` | Select `destination.kind = file` when active.               | Source destination mode.                                                                                         |
-| `attachment`     | `destination.file`                                          | Upload attachment to Sanity.                                                                                     |
-| `season`         | `seasons[]`                                                 | References to `season`; their program values select dashboard tabs.                                              |
-| `order`          | `order`                                                     | Source list order within each tab.                                                                               |
-| `live`           | `visible`                                                   | Custom list visibility.                                                                                          |
-| `use-link`       | Select `destination` internal/external variant when active. | Source destination mode.                                                                                         |
+The cards are inline objects in the `parentDashboard` singleton, one ordered list per tab (decision from Ovi, issue #15). Editors add, remove and drag cards within each tab.
 
-Import the destination mode from source switches and the rendered link, not just the presence of an attachment. If both modes are active and the public result does not settle which link is used, report the conflict. If neither has a usable destination, leave the destination absent and hide the card. Unknown icon markup requires a visible match from the reference; do not silently select a different icon.
+| Webflow field    | Sanity field (card object)                                  | Meaning                                                                                  |
+| ---------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `name`           | `title`                                                     | Card heading.                                                                            |
+| `card-text`      | `text`                                                      | Card explanation.                                                                        |
+| `color-theme`    | `accent`                                                    | Shared accent colour (`green`, `blue`, `red`, `purple`, `mint`, `yellow`).               |
+| `icon-code`      | `icon.svg`                                                  | Imported only when `show-icon` is on. Sanitized source artwork, as in other icon fields. |
+| `image`          | `image`                                                     | Imported only when `show-image` is on. An image replaces the icon on the card.           |
+| `link-text`      | `link.label`                                                | Shared `contentAction` label.                                                            |
+| `link-url`, `attachment` | `link.destination`                                  | Shared `contentDestination`: page, URL or uploaded file.                                 |
+| `season`         | Which list holds the card                                   | A card in both seasons is copied into both lists.                                        |
+| `order`          | List position                                               | Source order within each tab.                                                            |
+| `live`           | Not imported when off                                       | Editors remove a card to hide it.                                                        |
+| `slug`, `show-image`, `show-icon`, `use-link`, `use-attachment` | Not stored        | Used only to select the imported values.                                                 |
+
+Import the destination mode from source switches and the rendered link, not just the presence of an attachment. When both modes are active, use the link the public card shows, matched by its exact heading. If neither has a usable destination, leave the destination absent; the card stays hidden until an editor adds one.
 
 ### SY Facility Categories → `facilityCategory` (`program = schoolYear`)
 
@@ -612,7 +609,7 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_team14`                                         | `teamMembers` with `profileGroup = leadership`           | Public leadership profiles with biographies and contact links; separate from full SC/SY profiles with `profileGroup = roster`. |
 | `section_contact21`                                      | `contactDetailsSection`                                  | Authored contact cards (icon, colour, heading, text with email, telephone and directions links).                               |
 | `section_career12`                                       | `jobList`                                                | Heading and linked introduction; visible jobs selected by program, with editable application links.                            |
-| `section_layout398`                                      | `parentDashboardSection`                                 | Singleton heading/tab labels plus visible dashboard cards selected through season program. Hide cards without destinations.    |
+| `section_layout398`                                      | `parentDashboard` singleton (not a section)              | Heading, introduction, tab prompt and labels, and one card list per tab. Hide cards without destinations.                      |
 | `section_timeline11`                                     | `stackedTimeline` with `layout = milestones`             | Ordered history dates, titles, highlighted text and photos.                                                                    |
 | `header50c_wrap text-color-alternate`                    | `innerHero`                                              | Document-page title and introduction.                                                                                          |
 | `section_content30`                                      | `summerDocumentList`, `embedSection`, or `richTextBlock` | Download pages read the selected summer document; tour pages use provider embeds; policy pages use rich text.                  |

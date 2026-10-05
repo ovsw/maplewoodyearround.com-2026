@@ -35,7 +35,6 @@ import { instructionStepsQuery } from "./instruction-steps";
 import { embedSectionQuery } from "./embed-section";
 import { contactDetailsSectionQuery } from "./contact-details-section";
 import { jobListQuery } from "./job-list";
-import { parentDashboardSectionQuery } from "./parent-dashboard-section";
 import { summerDocumentListQuery } from "./summer-document-list";
 import { tabbedHeroQuery } from "./tabbed-hero";
 import { iconCardsQuery } from "./icon-cards";
@@ -84,7 +83,6 @@ export const pageBuilderQuery = `
     ${embedSectionQuery},
     ${contactDetailsSectionQuery},
     ${jobListQuery},
-    ${parentDashboardSectionQuery},
     ${summerDocumentListQuery},
     ${tabbedHeroQuery},
     ${iconCardsQuery},

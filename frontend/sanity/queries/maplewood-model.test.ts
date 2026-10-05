@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { cardSliderQuery } from "./card-slider";
 import { filterableCardsQuery } from "./filterable-cards";
-import { parentDashboardSectionQuery } from "./parent-dashboard-section";
+import { PARENT_DASHBOARD_QUERY } from "./parent-dashboard";
 import { summerDocumentListQuery } from "./summer-document-list";
 import { teamMembersQuery } from "./team-members";
 import { quoteWallQuery } from "./quote-wall";
@@ -254,63 +254,52 @@ describe("Maplewood destination and staff projections", () => {
     ).toEqual(["guide"]);
   });
 
-  it("returns usable dashboard links and season programs, excluding placeholder destinations", async () => {
-    const card = (_id: string, destination?: Fixture, extra: Fixture = {}) => ({
-      _id,
+  it("returns each tab's cards in order with file, page and external links", async () => {
+    const card = (_key: string, destination?: Fixture) => ({
+      _key,
       _type: "dashboardCard",
-      title: _id,
-      seasons: [ref("season")],
-      destination,
-      ...extra,
+      title: _key,
+      link: { _type: "contentAction", label: "Visit Page", destination },
     });
-    const section = await project(
-      parentDashboardSectionQuery,
-      { _type: "parentDashboardSection" },
-      [
-        card("external", {
-          kind: "external",
-          external: "https://example.test/forms",
-        }),
-        card("file", { kind: "file", file: { asset: ref("pdf") } }),
-        card("internal", { kind: "internal", internal: ref("dashboard") }),
-        card("empty", { kind: "external", external: "" }),
-        card("placeholder", { kind: "external", external: "#" }),
-        card("missing"),
-        card("unresolved", { kind: "internal", internal: ref("missing") }),
-        card(
-          "hidden",
-          { kind: "external", external: "https://example.test" },
-          { visible: false },
-        ),
-        { _id: "dashboard", _type: "parentDashboard" },
+    const result = await evaluate(parse(PARENT_DASHBOARD_QUERY), {
+      dataset: [
+        {
+          _id: "parentDashboard",
+          _type: "parentDashboard",
+          title: "Parent Dashboard",
+          schoolYearCards: [
+            card("external", {
+              kind: "external",
+              external: "https://example.test/forms",
+            }),
+          ],
+          summerCampCards: [
+            card("file", { kind: "file", file: { asset: ref("pdf") } }),
+            card("internal", {
+              kind: "internal",
+              internal: ref("parentDashboard"),
+            }),
+            card("missing"),
+          ],
+        },
         {
           _id: "pdf",
           _type: "sanity.fileAsset",
           url: "https://cdn.sanity.io/files/example.pdf",
         },
-        {
-          _id: "season",
-          _type: "season",
-          title: "Summer",
-          program: "summerCamp",
-        },
       ],
-    );
-    expect(section.cards.map((item: Fixture) => item._id)).toEqual([
-      "external",
-      "file",
-      "internal",
-    ]);
-    expect(
-      section.cards.map(
-        (item: { destination: { href: string } }) => item.destination.href,
-      ),
-    ).toEqual([
+    });
+    const dashboard = await result.get();
+    const hrefs = (cards: Array<{ link: { destination: { href: string } | null } }>) =>
+      cards.map((item) => item.link.destination?.href ?? null);
+    expect(hrefs(dashboard.schoolYearCards)).toEqual([
       "https://example.test/forms",
+    ]);
+    expect(hrefs(dashboard.summerCampCards)).toEqual([
       "https://cdn.sanity.io/files/example.pdf",
       "/parent-dashboard",
+      null,
     ]);
-    expect(section.cards[0].seasons[0].program).toBe("summerCamp");
   });
 });
 

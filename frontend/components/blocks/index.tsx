@@ -44,7 +44,6 @@ import InstructionSteps from "@/components/blocks/instruction-steps";
 import EmbedSection from "@/components/blocks/embed-section";
 import ContactDetailsSection from "@/components/blocks/contact-details-section";
 import JobList from "@/components/blocks/job-list";
-import ParentDashboardSection from "@/components/blocks/parent-dashboard-section";
 import SummerDocumentList from "@/components/blocks/summer-document-list";
 import TabbedHero from "@/components/blocks/tabbed-hero";
 import IconCards from "@/components/blocks/icon-cards";
@@ -114,7 +113,6 @@ const serverFieldEditingBlockTypes = new Set<Block["_type"]>([
   "embedSection",
   "contactDetailsSection",
   "jobList",
-  "parentDashboardSection",
   "summerDocumentList",
   "tabbedHero",
   "iconCards",
@@ -164,7 +162,6 @@ const componentMap: Partial<{
   embedSection: EmbedSection,
   contactDetailsSection: ContactDetailsSection,
   jobList: JobList,
-  parentDashboardSection: ParentDashboardSection,
   summerDocumentList: SummerDocumentList,
   tabbedHero: TabbedHero,
   iconCards: IconCards,

@@ -34,7 +34,6 @@ export const contentPageBuilderBlockTypes = [
   "embedSection",
   "contactDetailsSection",
   "jobList",
-  "parentDashboardSection",
   "summerDocumentList",
   "tabbedHero",
   "iconCards",
