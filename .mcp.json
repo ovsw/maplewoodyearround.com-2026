@@ -6,7 +6,8 @@
     },
     "sanity": {
       "type": "http",
-      "url": "https://mcp.sanity.io"
+      "url": "https://mcp.sanity.io",
+      "headersHelper": "node scripts/sanity-mcp-headers.mjs"
     }
   }
 }

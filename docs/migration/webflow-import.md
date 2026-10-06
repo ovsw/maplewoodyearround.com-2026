@@ -15,9 +15,7 @@ The seed reads the existing private asset manifest and reuses uploaded assets.
 It writes only the page's draft, preserves the document type, and does not
 publish or change importer ownership. Summer document pages also refresh the
 Summer documents draft they read. Pages with leadership profiles refresh the
-leadership staff drafts. The regular final import applies the
-same mappings to the source's published pages; refresh these review drafts
-from that final snapshot too, so they cannot retain older source copy.
+leadership staff drafts. The importer does not run again (Ovi, 2026-10-06).
 
 To compare the authenticated draft with the committed live references, set
 `REF_STORAGE_STATE` to a private, ignored Playwright storage-state file from

@@ -52,8 +52,8 @@ references change. Keep backups outside version control.
 
 Preserve draft and published state when changing stored content. Feature
 content goes to drafts unless the issue requires publication. Never target
-the source project's dataset. Studio edits wait until launch; the importer
-runs again on the date in the private Basecamp document.
+the source project's dataset. The importer does not run again: the content in
+Sanity is the content the client edits and publishes.
 Dataset deletion and unrelated settings or access changes need explicit
 authorization.
 
@@ -76,6 +76,13 @@ Run focused checks during development and the release suite before the PR.
 Test data migration, security, subtle logic and costly regressions. Complete
 the screenshots, accessibility and link checks required by each issue.
 The live Maplewood site is the visual reference. This is not a redesign.
+
+## Page content work
+
+Page work follows the OVS Website Workflow on the Basecamp card table. Read
+`docs/agents/pages.md` before `/page-plan`, `/page-draft`, `/page-polish` or
+"send to client review". Run `/ovs-workflow-setup` when a setup item is
+missing or a page skill stops on one.
 
 ## Browser and handoff
 

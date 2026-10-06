@@ -33,8 +33,7 @@ Drop decorative fades. Use captured Maplewood references for visual checks.
 
 For a stored shape change, inspect all affected documents and migrate them
 with a verified backup. Preserve draft and published state.
-Required content entry belongs to the task. Follow the importer and content
-freeze rules before launch.
+Required content entry belongs to the task.
 
 ## Completion
 

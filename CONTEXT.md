@@ -47,7 +47,3 @@ The content available to public Website visitors.
 
 **Presentation**:
 The Studio view that displays a page preview with click-to-edit controls.
-
-**Content freeze**:
-The period before launch when Studio edits wait so the final import can
-replace imported content without losing editor changes.
