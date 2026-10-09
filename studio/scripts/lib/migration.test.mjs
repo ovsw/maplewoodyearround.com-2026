@@ -80,6 +80,17 @@ test("a delete is refused while a record still points to it", () => {
   ]);
 });
 
+test("a reference to a draft or release version also blocks the delete", () => {
+  assert.throws(
+    () =>
+      planMigration(migration((document) => (document._id === "old" ? null : document)), [
+        { _id: "old", _type: "programOffering" },
+        { _id: "activity", _type: "activity", programs: [ref("versions.spring.old")] },
+      ]),
+    /Cannot delete old; still referenced by activity/,
+  );
+});
+
 test("a moved reference that repeats one in the same list is dropped", () => {
   assert.deepEqual(moveReferences({ programs: [ref("old"), ref("kept"), ref("other")] }, "old", "kept"), {
     programs: [ref("kept"), ref("other")],
@@ -145,13 +156,14 @@ test("a failed backup stops the run before the first write", async () => {
   assert.deepEqual(client.calls, []);
 });
 
-test("an applied run writes one transaction after the backup", async () => {
+test("an applied run writes after the backup, deletes last", async () => {
   const documents = [
     { _id: "a", _type: "faq", _rev: "r1", title: "Old" },
-    { _id: "gone", _type: "faq" },
+    { _id: "gone", _type: "faq", _rev: "r2" },
   ];
   const steps = [];
   const mutations = [];
+  const written = [];
   const client = {
     config: () => MAPLEWOOD,
     fetch: async () => structuredClone(documents),
@@ -172,7 +184,13 @@ test("an applied run writes one transaction after the backup", async () => {
         },
         delete: (id) => (mutations.push(["delete", id]), transaction),
         async commit() {
-          documents.splice(0, documents.length, { ...documents[0], title: "New" });
+          steps.push("commit");
+          for (const [kind, id, operations] of mutations.splice(0)) {
+            const index = documents.findIndex((document) => document._id === id);
+            if (kind === "delete") documents.splice(index, 1);
+            else if (operations.set) Object.assign(documents[index], operations.set);
+            written.push([kind, id, operations]);
+          }
         },
       };
       return transaction;
@@ -188,9 +206,10 @@ test("an applied run writes one transaction after the backup", async () => {
     backup: async () => (steps.push("backup"), "/backups/file.tar.gz"),
     log: () => {},
   });
-  assert.deepEqual(steps, ["target", "backup", "transaction"]);
-  assert.deepEqual(mutations, [
+  assert.deepEqual(steps, ["target", "backup", "transaction", "commit", "transaction", "commit"]);
+  assert.deepEqual(written, [
     ["patch", "a", { ifRevisionId: "r1", set: { title: "New" } }],
-    ["delete", "gone"],
+    ["patch", "gone", { ifRevisionId: "r2" }],
+    ["delete", "gone", undefined],
   ]);
 });

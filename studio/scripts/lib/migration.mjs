@@ -115,8 +115,11 @@ export function planMigration(migration, documents) {
       throw new Error(`The run would delete only part of record ${recordId(id)}; delete its draft and published versions together`);
 
   const referenceChecks = [...deletedRecords].map((id) => {
+    // A reference can name a draft or release version; it still points at the record.
     const pointing = (list) =>
-      list.filter((document) => referencedIds(document).has(id)).map(label);
+      list
+        .filter((document) => [...referencedIds(document)].some((ref) => recordId(ref) === id))
+        .map(label);
     return { id, before: pointing(documents), after: pointing([...after.values()]) };
   });
   const blocked = referenceChecks.filter((check) => check.after.length);
@@ -158,20 +161,33 @@ export function describePlan(plan) {
   return lines.join("\n");
 }
 
-/** Write a plan in one transaction. A document edited since it was read stops the write. */
-export function applyPlan(client, plan) {
-  const transaction = client.transaction();
+/**
+ * Write a plan. Sanity checks a delete against the references already
+ * stored, not against the rest of its transaction, so the deletes go in a
+ * second transaction after the creates and changes that move references.
+ * If the second write fails, the first leaves a valid dataset and a second
+ * run finishes the deletes. A document changed or deleted since it was read
+ * stops its transaction.
+ */
+export async function applyPlan(client, plan) {
+  const writes = client.transaction();
   for (const document of plan.created)
-    transaction.create({ _id: document._id, _type: document._type, ...content(document) });
+    writes.create({ _id: document._id, _type: document._type, ...content(document) });
   for (const { before, set, unset } of plan.changed)
-    transaction.patch(before._id, (patch) => {
+    writes.patch(before._id, (patch) => {
       let next = patch.ifRevisionId(before._rev);
       if (Object.keys(set).length) next = next.set(set);
       if (unset.length) next = next.unset(unset);
       return next;
     });
-  for (const document of plan.deleted) transaction.delete(document._id);
-  return transaction.commit({ visibility: "sync" });
+  if (plan.created.length || plan.changed.length) await writes.commit({ visibility: "sync" });
+  if (!plan.deleted.length) return;
+
+  const deletes = client.transaction();
+  // The delete mutation takes no revision, so a revision-only patch guards it.
+  for (const document of plan.deleted)
+    deletes.patch(document._id, (patch) => patch.ifRevisionId(document._rev)).delete(document._id);
+  await deletes.commit({ visibility: "sync" });
 }
 
 /**
