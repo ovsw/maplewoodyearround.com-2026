@@ -1,5 +1,6 @@
 import { getBlogPageTitle } from "@/lib/blog-index";
 import { siteName } from "@/lib/site-name";
+import { sharingPhotoUrl } from "@/sanity/lib/image";
 import {
   createOgImageResponse,
   ogImageFallbackResponse,
@@ -14,6 +15,7 @@ import {
   OG_IMAGE_VERSION,
   getOgImageSecret,
   verifyOgImageSignature,
+  type SharingPhoto,
 } from "@/lib/post-og-image";
 import { sanityFetchMetadata } from "@/sanity/lib/live";
 import {
@@ -45,25 +47,34 @@ function hasExactQueryShape(searchParams: URLSearchParams) {
   );
 }
 
-async function fetchTitle(
+type CardData = {
+  overrideTitle?: string | null;
+  sharingPhoto?: SharingPhoto;
+  title?: string | null;
+} | null;
+
+async function fetchCard(
   target: NonNullable<ReturnType<typeof parsePageOgImageTarget>>,
 ) {
   if (target.kind === "home") {
     const { data } = (await sanityFetchMetadata({
       query: HOME_PAGE_OG_IMAGE_QUERY,
       perspective: "published",
-    })) as { data: { overrideTitle?: string | null; title?: string | null } | null };
+    })) as { data: CardData };
     if (!data) return null;
 
     // The card headline follows the visible content title. The SEO override
     // stays in metadata and image alt text.
-    return getPageOgImageTitle(
-      data.title ||
-        resolveSeoTitle({
-          overrideTitle: data.overrideTitle,
-          siteName,
-        }).pageTitle,
-    );
+    return {
+      photo: data.sharingPhoto,
+      title: getPageOgImageTitle(
+        data.title ||
+          resolveSeoTitle({
+            overrideTitle: data.overrideTitle,
+            siteName,
+          }).pageTitle,
+      ),
+    };
   }
 
   const query =
@@ -77,7 +88,7 @@ async function fetchTitle(
     query,
     ...(params ? { params } : {}),
     perspective: "published",
-  })) as { data: { title?: string | null; overrideTitle?: string | null } | null };
+  })) as { data: CardData };
   if (!data) return null;
 
   const fallbackTitle = target.kind === "blog"
@@ -88,9 +99,12 @@ async function fetchTitle(
   const rawTitle = data.title || data.overrideTitle || fallbackTitle;
   const title = rawTitle && getPageOgImageTitle(rawTitle);
   if (!title) return null;
-  return target.kind === "blog" || target.kind === "category"
-    ? getBlogPageTitle(title, target.page || 1)
-    : title;
+  return {
+    photo: data.sharingPhoto,
+    title: target.kind === "blog" || target.kind === "category"
+      ? getBlogPageTitle(title, target.page || 1)
+      : title,
+  };
 }
 
 export async function GET(
@@ -118,12 +132,14 @@ export async function GET(
   }
 
   try {
-    const title = await fetchTitle(target);
-    if (!title || createPageOgImageRevision(title) !== revision) return notFound();
+    const card = await fetchCard(target);
+    if (!card?.title || createPageOgImageRevision(card.title, card.photo) !== revision) {
+      return notFound();
+    }
 
     return await createOgImageResponse({
-      eyebrow: siteName.toUpperCase(),
-      title,
+      photoUrl: card.photo?.asset?._ref ? sharingPhotoUrl(card.photo) : null,
+      title: card.title,
     });
   } catch (error) {
     return await ogImageFallbackResponse(error, "Page");

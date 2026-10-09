@@ -1,6 +1,7 @@
 import { groq } from "next-sanity";
 import { ROOT_SLUG_FILTER } from "../../../shared/root-slug-filter";
 import { metaQuery } from "./shared/meta";
+import { sharingPhotoQuery } from "./shared/sharing-photo";
 import { pageBuilderQuery } from "./page-builder";
 
 export const PAGE_QUERY = groq`
@@ -12,6 +13,7 @@ export const PAGE_QUERY = groq`
     "slug": slug.current,
     ${pageBuilderQuery},
     ${metaQuery},
+    ${sharingPhotoQuery},
   }
 `;
 

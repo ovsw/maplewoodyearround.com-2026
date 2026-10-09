@@ -2,8 +2,10 @@ import {
   OG_IMAGE_VERSION,
   createOgImageRevision,
   getOgImageSecret,
+  getSharingPhotoKey,
   isValidOgSlug,
   signOgImage,
+  type SharingPhoto,
 } from "./post-og-image";
 import { stripLegacySeoTitleSuffix } from "../../shared/seo-title";
 import { siteName } from "./site-name";
@@ -69,8 +71,8 @@ export function parsePageOgImageTarget(segments: string[]): PageOgImageTarget | 
   return kind === "category" ? { kind, page: page ?? 1, slug } : { kind, slug };
 }
 
-export function createPageOgImageRevision(title: string) {
-  return createOgImageRevision([title.trim()]);
+export function createPageOgImageRevision(title: string, photo?: SharingPhoto) {
+  return createOgImageRevision([title.trim(), getSharingPhotoKey(photo)]);
 }
 
 export function getPageOgImageTitle(title: string) {
@@ -79,11 +81,13 @@ export function getPageOgImageTitle(title: string) {
 
 export function buildPageOgImageUrl({
   origin,
+  photo,
   target,
   title,
   secret = getOgImageSecret(),
 }: {
   origin: string;
+  photo?: SharingPhoto;
   target: PageOgImageTarget;
   title: string;
   secret?: string;
@@ -100,7 +104,7 @@ export function buildPageOgImageUrl({
     throw new Error("Cannot build an OG image URL for an invalid page target");
   }
 
-  const revision = createPageOgImageRevision(title);
+  const revision = createPageOgImageRevision(title, photo);
   const key = getPageOgImageKey(target);
   const url = new URL(`/api/og/page/${getPageOgImagePath(target)}`, origin);
   url.searchParams.set("v", OG_IMAGE_VERSION);
