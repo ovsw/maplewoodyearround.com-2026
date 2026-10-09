@@ -12,7 +12,7 @@ const PRESENTATION_DOCUMENT_TYPES = new Set([
   "blogIndex",
   "homePage",
   "parentDashboard",
-  "summerDocuments",
+  "campGroup",
 ]);
 
 function readSlug(document: unknown) {
@@ -46,7 +46,7 @@ export function getPresentationPath(
 ) {
   if (documentType === "blogIndex") return "/news";
   if (documentType === "parentDashboard") return "/parent-dashboard";
-  if (documentType === "summerDocuments")
+  if (documentType === "campGroup")
     return "/summer-camp/summer-group-schedules";
   if (documentType === "homePage") return "/";
   if (!isPresentationDocumentType(documentType) || !slug?.trim()) return null;

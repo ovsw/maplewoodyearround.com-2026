@@ -35,27 +35,25 @@ function DownloadIcon() {
   );
 }
 
-/** One summer's group PDFs of one kind, listed under each grade heading. */
+/** Every visible Camp group's PDF of one kind, listed under each grade heading. */
 export default function SummerDocumentList({
   _key,
   background,
   dataAttribute,
   description,
-  documents,
+  grades,
   itemDataAttribute,
+  kind,
+  season,
 }: SummerDocumentListProps) {
-  const grades = (documents?.gradeGroups ?? []).filter(
-    (group) => group.entries?.length,
-  );
-  if (!documents || !grades.length) return null;
+  if (!grades?.length) return null;
 
   const sectionKey = stegaClean(_key);
-  const entryTarget = (path: string) =>
-    itemDataAttribute?.(documents._id, "summerDocuments", path);
+  const fileField = stegaClean(kind) === "welcomeLetter" ? "welcomeLetter" : "groupSchedule";
 
   return (
     <section
-      aria-label={stegaClean(documents.seasonLabel) ?? undefined}
+      aria-label={stegaClean(season) || undefined}
       className={[css.section, css.sectionMedium, sectionBackground(background)].join(" ")}
     >
       <div className={css.narrow}>
@@ -64,29 +62,22 @@ export default function SummerDocumentList({
             {description}
           </p>
         ) : null}
-        {grades.map((group) => {
-          const groupPath = `gradeGroups[_key=="${stegaClean(group._key)}"]`;
-          const headingId = `summer-documents-${sectionKey}-${stegaClean(group._key)}`;
+        {grades.map((grade) => {
+          const headingId = `summer-documents-${sectionKey}-${stegaClean(grade._id)}`;
           return (
-            <div className={styles.grade} key={group._key}>
-              <h2
-                className={styles.heading}
-                data-sanity={entryTarget(`${groupPath}.heading`)}
-                id={headingId}
-              >
-                {group.heading || group.grade?.title}:
+            <div className={styles.grade} key={grade._id}>
+              <h2 className={styles.heading} id={headingId}>
+                {grade.title}:
               </h2>
               <ul aria-labelledby={headingId} className={styles.list}>
-                {group.entries?.map((entry) => (
-                  <li className={styles.item} key={entry._key}>
+                {grade.groups.map((group) => (
+                  <li className={styles.item} key={group._id}>
                     <a
                       className={styles.link}
-                      data-sanity={entryTarget(
-                        `${groupPath}.entries[_key=="${stegaClean(entry._key)}"].file`,
-                      )}
-                      href={entry.fileUrl ?? undefined}
+                      data-sanity={itemDataAttribute?.(group._id, "campGroup", fileField)}
+                      href={group.fileUrl ?? undefined}
                     >
-                      {entry.title}
+                      {group.title}
                       <span className="sr-only"> (PDF)</span>
                     </a>
                     <DownloadIcon />

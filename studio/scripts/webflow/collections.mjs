@@ -21,7 +21,7 @@ export const mappings = {
   'SC Activities': ['activity', 'summerCamp', { ...common, category: 'category', 'main-image': 'image', published: 'visible', 'sc-groups-ages': 'groups', 'entering-grade-from-group': 'gradeLabel', 'group-text': 'groupText', 'order-2': 'order' }],
   'SC Staff Members': ['staffMember', 'summerCamp', { ...staff, 'year-round-staff-member': 'yearRound', 'former-camper': 'formerCamper' }],
   'SY Staff Members': ['staffMember', 'schoolYear', { ...staff, 'degrees-training': 'training', 'does-sy-tours': 'givesTours', 'is-preschool-teacher': 'preschoolTeacher' }],
-  'SC Groups': ['campGroup', null, { name: 'title', slug: 'slug', 'entering-grade-2': 'grades', gender: 'gender', activities: 'activities', live: 'visible', 'group-schedule-pdf': null, 'welcome-letter-pdf': null }],
+  'SC Groups': ['campGroup', null, { name: 'title', slug: 'slug', 'entering-grade-2': 'grades', gender: 'gender', activities: 'activities', live: 'visible', 'group-schedule-pdf': 'groupSchedule', 'welcome-letter-pdf': 'welcomeLetter' }],
   'SC Grades': ['grade', null, { name: 'title', slug: 'slug' }],
   'SY Playground Characters': ['playgroundCharacter', null, { name: 'title', slug: 'slug', image: 'image', live: 'visible', order: 'order' }],
   'SY Playground Guests': ['playgroundGuest', null, { name: 'title', slug: 'slug', time: 'time', subtitle: 'subtitle', 'person-name': 'personName', 'company-name': 'companyName', 'main-image': 'image', link: 'destination' }],

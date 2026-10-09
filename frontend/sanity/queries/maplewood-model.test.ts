@@ -389,72 +389,133 @@ describe("Maplewood destination and staff projections", () => {
   });
 });
 
-describe("summer document visibility", () => {
-  it.each(["schedule", "welcomeLetter"])(
-    "returns only %s PDFs for visible or ungrouped entries",
-    async (kind) => {
-      const entry = (
-        _key: string,
-        entryKind: string,
-        group?: string,
-        asset = "pdf",
-      ) => ({
-        _key,
-        title: _key,
-        kind: entryKind,
-        group: group ? ref(group) : undefined,
-        file: { asset: ref(asset) },
-      });
-      const section = await project(
-        summerDocumentListQuery,
-        {
-          _type: "summerDocumentList",
-          kind,
-          documents: ref("documents"),
-        },
-        [
-          {
-            _id: "documents",
-            _type: "summerDocuments",
-            gradeGroups: [
-              {
-                _key: "grade",
-                grade: ref("grade"),
-                heading: "Grades 2 & 3",
-                entries: [
-                  entry("schedule", "schedule", "visible"),
-                  entry("welcome", "welcomeLetter", "visible"),
-                  entry("hidden", kind, "hidden"),
-                  entry("unresolved", kind, "missing"),
-                  entry("ungrouped", kind),
-                  entry("missing-file", kind, "visible", "missing-file"),
-                ],
-              },
-            ],
-          },
-          { _id: "grade", _type: "grade", title: "Grade 2" },
-          { _id: "visible", _type: "campGroup", title: "Visible" },
-          {
-            _id: "hidden",
-            _type: "campGroup",
-            title: "Hidden",
-            visible: false,
-          },
-          {
-            _id: "pdf",
-            _type: "sanity.fileAsset",
-            url: "https://cdn.sanity.io/files/example.pdf",
-          },
-        ],
-      );
-      expect(
-        section.documents.gradeGroups[0].entries.map(
-          (item: Fixture) => item._key,
-        ),
-      ).toEqual([kind === "schedule" ? "schedule" : "welcome", "ungrouped"]);
-      expect(section.documents.gradeGroups[0].heading).toBe("Grades 2 & 3");
+describe("Group schedules and Welcome letters", () => {
+  const file = (asset: string) => ({ _type: "file", asset: ref(asset) });
+  const grade = (_id: string, title: string, order: number) => ({
+    _id,
+    _type: "grade",
+    title,
+    order,
+  });
+  const group = (
+    _id: string,
+    grades: string[],
+    extra: Fixture = {},
+  ) => ({
+    _id,
+    _type: "campGroup",
+    title: _id,
+    grades: grades.map(ref),
+    groupSchedule: file(`${_id}-schedule`),
+    welcomeLetter: file(`${_id}-letter`),
+    ...extra,
+  });
+  const pdf = (_id: string) => ({
+    _id,
+    _type: "sanity.fileAsset",
+    url: `https://cdn.sanity.io/files/${_id}.pdf`,
+    originalFilename: `${_id}.pdf`,
+  });
+  const summer = (_id: string, startDate?: string, endDate?: string) => ({
+    _id,
+    _type: "season",
+    title: _id,
+    program: "summerCamp",
+    startDate,
+    endDate,
+  });
+  const groups = [
+    group("Muppets", ["kindergarten", "preschool"]),
+    group("Chipmunks", ["preschool", "kindergarten"]),
+    group("Aquanauts", ["first"]),
+    group("Hidden", ["preschool"], { visible: false }),
+    group("No letter", ["first"], { welcomeLetter: undefined }),
+    group("Lost file", ["first"], { groupSchedule: file("missing") }),
+  ];
+  const dataset = [
+    grade("first", "1st Grade", 2),
+    grade("preschool", "Preschool", 0),
+    grade("kindergarten", "Kindergarten", 1),
+    grade("ninth", "9th Grade", 10),
+    ...groups,
+    ...groups.flatMap((item) => [pdf(`${item._id}-schedule`), pdf(`${item._id}-letter`)]),
+    {
+      ...summer("School Year 2026", "2026-09-08", "2027-06-11"),
+      program: "schoolYear",
     },
-  );
+  ];
+
+  async function section(kind: string, documents = dataset, now = "2026-10-09T15:00:00Z") {
+    const result = await evaluate(
+      parse(`*[_id == "fixture-page"][0]{blocks[]{${summerDocumentListQuery}}}`),
+      {
+        dataset: [
+          {
+            _id: "fixture-page",
+            _type: "page",
+            blocks: [{ _type: "summerDocumentList", kind }],
+          },
+          ...documents,
+        ],
+        timestamp: new Date(now),
+      },
+    );
+    return (await result.get()).blocks[0];
+  }
+  const lists = (block: Fixture) =>
+    (block.grades as { title: string; groups: { title: string; fileUrl: string }[] }[]).map(
+      (item) => [item.title, item.groups.map((entry) => entry.title)],
+    );
+
+  it("lists visible groups with a file under each of their grades, in grade order", async () => {
+    expect(lists(await section("schedule"))).toEqual([
+      ["Preschool", ["Chipmunks", "Muppets"]],
+      ["Kindergarten", ["Chipmunks", "Muppets"]],
+      ["1st Grade", ["Aquanauts", "No letter"]],
+    ]);
+    expect(lists(await section("welcomeLetter"))).toEqual([
+      ["Preschool", ["Chipmunks", "Muppets"]],
+      ["Kindergarten", ["Chipmunks", "Muppets"]],
+      ["1st Grade", ["Aquanauts", "Lost file"]],
+    ]);
+  });
+
+  it("links each group to its own file of the section's kind", async () => {
+    const [preschool] = (await section("welcomeLetter")).grades;
+    expect(preschool.groups[0]).toEqual({
+      _id: "Chipmunks",
+      title: "Chipmunks",
+      fileUrl: "https://cdn.sanity.io/files/Chipmunks-letter.pdf/Chipmunks-letter.pdf",
+    });
+    const [kindergarten] = (await section("schedule")).grades.slice(1);
+    expect(kindergarten.groups[0].fileUrl).toBe(
+      "https://cdn.sanity.io/files/Chipmunks-schedule.pdf/Chipmunks-schedule.pdf",
+    );
+  });
+
+  it("orders groups by their list order before their title", async () => {
+    const ordered = dataset.map((item) =>
+      item._id === "Muppets" ? { ...item, order: 1 } : item,
+    );
+    expect(lists(await section("schedule", ordered))[0]).toEqual([
+      "Preschool",
+      ["Muppets", "Chipmunks"],
+    ]);
+  });
+
+  it("labels the files with the current or next Summer Camp Season, or nothing", async () => {
+    const seasons = [
+      summer("Summer 2027", "2027-06-21", "2027-08-13"),
+      summer("Summer 2028", "2028-06-19", "2028-08-11"),
+    ];
+    const label = async (now: string, extra: Fixture[] = seasons) =>
+      (await section("schedule", [...dataset, ...extra], now)).season;
+    expect(await label("2026-10-09T15:00:00Z")).toBe("Summer 2027");
+    expect(await label("2027-08-13T12:00:00Z")).toBe("Summer 2027");
+    expect(await label("2027-08-14T12:00:00Z")).toBe("Summer 2028");
+    expect(await label("2028-09-01T12:00:00Z")).toBeNull();
+    expect(await label("2026-10-09T15:00:00Z", [summer("Summer Camp")])).toBeNull();
+  });
 });
 
 describe("Current and next Season", () => {

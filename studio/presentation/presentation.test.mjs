@@ -47,12 +47,13 @@ test("resolves the Blog Index singleton without an authored slug", () => {
 test("opens parent resources at their public page locations", () => {
   assert.equal(getPresentationPath("parentDashboard"), "/parent-dashboard");
   assert.equal(
-    getPresentationPath("summerDocuments"),
+    getPresentationPath("campGroup"),
     "/summer-camp/summer-group-schedules",
   );
-  assert.equal(isPresentationDocumentType("summerDocuments"), true);
-  const locations = resolve.locations.summerDocuments.resolve({
-    title: "Summer 2026",
+  assert.equal(isPresentationDocumentType("campGroup"), true);
+  assert.equal(isPresentationDocumentType("summerDocuments"), false);
+  const locations = resolve.locations.campGroup.resolve({
+    title: "Knights",
   }).locations;
   assert.deepEqual(
     locations.map(({ href }) => href),

@@ -320,7 +320,7 @@ export function staticPages(snapshot, context, schema) {
       }
       if (type === 'teamMembers') { block.profileGroup = selector === 'section_team14' ? 'leadership' : 'roster'; block.presentation = block.profileGroup === 'leadership' ? 'profiles' : selector === 'section_team4' ? 'roster' : 'tour'; }
       if (type === 'programCards') block.listingGroup = selector?.includes('additional') ? 'additional' : page.path.includes('enrichment') ? 'enrichment' : page.path === '/maplewood-seasons' ? 'seasons' : 'main';
-      if (type === 'summerDocumentList') { block.documents = reference('wf-summer-documents-2026'); block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule'; }
+      if (type === 'summerDocumentList') block.kind = page.path.includes('welcome') ? 'welcomeLetter' : 'schedule';
       if (type === 'embedSection') Object.assign(block, embed(original));
       if (type === 'busMap') block.embedUrl = embed(original).embedUrl;
       if (type === 'rateTable') {

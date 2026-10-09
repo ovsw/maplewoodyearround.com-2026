@@ -22,16 +22,17 @@ export const resolve: PresentationPluginOptions["resolve"] = {
         ],
       }),
     }),
-    summerDocuments: defineLocations({
-      select: { title: "seasonLabel" },
-      resolve: (doc) => ({
+    // A Camp group's PDFs show on the two summer document pages.
+    campGroup: defineLocations({
+      select: { title: "title" },
+      resolve: () => ({
         locations: [
           {
-            title: (doc?.title || "Summer") + " group schedules",
+            title: "Group schedules",
             href: "/summer-camp/summer-group-schedules",
           },
           {
-            title: (doc?.title || "Summer") + " welcome letters",
+            title: "Welcome letters",
             href: "/summer-camp/summer-camp-welcome-letters",
           },
         ],
