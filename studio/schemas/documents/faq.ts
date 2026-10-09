@@ -56,11 +56,20 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      category: "category.title",
+      categories: "categories",
+      category0: "categories.0.title",
+      category1: "categories.1.title",
+      category2: "categories.2.title",
     },
-    prepare: ({ title, category }) => ({
-      title: title || "Untitled FAQ",
-      subtitle: category || "No category",
-    }),
+    prepare: ({ title, categories, category0, category1, category2 }) => {
+      const names = [category0, category1, category2].filter(Boolean);
+      const more = (categories?.length ?? 0) - 3;
+      return {
+        title: title || "Untitled FAQ",
+        subtitle: names.length
+          ? `${names.join(", ")}${more > 0 ? ` +${more}` : ""}`
+          : "No category",
+      };
+    },
   },
 });
