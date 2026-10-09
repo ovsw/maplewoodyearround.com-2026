@@ -1,0 +1,17 @@
+{
+  "extends": "../frontend/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "incremental": false,
+    "composite": false,
+    "allowImportingTsExtensions": false,
+    "rootDir": "..",
+    "outDir": "../ds-types",
+    "paths": { "@/*": ["../frontend/*"] },
+    "plugins": []
+  },
+  "include": [],
+  "files": ["./entry.ts"]
+}

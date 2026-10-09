@@ -1,0 +1,11 @@
+/* Tailwind source for the Claude Design sync. Compiled by cfg.buildCmd. */
+@import "../frontend/app/globals.css";
+@source "../frontend/components";
+@source "./previews";
+
+/* next/font sets these on <html> in the app; here the shipped @font-face families (cfg.extraFonts) fill them. */
+:root {
+  --font-poppins: "Poppins";
+  --font-lato: "Lato";
+  --font-halant: "Halant";
+}

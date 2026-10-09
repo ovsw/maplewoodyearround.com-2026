@@ -1,0 +1,71 @@
+{
+  "projectId": "f571809a-366b-4c76-93ae-438abe7c6fcd",
+  "shape": "package",
+  "pkg": "maplewood-year-round",
+  "globalName": "Maplewood",
+  "entry": ".design-sync/entry.ts",
+  "srcDir": "frontend/components",
+  "tsconfig": "frontend/tsconfig.json",
+  "cssEntry": ".design-sync/.cache/styles.css",
+  "buildCmd": "frontend/node_modules/.bin/tsc -p .design-sync/tsconfig.types.json && ln -sfn ../frontend/node_modules ds-types/node_modules && (cd frontend && ../.ds-sync/node_modules/.bin/tailwindcss -i ../.design-sync/styles.src.css -o ../.design-sync/.cache/styles.css)",
+  "guidelinesGlob": [
+    "frontend/DESIGN.md"
+  ],
+  "componentSrcMap": {
+    "Accordion": "frontend/components/ui/accordion.tsx",
+    "Avatar": "frontend/components/ui/avatar.tsx",
+    "Badge": "frontend/components/ui/badge.tsx",
+    "Breadcrumb": "frontend/components/ui/breadcrumb.tsx",
+    "Button": "frontend/components/ui/button.tsx",
+    "Card": "frontend/components/ui/card.tsx",
+    "Dialog": "frontend/components/ui/dialog.tsx",
+    "DropdownMenu": "frontend/components/ui/dropdown-menu.tsx",
+    "Form": "frontend/components/ui/form.tsx",
+    "Input": "frontend/components/ui/input.tsx",
+    "Label": "frontend/components/ui/label.tsx",
+    "Separator": "frontend/components/ui/separator.tsx",
+    "Sheet": "frontend/components/ui/sheet.tsx",
+    "Toaster": "frontend/components/ui/sonner.tsx",
+    "TagLine": "frontend/components/ui/tag-line.tsx"
+  },
+  "extraEntries": [
+    "./.design-sync/extras.ts"
+  ],
+  "overrides": {
+    "Dialog": {
+      "cardMode": "single",
+      "viewport": "640x480"
+    },
+    "Sheet": {
+      "cardMode": "single",
+      "viewport": "640x480"
+    },
+    "DropdownMenu": {
+      "cardMode": "single",
+      "viewport": "480x360"
+    },
+    "Toaster": {
+      "cardMode": "single",
+      "viewport": "480x240"
+    }
+  },
+  "dtsPropsFor": {
+    "Button": "variant?: \"primary\" | \"default\" | \"secondary\" | \"outline\" | \"ghost\" | \"link\" | \"destructive\"; size?: \"default\" | \"compact\" | \"hero\" | \"icon\"; onDark?: boolean; emphasis?: boolean; lift?: boolean; asChild?: boolean; disabled?: boolean; type?: \"button\" | \"submit\" | \"reset\"; onClick?: React.MouseEventHandler<HTMLButtonElement>; className?: string; children?: React.ReactNode;",
+    "Card": "className?: string; children?: React.ReactNode;",
+    "Accordion": "type: \"single\" | \"multiple\"; collapsible?: boolean; defaultValue?: string | string[]; value?: string | string[]; onValueChange?: (value: string | string[]) => void; className?: string; children?: React.ReactNode;",
+    "Avatar": "className?: string; children?: React.ReactNode;",
+    "Breadcrumb": "className?: string; children?: React.ReactNode;",
+    "Dialog": "open?: boolean; defaultOpen?: boolean; onOpenChange?: (open: boolean) => void; modal?: boolean; children?: React.ReactNode;",
+    "DropdownMenu": "open?: boolean; defaultOpen?: boolean; onOpenChange?: (open: boolean) => void; modal?: boolean; children?: React.ReactNode;",
+    "Sheet": "open?: boolean; defaultOpen?: boolean; onOpenChange?: (open: boolean) => void; modal?: boolean; children?: React.ReactNode;",
+    "Form": "/** Spread the object returned by useForm() here: <Form {...form}>. */ [key: string]: unknown; children?: React.ReactNode;",
+    "Input": "type?: string; placeholder?: string; value?: string; defaultValue?: string; disabled?: boolean; required?: boolean; name?: string; id?: string; onChange?: React.ChangeEventHandler<HTMLInputElement>; \"aria-invalid\"?: boolean; className?: string;",
+    "Label": "htmlFor?: string; className?: string; children?: React.ReactNode;",
+    "Separator": "orientation?: \"horizontal\" | \"vertical\"; decorative?: boolean; className?: string;",
+    "TagLine": "title: string; element?: \"div\" | \"h1\" | \"h2\" | \"h3\"; className?: string;"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "extraFonts": [
+    ".design-sync/fonts/fonts.css"
+  ]
+}
