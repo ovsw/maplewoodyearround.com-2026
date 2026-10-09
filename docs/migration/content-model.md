@@ -256,7 +256,7 @@ Each subsection names its source collection exactly. A target path is relative t
 
 Set `season.program` from the audited Summer Camp / School Year meaning of the source season. Do not interpret this collection as a calendar year: the annual summer PDF label is separate.
 
-### SY Activities → `activity` (`program = schoolYear`)
+### SY Activities → `schoolYearActivity`
 
 | Webflow field            | Sanity field      | Meaning                                                                 |
 | ------------------------ | ----------------- | ----------------------------------------------------------------------- |
@@ -267,9 +267,12 @@ Set `season.program` from the audited Summer Camp / School Year meaning of the s
 | `programs`               | `programs[]`      | References to imported `programOffering` records.                       |
 | `description`            | `description`     | Plain-text description.                                                 |
 | `live`                   | `visible`         | Custom list visibility.                                                 |
-| `is-playground-2`        | `playgroundLabel` | Plain text, despite the source field's boolean-like name.               |
 | `order`                  | `order`           | Source list order.                                                      |
 | `indoor-outdoor-special` | `location`        | `Indoor`, `Outdoor`, or `Special`.                                      |
+
+Issue #51 moved these records from the shared `activity` type to
+`schoolYearActivity`. Every record needs at least one Program. The source
+`is-playground-2` field held "no" on every record and was dropped.
 
 ### SY Programs → `programOffering` (`program = schoolYear`)
 
@@ -278,10 +281,12 @@ Set `season.program` from the audited Summer Camp / School Year meaning of the s
 | `name`         | `title`        | Program name.                                      |
 | `slug`         | `slug.current` | Source URL name.                                   |
 | `days`         | `days`         | `Tue, Thu`, `Mo, Wed, Fri`, `Mo-Fri`, or `Mo-Sat`. |
-| `activities-2` | `activities[]` | References to imported SY `activity` records.      |
 | `color`        | `color`        | Source CSS label color.                            |
 | `program-page` | `destination`  | Internal page or external URL.                     |
 | `live`         | `visible`      | Custom list visibility.                            |
+
+Issue #51 removed the `activities-2` list. A Program's activities are the
+School Year activities that name it.
 
 ### Testimonials → `testimonial`
 

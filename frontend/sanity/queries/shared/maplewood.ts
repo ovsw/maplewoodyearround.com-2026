@@ -34,13 +34,13 @@ export const sectionVideoProjection = `
 
 export const collectionItemsProjection = `
   "items": *[
-    _type in ["summerActivity", "activity", "facility", "sampleSchedule", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
+    _type in ["summerActivity", "schoolYearActivity", "facility", "sampleSchedule", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
     && _type == ^.source
     && visible != false
-    // Summer activities and Play Center records belong to one side and store none.
+    // Activities and Play Center records belong to one side and store none.
     && (!defined(^.program) || program == ^.program
       || (_type == "summerActivity" && ^.program == "summerCamp")
-      || (_type match "playground*" && ^.program == "schoolYear"))
+      || ((_type == "schoolYearActivity" || _type match "playground*") && ^.program == "schoolYear"))
     && (!defined(^.location) || location == ^.location)
     && (!defined(^.audience) || audience == ^.audience)
     && (!defined(^.programOffering._ref) || ^.programOffering._ref in programs[]._ref)
@@ -52,7 +52,7 @@ export const collectionItemsProjection = `
   // without an order number first.
   | order(date asc, defined(order) asc, order asc, title asc, _id asc) {
     _id, _type, title, slug, description, program, location, activity, audience,
-    availability, gradeLabel, groupText, playgroundLabel,
+    availability,
     image{${imageQuery}},
     category->{_id, title, slug},
     categories[]->{_id, title, slug},

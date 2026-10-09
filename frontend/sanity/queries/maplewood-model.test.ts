@@ -242,33 +242,74 @@ describe("Maplewood collection projections", () => {
     });
   });
 
-  it("selects School Year activities by program", async () => {
-    const section = await project(
-      filterableCardsQuery,
-      {
-        _type: "filterableCards",
-        source: "activity",
-        program: "schoolYear",
-        programOffering: ref("program"),
-      },
-      [
+  describe("School Year activities by Program", () => {
+    const schoolYearActivity = (_id: string, extra: Fixture = {}) => ({
+      _id,
+      _type: "schoolYearActivity",
+      title: _id,
+      programs: [ref("indoor-play-center")],
+      location: "Indoor",
+      ...extra,
+    });
+    const documents = [
+      schoolYearActivity("reptiles", {
+        programs: [ref("indoor-play-center"), ref("birthday-parties")],
+        order: 2,
+      }),
+      schoolYearActivity("bounce-house", { order: 1 }),
+      schoolYearActivity("zip-line", { location: "Outdoor" }),
+      schoolYearActivity("tumbling", { programs: [ref("gymnastics")] }),
+      schoolYearActivity("hidden", { visible: false }),
+      schoolYearActivity("spidey-heroes", { programs: [], location: "Special" }),
+      // Old shared records and Summer activities never show here.
+      { _id: "old", _type: "activity", program: "schoolYear", programs: [ref("indoor-play-center")] },
+      { _id: "frog", _type: "summerActivity", title: "Frog", programs: [ref("indoor-play-center")] },
+      { _id: "indoor-play-center", _type: "programOffering", title: "Indoor Play Center" },
+      { _id: "birthday-parties", _type: "programOffering", title: "Birthday Parties" },
+      { _id: "gymnastics", _type: "programOffering", title: "Gymnastics Class" },
+    ];
+    const items = async (filters: Fixture) =>
+      (
+        await project(
+          cardSliderQuery,
+          { _type: "cardSlider", source: "schoolYearActivity", program: "schoolYear", ...filters },
+          documents,
+        )
+      ).items.map((item: Fixture) => item._id);
+
+    it("shows a Program the School Year activities that name it, in list order", async () => {
+      expect(
+        await items({ programOffering: ref("indoor-play-center"), location: "Indoor" }),
+      ).toEqual(["bounce-house", "reptiles"]);
+      expect(await items({ programOffering: ref("birthday-parties") })).toEqual(["reptiles"]);
+      expect(await items({ programOffering: ref("gymnastics") })).toEqual(["tumbling"]);
+    });
+
+    it("selects by location alone, including activities without a Program", async () => {
+      expect(await items({ location: "Special" })).toEqual(["spidey-heroes"]);
+    });
+
+    it("shows no School Year activities in a Summer Camp section", async () => {
+      expect(await items({ program: "summerCamp" })).toEqual([]);
+    });
+
+    it("returns the Programs of each activity", async () => {
+      const section = await project(
+        filterableCardsQuery,
         {
-          _id: "activity",
-          _type: "activity",
+          _type: "filterableCards",
+          source: "schoolYearActivity",
           program: "schoolYear",
-          programs: [ref("program")],
+          programOffering: ref("birthday-parties"),
         },
-        {
-          _id: "other-program",
-          _type: "activity",
-          program: "schoolYear",
-          programs: [ref("other-program")],
-        },
-        { _id: "program", _type: "programOffering", title: "Full day" },
-      ],
-    );
-    expect(section.items).toHaveLength(1);
-    expect(section.items[0].programs[0]._id).toBe("program");
+        documents,
+      );
+      expect(section.items).toHaveLength(1);
+      expect(section.items[0].programs.map((item: Fixture) => item._id)).toEqual([
+        "indoor-play-center",
+        "birthday-parties",
+      ]);
+    });
   });
 
   it("includes Playground guests in School Year without a synthetic program field", async () => {

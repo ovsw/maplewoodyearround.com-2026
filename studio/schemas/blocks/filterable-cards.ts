@@ -20,7 +20,7 @@ export default defineType({
       options: {
         list: [
           { title: "Summer activities", value: "summerActivity" },
-          { title: "School Year activities", value: "activity" },
+          { title: "School Year activities", value: "schoolYearActivity" },
           { title: "Facilities", value: "facility" },
         ],
       },

@@ -48,12 +48,6 @@ export default defineType({
       description: "The days on which the program runs.",
       options: { list: ["Tue, Thu", "Mo, Wed, Fri", "Mo-Fri", "Mo-Sat"] },
     }),
-    referencesField(
-      "activities",
-      "Activities",
-      "activity",
-      "The activities offered by this program.",
-    ),
     defineField({
       name: "color",
       title: "Label color",

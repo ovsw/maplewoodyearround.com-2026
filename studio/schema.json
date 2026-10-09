@@ -1859,7 +1859,7 @@
               },
               {
                 "type": "string",
-                "value": "activity"
+                "value": "schoolYearActivity"
               },
               {
                 "type": "string",
@@ -2393,7 +2393,7 @@
               },
               {
                 "type": "string",
-                "value": "activity"
+                "value": "schoolYearActivity"
               },
               {
                 "type": "string",
@@ -15860,36 +15860,6 @@
     }
   },
   {
-    "type": "type",
-    "name": "activity.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "activity"
-    }
-  },
-  {
     "name": "programOffering",
     "type": "document",
     "attributes": {
@@ -16093,28 +16063,6 @@
               "value": "Mo-Sat"
             }
           ]
-        },
-        "optional": true
-      },
-      "activities": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "activity.reference"
-            }
-          }
         },
         "optional": true
       },
@@ -16519,37 +16467,7 @@
     }
   },
   {
-    "type": "type",
-    "name": "campGroup.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "campGroup"
-    }
-  },
-  {
-    "name": "activity",
+    "name": "activityCategory",
     "type": "document",
     "attributes": {
       "_id": {
@@ -16562,7 +16480,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "string",
-          "value": "activity"
+          "value": "activityCategory"
         }
       },
       "_createdAt": {
@@ -16598,18 +16516,132 @@
         },
         "optional": true
       },
-      "program": {
+      "order": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
+    "name": "schoolYearActivity",
+    "type": "document",
+    "attributes": {
+      "_id": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_type": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string",
+          "value": "schoolYearActivity"
+        }
+      },
+      "_createdAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_updatedAt": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "_rev": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "slug"
+        },
+        "optional": true
+      },
+      "programs": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "array",
+          "of": {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "programOffering.reference"
+            }
+          }
+        },
+        "optional": true
+      },
+      "availability": {
         "type": "objectAttribute",
         "value": {
           "type": "union",
           "of": [
             {
               "type": "string",
-              "value": "summerCamp"
+              "value": "Mo-Fri"
             },
             {
               "type": "string",
-              "value": "schoolYear"
+              "value": "Mo-Sat"
+            },
+            {
+              "type": "string",
+              "value": "Schedule AM"
+            },
+            {
+              "type": "string",
+              "value": "Schedule PM"
+            },
+            {
+              "type": "string",
+              "value": "School Vacation"
+            }
+          ]
+        },
+        "optional": true
+      },
+      "location": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "Indoor"
+            },
+            {
+              "type": "string",
+              "value": "Outdoor"
+            },
+            {
+              "type": "string",
+              "value": "Special"
             }
           ]
         },
@@ -16676,129 +16708,6 @@
         },
         "optional": true
       },
-      "category": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "activityCategory.reference"
-        },
-        "optional": true
-      },
-      "groups": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "campGroup.reference"
-            }
-          }
-        },
-        "optional": true
-      },
-      "programs": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "array",
-          "of": {
-            "type": "object",
-            "attributes": {
-              "_key": {
-                "type": "objectAttribute",
-                "value": {
-                  "type": "string"
-                }
-              }
-            },
-            "rest": {
-              "type": "inline",
-              "name": "programOffering.reference"
-            }
-          }
-        },
-        "optional": true
-      },
-      "gradeLabel": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "groupText": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "availability": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "Mo-Fri"
-            },
-            {
-              "type": "string",
-              "value": "Mo-Sat"
-            },
-            {
-              "type": "string",
-              "value": "Schedule AM"
-            },
-            {
-              "type": "string",
-              "value": "Schedule PM"
-            },
-            {
-              "type": "string",
-              "value": "School Vacation"
-            }
-          ]
-        },
-        "optional": true
-      },
-      "playgroundLabel": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "location": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "Indoor"
-            },
-            {
-              "type": "string",
-              "value": "Outdoor"
-            },
-            {
-              "type": "string",
-              "value": "Special"
-            }
-          ]
-        },
-        "optional": true
-      },
       "order": {
         "type": "objectAttribute",
         "value": {
@@ -16810,65 +16719,6 @@
         "type": "objectAttribute",
         "value": {
           "type": "boolean"
-        },
-        "optional": true
-      }
-    }
-  },
-  {
-    "name": "activityCategory",
-    "type": "document",
-    "attributes": {
-      "_id": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_type": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string",
-          "value": "activityCategory"
-        }
-      },
-      "_createdAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_updatedAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_rev": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "slug": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "slug"
-        },
-        "optional": true
-      },
-      "order": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "number"
         },
         "optional": true
       }
