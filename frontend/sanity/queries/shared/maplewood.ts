@@ -1,6 +1,7 @@
 import { internalReferenceHref } from "./internal-href";
 import { imageQuery } from "./image";
 import { richTextContentQuery } from "./rich-text-content";
+import { fileUrl } from "./file-url";
 
 export const contentDestinationProjection = `{
   kind, openInNewTab,
@@ -11,7 +12,7 @@ export const contentDestinationProjection = `{
       ${internalReferenceHref}
     ),
     kind == "external" => external,
-    kind == "file" => file.asset->url
+    kind == "file" => ${fileUrl}
   )
 }`;
 
@@ -61,7 +62,7 @@ export const collectionItemsProjection = `
     agenda[]{${richTextContentQuery}},
     guest->{_id, title, time, subtitle, personName, companyName, image{${imageQuery}}, destination${contentDestinationProjection}},
     character->{_id, title, image{${imageQuery}}},
-    "fileUrl": file.asset->url, effectiveFrom
+    "fileUrl": ${fileUrl}, effectiveFrom
   }
 `;
 

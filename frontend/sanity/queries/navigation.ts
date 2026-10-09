@@ -1,5 +1,6 @@
 import { defineQuery } from "next-sanity";
 import { internalReferenceHref } from "./shared/internal-href";
+import { fileUrl } from "./shared/file-url";
 
 const destinationProjection = `{
   openInNewTab,
@@ -8,7 +9,7 @@ const destinationProjection = `{
       internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",
       ${internalReferenceHref}
     ),
-    kind == "file" => file.asset->url,
+    kind == "file" => ${fileUrl},
     kind == "external" => external
   )
 }`;

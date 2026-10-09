@@ -1,5 +1,6 @@
 import { defineQuery } from "next-sanity";
 import { imageQuery } from "./shared/image";
+import { fileUrl } from "./shared/file-url";
 
 const destinationProjection = `{
   openInNewTab,
@@ -12,7 +13,7 @@ const destinationProjection = `{
       internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")
     ),
-    kind == "file" => file.asset->url,
+    kind == "file" => ${fileUrl},
     kind == "external" => external
   )
 }`;
