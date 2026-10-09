@@ -56,7 +56,8 @@ export const season = defineType({
       title: "Start date",
       type: "date",
       description: "The first day of this Season.",
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().error("Enter the first day of this Season."),
     }),
     defineField({
       name: "endDate",
@@ -64,7 +65,12 @@ export const season = defineType({
       type: "date",
       description:
         "The last day of this Season. Seasons of the same side cannot overlap.",
-      validation: (rule) => rule.required().custom(seasonPeriod),
+      // Separate rules, so the required message does not replace the
+      // date-order and overlap messages.
+      validation: (rule) => [
+        rule.required().error("Enter the last day of this Season."),
+        rule.custom(seasonPeriod),
+      ],
     }),
   ],
   preview: {
