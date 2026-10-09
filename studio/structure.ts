@@ -158,8 +158,8 @@ function summerCamp(S: StructureBuilder) {
     facilities(S, side, indexPageIds.summerCampFacilities),
     group(S, "Activities", Volleyball, [
       indexPage(S, indexPageIds.summerCampActivities),
-      sideDocuments(S, side, "activity", "List", Volleyball),
-      // Activity categories are Summer Camp only and have no side field.
+      // Summer activities and their categories have no side field.
+      documents(S, "summerActivity", "List", Volleyball, { ordering: byOrder }),
       documents(S, "activityCategory", "Categories", Tags, {
         ordering: byOrder,
       }),

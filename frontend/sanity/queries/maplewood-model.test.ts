@@ -137,7 +137,7 @@ describe("Maplewood collection projections", () => {
     expect(section.items[1].grades).toBeNull();
   });
 
-  it("lists grades in school order, not in the order they were picked", async () => {
+  it("lists a Summer activity's grades in school order, not in the order they were picked", async () => {
     const grade = (_id: string, order: number) => ({
       _id,
       _type: "grade",
@@ -148,22 +148,15 @@ describe("Maplewood collection projections", () => {
       filterableCardsQuery,
       {
         _type: "filterableCards",
-        source: "activity",
+        source: "summerActivity",
         program: "summerCamp",
       },
       [
         {
           _id: "activity",
-          _type: "activity",
-          program: "summerCamp",
+          _type: "summerActivity",
+          title: "Archery",
           grades: [ref("3rd"), ref("preschool"), ref("1st")],
-          groups: [ref("group")],
-        },
-        {
-          _id: "group",
-          _type: "campGroup",
-          title: "Knights",
-          grades: [ref("1st"), ref("preschool")],
         },
         grade("preschool", 0),
         grade("1st", 2),
@@ -172,55 +165,109 @@ describe("Maplewood collection projections", () => {
     );
     const ids = (grades: Fixture[]) => grades.map((item) => item._id);
     expect(ids(section.items[0].grades)).toEqual(["preschool", "1st", "3rd"]);
-    expect(ids(section.items[0].groups[0].grades)).toEqual(["preschool", "1st"]);
   });
 
-  it("retains activity group grades and program references while filtering the selected category", async () => {
+  describe("Summer activities by grade and category", () => {
+    const summerActivity = (_id: string, extra: Fixture = {}) => ({
+      _id,
+      _type: "summerActivity",
+      title: _id,
+      category: ref("swimming"),
+      grades: [ref("3rd")],
+      ...extra,
+    });
+    const campGroup = (_id: string, grades: string[]) => ({
+      _id,
+      _type: "campGroup",
+      title: _id,
+      grades: grades.map(ref),
+    });
+    const thirdGradeGroups = ["Mermaids", "Musketeers", "Unicorns", "Vikings"];
+    const documents = [
+      summerActivity("frog-water-slide", { title: "Frog Water Slide", order: 2 }),
+      summerActivity("canoeing", { title: "Canoeing", order: 1 }),
+      summerActivity("archery", { category: ref("sports") }),
+      summerActivity("kickball", { grades: [ref("4th")] }),
+      summerActivity("hidden", { visible: false }),
+      // The old shared type is School Year only now.
+      { _id: "old", _type: "activity", program: "summerCamp", category: ref("swimming") },
+      ...thirdGradeGroups.map((title) => campGroup(title, ["3rd"])),
+      campGroup("Knights", ["4th"]),
+      { _id: "swimming", _type: "activityCategory", title: "Swimming" },
+      { _id: "sports", _type: "activityCategory", title: "Sports" },
+      { _id: "3rd", _type: "grade", title: "3rd Grade", order: 4 },
+      { _id: "4th", _type: "grade", title: "4th Grade", order: 5 },
+    ];
+    const items = async (filters: Fixture) =>
+      (
+        await project(
+          cardSliderQuery,
+          { _type: "cardSlider", source: "summerActivity", program: "summerCamp", ...filters },
+          documents,
+        )
+      ).items.map((item: Fixture) => item._id);
+
+    it("selects by category and grade, in list order", async () => {
+      expect(
+        await items({ activityCategory: ref("swimming"), grade: ref("3rd") }),
+      ).toEqual(["canoeing", "frog-water-slide"]);
+      expect(await items({ activityCategory: ref("sports") })).toEqual(["archery"]);
+      expect(await items({ grade: ref("4th") })).toEqual(["kickball"]);
+    });
+
+    it("shows an activity for every Camp group in its grades", async () => {
+      for (const title of thirdGradeGroups) {
+        const group = documents.find((document) => document._id === title) as {
+          grades: { _ref: string }[];
+        };
+        for (const { _ref } of group.grades)
+          expect(await items({ grade: ref(_ref) }), title).toContain("frog-water-slide");
+      }
+      expect(await items({ grade: ref("4th") })).not.toContain("frog-water-slide");
+    });
+
+    it("returns the category and grades for the Website filters", async () => {
+      const section = await project(
+        filterableCardsQuery,
+        { _type: "filterableCards", source: "summerActivity", program: "summerCamp" },
+        documents,
+      );
+      const frog = section.items.find((item: Fixture) => item._id === "frog-water-slide");
+      expect(frog.category).toEqual({ _id: "swimming", title: "Swimming", slug: null });
+      expect(frog.grades).toEqual([{ _id: "3rd", title: "3rd Grade", slug: null }]);
+    });
+
+    it("shows no Summer activities in a School Year section", async () => {
+      expect(await items({ program: "schoolYear" })).toEqual([]);
+    });
+  });
+
+  it("selects School Year activities by program", async () => {
     const section = await project(
       filterableCardsQuery,
       {
         _type: "filterableCards",
         source: "activity",
-        program: "summerCamp",
-        activityCategory: ref("category"),
+        program: "schoolYear",
         programOffering: ref("program"),
       },
       [
         {
           _id: "activity",
           _type: "activity",
-          program: "summerCamp",
-          category: ref("category"),
-          groups: [ref("group")],
-          programs: [ref("program")],
-        },
-        {
-          _id: "other",
-          _type: "activity",
-          program: "summerCamp",
-          category: ref("other-category"),
+          program: "schoolYear",
           programs: [ref("program")],
         },
         {
           _id: "other-program",
           _type: "activity",
-          program: "summerCamp",
-          category: ref("category"),
+          program: "schoolYear",
           programs: [ref("other-program")],
         },
-        { _id: "category", _type: "activityCategory", title: "Sports" },
-        {
-          _id: "group",
-          _type: "campGroup",
-          title: "Group",
-          grades: [ref("grade")],
-        },
-        { _id: "grade", _type: "grade", title: "Grade 2" },
         { _id: "program", _type: "programOffering", title: "Full day" },
       ],
     );
     expect(section.items).toHaveLength(1);
-    expect(section.items[0].groups[0].grades[0]._id).toBe("grade");
     expect(section.items[0].programs[0]._id).toBe("program");
   });
 

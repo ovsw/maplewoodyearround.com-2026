@@ -1,6 +1,7 @@
 // documents
 import staffMember from "./schemas/documents/staff-member";
 import activity from "./schemas/documents/activity";
+import summerActivity from "./schemas/documents/summer-activity";
 import facility from "./schemas/documents/facility";
 import programOffering from "./schemas/documents/program-offering";
 import {
@@ -112,6 +113,7 @@ import registrationCards from "./schemas/blocks/registration-cards";
 export const schemaTypes = [
   staffMember,
   activity,
+  summerActivity,
   facility,
   programOffering,
   activityCategory,

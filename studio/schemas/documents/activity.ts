@@ -17,7 +17,7 @@ export default defineType({
   name: "activity",
   title: "Activity",
   type: "document",
-  description: "An activity in Summer Camp or School Year lists.",
+  description: "An activity in School Year lists. Summer Camp uses Summer activities.",
   fields: [
     titleField,
     slugField,

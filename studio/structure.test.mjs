@@ -142,6 +142,12 @@ test("the root menu follows the OVS starter shape", () => {
     "List",
     "Categories",
   ]);
+  assert.deepEqual(
+    ["List", "Categories"].map(
+      (title) => find(root, "Summer Camp", "Activities", title).type,
+    ),
+    ["summerActivity", "activityCategory"],
+  );
   assert.deepEqual(titles("School Year"), [
     "Programs",
     "Facilities",

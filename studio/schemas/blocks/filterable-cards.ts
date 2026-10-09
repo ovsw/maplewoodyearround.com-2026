@@ -19,7 +19,8 @@ export default defineType({
       ...collectionSourceField,
       options: {
         list: [
-          { title: "Activities", value: "activity" },
+          { title: "Summer activities", value: "summerActivity" },
+          { title: "School Year activities", value: "activity" },
           { title: "Facilities", value: "facility" },
         ],
       },

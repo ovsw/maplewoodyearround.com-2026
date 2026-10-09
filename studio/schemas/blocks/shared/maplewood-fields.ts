@@ -67,7 +67,8 @@ export const collectionSourceField = defineField({
     "Choose the collection for this section. The filters below select its items.",
   options: {
     list: [
-      { title: "Activities", value: "activity" },
+      { title: "Summer activities", value: "summerActivity" },
+      { title: "School Year activities", value: "activity" },
       { title: "Facilities", value: "facility" },
       { title: "Sample schedule", value: "sampleSchedule" },
       { title: "Playground characters", value: "playgroundCharacter" },
@@ -93,21 +94,21 @@ export const collectionFilterFields = [
     title: "Activity category filter",
     type: "reference",
     to: [{ type: "activityCategory" }],
-    description: "For activities: show only this category.",
+    description: "For Summer activities: show only this category.",
   }),
   defineField({
     name: "grade",
     title: "Grade filter",
     type: "reference",
     to: [{ type: "grade" }],
-    description: "For activities: show only items offered to a camp group in this grade.",
+    description: "For Summer activities: show only activities for this grade.",
   }),
   defineField({
     name: "location",
     title: "Location filter",
     type: "string",
     description:
-      "For activities and facilities: show only this location group.",
+      "For School Year activities and facilities: show only this location group.",
     options: { list: ["Indoor", "Outdoor", "Special"] },
   }),
   defineField({
@@ -122,7 +123,7 @@ export const collectionFilterFields = [
     title: "School Year program filter",
     type: "reference",
     to: [{ type: "programOffering" }],
-    description: "For activities: show items offered by this program.",
+    description: "For School Year activities: show items offered by this program.",
   }),
 ];
 
