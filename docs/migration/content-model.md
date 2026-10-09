@@ -461,6 +461,12 @@ Guests also supply birthday-party Add-ons directly. Do not make them available o
 
 Retain explicit day labels and guest/custom-day switches; deriving them from the presence of a reference changes the source meaning.
 
+`outdoorActivity` references one Outdoor `schoolYearActivity`. It has no
+Webflow field. Airtable ("SY Play Center Calendar", "Outdoor Activity") was
+empty on every day on 2026-10-09, so nothing was imported; editors fill it in
+the Studio. The Studio allows one Play Center day per UTC calendar day of
+`date`.
+
 ### FAQs → `faq`
 
 | Webflow field | Sanity field                                                           |

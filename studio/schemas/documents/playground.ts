@@ -10,6 +10,7 @@ import {
   titleField,
   visibleField,
 } from "./maplewood-fields";
+import { onePlayCenterDayPerDate } from "../validation/play-center-day-date";
 
 export const playgroundCharacter = defineType({
   name: "playgroundCharacter",
@@ -64,8 +65,9 @@ export const playgroundEvent = defineType({
       name: "date",
       title: "Calendar date",
       type: "datetime",
-      description: "The date retained from the source calendar.",
-      validation: (rule) => rule.required(),
+      description:
+        "The day of this Play Center day. Each calendar day has one Play Center day.",
+      validation: (rule) => rule.required().custom(onePlayCenterDayPerDate),
     }),
     referenceField(
       "guest",
@@ -79,6 +81,14 @@ export const playgroundEvent = defineType({
       "playgroundCharacter",
       "The character appearing on this calendar day.",
     ),
+    defineField({
+      name: "outdoorActivity",
+      title: "Outdoor activity",
+      type: "reference",
+      to: [{ type: "schoolYearActivity" }],
+      options: { filter: 'location == "Outdoor"' },
+      description: "The outdoor School Year activity on this calendar day.",
+    }),
     textField(
       "dayLabel",
       "Day of the week",

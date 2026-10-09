@@ -64,6 +64,7 @@ export const collectionItemsProjection = `
     agenda[]{${richTextContentQuery}},
     guest->{_id, title, time, subtitle, personName, companyName, image{${imageQuery}}, destination${contentDestinationProjection}},
     character->{_id, title, image{${imageQuery}}},
+    outdoorActivity->{_id, title, slug, description, image{${imageQuery}}},
     "fileUrl": ${fileUrl}, effectiveFrom
   }
 `;
