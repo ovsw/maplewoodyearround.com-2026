@@ -1,3 +1,4 @@
+import { Palette } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import {
   descriptionField,
@@ -12,6 +13,7 @@ export default defineType({
   name: "schoolYearActivity",
   title: "School Year activity",
   type: "document",
+  icon: Palette,
   description:
     "Something offered in School Year programs. It shows in the lists of every Program it names.",
   fields: [
@@ -54,7 +56,7 @@ export default defineType({
       title: "Indoor, outdoor or special",
       type: "string",
       description: "The location group used in activity lists.",
-      options: { list: ["Indoor", "Outdoor", "Special"] },
+      options: { list: ["Indoor", "Outdoor", "Special"], layout: "radio" },
     }),
     imageField(),
     descriptionField(),

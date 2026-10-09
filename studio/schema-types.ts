@@ -19,9 +19,7 @@ import {
   playgroundEvent,
   playgroundCalendar,
 } from "./schemas/documents/playground";
-import parentDashboard, {
-  summerDocuments,
-} from "./schemas/documents/parent-dashboard";
+import parentDashboard from "./schemas/documents/parent-dashboard";
 import contentDestination from "./schemas/blocks/shared/content-destination";
 import {
   breadcrumb,
@@ -128,7 +126,6 @@ export const schemaTypes = [
   playgroundEvent,
   playgroundCalendar,
   parentDashboard,
-  summerDocuments,
   contentDestination,
   contentAction,
   contentCard,

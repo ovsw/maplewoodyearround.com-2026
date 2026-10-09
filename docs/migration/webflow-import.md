@@ -13,8 +13,7 @@ SOURCE_SNAPSHOT=/private/path/source.json SOURCE_PAGE=/summer-camp/facilities pn
 
 The seed reads the existing private asset manifest and reuses uploaded assets.
 It writes only the page's draft, preserves the document type, and does not
-publish or change importer ownership. Summer document pages also refresh the
-Summer documents draft they read. Pages with leadership profiles refresh the
+publish or change importer ownership. Pages with leadership profiles refresh the
 leadership staff drafts. The importer does not run again (Ovi, 2026-10-06).
 
 To compare the authenticated draft with the committed live references, set

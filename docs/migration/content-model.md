@@ -256,7 +256,7 @@ Each subsection names its source collection exactly. A target path is relative t
 
 Set `season.program` from the audited Summer Camp / School Year meaning of the source season. Do not interpret this collection as a calendar year: the annual summer PDF label is separate.
 
-### SY Activities → `activity` (`program = schoolYear`)
+### SY Activities → `schoolYearActivity`
 
 | Webflow field            | Sanity field      | Meaning                                                                 |
 | ------------------------ | ----------------- | ----------------------------------------------------------------------- |
@@ -267,9 +267,12 @@ Set `season.program` from the audited Summer Camp / School Year meaning of the s
 | `programs`               | `programs[]`      | References to imported `programOffering` records.                       |
 | `description`            | `description`     | Plain-text description.                                                 |
 | `live`                   | `visible`         | Custom list visibility.                                                 |
-| `is-playground-2`        | `playgroundLabel` | Plain text, despite the source field's boolean-like name.               |
 | `order`                  | `order`           | Source list order.                                                      |
 | `indoor-outdoor-special` | `location`        | `Indoor`, `Outdoor`, or `Special`.                                      |
+
+Issue #51 moved these records from the shared `activity` type to
+`schoolYearActivity`. Every record needs at least one Program. The source
+`is-playground-2` field held "no" on every record and was dropped.
 
 ### SY Programs → `programOffering` (`program = schoolYear`)
 
@@ -278,10 +281,12 @@ Set `season.program` from the audited Summer Camp / School Year meaning of the s
 | `name`         | `title`        | Program name.                                      |
 | `slug`         | `slug.current` | Source URL name.                                   |
 | `days`         | `days`         | `Tue, Thu`, `Mo, Wed, Fri`, `Mo-Fri`, or `Mo-Sat`. |
-| `activities-2` | `activities[]` | References to imported SY `activity` records.      |
 | `color`        | `color`        | Source CSS label color.                            |
 | `program-page` | `destination`  | Internal page or external URL.                     |
 | `live`         | `visible`      | Custom list visibility.                            |
+
+Issue #51 removed the `activities-2` list. A Program's activities are the
+School Year activities that name it.
 
 ### Testimonials → `testimonial`
 
@@ -385,22 +390,26 @@ The featured-news title, date and link must come from one selected post. The kno
 | `does-sy-tours`        | `givesTours`       |
 | `is-preschool-teacher` | `preschoolTeacher` |
 
-### SC Groups → `campGroup` plus `summerDocuments` entries
+### SC Groups → `campGroup`
 
-| Webflow field        | Sanity field                                   | Meaning                                                   |
-| -------------------- | ---------------------------------------------- | --------------------------------------------------------- |
-| `name`               | `campGroup.title`                              | Group name; also informs each PDF entry's title.          |
-| `slug`               | `campGroup.slug.current`                       | Group identity.                                           |
-| `entering-grade-2`   | `campGroup.grades[]`                           | References to imported `grade` records.                   |
-| `gender`             | `campGroup.gender`                             | `Girls`, `Boys`, or `Coed`.                               |
-| `activities`         | `campGroup.activities[]`                       | References to SC `activity` records.                      |
-| `live`               | `campGroup.visible`                            | Source group visibility; applies to its document entries. |
-| `group-schedule-pdf` | `summerDocuments.gradeGroups[].entries[].file` | `kind = schedule`, `group` references this `campGroup`.   |
-| `welcome-letter-pdf` | `summerDocuments.gradeGroups[].entries[].file` | `kind = welcomeLetter`, same group reference.             |
+| Webflow field        | Sanity field             | Meaning                                    |
+| -------------------- | ------------------------ | ------------------------------------------ |
+| `name`               | `campGroup.title`        | Group name.                                |
+| `slug`               | `campGroup.slug.current` | Group identity.                            |
+| `entering-grade-2`   | `campGroup.grades[]`     | References to imported `grade` records.    |
+| `gender`             | `campGroup.gender`       | `Girls`, `Boys`, or `Coed`.                |
+| `activities`         | `campGroup.activities[]` | References to SC `activity` records.       |
+| `live`               | `campGroup.visible`      | Source group visibility; applies to PDFs.  |
+| `group-schedule-pdf` | `campGroup.groupSchedule` | The group's Group schedule PDF.           |
+| `welcome-letter-pdf` | `campGroup.welcomeLetter` | The group's Welcome letter PDF.           |
 
-Create one `summerDocuments` document per evidenced summer label, with one `gradeGroups[]` item per grade label on the public pages, in page order. A label that covers several grades, such as "8th & 9th Grades", references its first grade and keeps the label in `gradeGroups[].heading`; other headings come from the grade title. A group with several entering grades contributes entries under each of its labelled grades; entries reuse the same file asset. Entries follow the public link order under each label. Omit an entry when no source PDF exists. The annual label is not a field on SC Groups: obtain it from the source page/PDF evidence or report the missing label. Do not substitute the import year.
+The Group schedules and Welcome letters pages list each Grade in school order,
+with the visible groups of that Grade that have a PDF of the page's kind. A
+group with several Grades shows under each. The section label is the title of
+the current or next Summer Camp Season. Issue #52 moved the PDFs from the
+former `summerDocuments` record onto the groups.
 
-The group-schedules and welcome-letters pages select the same document and filter entries by `kind`. Both pages therefore use the same grade structure and file replacements. Current group visibility must be respected when lists are rendered. The section's description holds only the page's introduction; grade labels belong to the document list. A page hero without a photo uses the live centred reading column (`header50c`).
+Both pages use the same section with a different `kind`, so one PDF upload on a group updates its page. The section's description holds only the page's introduction; the grade headings are the Grade titles. A page hero without a photo uses the live centred reading column (`header50c`).
 
 ### SC Grades → `grade`
 
@@ -612,7 +621,7 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_layout398`                                      | `parentDashboard` singleton (not a section)              | Heading, introduction, tab prompt and labels, and one card list per tab. Hide cards without destinations.                      |
 | `section_timeline11`                                     | `stackedTimeline` with `layout = milestones`             | Ordered history dates, titles, highlighted text and photos.                                                                    |
 | `header50c_wrap text-color-alternate`                    | `innerHero`                                              | Document-page title and introduction.                                                                                          |
-| `section_content30`                                      | `summerDocumentList`, `embedSection`, or `richTextBlock` | Download pages read the selected summer document; tour pages use provider embeds; policy pages use rich text.                  |
+| `section_content30`                                      | `summerDocumentList`, `embedSection`, or `richTextBlock` | Download pages list the Camp group PDFs by grade; tour pages use provider embeds; policy pages use rich text.                  |
 | `w-embed w-iframe`                                       | `embedSection`                                           | Airtable change-notification form URL and accessible frame title.                                                              |
 | `section_blog-post-header3`                              | `post` route                                             | Title, date, author, category and image belong to the article document.                                                        |
 | `section_content29`                                      | `post.body` and author reference                         | Article body and author footer; not a duplicate insertable section.                                                            |

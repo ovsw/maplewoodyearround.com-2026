@@ -22,7 +22,7 @@ test('mapped collection targets exist with independent Summer Camp and School Ye
   }
   for (const name of ['summerActivity', 'schoolYearActivity', 'activityCategory','facilityCategory', 'faqCategory', 'grade', 'campGroup',
     'programOffering', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar',
-    'jobOpportunity', 'season', 'summerDocuments', 'post', 'category']) {
+    'jobOpportunity', 'season', 'post', 'category']) {
     definition(name)
   }
 })
@@ -37,13 +37,11 @@ test('source multi-references remain arrays, and facility grade mappings can rem
   assert.equal(arrayReference(field(definition('campGroup'), 'grades')), 'grade.reference')
 })
 
-test('summer files retain grade, group and document kind instead of flattening PDF URLs', () => {
-  const group = field(definition('summerDocuments'), 'gradeGroups').of
-  assert.equal(field(group, 'grade').name, 'grade.reference')
-  const entry = field(group, 'entries').of
-  assert.equal(field(entry, 'group').name, 'campGroup.reference')
-  assert.deepEqual(values(field(entry, 'kind')), ['schedule', 'welcomeLetter'])
-  assert.equal(field(field(entry, 'file'), 'asset').name, 'sanity.fileAsset.reference')
+test('each camp group keeps its schedule and welcome letter as file assets, not PDF URLs', () => {
+  for (const name of ['groupSchedule', 'welcomeLetter']) {
+    assert.equal(field(field(definition('campGroup'), name), 'asset').name, 'sanity.fileAsset.reference')
+  }
+  assert.equal(schema.some((item) => item.name === 'summerDocuments'), false)
 })
 
 test('destinations preserve file assets and CMS references alongside external URLs', () => {
