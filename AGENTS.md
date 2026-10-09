@@ -47,8 +47,14 @@ Leave Webflow and Airtable data intact.
 Required migration and draft writes have standing permission. Before the
 first write in a task, name and verify the Maplewood project and dataset.
 Create a timestamped backup and verify it with `gzip -t`. Stop if it fails.
-Use a raw export for document-only work; include assets when assets or their
-references change. Keep backups outside version control.
+
+**Back up documents only. Never download the assets.** Every backup is a raw
+export: `pnpm --dir studio exec sanity dataset export production <file>
+--no-assets`. The images and files stay in Sanity; a copy with assets is about
+430 MB and adds nothing. This rule holds even when a spec or issue says "with
+assets". `pnpm migrate` makes this backup for you. Keep backups in
+`/storage/backups/maplewood`, outside version control. A raw backup cannot
+bring back a deleted asset, so ask Ovi before a change that deletes assets.
 
 Preserve draft and published state when changing stored content. Feature
 content goes to drafts unless the issue requires publication. Never target

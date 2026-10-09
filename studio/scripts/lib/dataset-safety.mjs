@@ -18,9 +18,10 @@ export async function verifyTarget(client) {
 }
 
 /**
- * Export the production dataset, with assets, to a timestamped file in
- * `root`, and check it with `gzip -t`. Throws, before any write, when a step
- * fails or when `root` is inside the repository.
+ * Export the production dataset's documents, without assets, to a
+ * timestamped file in `root`, and check it with `gzip -t`. Assets stay in
+ * Sanity; downloading them again only fills the disk. Throws, before any
+ * write, when a step fails or when `root` is inside the repository.
  */
 export async function backupDataset({ studioDirectory, token, root, label, run = spawnSync }) {
   const repository = path.resolve(studioDirectory, "..");
@@ -30,7 +31,7 @@ export async function backupDataset({ studioDirectory, token, root, label, run =
   await mkdir(target, { recursive: true, mode: 0o700 });
   const filename = path.join(target, `${new Date().toISOString().replaceAll(":", "-")}-${label}.tar.gz`);
   const env = { ...process.env, SANITY_AUTH_TOKEN: token };
-  const exported = run("pnpm", ["exec", "sanity", "dataset", "export", "production", filename], {
+  const exported = run("pnpm", ["exec", "sanity", "dataset", "export", "production", filename, "--no-assets"], {
     cwd: studioDirectory,
     env,
     encoding: "utf8",
