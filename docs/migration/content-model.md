@@ -404,7 +404,7 @@ group with several Grades shows under each. The section label is the title of
 the current or next Summer Camp Season. Issue #52 moved the PDFs from the
 former `summerDocuments` record onto the groups.
 
-The group-schedules and welcome-letters pages select the same document and filter entries by `kind`. Both pages therefore use the same grade structure and file replacements. Current group visibility must be respected when lists are rendered. The section's description holds only the page's introduction; grade labels belong to the document list. A page hero without a photo uses the live centred reading column (`header50c`).
+Both pages use the same section with a different `kind`, so one PDF upload on a group updates its page. The section's description holds only the page's introduction; the grade headings are the Grade titles. A page hero without a photo uses the live centred reading column (`header50c`).
 
 ### SC Grades → `grade`
 

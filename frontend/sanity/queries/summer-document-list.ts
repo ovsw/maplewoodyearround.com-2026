@@ -14,7 +14,8 @@ export const summerDocumentListQuery = groq`
     kind,
     "season": *[
       _type == "season" && program == "summerCamp"
-      && defined(startDate) && endDate >= string::split(now(), "T")[0]
+      && defined(startDate) && defined(endDate)
+      && endDate >= string::split(now(), "T")[0]
     ] | order(startDate asc)[0].title,
     "grades": *[_type == "grade"] | order(order asc, title asc){
       _id,
