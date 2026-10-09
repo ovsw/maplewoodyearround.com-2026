@@ -130,7 +130,6 @@ test("the root menu follows the OVS starter shape", () => {
     "Sample Schedules",
     "FAQs",
     "Testimonials",
-    "Summer documents",
   ]);
   assert.deepEqual(titles("Summer Camp", "Facilities"), [
     "Index",

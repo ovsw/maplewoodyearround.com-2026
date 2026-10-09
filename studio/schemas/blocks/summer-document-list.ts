@@ -14,20 +14,11 @@ export default defineType({
     sectionTitleField,
     sectionDescriptionField,
     defineField({
-      name: "documents",
-      title: "Summer documents",
-      type: "reference",
-      to: [{ type: "summerDocuments" }],
-      description:
-        "Choose the summer document list used by both download pages.",
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: "kind",
       title: "Document kind",
       type: "string",
       description:
-        "Show schedules or welcome letters from the selected summer.",
+        "Show the Group schedule or the Welcome letter of every visible Camp group, by grade.",
       options: {
         list: [
           { title: "Group schedules", value: "schedule" },

@@ -1,4 +1,4 @@
-import { assetCollector, documentId, key, reference, text, destination, portableText, plainBlocks, mediaUrl } from './html.mjs';
+import { assetCollector, key, reference, text, destination, portableText, plainBlocks, mediaUrl } from './html.mjs';
 import { mappings, identityMap, cmsDocuments } from './collections.mjs';
 import { pageContext, staticPages, pageId } from './pages.mjs';
 import { SITE_ID } from './source.mjs';
@@ -16,69 +16,6 @@ export function assertPublicPageCoverage(snapshot) {
 // private source evidence and report its omission; never skip other failures.
 const unavailableTemplateIds=new Set(['624380709031626fc14aee84','6244257bf98bf0e23bb25fec','624380709031625abc4aee65','6294195f2d0c46815fb2259c']);
 const unavailableDecorativeUrl='https://cdn.prod.website-files.com/6244257bf98bf00e37b25f97/6244257bf98bf0e23bb25fec_icon_close-modal.svg';
-
-
-// Each grade label on a summer document page precedes that grade's PDF list.
-export function summerGradeLists(dom) {
-  return [...dom.querySelectorAll('main .w-dyn-list')].map((list) => ({
-    label: text(list.previousElementSibling).replace(/:$/, ''),
-    links: [...list.querySelectorAll('a[href]')].map((a) => a.href),
-  }));
-}
-
-const documentFields = [['group-schedule-pdf', 'schedule'], ['welcome-letter-pdf', 'welcomeLetter']];
-
-export function summerDocuments(snapshot, context) {
-  const pages = ['/summer-camp/summer-group-schedules', '/summer-camp/summer-camp-welcome-letters'].map((path) => context.pageDocuments.get(path));
-  const years = new Set(pages.map((page) => text(page.querySelector('main header')).match(/updated[^0-9]*(?:\w+\s+)?\d+\w*\s+(20\d\d)/i)?.[1]));
-  if (years.size !== 1 || years.has(undefined)) throw new Error('Summer document pages do not establish one matching source year');
-  const year = [...years][0];
-  const groups = snapshot.collections.find((c) => c.displayName === 'SC Groups');
-  const grades = snapshot.collections.find((c) => c.displayName === 'SC Grades');
-  const [scheduleLists, letterLists] = pages.map(summerGradeLists);
-  if (!scheduleLists.length || scheduleLists.map((list) => list.label).join('|') !== letterLists.map((list) => list.label).join('|')) throw new Error('Summer document pages do not list the same grades');
-  // A label such as "8th & 9th Grades" covers several entering grades. Its
-  // first grade identifies the group; the label is kept as its heading.
-  const stem = (name) => name.replace(/\s+grades?$/i, '');
-  const labelGrades = (label, version) => grades[version]
-    .map((grade) => ({ grade, at: label.search(new RegExp(`\\b${stem(grade.fieldData.name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')) }))
-    .filter(({ at }) => at >= 0).sort((a, b) => a.at - b.at).map(({ grade }) => grade);
-  const entries = (members, links) => members.map((group) => {
-    const ranks = documentFields.map(([field]) => links.indexOf(group.fieldData[field]?.url)).filter((index) => index >= 0);
-    return { group, rank: ranks.length ? Math.min(...ranks) : Number.MAX_SAFE_INTEGER };
-  }).sort((a, b) => a.rank - b.rank || a.group.id.localeCompare(b.group.id)).flatMap(({ group }) =>
-    documentFields.flatMap(([field, kind]) => group.fieldData[field]?.url ? [{
-      _key: key(`${group.id}-${kind}`), _type: 'summerDocumentEntry', title: group.fieldData.name, kind,
-      group: reference(documentId(groups.id, group.id)), file: context.asset(group.fieldData[field], 'file'),
-    }] : []));
-  const gradeGroup = (grade, members, links, heading) => ({
-    _key: key(grade.id), _type: 'gradeDocuments', grade: reference(documentId(grades.id, grade.id)),
-    ...(heading && heading !== grade.fieldData.name ? { heading } : {}), entries: entries(members, links),
-  });
-  const build = (version) => {
-    const covered = new Set();
-    const inGrades = (ids) => groups[version].filter((group) => group.fieldData['entering-grade-2']?.some((id) => ids.includes(id)));
-    const listed = scheduleLists.map(({ label }, index) => {
-      const matched = labelGrades(label, version);
-      if (!matched.length) throw new Error(`Summer document label "${label}" names no source grade`);
-      matched.forEach((grade) => covered.add(grade.id));
-      // One entry order serves both pages, so their group orders must agree.
-      const order = (links, field) => groups[version].filter((group) => links.includes(group.fieldData[field]?.url))
-        .sort((a, b) => links.indexOf(a.fieldData[field].url) - links.indexOf(b.fieldData[field].url)).map((group) => group.id);
-      const schedules = order(scheduleLists[index].links, 'group-schedule-pdf');
-      const letters = order(letterLists[index].links, 'welcome-letter-pdf');
-      const shared = (ids, other) => ids.filter((id) => other.includes(id)).join('|');
-      if (shared(schedules, letters) !== shared(letters, schedules)) throw new Error(`Summer document pages order "${label}" groups differently`);
-      return gradeGroup(matched[0], inGrades(matched.map((grade) => grade.id)), [...scheduleLists[index].links, ...letterLists[index].links], label);
-    });
-    // Grades with groups but no public label keep their entries after the page order.
-    const unlisted = grades[version].filter((grade) => !covered.has(grade.id) && inGrades([grade.id]).length)
-      .map((grade) => gradeGroup(grade, inGrades([grade.id]), []));
-    return { _id: `wf-summer-documents-${year}`, _type: 'summerDocuments', seasonLabel: `Summer ${year}`, gradeGroups: [...listed, ...unlisted] };
-  };
-  const live = build('live'), staged = build('staged');
-  return JSON.stringify(live) === JSON.stringify(staged) ? [live] : [live, { ...staged, _id: `drafts.${staged._id}` }];
-}
 
 function authoredCollections(snapshot, context) {
   const documents = new Map();
@@ -148,9 +85,7 @@ export function buildPlan(snapshot, schema) {
   const context = pageContext(snapshot, { ...assetCollector(aliases), identities:identityMap(snapshot), warnings:new Set() });
   const cms = cmsDocuments(snapshot, context);
   const pages = staticPages(snapshot, context, schema);
-  const extras = [...summerDocuments(snapshot, context), ...authoredCollections(snapshot, context), ...unpublishedPages(snapshot, context), ...globalDocuments(snapshot, context)];
-  const summer = extras.find((doc) => doc._type === 'summerDocuments');
-  for (const doc of pages.documents) for (const block of doc.blocks ?? []) if (block._type === 'summerDocumentList') block.documents = reference(summer._id);
+  const extras = [...authoredCollections(snapshot, context), ...unpublishedPages(snapshot, context), ...globalDocuments(snapshot, context)];
   // Preserve every CMS media field, including currently unused dashboard files.
   for (const collection of snapshot.collections) for (const item of [...collection.staged,...collection.live]) {
     for (const field of collection.fields.filter((f) => ['Image','File'].includes(f.type))) {

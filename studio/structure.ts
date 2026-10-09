@@ -6,7 +6,6 @@ import {
   CalendarDays,
   CalendarRange,
   Drama,
-  FileStack,
   FileText,
   Files,
   FolderTree,
@@ -169,8 +168,6 @@ function summerCamp(S: StructureBuilder) {
     sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock),
     sideDocuments(S, side, "faq", "FAQs", MessageCircleQuestion),
     sideDocuments(S, side, "testimonial", "Testimonials", Quote),
-    // Stays here until #52 moves the PDFs onto the camp groups.
-    documents(S, "summerDocuments", "Summer documents", FileStack),
   ]);
 }
 
