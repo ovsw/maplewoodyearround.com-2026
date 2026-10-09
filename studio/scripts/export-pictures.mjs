@@ -1,17 +1,22 @@
 #!/usr/bin/env node
 // Download every picture in the Maplewood dataset into one folder, named
 // with its Sanity original file name, for upload to a Raster library. The
-// Raster sync then matches each description to its picture by file name.
+// Raster sync then matches each description to its picture by file name
+// without the extension.
 // Reads Sanity only.
 //
 // Usage, from studio/:
 //   node --env-file=.env.local scripts/export-pictures.mjs <folder outside the repository>
 //
-// A file already in the folder with the right size is kept, so a stopped run
-// can continue. The run fails when two pictures share a Raster name or when
-// the folder holds files that are not pictures in the dataset.
+// The Sanity CDN serves each picture re-encoded, so a file's size can differ
+// from the size Sanity stores for the upload, and avif and webp pictures
+// arrive as jpeg or png. The extension follows the served format, so every
+// file's extension matches its content. A file already in the folder is
+// kept, so a stopped run can continue. The run fails when two pictures share
+// a Raster name or when the folder holds files that are not pictures in the
+// dataset.
 
-import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -21,6 +26,7 @@ import { isPicture, rasterName } from "./lib/pictures.mjs";
 import { request } from "./webflow/source.mjs";
 
 const repository = path.resolve(import.meta.dirname, "../..");
+const EXTENSIONS = { "image/jpeg": "jpg", "image/png": "png", "image/svg+xml": "svg", "image/gif": "gif" };
 
 export async function main(args = process.argv.slice(2)) {
   if (args.length !== 1 || args[0].startsWith("--"))
@@ -38,7 +44,7 @@ export async function main(args = process.argv.slice(2)) {
   });
   assertMdcProductionTarget(client.config());
   const pictures = (
-    await client.fetch('*[_type == "sanity.imageAsset"]{_id, _type, originalFilename, url, size}')
+    await client.fetch('*[_type == "sanity.imageAsset"]{_id, _type, originalFilename, url}')
   ).filter(isPicture);
 
   const byName = new Map();
@@ -52,21 +58,28 @@ export async function main(args = process.argv.slice(2)) {
   }
 
   await mkdir(folder, { recursive: true });
+  for (const name of await readdir(folder))
+    if (name.endsWith(".part")) await rm(path.join(folder, name));
+  const present = new Set();
+  for (const name of await readdir(folder))
+    if ((await stat(path.join(folder, name))).size) present.add(rasterName(name));
   let downloaded = 0;
   for (const picture of pictures) {
-    const file = path.join(folder, picture.originalFilename);
-    if ((await stat(file).catch(() => null))?.size === picture.size) continue;
+    if (present.has(rasterName(picture.originalFilename))) continue;
     const response = await request(picture.url);
     if (!response.ok) throw new Error(`${picture.url}: HTTP ${response.status}`);
     const bytes = Buffer.from(await response.arrayBuffer());
-    if (bytes.length !== picture.size) throw new Error(`${picture.originalFilename}: ${bytes.length} bytes, expected ${picture.size}`);
-    await writeFile(file, bytes);
+    const extension = EXTENSIONS[response.headers.get("content-type")?.split(";")[0]];
+    if (!extension || !bytes.length) throw new Error(`${picture.url}: not a jpeg, png, svg or gif image`);
+    const file = path.join(folder, `${picture.originalFilename.replace(/\.[a-z0-9]+$/i, "")}.${extension}`);
+    // Written under a temporary name first, so a stopped run leaves no partial file.
+    await writeFile(`${file}.part`, bytes);
+    await rename(`${file}.part`, file);
     if (++downloaded % 25 === 0) console.log(`Downloaded ${downloaded}`);
   }
 
-  const expected = new Set(pictures.map((picture) => picture.originalFilename));
   const files = await readdir(folder);
-  const extra = files.filter((file) => !expected.has(file));
+  const extra = files.filter((file) => !byName.has(rasterName(file)));
   if (extra.length) throw new Error(`The folder holds files that are not pictures in the dataset:\n${extra.join("\n")}`);
   if (files.length !== pictures.length)
     throw new Error(`The folder holds ${files.length} files for ${pictures.length} pictures`);
