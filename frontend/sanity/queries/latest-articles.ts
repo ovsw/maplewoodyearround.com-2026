@@ -6,6 +6,7 @@ import {
 } from "./blog-post-listing";
 import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
+import { urlFileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const latestArticlesQuery = groq`
@@ -25,7 +26,7 @@ export const latestArticlesQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
-        url.type == "file" => url.file.asset->url,
+        url.type == "file" => ${urlFileUrl},
         url.href
       )
     },
