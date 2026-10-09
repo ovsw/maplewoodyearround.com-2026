@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { cardSliderQuery } from "./card-slider";
 import { filterableCardsQuery } from "./filterable-cards";
 import { PARENT_DASHBOARD_QUERY } from "./parent-dashboard";
+import { SEASONS_QUERY } from "./season";
 import { summerDocumentListQuery } from "./summer-document-list";
 import { teamMembersQuery } from "./team-members";
 import { quoteWallQuery } from "./quote-wall";
@@ -369,4 +370,84 @@ describe("summer document visibility", () => {
       expect(section.documents.gradeGroups[0].heading).toBe("Grades 2 & 3");
     },
   );
+});
+
+describe("Current and next Season", () => {
+  const season = (
+    _id: string,
+    program: string,
+    startDate?: string,
+    endDate?: string,
+  ) => ({ _id, _type: "season", title: _id, program, startDate, endDate });
+  const dated = [
+    season("summer-2027", "summerCamp", "2027-06-21", "2027-08-13"),
+    season("summer-2028", "summerCamp", "2028-06-19", "2028-08-11"),
+    season("school-year-2026", "schoolYear", "2026-09-08", "2027-06-11"),
+    season("school-year-2027", "schoolYear", "2027-09-07", "2028-06-09"),
+  ];
+
+  async function seasonsOn(today: string, dataset: Fixture[] = dated) {
+    const result = await evaluate(parse(SEASONS_QUERY), {
+      dataset,
+      params: { today },
+    });
+    const seasons = await result.get();
+    const ids = (side: { current: Fixture | null; next: Fixture | null }) => [
+      side.current?._id ?? null,
+      side.next?._id ?? null,
+    ];
+    return {
+      summerCamp: ids(seasons.summerCamp),
+      schoolYear: ids(seasons.schoolYear),
+      seasons,
+    };
+  }
+
+  it("gives the current and next Season of each side", async () => {
+    const result = await seasonsOn("2027-07-04");
+    expect(result.summerCamp).toEqual(["summer-2027", "summer-2028"]);
+    expect(result.schoolYear).toEqual([null, "school-year-2027"]);
+    expect(result.seasons.summerCamp.current).toEqual({
+      _id: "summer-2027",
+      title: "summer-2027",
+      slug: null,
+      program: "summerCamp",
+      startDate: "2027-06-21",
+      endDate: "2027-08-13",
+    });
+  });
+
+  it("counts the first and last day as part of the Season", async () => {
+    expect((await seasonsOn("2027-06-21")).summerCamp[0]).toBe("summer-2027");
+    expect((await seasonsOn("2027-08-13")).summerCamp[0]).toBe("summer-2027");
+  });
+
+  it("gives no current Season and the right next Season in a gap", async () => {
+    const result = await seasonsOn("2027-08-30");
+    expect(result.summerCamp).toEqual([null, "summer-2028"]);
+    expect(result.schoolYear).toEqual([null, "school-year-2027"]);
+  });
+
+  it("gives the first Season as next before every Season starts", async () => {
+    const result = await seasonsOn("2026-01-15");
+    expect(result.summerCamp).toEqual([null, "summer-2027"]);
+    expect(result.schoolYear).toEqual([null, "school-year-2026"]);
+  });
+
+  it("gives empty values after the last Season ends", async () => {
+    const result = await seasonsOn("2028-09-01");
+    expect(result.summerCamp).toEqual([null, null]);
+    expect(result.schoolYear).toEqual([null, null]);
+  });
+
+  it("gives empty values when no Season has dates", async () => {
+    const result = await seasonsOn("2027-07-04", [
+      season("summer-camp", "summerCamp"),
+      season("school-year", "schoolYear", "2027-09-07"),
+    ]);
+    expect(result.seasons).toEqual({
+      summerCamp: { current: null, next: null },
+      schoolYear: { current: null, next: null },
+    });
+  });
 });
