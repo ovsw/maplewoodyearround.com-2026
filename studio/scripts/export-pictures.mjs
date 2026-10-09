@@ -13,7 +13,7 @@
 // a Raster name or when the folder holds files that are not pictures in the
 // dataset.
 
-import { mkdir, readdir, rename, stat, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
@@ -54,6 +54,8 @@ export async function main(args = process.argv.slice(2)) {
   }
 
   await mkdir(folder, { recursive: true });
+  for (const name of await readdir(folder))
+    if (name.endsWith(".part")) await rm(path.join(folder, name));
   let downloaded = 0;
   for (const picture of pictures) {
     const file = path.join(folder, picture.originalFilename);
