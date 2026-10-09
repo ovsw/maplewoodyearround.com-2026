@@ -2628,7 +2628,8 @@ export type Season = {
   title?: string;
   slug?: Slug;
   program?: "summerCamp" | "schoolYear";
-  order?: number;
+  startDate?: string;
+  endDate?: string;
 };
 
 export type Grade = {
@@ -17533,6 +17534,48 @@ export type REDIRECTS_QUERY_RESULT = Array<{
   permanent: "false" | "true" | null;
 }>;
 
+// Source: ../frontend/sanity/queries/season.ts
+// Variable: SEASONS_QUERY
+// Query: {  "summerCamp": {    "current": *[_type == "season" && program == "summerCamp" && startDate <= $today && endDate >= $today] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate},    "next": *[_type == "season" && program == "summerCamp" && startDate > $today && defined(endDate)] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate}  },  "schoolYear": {    "current": *[_type == "season" && program == "schoolYear" && startDate <= $today && endDate >= $today] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate},    "next": *[_type == "season" && program == "schoolYear" && startDate > $today && defined(endDate)] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate}  }}
+export type SEASONS_QUERY_RESULT = {
+  summerCamp: {
+    current: {
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      program: "schoolYear" | "summerCamp" | null;
+      startDate: string | null;
+      endDate: string | null;
+    } | null;
+    next: {
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      program: "schoolYear" | "summerCamp" | null;
+      startDate: string | null;
+      endDate: string | null;
+    } | null;
+  };
+  schoolYear: {
+    current: {
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      program: "schoolYear" | "summerCamp" | null;
+      startDate: string | null;
+      endDate: string | null;
+    } | null;
+    next: {
+      _id: string;
+      title: string | null;
+      slug: Slug | null;
+      program: "schoolYear" | "summerCamp" | null;
+      startDate: string | null;
+      endDate: string | null;
+    } | null;
+  };
+};
+
 // Source: ../frontend/sanity/queries/settings.ts
 // Variable: SETTINGS_QUERY
 // Query: *[_type == "settings" && _id == "settings"][0]{    _id,    _type,    siteName,    gaMeasurementId,    hotjarSiteId,    logo{      light{          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      },      dark{          ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }      }    },    contact{      email,      phone,      fax,      menuAddress,      addressLines    },    socialLinks[]{      _key,      label,      url    },    notFoundImage{        ...,  asset->{    _id,    url,    mimeType,    metadata {      lqip,      dimensions {        width,        height      }    }  }    }  }
@@ -17672,6 +17715,7 @@ declare global {
     '*[_type == "post" && defined(slug)] | order(_createdAt desc){\n    title,\n    slug,\n    publishedAt,\n    "excerpt": pt::text(excerpt),\n    image{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    },\n}': POSTS_QUERY_RESULT;
     '*[_type == "post" && defined(slug)]{slug}': POSTS_SLUGS_QUERY_RESULT;
     '\n  *[\n    _type == "redirect" &&\n    !(_id in path("drafts.**")) &&\n    status == "active" &&\n    defined(source.current) &&\n    (defined(destinationReference._ref) || defined(destination.current))\n  ] | order(source.current asc) {\n    _id,\n    status,\n    source,\n    "destination": select(\n      defined(destinationReference._ref) => select(\n  destinationReference->_id == "homePage" || destinationReference->_type == "homePage" => "/",\n  destinationReference->_id == "blogIndex" || destinationReference->_type == "blogIndex" => "/blog",\n  destinationReference->_type == "post" && defined(destinationReference->slug.current) => "/blog/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),\n  destinationReference->_type == "category" && defined(destinationReference->slug.current) => "/blog/category/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/"),\n  destinationReference->_type == "page" && defined(destinationReference->slug.current) => "/" + array::join(string::split(destinationReference->slug.current, "/")[@ != ""], "/")\n),\n      destination.current\n    ),\n    permanent\n  }\n': REDIRECTS_QUERY_RESULT;
+    '{\n  "summerCamp": {\n    "current": *[_type == "season" && program == "summerCamp" && startDate <= $today && endDate >= $today] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate},\n    "next": *[_type == "season" && program == "summerCamp" && startDate > $today && defined(endDate)] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate}\n  },\n  "schoolYear": {\n    "current": *[_type == "season" && program == "schoolYear" && startDate <= $today && endDate >= $today] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate},\n    "next": *[_type == "season" && program == "schoolYear" && startDate > $today && defined(endDate)] | order(startDate asc)[0]{_id, title, slug, program, startDate, endDate}\n  }\n}': SEASONS_QUERY_RESULT;
     '\n  *[_type == "settings" && _id == "settings"][0]{\n    _id,\n    _type,\n    siteName,\n    gaMeasurementId,\n    hotjarSiteId,\n    logo{\n      light{\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      },\n      dark{\n        \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n      }\n    },\n    contact{\n      email,\n      phone,\n      fax,\n      menuAddress,\n      addressLines\n    },\n    socialLinks[]{\n      _key,\n      label,\n      url\n    },\n    notFoundImage{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n': SETTINGS_QUERY_RESULT;
     '\n  *[_type == "settings" && _id == "settings"][0]{\n    seoDescription,\n    seoImage{\n      \n  ...,\n  asset->{\n    _id,\n    url,\n    mimeType,\n    metadata {\n      lqip,\n      dimensions {\n        width,\n        height\n      }\n    }\n  }\n\n    }\n  }\n': SEO_SETTINGS_QUERY_RESULT;
   }

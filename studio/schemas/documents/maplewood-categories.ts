@@ -1,7 +1,9 @@
-import { defineType } from "sanity";
+import { defineField, defineType } from "sanity";
+import { seasonPeriod } from "../validation/season-period";
 import {
   orderField,
   programField,
+  programOptions,
   referencesField,
   slugField,
   titleField,
@@ -45,6 +47,47 @@ export const season = defineType({
   name: "season",
   title: "Season",
   type: "document",
-  fields: [titleField, slugField, programField, orderField],
-  preview: { select: { title: "title", subtitle: "program" } },
+  fields: [
+    titleField,
+    slugField,
+    programField,
+    defineField({
+      name: "startDate",
+      title: "Start date",
+      type: "date",
+      description: "The first day of this Season.",
+      validation: (rule) =>
+        rule.required().error("Enter the first day of this Season."),
+    }),
+    defineField({
+      name: "endDate",
+      title: "End date",
+      type: "date",
+      description:
+        "The last day of this Season. Seasons of the same side cannot overlap.",
+      // Separate rules, so the required message does not replace the
+      // date-order and overlap messages.
+      validation: (rule) => [
+        rule.required().error("Enter the last day of this Season."),
+        rule.custom(seasonPeriod),
+      ],
+    }),
+  ],
+  preview: {
+    select: {
+      title: "title",
+      program: "program",
+      startDate: "startDate",
+      endDate: "endDate",
+    },
+    prepare: ({ title, program, startDate, endDate }) => {
+      const side = programOptions.find((option) => option.value === program);
+      const dates =
+        startDate && endDate ? `${startDate} to ${endDate}` : "No dates";
+      return {
+        title,
+        subtitle: [side?.title, dates].filter(Boolean).join(" · "),
+      };
+    },
+  },
 });
