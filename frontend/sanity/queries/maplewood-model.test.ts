@@ -432,7 +432,7 @@ describe("Group schedules and Welcome letters", () => {
     group("No letter", ["first"], { welcomeLetter: undefined }),
     group("Lost file", ["first"], { groupSchedule: file("missing") }),
   ];
-  const dataset = [
+  const dataset: Fixture[] = [
     grade("first", "1st Grade", 2),
     grade("preschool", "Preschool", 0),
     grade("kindergarten", "Kindergarten", 1),
