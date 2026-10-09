@@ -34,7 +34,7 @@ export const sectionVideoProjection = `
 
 export const collectionItemsProjection = `
   "items": *[
-    _type in ["summerActivity", "schoolYearActivity", "facility", "sampleSchedule", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
+    _type in ["summerActivity", "schoolYearActivity", "facility", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
     && _type == ^.source
     && visible != false
     // Activities and Play Center records belong to one side and store none.
@@ -42,7 +42,6 @@ export const collectionItemsProjection = `
       || (_type == "summerActivity" && ^.program == "summerCamp")
       || ((_type == "schoolYearActivity" || _type match "playground*") && ^.program == "schoolYear"))
     && (!defined(^.location) || location == ^.location)
-    && (!defined(^.audience) || audience == ^.audience)
     && (!defined(^.programOffering._ref) || ^.programOffering._ref in programs[]._ref)
     && (!defined(^.facilityCategory._ref) || ^.facilityCategory._ref in categories[]._ref)
     && (!defined(^.activityCategory._ref) || category._ref == ^.activityCategory._ref)
@@ -51,7 +50,7 @@ export const collectionItemsProjection = `
   // Calendar days run by date. Webflow lists sorted by order show records
   // without an order number first.
   | order(date asc, defined(order) asc, order asc, title asc, _id asc) {
-    _id, _type, title, slug, description, program, location, activity, audience,
+    _id, _type, title, slug, description, program, location,
     availability,
     image{${imageQuery}},
     category->{_id, title, slug},
@@ -67,6 +66,17 @@ export const collectionItemsProjection = `
     "fileUrl": ${fileUrl}, effectiveFrom
   }
 `;
+
+// A Sample schedule's slots in their order. A slot names its activity when
+// it is about one.
+export const sampleScheduleProjection = `sampleSchedule->{
+  _id, _type, title,
+  slots[]{
+    _key, time, label, description,
+    image{${imageQuery}},
+    activity->{_id, _type, title, slug}
+  }
+}`;
 
 export const taglineProjection = `tagline{label, program, text}`;
 

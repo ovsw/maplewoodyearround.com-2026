@@ -3,6 +3,7 @@ import {
   collectionItemsProjection,
   contentActionsProjection,
   iconProjection,
+  sampleScheduleProjection,
   taglineProjection,
 } from "./shared/maplewood";
 import { fileUrl } from "./shared/file-url";
@@ -18,6 +19,7 @@ export const cardSliderQuery = groq`
     description,
     ${contentActionsProjection},
     source, program, characterTime, ${collectionItemsProjection},
+    "schedule": select(source == "sampleSchedule" => ${sampleScheduleProjection}),
     // The calendar days list links the current printable calendar.
     "calendar": select(source == "playgroundEvent" => *[_type == "playgroundCalendar" && defined(file.asset)]
       | order(effectiveFrom desc)[0]{_id, title, "fileUrl": ${fileUrl}})
