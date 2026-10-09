@@ -18,6 +18,7 @@
 //   node --env-file=.env.local scripts/sync-raster-descriptions.mjs --library old --apply
 import { createClient } from "@sanity/client";
 import { assertMdcProductionTarget } from "./assert-mdc-production-target.mjs";
+import { rasterName as stem } from "./lib/pictures.mjs";
 
 const RASTER_API_VERSION = "2026-05-20";
 const PAGE_SIZE = 50;
@@ -95,12 +96,6 @@ async function findMostRecentlyUploadedLibrary() {
   if (!best) throw new Error("No Raster libraries visible to this API key");
   return best;
 }
-
-const stem = (filename) =>
-  filename
-    .replace(/\.[a-z0-9]+$/i, "")
-    .trim()
-    .toLowerCase();
 
 const selected = requestedLibraryId
   ? { id: requestedLibraryId, assets: await listRasterAssets(requestedLibraryId) }

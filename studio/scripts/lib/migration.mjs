@@ -11,6 +11,10 @@
 //     },
 //   }
 //
+// `dataset` holds `documents`, `get(id)` and `note(line)`. A note is a line
+// the plan prints before the changes, for example a summary or a case the
+// migration leaves alone on purpose.
+//
 // The change runs on every stored version: the published document and its
 // draft each get their own call, so both change. It returns the document
 // (changed or not), null to delete it, or a list of documents that replace
@@ -82,7 +86,8 @@ const label = (document) =>
  */
 export function planMigration(migration, documents) {
   const before = new Map(documents.map((document) => [document._id, document]));
-  const change = migration.prepare({ documents, get: (id) => before.get(id) });
+  const notes = [];
+  const change = migration.prepare({ documents, get: (id) => before.get(id), note: (line) => notes.push(line) });
   const after = new Map();
 
   for (const document of documents) {
@@ -128,7 +133,7 @@ export function planMigration(migration, documents) {
       blocked.map((check) => `Cannot delete ${check.id}; still referenced by ${check.after.join(", ")}`).join("\n"),
     );
 
-  return { description: migration.description, created, changed, deleted, referenceChecks };
+  return { description: migration.description, notes, created, changed, deleted, referenceChecks };
 }
 
 export const isEmpty = (plan) => !plan.created.length && !plan.changed.length && !plan.deleted.length;
@@ -144,6 +149,7 @@ const brief = (value) => {
 export function describePlan(plan) {
   const lines = [
     plan.description,
+    ...plan.notes,
     `Create ${plan.created.length}, change ${plan.changed.length}, delete ${plan.deleted.length} documents.`,
   ];
   for (const document of plan.created) lines.push(`Create ${label(document)}`);

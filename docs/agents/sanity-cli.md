@@ -14,8 +14,9 @@ For reads, use `pnpm sanity:query '<groq>' ['<json params>']`.
 To change stored content, add a migration to `studio/scripts/migrations/`
 and test it on fixtures. `studio/scripts/lib/migration.mjs` describes the
 format. `pnpm migrate <name>` prints the plan and writes nothing.
-`pnpm migrate <name> --apply` checks the target, backs up the dataset with
-assets to `/storage/backups/maplewood`, and writes.
+`pnpm migrate <name> --apply` checks the target, makes a raw backup of the
+dataset in `/storage/backups/maplewood`, and writes. A raw backup keeps every
+document and its asset references, not the asset files.
 For schema and query changes, run `pnpm typegen`.
 
 Deploy with `pnpm deploy:studio`. It loads the separate `SANITY_DEPLOY_TOKEN`
