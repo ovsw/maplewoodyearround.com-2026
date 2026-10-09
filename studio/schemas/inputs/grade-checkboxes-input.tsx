@@ -16,6 +16,7 @@ export default function GradeCheckboxesInput(props: ArrayOfObjectsInputProps) {
   const value = (props.value ?? []) as GradeReference[];
   const client = useClient({ apiVersion: "2026-03-23" });
   const [grades, setGrades] = useState<Grade[]>();
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let current = true;
@@ -23,12 +24,19 @@ export default function GradeCheckboxesInput(props: ArrayOfObjectsInputProps) {
       .fetch<Grade[]>(
         `*[_type == "grade" && !(_id in path("drafts.**"))] | order(order asc, title asc){_id, title}`,
       )
-      .then((list) => current && setGrades(list));
+      .then((list) => current && setGrades(list))
+      .catch(() => current && setFailed(true));
     return () => {
       current = false;
     };
   }, [client]);
 
+  if (failed)
+    return (
+      <Card padding={3} radius={2} tone="critical">
+        <Text size={1}>The grades could not be loaded. Reload the page to try again.</Text>
+      </Card>
+    );
   if (!grades) return <Text size={1}>Loading grades…</Text>;
   if (!grades.length)
     return (
