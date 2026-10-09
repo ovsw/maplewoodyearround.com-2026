@@ -8,6 +8,8 @@ import {
 import {
   createPageOgImageRevision,
   getPageOgImageKey,
+  getSharingBreadcrumbs,
+  type SharingBreadcrumb,
   getPageOgImageTitle,
   parsePageOgImageTarget,
 } from "@/lib/page-og-image";
@@ -49,6 +51,7 @@ function hasExactQueryShape(searchParams: URLSearchParams) {
 
 type CardData = {
   overrideTitle?: string | null;
+  sharingBreadcrumbs?: SharingBreadcrumb[] | null;
   sharingPhoto?: SharingPhoto;
   title?: string | null;
 } | null;
@@ -66,6 +69,7 @@ async function fetchCard(
     // The card headline follows the visible content title. The SEO override
     // stays in metadata and image alt text.
     return {
+      breadcrumbs: data.sharingBreadcrumbs,
       photo: data.sharingPhoto,
       title: getPageOgImageTitle(
         data.title ||
@@ -100,6 +104,7 @@ async function fetchCard(
   const title = rawTitle && getPageOgImageTitle(rawTitle);
   if (!title) return null;
   return {
+    breadcrumbs: data.sharingBreadcrumbs,
     photo: data.sharingPhoto,
     title: target.kind === "blog" || target.kind === "category"
       ? getBlogPageTitle(title, target.page || 1)
@@ -133,11 +138,15 @@ export async function GET(
 
   try {
     const card = await fetchCard(target);
-    if (!card?.title || createPageOgImageRevision(card.title, card.photo) !== revision) {
+    if (
+      !card?.title ||
+      createPageOgImageRevision(card.title, card.photo, card.breadcrumbs) !== revision
+    ) {
       return notFound();
     }
 
     return await createOgImageResponse({
+      breadcrumbs: getSharingBreadcrumbs(card.breadcrumbs),
       photoUrl: card.photo?.asset?._ref ? sharingPhotoUrl(card.photo) : null,
       title: card.title,
     });

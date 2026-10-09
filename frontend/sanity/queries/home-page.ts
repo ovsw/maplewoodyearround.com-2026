@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity";
 import { pageBuilderQuery } from "./page-builder";
 import { metaQuery } from "./shared/meta";
-import { sharingPhotoQuery } from "./shared/sharing-photo";
+import { sharingCardQuery } from "./shared/sharing-card";
 
 export const HOME_PAGE_QUERY = defineQuery(`
   *[_id == "homePage" && _type == "homePage"][0]{
@@ -11,6 +11,6 @@ export const HOME_PAGE_QUERY = defineQuery(`
     description,
     ${pageBuilderQuery},
     ${metaQuery},
-    ${sharingPhotoQuery},
+    ${sharingCardQuery},
   }
 `);

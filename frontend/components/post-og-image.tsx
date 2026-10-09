@@ -5,12 +5,80 @@ import { fitPostOgTitle } from "@/lib/post-og-image";
 const CAMP_GREEN = "#006601";
 const PHOTO_OVERLAY =
   "linear-gradient(90deg, #006601 11%, rgba(0, 102, 1, 0.8) 45%, rgba(0, 102, 1, 0.4))";
+// The season pills of the live breadcrumbs: Marigold with Pine Ink, Deep Violet with Cream.
+const SEASON_PILLS: Record<string, { background: string; color: string }> = {
+  summerCamp: { background: "#ffb000", color: "#243021" },
+  schoolYear: { background: "#ae4dd5", color: "#fffbf0" },
+};
+
+export type CardBreadcrumb = { label: string; program: string | null };
+
+function Chevron() {
+  return (
+    <svg
+      fill="none"
+      height={18}
+      stroke="#ffffff"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+      width={18}
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
+
+function Breadcrumbs({ breadcrumbs }: { breadcrumbs: CardBreadcrumb[] }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        flexWrap: "wrap",
+        marginBottom: 18,
+        fontFamily: "Lato",
+        fontSize: 24,
+        lineHeight: 1,
+      }}
+    >
+      {breadcrumbs.map((crumb, index) => {
+        const pill = crumb.program ? SEASON_PILLS[crumb.program] : undefined;
+        return (
+          <div key={index} style={{ display: "flex", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                height: 40,
+                color: pill?.color ?? "#ffffff",
+                // The card renderer fails on an undefined colour, so plain
+                // steps set no pill styles at all.
+                ...(pill
+                  ? { padding: "0 6px", borderRadius: 8, backgroundColor: pill.background }
+                  : {}),
+              }}
+            >
+              {crumb.label}
+            </div>
+            <div style={{ display: "flex", margin: "0 5px" }}>
+              <Chevron />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function PostOgImage({
+  breadcrumbs,
   eyebrow,
   photoUrl,
   title,
 }: {
+  breadcrumbs?: CardBreadcrumb[];
   eyebrow?: string;
   photoUrl?: string | null;
   title: string;
@@ -70,11 +138,14 @@ export function PostOgImage({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          width: 560,
+          // The live hero text column: 60% of the content width.
+          width: 648,
           color: "#ffffff",
         }}
       >
-        {eyebrow ? (
+        {breadcrumbs?.length ? (
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
+        ) : eyebrow ? (
           <div
             style={{
               display: "flex",

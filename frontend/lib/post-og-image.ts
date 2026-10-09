@@ -28,7 +28,7 @@ function signaturePayload({
   return `${version}\n${slug}\n${revision}`;
 }
 
-/** The hero photo of a Generated sharing card, as `sharingPhotoQuery` returns it. */
+/** The hero photo of a Generated sharing card, as `sharingCardQuery` returns it. */
 export type SharingPhoto = {
   asset?: { _ref?: string | null } | null;
   crop?: { top?: number; bottom?: number; left?: number; right?: number } | null;
@@ -198,9 +198,9 @@ export function formatPostOgDate(value: string) {
     .toUpperCase();
 }
 
-// The title column is 560px wide. A Poppins Bold letter is about 0.64em wide,
-// so the longest word also caps the size; short titles match the live 94px.
-const TITLE_COLUMN_WIDTH = 560;
+// The title column is 648px wide. A Poppins Bold letter is about 0.64em wide,
+// so the longest word also caps the size; short titles match the live 90px.
+const TITLE_COLUMN_WIDTH = 648;
 const POPPINS_BOLD_LETTER_WIDTH = 0.64;
 
 export function fitPostOgTitle(value: string) {
@@ -213,7 +213,7 @@ export function fitPostOgTitle(value: string) {
   }
 
   const sizeForLength =
-    text.length <= 28 ? 94 : text.length <= 44 ? 76 : text.length <= 70 ? 60 : 50;
+    text.length <= 28 ? 90 : text.length <= 44 ? 76 : text.length <= 70 ? 60 : 50;
   const longestWord = Math.max(...text.split(/\s+/).map((word) => word.length));
   const sizeForWord = Math.floor(
     TITLE_COLUMN_WIDTH / (longestWord * POPPINS_BOLD_LETTER_WIDTH),

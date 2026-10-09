@@ -1,4 +1,4 @@
-import { PostOgImage } from "@/components/post-og-image";
+import { PostOgImage, type CardBreadcrumb } from "@/components/post-og-image";
 import { sharingImageUrl } from "@/sanity/lib/image";
 import { fetchSeoSettings } from "@/sanity/lib/seo-settings";
 import { readFile } from "node:fs/promises";
@@ -27,10 +27,12 @@ const CACHE_HEADERS = {
 };
 
 export async function createOgImageResponse({
+  breadcrumbs,
   eyebrow,
   photoUrl,
   title,
 }: {
+  breadcrumbs?: CardBreadcrumb[];
   eyebrow?: string;
   photoUrl?: string | null;
   title: string;
@@ -38,7 +40,12 @@ export async function createOgImageResponse({
   const [poppins, lato] = await Promise.all([poppinsBold, latoRegular]);
 
   return new ImageResponse(
-    <PostOgImage eyebrow={eyebrow} photoUrl={photoUrl} title={title} />,
+    <PostOgImage
+      breadcrumbs={breadcrumbs}
+      eyebrow={eyebrow}
+      photoUrl={photoUrl}
+      title={title}
+    />,
     {
       width: 1200,
       height: 630,

@@ -204,6 +204,8 @@ export function generatePageMetadata({
     pageTitle && pageTarget
       ? buildPageOgImageUrl({
           origin: siteOrigin,
+          breadcrumbs:
+            page && "sharingBreadcrumbs" in page ? page.sharingBreadcrumbs : null,
           photo: page && "sharingPhoto" in page ? page.sharingPhoto : null,
           target: pageTarget,
           title: pageTitle,

@@ -1,12 +1,12 @@
 import { defineQuery } from "next-sanity";
 import { ROOT_SLUG_FILTER } from "../../../shared/root-slug-filter";
-import { sharingPhotoQuery } from "./shared/sharing-photo";
+import { sharingCardQuery } from "./shared/sharing-card";
 
 export const HOME_PAGE_OG_IMAGE_QUERY = defineQuery(`
   *[_id == "homePage" && _type == "homePage"][0]{
     "overrideTitle": meta.title,
     title,
-    ${sharingPhotoQuery}
+    ${sharingCardQuery}
   }
 `);
 
@@ -14,7 +14,7 @@ export const PAGE_OG_IMAGE_QUERY = defineQuery(`
   *[_type == "page" && ${ROOT_SLUG_FILTER}][0]{
     title,
     "overrideTitle": meta.title,
-    ${sharingPhotoQuery}
+    ${sharingCardQuery}
   }
 `);
 

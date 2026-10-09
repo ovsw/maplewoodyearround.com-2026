@@ -3,7 +3,7 @@ import { ROOT_SLUG_FILTER } from "../../../shared/root-slug-filter";
 import { publishedPostFilter } from "./blog-post-listing";
 import { imageQuery } from "./shared/image";
 import { metaQuery } from "./shared/meta";
-import { postSharingPhotoQuery } from "./shared/sharing-photo";
+import { postSharingCardQuery } from "./shared/sharing-card";
 import { richTextContentQuery } from "./shared/rich-text-content";
 
 const POST_PROJECTION = groq`{
@@ -37,7 +37,7 @@ const POST_PROJECTION = groq`{
     _createdAt,
     _updatedAt,
     ${metaQuery},
-    ${postSharingPhotoQuery},
+    ${postSharingCardQuery},
 }`;
 
 export const POST_QUERY = groq`*[_type == "post" && ${ROOT_SLUG_FILTER}][0]${POST_PROJECTION}`;
@@ -51,7 +51,7 @@ export const POST_OG_IMAGE_QUERY = groq`*[
 ][0]{
   title,
   publishedAt,
-  ${postSharingPhotoQuery}
+  ${postSharingCardQuery}
 }`;
 
 export const POSTS_QUERY = groq`*[_type == "post" && defined(slug)] | order(_createdAt desc){

@@ -88,17 +88,17 @@ describe("post OG image date", () => {
 });
 
 describe("post OG image title", () => {
-  it("uses the live 94px size for short titles", () => {
+  it("uses the live 90px size for short titles", () => {
     expect(fitPostOgTitle("Learn to Swim")).toEqual({
       text: "Learn to Swim",
-      fontSize: 94,
+      fontSize: 90,
     });
   });
 
   it("shrinks long titles and long words to fit the title column", () => {
     expect(fitPostOgTitle("Gymnastics Enrichment Program").fontSize).toBe(76);
-    // "Opportunities" alone is wider than the column at 94px.
-    expect(fitPostOgTitle("Staff Opportunities").fontSize).toBe(67);
+    // "Opportunities" alone is wider than the column at 90px.
+    expect(fitPostOgTitle("Staff Opportunities").fontSize).toBe(77);
   });
 
   it("bounds unexpected future titles", () => {

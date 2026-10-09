@@ -71,8 +71,29 @@ export function parsePageOgImageTarget(segments: string[]): PageOgImageTarget | 
   return kind === "category" ? { kind, page: page ?? 1, slug } : { kind, slug };
 }
 
-export function createPageOgImageRevision(title: string, photo?: SharingPhoto) {
-  return createOgImageRevision([title.trim(), getSharingPhotoKey(photo)]);
+/** A breadcrumb of the Generated sharing card, as `sharingCardQuery` returns it. */
+export type SharingBreadcrumb = {
+  label?: string | null;
+  program?: string | null;
+};
+
+/** The breadcrumbs the card draws: labelled ones only, trimmed. */
+export function getSharingBreadcrumbs(breadcrumbs?: SharingBreadcrumb[] | null) {
+  return (breadcrumbs ?? []).flatMap((crumb) => {
+    const label = crumb.label?.trim();
+    return label ? [{ label, program: crumb.program ?? null }] : [];
+  });
+}
+
+export function createPageOgImageRevision(
+  title: string,
+  photo?: SharingPhoto,
+  breadcrumbs?: SharingBreadcrumb[] | null,
+) {
+  const trail = getSharingBreadcrumbs(breadcrumbs)
+    .map(({ label, program }) => `${label}:${program ?? ""}`)
+    .join(">");
+  return createOgImageRevision([title.trim(), getSharingPhotoKey(photo), trail]);
 }
 
 export function getPageOgImageTitle(title: string) {
@@ -80,12 +101,14 @@ export function getPageOgImageTitle(title: string) {
 }
 
 export function buildPageOgImageUrl({
+  breadcrumbs,
   origin,
   photo,
   target,
   title,
   secret = getOgImageSecret(),
 }: {
+  breadcrumbs?: SharingBreadcrumb[] | null;
   origin: string;
   photo?: SharingPhoto;
   target: PageOgImageTarget;
@@ -104,7 +127,7 @@ export function buildPageOgImageUrl({
     throw new Error("Cannot build an OG image URL for an invalid page target");
   }
 
-  const revision = createPageOgImageRevision(title, photo);
+  const revision = createPageOgImageRevision(title, photo, breadcrumbs);
   const key = getPageOgImageKey(target);
   const url = new URL(`/api/og/page/${getPageOgImagePath(target)}`, origin);
   url.searchParams.set("v", OG_IMAGE_VERSION);

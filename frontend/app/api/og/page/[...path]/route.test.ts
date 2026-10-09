@@ -116,6 +116,33 @@ describe("page OG image route", () => {
     expect((await get(url)).status).toBe(404);
   });
 
+  it("draws the signed breadcrumbs and rejects a changed trail", async () => {
+    const breadcrumbs = [
+      { label: "Home", program: null },
+      { label: " ", program: null },
+      { label: "Summer Camp", program: "summerCamp" },
+    ];
+    const url = buildPageOgImageUrl({
+      breadcrumbs,
+      origin: "https://example.test",
+      secret: "test-only-og-image-secret",
+      target: { kind: "home" },
+      title,
+    });
+
+    sanityFetchMetadata.mockResolvedValueOnce({ data: { title, sharingBreadcrumbs: breadcrumbs } });
+    expect((await get(url)).status).toBe(200);
+    expect(routeState.cardProps?.breadcrumbs).toEqual([
+      { label: "Home", program: null },
+      { label: "Summer Camp", program: "summerCamp" },
+    ]);
+
+    sanityFetchMetadata.mockResolvedValueOnce({
+      data: { title, sharingBreadcrumbs: [{ label: "Home", program: null }] },
+    });
+    expect((await get(url)).status).toBe(404);
+  });
+
   it("draws the card without a photo when the page has no hero photo", async () => {
     expect((await get(signedUrl())).status).toBe(200);
     expect(routeState.cardProps?.photoUrl).toBeNull();
