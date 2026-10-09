@@ -1,9 +1,6 @@
-import { spawnSync } from 'node:child_process';
 import { mkdir, writeFile, readFile, rename, chmod } from 'node:fs/promises';
 import path from 'node:path';
-import { homedir } from 'node:os';
 import { request } from './source.mjs';
-import { assertMdcProductionTarget } from '../assert-mdc-production-target.mjs';
 
 export function canonical(value) {
   if (Array.isArray(value)) return value.map(canonical);
@@ -19,27 +16,6 @@ export function changes(documents, current, previouslyOwned = []) {
   const changed = documents.filter((doc) => existing.has(doc._id) && !equal(doc,existing.get(doc._id)));
   const removed = previouslyOwned.filter((id) => !ids.has(id) && existing.has(id)).map((id) => existing.get(id));
   return {created,changed,removed,unchanged:documents.length-created.length-changed.length};
-}
-
-export async function verifyTarget(client) {
-  assertMdcProductionTarget(client.config());
-  const project = await client.projects.getById('193h5qm1');
-  if (project.displayName !== 'maplewoodyearround.com-2026') throw new Error('The target project name does not match Maplewood');
-  const datasets = await client.datasets.list();
-  if (!datasets.some((dataset) => dataset.name === 'production')) throw new Error('Maplewood production dataset is missing');
-  return {projectId:project.id,name:project.displayName,dataset:'production'};
-}
-
-export async function backupDataset(studioDirectory, token, root = path.join(homedir(),'backups/mdc'), run = spawnSync) {
-  await mkdir(root,{recursive:true,mode:0o700});
-  const filename = path.join(root,`${new Date().toISOString().replaceAll(':','-')}-webflow-import.tar.gz`);
-  const env = {...process.env,SANITY_AUTH_TOKEN:token};
-  const exported = run('pnpm',['exec','sanity','dataset','export','production',filename],{cwd:studioDirectory,env,encoding:'utf8',maxBuffer:4*1024*1024});
-  if (exported.status !== 0) throw new Error('Dataset backup failed; no import writes were made');
-  const verified = run('gzip',['-t',filename],{encoding:'utf8'});
-  if (verified.status !== 0) throw new Error('Dataset backup gzip verification failed; no import writes were made');
-  await chmod(filename,0o600);
-  return filename;
 }
 
 export async function readManifest(filename) {

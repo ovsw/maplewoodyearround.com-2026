@@ -8,7 +8,8 @@ import { pathToFileURL } from 'node:url';
 import { createClient } from '@sanity/client';
 import { captureSource } from './webflow/source.mjs';
 import { buildPlan } from './webflow/plan.mjs';
-import { verifyTarget, backupDataset, readManifest, importAssets, materialize, writeDocuments, verifyImport, savePrivate } from './webflow/write.mjs';
+import { verifyTarget, backupDataset } from './lib/dataset-safety.mjs';
+import { readManifest, importAssets, materialize, writeDocuments, verifyImport, savePrivate } from './webflow/write.mjs';
 
 const studioDirectory=path.resolve(import.meta.dirname,'..');
 const repository=path.resolve(studioDirectory,'..');
@@ -54,7 +55,7 @@ export async function main(args=process.argv.slice(2)) {
   const lock=await open(lockPath,'wx',0o600).catch(()=>{throw new Error('An import lock exists; verify the previous import has stopped before removing its lock');});
   try {
     await lock.writeFile(String(process.pid));
-    const backup=await backupDataset(studioDirectory,env.SANITY_AUTH_TOKEN);
+    const backup=await backupDataset({studioDirectory,token:env.SANITY_AUTH_TOKEN,root:path.join(homedir(),'backups/mdc'),label:'webflow-import'});
     console.log('Timestamped dataset backup passed gzip verification.');
     const manifestPath=path.join(privateRoot,'manifest.json');
     const manifest=await readManifest(manifestPath);

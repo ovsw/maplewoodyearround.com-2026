@@ -136,6 +136,44 @@ describe("Maplewood collection projections", () => {
     expect(section.items[1].grades).toBeNull();
   });
 
+  it("lists grades in school order, not in the order they were picked", async () => {
+    const grade = (_id: string, order: number) => ({
+      _id,
+      _type: "grade",
+      title: _id,
+      order,
+    });
+    const section = await project(
+      filterableCardsQuery,
+      {
+        _type: "filterableCards",
+        source: "activity",
+        program: "summerCamp",
+      },
+      [
+        {
+          _id: "activity",
+          _type: "activity",
+          program: "summerCamp",
+          grades: [ref("3rd"), ref("preschool"), ref("1st")],
+          groups: [ref("group")],
+        },
+        {
+          _id: "group",
+          _type: "campGroup",
+          title: "Knights",
+          grades: [ref("1st"), ref("preschool")],
+        },
+        grade("preschool", 0),
+        grade("1st", 2),
+        grade("3rd", 4),
+      ],
+    );
+    const ids = (grades: Fixture[]) => grades.map((item) => item._id);
+    expect(ids(section.items[0].grades)).toEqual(["preschool", "1st", "3rd"]);
+    expect(ids(section.items[0].groups[0].grades)).toEqual(["preschool", "1st"]);
+  });
+
   it("retains activity group grades and program references while filtering the selected category", async () => {
     const section = await project(
       filterableCardsQuery,
