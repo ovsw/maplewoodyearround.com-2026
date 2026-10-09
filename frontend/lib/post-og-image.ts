@@ -1,6 +1,7 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
-export const OG_IMAGE_VERSION = "1";
+// Version 2: the Maplewood card with the hero photo.
+export const OG_IMAGE_VERSION = "2";
 export const POST_OG_IMAGE_VERSION = OG_IMAGE_VERSION;
 
 const MAX_SLUG_LENGTH = 200;
@@ -27,14 +28,38 @@ function signaturePayload({
   return `${version}\n${slug}\n${revision}`;
 }
 
+/** The hero photo of a Generated sharing card, as `sharingCardQuery` returns it. */
+export type SharingPhoto = {
+  asset?: { _ref?: string | null } | null;
+  crop?: { top?: number; bottom?: number; left?: number; right?: number } | null;
+  hotspot?: { x?: number; y?: number; width?: number; height?: number } | null;
+} | null | undefined;
+
+/**
+ * Names the photo and its framing, so a revision changes when an editor
+ * replaces the photo or moves its crop or hotspot.
+ */
+export function getSharingPhotoKey(photo: SharingPhoto) {
+  const ref = photo?.asset?._ref;
+  if (!ref) return "";
+  const { crop, hotspot } = photo;
+  return [
+    ref,
+    crop ? [crop.top, crop.bottom, crop.left, crop.right].join(",") : "",
+    hotspot ? [hotspot.x, hotspot.y, hotspot.width, hotspot.height].join(",") : "",
+  ].join("|");
+}
+
 export function createPostOgImageRevision({
+  photo,
   publishedAt,
   title,
 }: {
+  photo?: SharingPhoto;
   publishedAt: string;
   title: string;
 }) {
-  return createOgImageRevision([title.trim(), publishedAt]);
+  return createOgImageRevision([title.trim(), publishedAt, getSharingPhotoKey(photo)]);
 }
 
 export function createOgImageRevision(parts: string[]) {
@@ -130,12 +155,14 @@ export const getPostOgImageSecret = getOgImageSecret;
 
 export function buildPostOgImageUrl({
   origin,
+  photo,
   publishedAt,
   slug,
   title,
   secret = getPostOgImageSecret(),
 }: {
   origin: string;
+  photo?: SharingPhoto;
   publishedAt: string;
   secret?: string;
   slug: string;
@@ -146,7 +173,7 @@ export function buildPostOgImageUrl({
   }
 
   const encodedSlug = slug.split("/").map(encodeURIComponent).join("/");
-  const revision = createPostOgImageRevision({ publishedAt, title });
+  const revision = createPostOgImageRevision({ photo, publishedAt, title });
   const url = new URL(`/api/og/post/${encodedSlug}`, origin);
   url.searchParams.set("v", POST_OG_IMAGE_VERSION);
   url.searchParams.set("rev", revision);
@@ -171,14 +198,25 @@ export function formatPostOgDate(value: string) {
     .toUpperCase();
 }
 
+// The title column is 648px wide. A Poppins Bold letter is about 0.64em wide,
+// so the longest word also caps the size; short titles match the live 90px.
+const TITLE_COLUMN_WIDTH = 648;
+const POPPINS_BOLD_LETTER_WIDTH = 0.64;
+
 export function fitPostOgTitle(value: string) {
-  const title = value.trim();
-  if (title.length <= 96) {
-    return { text: title, fontSize: title.length > 76 ? 46 : 54 };
+  const trimmed = value.trim();
+  let text = trimmed;
+  if (trimmed.length > 96) {
+    const candidate = trimmed.slice(0, 95);
+    const lastSpace = candidate.lastIndexOf(" ");
+    text = `${candidate.slice(0, lastSpace > 70 ? lastSpace : 95).trim()}…`;
   }
 
-  const candidate = title.slice(0, 95);
-  const lastSpace = candidate.lastIndexOf(" ");
-  const text = `${candidate.slice(0, lastSpace > 70 ? lastSpace : 95).trim()}…`;
-  return { text, fontSize: 46 };
+  const sizeForLength =
+    text.length <= 28 ? 90 : text.length <= 44 ? 76 : text.length <= 70 ? 60 : 50;
+  const longestWord = Math.max(...text.split(/\s+/).map((word) => word.length));
+  const sizeForWord = Math.floor(
+    TITLE_COLUMN_WIDTH / (longestWord * POPPINS_BOLD_LETTER_WIDTH),
+  );
+  return { text, fontSize: Math.min(sizeForLength, sizeForWord) };
 }

@@ -1,7 +1,10 @@
 import { buildPageOgImageUrl, getPageOgImagePath, type PageOgImageTarget } from "@/lib/page-og-image";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const routeState = vi.hoisted(() => ({ renderFails: false }));
+const routeState = vi.hoisted(() => ({
+  cardProps: null as Record<string, unknown> | null,
+  renderFails: false,
+}));
 const sanityFetchMetadata = vi.hoisted(() => vi.fn());
 
 vi.mock("@/sanity/lib/live", () => ({ sanityFetchMetadata }));
@@ -14,10 +17,11 @@ vi.mock("@/components/post-og-image", () => ({
 }));
 vi.mock("next/og", () => ({
   ImageResponse: function MockImageResponse(
-    _element: unknown,
+    element: { props: Record<string, unknown> },
     options: { headers?: HeadersInit },
   ) {
     if (routeState.renderFails) throw new Error("render failed");
+    routeState.cardProps = element.props;
     return new Response("png", { headers: options.headers, status: 200 });
   },
 }));
@@ -42,6 +46,7 @@ function get(url: string) {
 describe("page OG image route", () => {
   beforeEach(() => {
     routeState.renderFails = false;
+    routeState.cardProps = null;
     sanityFetchMetadata.mockReset();
     sanityFetchMetadata.mockResolvedValue({ data: { title } });
   });
@@ -81,6 +86,66 @@ describe("page OG image route", () => {
     });
 
     expect((await get(signedUrl())).status).toBe(200);
+  });
+
+  it("draws the signed hero photo and rejects a replaced one", async () => {
+    const photo = {
+      asset: { _ref: "image-abc123-1000x1000-jpg" },
+      crop: null,
+      hotspot: { x: 0.5, y: 0.4, width: 0.6, height: 0.6 },
+    };
+    const url = buildPageOgImageUrl({
+      origin: "https://example.test",
+      photo,
+      secret: "test-only-og-image-secret",
+      target: { kind: "home" },
+      title,
+    });
+
+    sanityFetchMetadata.mockResolvedValueOnce({ data: { title, sharingPhoto: photo } });
+    expect((await get(url)).status).toBe(200);
+    expect(routeState.cardProps?.photoUrl).toContain("abc123-1000x1000.jpg");
+    expect(routeState.cardProps?.photoUrl).toContain("w=600&h=630");
+
+    sanityFetchMetadata.mockResolvedValueOnce({
+      data: { title, sharingPhoto: { ...photo, hotspot: { ...photo.hotspot, x: 0.2 } } },
+    });
+    expect((await get(url)).status).toBe(404);
+
+    sanityFetchMetadata.mockResolvedValueOnce({ data: { title } });
+    expect((await get(url)).status).toBe(404);
+  });
+
+  it("draws the signed breadcrumbs and rejects a changed trail", async () => {
+    const breadcrumbs = [
+      { label: "Home", program: null },
+      { label: " ", program: null },
+      { label: "Summer Camp", program: "summerCamp" },
+    ];
+    const url = buildPageOgImageUrl({
+      breadcrumbs,
+      origin: "https://example.test",
+      secret: "test-only-og-image-secret",
+      target: { kind: "home" },
+      title,
+    });
+
+    sanityFetchMetadata.mockResolvedValueOnce({ data: { title, sharingBreadcrumbs: breadcrumbs } });
+    expect((await get(url)).status).toBe(200);
+    expect(routeState.cardProps?.breadcrumbs).toEqual([
+      { label: "Home", program: null },
+      { label: "Summer Camp", program: "summerCamp" },
+    ]);
+
+    sanityFetchMetadata.mockResolvedValueOnce({
+      data: { title, sharingBreadcrumbs: [{ label: "Home", program: null }] },
+    });
+    expect((await get(url)).status).toBe(404);
+  });
+
+  it("draws the card without a photo when the page has no hero photo", async () => {
+    expect((await get(signedUrl())).status).toBe(200);
+    expect(routeState.cardProps?.photoUrl).toBeNull();
   });
 
   it("rejects stale, missing, or unpublished page content", async () => {

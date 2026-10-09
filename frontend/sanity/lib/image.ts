@@ -24,6 +24,12 @@ export const urlFor = (source: SanityImageSource) => {
 export const SHARING_IMAGE_WIDTH = 1200;
 export const SHARING_IMAGE_HEIGHT = 630;
 
+/** Formats a hero photo for the right half of the Generated sharing card. */
+export function sharingPhotoUrl(source: SanityImageSource) {
+  // The card renderer reads JPEG and PNG only.
+  return builder.image(source).width(600).height(630).fit("crop").format("jpg").url();
+}
+
 /** Formats an uploaded image for link previews, honouring its crop and hotspot. */
 export function sharingImageUrl(source: SanityImageSource) {
   const imageBuilder = builder

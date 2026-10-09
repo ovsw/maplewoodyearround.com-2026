@@ -178,6 +178,7 @@ export function generatePageMetadata({
     isPost && postTitle && page.publishedAt && isValidOgSlug(page.slug?.current || "")
       ? buildPostOgImageUrl({
           origin: siteOrigin,
+          photo: page.sharingPhoto,
           publishedAt: page.publishedAt,
           slug: page.slug?.current || "",
           title: postTitle,
@@ -203,6 +204,9 @@ export function generatePageMetadata({
     pageTitle && pageTarget
       ? buildPageOgImageUrl({
           origin: siteOrigin,
+          breadcrumbs:
+            page && "sharingBreadcrumbs" in page ? page.sharingBreadcrumbs : null,
+          photo: page && "sharingPhoto" in page ? page.sharingPhoto : null,
           target: pageTarget,
           title: pageTitle,
         })

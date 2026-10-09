@@ -1,8 +1,22 @@
-import { PostOgImage } from "@/components/post-og-image";
-import { siteName } from "@/lib/site-name";
+import { PostOgImage, type CardBreadcrumb } from "@/components/post-og-image";
 import { sharingImageUrl } from "@/sanity/lib/image";
 import { fetchSeoSettings } from "@/sanity/lib/seo-settings";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
+
+const poppinsBold = readFile(
+  join(
+    process.cwd(),
+    "node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff",
+  ),
+);
+const latoRegular = readFile(
+  join(
+    process.cwd(),
+    "node_modules/@fontsource/lato/files/lato-latin-400-normal.woff",
+  ),
+);
 
 const CACHE_HEADERS = {
   "Cache-Control": "public, max-age=31536000, immutable",
@@ -13,19 +27,33 @@ const CACHE_HEADERS = {
 };
 
 export async function createOgImageResponse({
+  breadcrumbs,
   eyebrow,
+  photoUrl,
   title,
 }: {
-  eyebrow: string;
+  breadcrumbs?: CardBreadcrumb[];
+  eyebrow?: string;
+  photoUrl?: string | null;
   title: string;
 }) {
+  const [poppins, lato] = await Promise.all([poppinsBold, latoRegular]);
 
   return new ImageResponse(
-    <PostOgImage eyebrow={eyebrow} siteName={siteName} title={title} />,
+    <PostOgImage
+      breadcrumbs={breadcrumbs}
+      eyebrow={eyebrow}
+      photoUrl={photoUrl}
+      title={title}
+    />,
     {
       width: 1200,
       height: 630,
       headers: CACHE_HEADERS,
+      fonts: [
+        { name: "Poppins", data: poppins, style: "normal", weight: 700 },
+        { name: "Lato", data: lato, style: "normal", weight: 400 },
+      ],
     },
   );
 }

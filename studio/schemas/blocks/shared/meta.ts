@@ -55,7 +55,7 @@ export default defineField({
       type: "image",
       title: "Social sharing image override",
       description:
-        "Optional. The image shown when this page is shared on social networks and in messages. Leave empty to use the Generated sharing card. Page Builder and hero photos are not used. Shared links show this image at 1200 × 630, so set the crop and hotspot to keep the important part visible.",
+        "Optional. The image shown when this page is shared on social networks and in messages, used exactly as uploaded. Leave empty to use the Generated sharing card: the page title on Camp Green with the hero photo on the right, or Camp Green alone when the page has no hero photo. Shared links show this image at 1200 × 630, so set the crop and hotspot to keep the important part visible.",
       options: { hotspot: true },
       fields: [
         defineField({

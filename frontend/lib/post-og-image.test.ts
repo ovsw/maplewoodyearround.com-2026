@@ -5,6 +5,7 @@ import {
   fitPostOgTitle,
   getPostOgImageSecret,
   formatPostOgDate,
+  getSharingPhotoKey,
   isValidPostOgSlug,
   signPostOgImage,
   verifyPostOgImageSignature,
@@ -39,7 +40,7 @@ describe("post OG image URLs", () => {
     );
 
     expect(url.pathname).toBe(`/api/og/post/${identity.slug}`);
-    expect(url.searchParams.get("v")).toBe("1");
+    expect(url.searchParams.get("v")).toBe("2");
     expect(url.searchParams.get("rev")).toBe(identity.revision);
     expect(
       verifyPostOgImageSignature({
@@ -87,15 +88,48 @@ describe("post OG image date", () => {
 });
 
 describe("post OG image title", () => {
-  it("preserves current titles and bounds unexpected future titles", () => {
-    expect(fitPostOgTitle("A normal post title")).toEqual({
-      text: "A normal post title",
-      fontSize: 54,
+  it("uses the live 90px size for short titles", () => {
+    expect(fitPostOgTitle("Learn to Swim")).toEqual({
+      text: "Learn to Swim",
+      fontSize: 90,
     });
+  });
 
+  it("shrinks long titles and long words to fit the title column", () => {
+    expect(fitPostOgTitle("Gymnastics Enrichment Program").fontSize).toBe(76);
+    // "Opportunities" alone is wider than the column at 90px.
+    expect(fitPostOgTitle("Staff Opportunities").fontSize).toBe(77);
+  });
+
+  it("bounds unexpected future titles", () => {
     const fitted = fitPostOgTitle("word ".repeat(30));
-    expect(fitted.fontSize).toBe(46);
+    expect(fitted.fontSize).toBe(50);
     expect(fitted.text.length).toBeLessThanOrEqual(96);
     expect(fitted.text.endsWith("…")).toBe(true);
+  });
+});
+
+describe("sharing photo key", () => {
+  const photo = {
+    asset: { _ref: "image-abc-10x10-jpg" },
+    crop: { top: 0, bottom: 0.1, left: 0, right: 0 },
+    hotspot: { x: 0.5, y: 0.5, width: 1, height: 1 },
+  };
+
+  it("changes the revision when the photo or its framing changes", () => {
+    const base = { publishedAt: "2026-08-15T12:00:00Z", title: "Halloween" };
+    const revisions = new Set([
+      createPostOgImageRevision(base),
+      createPostOgImageRevision({ ...base, photo }),
+      createPostOgImageRevision({ ...base, photo: { ...photo, asset: { _ref: "image-def-10x10-jpg" } } }),
+      createPostOgImageRevision({ ...base, photo: { ...photo, crop: null } }),
+      createPostOgImageRevision({ ...base, photo: { ...photo, hotspot: { ...photo.hotspot, y: 0.3 } } }),
+    ]);
+    expect(revisions.size).toBe(5);
+  });
+
+  it("treats a photo without an asset as no photo", () => {
+    expect(getSharingPhotoKey({ asset: null })).toBe("");
+    expect(getSharingPhotoKey(null)).toBe("");
   });
 });

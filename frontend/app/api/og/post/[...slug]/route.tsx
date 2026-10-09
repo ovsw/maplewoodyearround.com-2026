@@ -10,6 +10,7 @@ import {
   isValidPostOgSlug,
   verifyPostOgImageSignature,
 } from "@/lib/post-og-image";
+import { sharingPhotoUrl } from "@/sanity/lib/image";
 import { sanityFetchMetadata } from "@/sanity/lib/live";
 import { POST_OG_IMAGE_QUERY } from "@/sanity/queries/post";
 import type { POST_OG_IMAGE_QUERY_RESULT } from "@/sanity.types";
@@ -75,13 +76,22 @@ export async function GET(
       !title ||
       !post?.publishedAt ||
       !date ||
-      createPostOgImageRevision({ publishedAt: post.publishedAt, title }) !==
-        revision
+      createPostOgImageRevision({
+        photo: post.sharingPhoto,
+        publishedAt: post.publishedAt,
+        title,
+      }) !== revision
     ) {
       return notFound();
     }
 
-    return await createOgImageResponse({ eyebrow: date, title });
+    return await createOgImageResponse({
+      eyebrow: date,
+      photoUrl: post.sharingPhoto?.asset?._ref
+        ? sharingPhotoUrl(post.sharingPhoto)
+        : null,
+      title,
+    });
   } catch (error) {
     return await ogImageFallbackResponse(error, "Post");
   }
