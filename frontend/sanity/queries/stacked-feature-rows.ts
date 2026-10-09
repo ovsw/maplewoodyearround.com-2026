@@ -1,6 +1,7 @@
 import { groq } from "next-sanity";
 import { urlInternalHref } from "./shared/internal-href";
 import { simpleRichTextQuery } from "./shared/simple-rich-text";
+import { urlFileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const stackedFeatureRowsQuery = groq`
@@ -25,7 +26,7 @@ export const stackedFeatureRowsQuery = groq`
         "href": select(
           url.type == "internal" => ${urlInternalHref},
           url.type == "external" => url.external,
-        url.type == "file" => coalesce(url.file.asset->url + "/" + url.file.asset->originalFilename, url.file.asset->url),
+        url.type == "file" => ${urlFileUrl},
           url.href
         )
       }

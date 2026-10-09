@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { fileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const summerDocumentListQuery = groq`
@@ -12,7 +13,7 @@ export const summerDocumentListQuery = groq`
         kind == ^.^.^.kind
         && (!defined(group._ref) || (defined(group->_id) && group->visible != false))
       ]{
-        _key, title, kind, group->{_id, title}, "fileUrl": coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url)
+        _key, title, kind, group->{_id, title}, "fileUrl": ${fileUrl}
       }[defined(fileUrl)]}
     }
   }

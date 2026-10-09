@@ -3,6 +3,7 @@ import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
 import { minimalRichTextQuery } from "./shared/minimal-rich-text";
 import { simpleRichTextQuery } from "./shared/simple-rich-text";
+import { urlFileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const stackedTimelineQuery = groq`
@@ -23,7 +24,7 @@ export const stackedTimelineQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
-        url.type == "file" => coalesce(url.file.asset->url + "/" + url.file.asset->originalFilename, url.file.asset->url),
+        url.type == "file" => ${urlFileUrl},
         url.href
       )
     }),

@@ -2,6 +2,7 @@ import { groq } from "next-sanity";
 import { contentDestinationProjection, sectionVideoProjection } from "./shared/maplewood";
 import { imageQuery } from "./shared/image";
 import { urlInternalHref } from "./shared/internal-href";
+import { urlFileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const innerHeroQuery = groq`
@@ -25,7 +26,7 @@ export const innerHeroQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
-        url.type == "file" => coalesce(url.file.asset->url + "/" + url.file.asset->originalFilename, url.file.asset->url),
+        url.type == "file" => ${urlFileUrl},
         url.href
       )
     }),

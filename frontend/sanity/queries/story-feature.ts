@@ -5,6 +5,7 @@ import { urlInternalHref } from "./shared/internal-href";
 import { minimalRichTextQuery } from "./shared/minimal-rich-text";
 import { simpleRichTextQuery } from "./shared/simple-rich-text";
 import { iconProjection, taglineProjection } from "./shared/maplewood";
+import { urlFileUrl } from "./shared/file-url";
 
 // @sanity-typegen-ignore
 export const storyFeatureQuery = groq`
@@ -38,7 +39,7 @@ export const storyFeatureQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
-        url.type == "file" => coalesce(url.file.asset->url + "/" + url.file.asset->originalFilename, url.file.asset->url),
+        url.type == "file" => ${urlFileUrl},
         url.href
       )
     }
