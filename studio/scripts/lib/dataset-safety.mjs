@@ -18,10 +18,11 @@ export async function verifyTarget(client) {
 }
 
 /**
- * Export the production dataset as a raw export to a timestamped file in
- * `root`, and check it with `gzip -t`. A raw export keeps every document and
- * its asset references, without downloading the asset files. Throws, before any write, when a step
- * fails or when `root` is inside the repository.
+ * Export the production dataset as a raw backup to a timestamped file in
+ * `root`, and check it with `gzip -t`. A raw export holds every document,
+ * with its image and file references, but not the asset files: they stay in
+ * Sanity. (`--no-assets` would strip the references.) Throws, before any
+ * write, when a step fails or when `root` is inside the repository.
  */
 export async function backupDataset({ studioDirectory, token, root, label, run = spawnSync }) {
   const repository = path.resolve(studioDirectory, "..");
