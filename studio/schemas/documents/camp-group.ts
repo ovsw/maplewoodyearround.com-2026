@@ -28,12 +28,6 @@ export default defineType({
       description: "The group label shown on the source site.",
       options: { list: ["Girls", "Boys", "Coed"] },
     }),
-    referencesField(
-      "activities",
-      "Activities",
-      "activity",
-      "Activities available to this group.",
-    ),
     orderField,
     visibleField,
   ],

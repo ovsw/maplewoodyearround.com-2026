@@ -4,7 +4,6 @@ import {
   orderField,
   programField,
   programOptions,
-  referencesField,
   slugField,
   titleField,
 } from "./maplewood-fields";
@@ -21,17 +20,7 @@ export const activityCategory = defineType({
   name: "activityCategory",
   title: "Activity category",
   type: "document",
-  fields: [
-    titleField,
-    slugField,
-    referencesField(
-      "activities",
-      "Activities",
-      "activity",
-      "Activities assigned to this source category.",
-    ),
-    orderField,
-  ],
+  fields: [titleField, slugField, orderField],
   preview: { select: { title: "title" } },
 });
 

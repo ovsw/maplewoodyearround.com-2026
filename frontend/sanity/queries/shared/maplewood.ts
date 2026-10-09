@@ -34,16 +34,19 @@ export const sectionVideoProjection = `
 
 export const collectionItemsProjection = `
   "items": *[
-    _type in ["activity", "facility", "sampleSchedule", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
+    _type in ["summerActivity", "activity", "facility", "sampleSchedule", "playgroundCharacter", "playgroundGuest", "playgroundEvent", "playgroundCalendar"]
     && _type == ^.source
     && visible != false
-    && (!defined(^.program) || program == ^.program || (_type match "playground*" && ^.program == "schoolYear"))
+    // Summer activities and Play Center records belong to one side and store none.
+    && (!defined(^.program) || program == ^.program
+      || (_type == "summerActivity" && ^.program == "summerCamp")
+      || (_type match "playground*" && ^.program == "schoolYear"))
     && (!defined(^.location) || location == ^.location)
     && (!defined(^.audience) || audience == ^.audience)
     && (!defined(^.programOffering._ref) || ^.programOffering._ref in programs[]._ref)
     && (!defined(^.facilityCategory._ref) || ^.facilityCategory._ref in categories[]._ref)
     && (!defined(^.activityCategory._ref) || category._ref == ^.activityCategory._ref)
-    && (!defined(^.grade._ref) || ^.grade._ref in groups[]->grades[]._ref || ^.grade._ref in grades[]._ref)
+    && (!defined(^.grade._ref) || ^.grade._ref in grades[]._ref)
   ]
   // Calendar days run by date. Webflow lists sorted by order show records
   // without an order number first.
@@ -54,7 +57,6 @@ export const collectionItemsProjection = `
     category->{_id, title, slug},
     categories[]->{_id, title, slug},
     "grades": grades[]-> | order(order asc) {_id, title, slug},
-    groups[]->{_id, title, "grades": grades[]-> | order(order asc) {_id, title, slug}},
     programs[]->{_id, title, slug},
     time, subtitle, personName, companyName,
     destination${contentDestinationProjection},
