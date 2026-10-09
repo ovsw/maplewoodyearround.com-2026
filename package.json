@@ -21,6 +21,7 @@
     "ref:compare": "node scripts/reference-screenshots.mjs compare",
     "sanity:query": "pnpm --dir studio sanity:query",
     "page:seed": "pnpm --dir studio page:seed",
+    "migrate": "pnpm --dir studio migrate",
     "raster:sync": "pnpm --dir studio raster:sync",
     "setup:sanity-cors": "node --env-file=studio/.env.local --env-file=studio/.env.production scripts/setup-sanity-cors.mjs",
     "page-builder:new": "node scripts/create-page-builder-block.mjs",

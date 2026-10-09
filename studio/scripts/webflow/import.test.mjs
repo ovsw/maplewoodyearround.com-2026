@@ -8,7 +8,8 @@ import { assetCollector, destination, portableText, htmlDocument } from './html.
 import { parentDashboard, staticTextNodes } from './pages.mjs';
 import { cmsDocuments, identityMap, mapItem } from './collections.mjs';
 import { mediaAliases, buildPlan, assertPublicPageCoverage, summerDocuments } from './plan.mjs';
-import { changes, equal, materialize, writeDocuments, verifyTarget, backupDataset, savePrivate } from './write.mjs';
+import { changes, equal, materialize, writeDocuments, savePrivate } from './write.mjs';
+import { verifyTarget, backupDataset } from '../lib/dataset-safety.mjs';
 import { argumentsFor } from '../import-webflow.mjs';
 
 const context = () => ({ ...assetCollector(), routes:new Map([['/known','known-page']]), warnings:new Set(), identities:new Map() });
@@ -110,8 +111,9 @@ test('target checks reject the source dataset and wrong project name',async()=>{
 test('backup must pass export and gzip before writes; private files use restricted permissions',async()=>{
   const dir=await mkdtemp(path.join(tmpdir(),'webflow-test-'));
   try {
-    await assert.rejects(backupDataset(dir,'test',dir,()=>({status:1})),/backup failed/);
-    await assert.rejects(backupDataset(dir,'test',dir,(command)=>({status:command==='gzip'?1:0})),/gzip/);
+    await assert.rejects(backupDataset({studioDirectory:path.join(dir,'repo','studio'),token:'test',root:path.join(dir,'backups'),label:'test',run:()=>({status:1})}),/backup failed/);
+    await assert.rejects(backupDataset({studioDirectory:path.join(dir,'repo','studio'),token:'test',root:path.join(dir,'backups'),label:'test',run:(command)=>({status:command==='gzip'?1:0})}),/gzip/);
+    await assert.rejects(backupDataset({studioDirectory:path.join(dir,'repo','studio'),token:'test',root:path.join(dir,'repo','backups'),label:'test',run:()=>({status:0})}),/outside the repository/);
     const file=path.join(dir,'private.json');await savePrivate(file,{safe:true});
     assert.equal((await stat(file)).mode&0o777,0o600);assert.deepEqual(JSON.parse(await readFile(file)),{safe:true});
   }finally{await rm(dir,{recursive:true,force:true});}

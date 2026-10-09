@@ -26,6 +26,12 @@ export default defineType({
       type: "string",
       description: 'Shown above the title on a program card, such as "Ages 3-5".',
     }),
+    referencesField(
+      "grades",
+      "Grades",
+      "grade",
+      "Optional. The grades this program is for.",
+    ),
     descriptionField(),
     imageField(),
     defineField({

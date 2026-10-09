@@ -57,7 +57,14 @@ function programContent(S: StructureBuilder, program: string, title: string) {
             ? [
                 documents(S, "activityCategory", "Activity categories"),
                 documents(S, "campGroup", "Camp groups"),
-                documents(S, "grade", "Grades"),
+                S.listItem()
+                  .title("Grades")
+                  .schemaType("grade")
+                  .child(
+                    S.documentTypeList("grade")
+                      .title("Grades")
+                      .defaultOrdering([{ field: "order", direction: "asc" }]),
+                  ),
               ]
             : [
                 documents(S, "playgroundEvent", "Playground calendar days"),

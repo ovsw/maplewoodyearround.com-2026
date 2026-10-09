@@ -16,6 +16,7 @@
     "page:text": "node --env-file=.env.local scripts/print-page-text.mjs",
     "sanity:query": "node --env-file=.env.local scripts/query.mjs",
     "page:seed": "node --env-file=.env.local scripts/seed-page-draft.mjs",
+    "migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "raster:sync": "node --env-file=.env.local scripts/sync-raster-descriptions.mjs"
   },
   "dependencies": {

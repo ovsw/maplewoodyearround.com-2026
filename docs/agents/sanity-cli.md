@@ -10,6 +10,12 @@ Use the Maplewood project-scoped `SANITY_AUTH_TOKEN`. Verify the project ID
 and dataset before a write. Follow the backup requirements in `AGENTS.md`.
 
 For reads, use `pnpm sanity:query '<groq>' ['<json params>']`.
+
+To change stored content, add a migration to `studio/scripts/migrations/`
+and test it on fixtures. `studio/scripts/lib/migration.mjs` describes the
+format. `pnpm migrate <name>` prints the plan and writes nothing.
+`pnpm migrate <name> --apply` checks the target, backs up the dataset with
+assets to `/storage/backups/maplewood`, and writes.
 For schema and query changes, run `pnpm typegen`.
 
 Deploy with `pnpm deploy:studio`. It loads the separate `SANITY_DEPLOY_TOKEN`
