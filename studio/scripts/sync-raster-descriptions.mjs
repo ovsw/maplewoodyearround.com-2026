@@ -106,7 +106,9 @@ const descriptionByStem = new Map();
 const ambiguousStems = new Set();
 let undescribedInRaster = 0;
 for (const asset of rasterAssets) {
-  const name = typeof asset.name === "string" ? stem(asset.name) : "";
+  // Raster names carry no extension. A name such as "photo-13.16.43" keeps its
+  // last dot part, so it is compared as it is, not as a file name.
+  const name = typeof asset.name === "string" ? asset.name.trim().toLowerCase() : "";
   const description = typeof asset.description === "string" ? asset.description.trim() : "";
   if (!name) continue;
   if (!description) {
