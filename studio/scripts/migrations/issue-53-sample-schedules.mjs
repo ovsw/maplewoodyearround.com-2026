@@ -59,15 +59,20 @@ const sourceOrder = (a, b) =>
 
 const LIST_SECTIONS = new Set(["cardSlider", "filterableCards"]);
 
-/** Every list section that selected rows by age group points to the new record. */
-function moveSections(value) {
-  if (Array.isArray(value)) return value.map(moveSections);
+/**
+ * Every list section that selected rows by age group points to the new
+ * record. The record must exist after the run.
+ */
+function moveSections(value, available) {
+  if (Array.isArray(value)) return value.map((item) => moveSections(item, available));
   if (!value || typeof value !== "object") return value;
-  const moved = Object.fromEntries(Object.entries(value).map(([key, item]) => [key, moveSections(item)]));
+  const moved = Object.fromEntries(Object.entries(value).map(([key, item]) => [key, moveSections(item, available)]));
   if (!LIST_SECTIONS.has(value._type) || value.audience === undefined) return moved;
   const schedule = SCHEDULES[value.audience];
   if (value.source !== "sampleSchedule" || !schedule)
     throw new Error(`Section ${value._key} selects the age group "${value.audience}" with the source "${value.source}"`);
+  if (!available.has(schedule._id))
+    throw new Error(`Section ${value._key} selects "${value.audience}", which has no rows and no Sample schedule`);
   delete moved.audience;
   return { ...moved, sampleSchedule: { _type: "reference", _ref: schedule._id } };
 }
@@ -145,9 +150,14 @@ export default {
       );
     }
 
+    const available = new Set([
+      ...[...replacements.values()].map((schedule) => schedule._id),
+      ...Object.values(SCHEDULES).map((schedule) => schedule._id).filter((id) => dataset.get(id)),
+    ]);
+
     return (document) => {
       if (isRow(document)) return replacements.get(document._id) ?? null;
-      return moveSections(document);
+      return moveSections(document, available);
     };
   },
 };

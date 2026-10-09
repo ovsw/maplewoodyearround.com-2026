@@ -164,4 +164,8 @@ test("the run stops when the records are not what it expects", () => {
     [...fixtures(), { _id: "odd", _type: "page", blocks: [{ ...section("s", "Preschool"), source: "facility" }] }],
     /selects the age group "Preschool" with the source "facility"/,
   );
+  stops(
+    [...fixtures(), { _id: "teen-page", _type: "page", blocks: [section("s", "CIT (8th–9th grade)")] }],
+    /selects "CIT \(8th–9th grade\)", which has no rows and no Sample schedule/,
+  );
 });

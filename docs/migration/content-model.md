@@ -538,7 +538,7 @@ Import the destination mode from source switches and the rendered link, not just
 | `indoor-outdoor` | `location`, `Indoor` or `Outdoor`.                           |
 | `order`          | `order`                                                      |
 
-### SC Sample Schedules → `sampleSchedule` (`program = summerCamp`)
+### SC Sample Schedules → `sampleSchedule` rows (`program = summerCamp`, until issue #53)
 
 | Webflow field | Sanity field                                                                       |
 | ------------- | ---------------------------------------------------------------------------------- |
@@ -550,7 +550,7 @@ Import the destination mode from source switches and the rendered link, not just
 | `order`       | `order`                                                                            |
 | `description` | `description`                                                                      |
 
-### SY Sample Schedules → `sampleSchedule` (`program = schoolYear`)
+### SY Sample Schedules → `sampleSchedule` rows (`program = schoolYear`, until issue #53)
 
 | Webflow field | Sanity field             |
 | ------------- | ------------------------ |
@@ -562,7 +562,7 @@ Import the destination mode from source switches and the rendered link, not just
 | `order`       | `order`                  |
 | `description` | `description`            |
 
-Issue #53 joined these one-row-per-slot records into one `sampleSchedule`
+These tables are the import mapping. Issue #53 joined these one-row-per-slot records into one `sampleSchedule`
 for each sample day: `title`, side (`program`), `programs[]` (at least one
 Program of that side) and ordered `slots[]`. A slot keeps the row's `name`
 as `time`, its `activity` text as `label`, its `description` and `image`,

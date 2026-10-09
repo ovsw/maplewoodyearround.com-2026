@@ -48,10 +48,11 @@ export const sampleScheduleSlot = defineType({
       description:
         "Optional. The activity this slot is about, from the same side as the schedule.",
       options: {
-        filter: ({ document }) => ({
-          filter: "_type == $type",
-          params: { type: ACTIVITY_TYPE[sideOf(document) ?? "summerCamp"] },
-        }),
+        // No side, no choices: the same as the Programs picker.
+        filter: ({ document }) => {
+          const side = sideOf(document);
+          return { filter: "_type == $type", params: { type: side ? ACTIVITY_TYPE[side] : "" } };
+        },
       },
       validation: (rule) =>
         rule.custom(async (value: Reference | undefined, context) => {
