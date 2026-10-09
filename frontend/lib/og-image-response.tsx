@@ -5,18 +5,10 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-const poppinsBold = readFile(
-  join(
-    process.cwd(),
-    "node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff",
-  ),
-);
-const latoRegular = readFile(
-  join(
-    process.cwd(),
-    "node_modules/@fontsource/lato/files/lato-latin-400-normal.woff",
-  ),
-);
+// The fonts live beside the app, as the Next.js ImageResponse guide shows, so
+// the deployment bundles them. Licences: assets/og/*-LICENSE.txt (SIL OFL 1.1).
+const poppinsBold = readFile(join(process.cwd(), "assets/og/poppins-700.woff"));
+const latoRegular = readFile(join(process.cwd(), "assets/og/lato-400.woff"));
 
 const CACHE_HEADERS = {
   "Cache-Control": "public, max-age=31536000, immutable",
