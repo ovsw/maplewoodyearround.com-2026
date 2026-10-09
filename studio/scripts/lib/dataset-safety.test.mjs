@@ -6,7 +6,7 @@ import path from "node:path";
 import test from "node:test";
 import { backupDataset } from "./dataset-safety.mjs";
 
-test("a backup exports the documents only, never the assets", async () => {
+test("a backup is a raw export: documents with their references, no asset files", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "backup-test-"));
   try {
     const commands = [];
@@ -23,7 +23,8 @@ test("a backup exports the documents only, never the assets", async () => {
     });
     const [exported] = commands;
     assert.deepEqual(exported.slice(0, 6), ["pnpm", "exec", "sanity", "dataset", "export", "production"]);
-    assert.ok(exported.includes("--no-assets"));
+    assert.ok(exported.includes("--raw"));
+    assert.ok(!exported.includes("--no-assets"), "--no-assets strips image references");
     assert.deepEqual(commands[1], ["gzip", "-t", file]);
   } finally {
     await rm(dir, { recursive: true, force: true });

@@ -48,11 +48,13 @@ Required migration and draft writes have standing permission. Before the
 first write in a task, name and verify the Maplewood project and dataset.
 Create a timestamped backup and verify it with `gzip -t`. Stop if it fails.
 
-**Back up documents only. Never download the assets.** Every backup is a raw
-export: `pnpm --dir studio exec sanity dataset export production <file>
---no-assets`. The images and files stay in Sanity; a copy with assets is about
-430 MB and adds nothing. This rule holds even when a spec or issue says "with
-assets". `pnpm migrate` makes this backup for you. Keep backups in
+**Every backup is a raw export. Never download the assets.** Use
+`pnpm --dir studio exec sanity dataset export production <file> --raw`. It
+keeps every document and its image references, about 1 MB. The images and
+files stay in Sanity; a copy with assets is about 430 MB and adds nothing.
+Never use `--no-assets`: it removes the image references from the documents.
+This rule holds even when a spec or issue says "with assets". `pnpm migrate`
+makes this backup for you. Keep backups in
 `/storage/backups/maplewood`, outside version control. A raw backup cannot
 bring back a deleted asset, so ask Ovi before a change that deletes assets.
 
