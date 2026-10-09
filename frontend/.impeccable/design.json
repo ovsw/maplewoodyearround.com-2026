@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T12:00:00Z",
+  "title": "Design System: Maplewood Day Camp and Enrichment Center",
+  "extensions": {
+    "colorMeta": {
+      "green": { "role": "primary", "displayName": "Camp Green", "canonical": "oklch(44.2% 0.150 142.6)", "tonalRamp": ["#001000", "#022d02", "#044f04", "#167114", "#3e933a", "#61b55c", "#87dd81", "#ccffc7"] },
+      "green-dark": { "role": "primary", "displayName": "Deep Pine", "canonical": "oklch(32.9% 0.111 142.7)", "tonalRamp": ["#001000", "#012e01", "#104d0f", "#336d30", "#538e4f", "#74b070", "#99d794", "#ccffc7"] },
+      "gold": { "role": "secondary", "displayName": "Sunshine Gold", "canonical": "oklch(88.7% 0.182 95.3)", "tonalRamp": ["#0f0b00", "#2c2300", "#4c3f00", "#6f5c00", "#947c01", "#ba9d0f", "#e5c219", "#ffefb1"] },
+      "gold-mid": { "role": "secondary", "displayName": "Marigold", "canonical": "oklch(81.2% 0.170 76.4)", "tonalRamp": ["#130900", "#322002", "#563904", "#7c550a", "#a57211", "#d19004", "#ffb42a", "#feecd1"] },
+      "gold-dark": { "role": "secondary", "displayName": "Tangerine", "canonical": "oklch(73.8% 0.183 54.7)", "tonalRamp": ["#170600", "#3a1a01", "#633003", "#8e4808", "#bc620f", "#ea7d1c", "#feb07a", "#ffeadd"] },
+      "mint": { "role": "tertiary", "displayName": "Lake Mint", "canonical": "oklch(68.1% 0.114 166.5)", "tonalRamp": ["#000f08", "#012c1e", "#014c37", "#036f51", "#1c926e", "#4ab58f", "#73dcb4", "#c1ffe4"] },
+      "mint-dark": { "role": "tertiary", "displayName": "Meadow Green", "canonical": "oklch(62.4% 0.180 148.1)", "tonalRamp": ["#001002", "#002d0c", "#064e1d", "#0f712e", "#179640", "#35bb59", "#63e37e", "#c9ffcf"] },
+      "purple": { "role": "tertiary", "displayName": "Party Lilac", "canonical": "oklch(73.0% 0.202 315.6)", "tonalRamp": ["#16001f", "#3a004c", "#610a7b", "#8726a8", "#a94ccd", "#cd6ff2", "#e6a9ff", "#f7e8fe"] },
+      "purple-dark": { "role": "tertiary", "displayName": "Deep Violet", "canonical": "oklch(60.2% 0.210 314.8)", "tonalRamp": ["#160020", "#39014c", "#61027f", "#8821ac", "#aa49d1", "#ce6df6", "#e3abfc", "#f7e8fe"] },
+      "blue": { "role": "tertiary", "displayName": "Sky Blue", "canonical": "oklch(81.5% 0.082 225.8)", "tonalRamp": ["#000d14", "#012936", "#01475c", "#1a6781", "#4087a2", "#63a9c5", "#89d0ed", "#daf3ff"] },
+      "blue-dark": { "role": "tertiary", "displayName": "Lake Blue", "canonical": "oklch(64.0% 0.134 240.3)", "tonalRamp": ["#000d18", "#01273e", "#014468", "#036495", "#0785c4", "#40a8e9", "#87cdfe", "#e0f1ff"] },
+      "focus": { "role": "tertiary", "displayName": "Signal Red", "canonical": "oklch(61.8% 0.204 33.7)", "tonalRamp": ["#1d0100", "#470900", "#751905", "#a7290b", "#dc3912", "#fb6a4b", "#fead9a", "#ffe9e4"] },
+      "cream": { "role": "neutral", "displayName": "Camp Cream", "canonical": "oklch(98.8% 0.015 90.2)", "tonalRamp": ["#0e0b05", "#27241c", "#434037", "#615d54", "#817d73", "#a29e94", "#c8c4b9", "#f2eee3"] },
+      "ink": { "role": "neutral", "displayName": "Pine Ink", "canonical": "oklch(29.3% 0.031 139.4)", "tonalRamp": ["#050e03", "#1c2819", "#374434", "#556251", "#748270", "#95a391", "#bac9b6", "#e4f4e0"] },
+      "white": { "role": "neutral", "displayName": "Paper White", "canonical": "oklch(100% 0 0)", "tonalRamp": ["#0b0b0b", "#242424", "#404040", "#5d5d5d", "#7d7d7d", "#9e9e9e", "#c4c4c4", "#eeeeee"] },
+      "footer-forest": { "role": "neutral", "displayName": "Footer Forest", "canonical": "oklch(0.32 0.3 135)", "tonalRamp": ["#040f00", "#122b00", "#244b01", "#376e02", "#4c9205", "#62b814", "#7be31d", "#d1ffb9"] },
+      "footer-moss": { "role": "neutral", "displayName": "Footer Moss", "canonical": "oklch(0.85 0.1 135)", "tonalRamp": ["#040f00", "#132b01", "#264b09", "#446a2c", "#638a4c", "#83ad6d", "#a8d391", "#d2feba"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The main page heading (H1) and hero titles." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings (H2)." },
+      "title": { "displayName": "Title", "purpose": "H3 on desktop; sub-section headings." },
+      "title-sm": { "displayName": "Title small", "purpose": "H4 on desktop; card headings." },
+      "body": { "displayName": "Body", "purpose": "All reading text." },
+      "body-lg": { "displayName": "Body large", "purpose": "Section introductions." },
+      "label": { "displayName": "Label", "purpose": "Menu links and short action labels." },
+      "accent": { "displayName": "Accent", "purpose": "One or two emphasized words inside a heading, upright, in the emphasis color." }
+    },
+    "shadows": [
+      { "name": "pinned-notice", "value": "6px 6px 0 0 var(--accent)", "purpose": "Every card and featured image frame, in the card's one accent color. Cream or white on Green." },
+      { "name": "small-pin", "value": "4px 4px 0 0 var(--accent)", "purpose": "Small cards, badges and compact tiles." },
+      { "name": "halo-ring", "value": "0 0 0 8px var(--maplewood-cream)", "purpose": "Separates round photos or icons from what they overlap, in the section background color." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "ease", "purpose": "Hover and state changes on buttons and links, 150–200ms." },
+      { "name": "header-hide", "value": "translateY(-100%) on scroll down", "purpose": "The header hides while scrolling down and returns on scroll up; it stays visible for focus, an open menu and reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "480px" },
+      { "name": "tablet", "value": "768px" },
+      { "name": "desktop", "value": "992px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action in a section: tour, register, buy or Parent Dashboard.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Schedule a Camp Tour</a>",
+      "css": ".ds-btn-primary { display: inline-block; font-family: Lato, sans-serif; font-weight: 700; font-size: 1rem; line-height: 1.5; text-decoration: none; text-align: center; padding: 12px 24px; border: 2px solid var(--maplewood-green, #006601); border-radius: 0.8em; background: var(--maplewood-green, #006601); color: var(--maplewood-cream, #fffbf0); transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease; } .ds-btn-primary:hover { background: var(--maplewood-gold-mid, #ffb000); border-color: var(--maplewood-gold, #ffd700); color: var(--maplewood-ink, #243021); } .ds-btn-primary:focus-visible { outline: 2px solid var(--maplewood-focus, #e64420); outline-offset: 3px; }"
+    },
+    {
+      "name": "Button on Green",
+      "kind": "button",
+      "refersTo": "button-on-green",
+      "description": "The main action on a Green section.",
+      "html": "<div class=\"ds-green-field\"><a class=\"ds-btn-on-green\" href=\"#\">Dates &amp; Rates</a></div>",
+      "css": ".ds-green-field { background: var(--maplewood-green, #006601); padding: 24px; } .ds-btn-on-green { display: inline-block; font-family: Lato, sans-serif; font-weight: 700; font-size: 1rem; line-height: 1.5; text-decoration: none; padding: 12px 24px; border: 2px solid var(--maplewood-cream, #fffbf0); border-radius: 0.8em; background: var(--maplewood-cream, #fffbf0); color: var(--maplewood-ink, #243021); transition: background-color 200ms ease, border-color 200ms ease; } .ds-btn-on-green:hover { background: var(--maplewood-gold-mid, #ffb000); border-color: var(--maplewood-gold, #ffd700); } .ds-btn-on-green:focus-visible { outline: 2px solid var(--maplewood-gold, #ffd700); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "A secondary action next to a primary button.",
+      "html": "<a class=\"ds-btn-text\" href=\"#\">View Full Staff Roster</a>",
+      "css": ".ds-btn-text { font-family: Lato, sans-serif; font-weight: 700; font-size: 1rem; line-height: 1; padding: 4px 0; color: var(--maplewood-green, #006601); text-decoration: underline; text-underline-offset: 4px; } .ds-btn-text:hover { color: var(--maplewood-green-dark, #004201); } .ds-btn-text:focus-visible { outline: 2px solid var(--maplewood-focus, #e64420); outline-offset: 3px; }"
+    },
+    {
+      "name": "Notice Card",
+      "kind": "card",
+      "refersTo": "notice-card",
+      "description": "The signature card: cream paper with a hard offset shadow in one accent color.",
+      "html": "<div class=\"ds-board\"><article class=\"ds-notice\" style=\"--accent:#ffb000\"><h3 class=\"ds-notice-title\">Free bus service</h3><p class=\"ds-notice-body\">Easy pick-up and drop-off at over 50 locations around Easton.</p></article><article class=\"ds-notice\" style=\"--accent:#43af89\"><h3 class=\"ds-notice-title\">Qualified staff</h3><p class=\"ds-notice-body\">The bus ride to camp is a fun start to the day.</p></article></div>",
+      "css": ".ds-board { display: flex; gap: 32px; flex-wrap: wrap; background: #ffffff; padding: 32px; } .ds-notice { flex: 1 1 220px; background: var(--maplewood-cream, #fffbf0); color: var(--maplewood-ink, #243021); border-radius: 0.8em; padding: 32px; box-shadow: 6px 6px 0 0 var(--accent); } .ds-notice-title { font-family: Poppins, sans-serif; font-weight: 700; font-size: 1.5rem; line-height: 1.2; color: var(--maplewood-green, #006601); margin: 0 0 8px; } .ds-notice-body { font-family: Lato, sans-serif; font-size: 1rem; line-height: 1.5; margin: 0; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Form fields, such as the footer newsletter email.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Email address</span><input class=\"ds-input\" type=\"email\" placeholder=\"you@example.com\"></label>",
+      "css": ".ds-field { display: grid; gap: 6px; font-family: Lato, sans-serif; color: var(--maplewood-ink, #243021); } .ds-field-label { font-size: 0.875rem; font-weight: 700; } .ds-input { font: inherit; font-size: 1rem; padding: 10px 13px; border: 1px solid currentColor; border-radius: 0.4em; background: #ffffff; color: inherit; min-height: 44px; } .ds-input:focus-visible { outline: 2px solid var(--maplewood-focus, #e64420); outline-offset: 3px; }"
+    },
+    {
+      "name": "Menu Links with Side Colors",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Featured menu links; each destination carries its fixed side color.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" style=\"--side:#ffb000\" href=\"#\">Summer Camp</a><a class=\"ds-nav-link\" style=\"--side:#43af89\" href=\"#\">School Year</a><a class=\"ds-nav-link\" style=\"--side:#d779fc\" href=\"#\">Indoor/Outdoor Play Center</a><a class=\"ds-nav-link\" style=\"--side:#2795d5\" href=\"#\">Gift Card</a><a class=\"ds-nav-link\" style=\"--side:#e64420\" href=\"#\">Join our Team</a></nav>",
+      "css": ".ds-nav { display: grid; gap: 8px; background: var(--maplewood-cream, #fffbf0); padding: 24px; } .ds-nav-link { display: flex; align-items: center; gap: 10px; font-family: Lato, sans-serif; font-weight: 700; font-size: 1.125rem; line-height: 1; padding: 8px 0; color: var(--maplewood-ink, #243021); text-decoration: none; } .ds-nav-link::before { content: \"\"; width: 14px; height: 14px; border-radius: 9999px; background: var(--side); } .ds-nav-link:hover { color: var(--maplewood-green, #006601); text-decoration: underline; } .ds-nav-link:focus-visible { outline: 2px solid var(--maplewood-focus, #e64420); outline-offset: 3px; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "text-field",
+      "description": "Small labels for grades, categories and dates.",
+      "html": "<span class=\"ds-tag\">3rd Grade</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; font-family: Lato, sans-serif; font-size: 0.875rem; padding: 4px 10px; border-radius: 0.4em; background: #eeeeee; border: 1px solid #aaaaaaad; color: #000000; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Camp Bulletin Board",
+    "overview": "The site is the notice board at the camp entrance. Cream paper is the background. Each card is a notice pinned to it, with a solid shadow in one bright color, offset to the lower right. Deep green carries the headings and the main actions. Gold, mint, purple, blue and red mark the notices, so a page reads as many small, cheerful announcements on one calm board.\n\nThe look is sunny and playful, bold and graphic, warm and homey, and calm and trustworthy at the same time. Color and hard shadows give the energy. Cream, green, generous space and a clear structure give the calm, so that safety facts and dates read clearly. Real photos of children, staff and the campus carry the warmth; the graphic layer stays flat and simple around them.\n\nThe live Webflow site is the visual reference. The rebuild keeps its layout, fonts, colors and images. Later work polishes this look; it does not replace it.",
+    "keyCharacteristics": [
+      "Cream board, deep green ink, one bright accent per notice.",
+      "Hard offset shadows (no blur) as the only depth.",
+      "Poppins bold headings in green; Lato for reading text.",
+      "Small, friendly corners (0.8em) on cards and buttons.",
+      "Summer Camp and School Year share one look. Navigation marks each side with its own color."
+    ],
+    "rules": [
+      { "name": "The One Notice, One Color Rule", "body": "A card has exactly one accent color, used for its offset shadow, icon or top mark. Sibling cards in a row rotate through gold, mint, blue and purple (and red), so no two neighbors match.", "section": "colors" },
+      { "name": "The Side Color Rule", "body": "In navigation, each destination has a fixed color: Summer Camp gold, School Year mint, Play Center purple, Gift Card blue, Join our Team red. Do not give a side's color to the other side.", "section": "colors" },
+      { "name": "The Readable Accent Rule", "body": "Accent colors are for shapes, shadows, icons and large display words. Body text is Pine Ink on light backgrounds and Camp Cream on Green; an accent never replaces body text.", "section": "colors" },
+      { "name": "The Green Heading Rule", "body": "Headings are Camp Green on light backgrounds and Camp Cream or white on Green. Body text stays Pine Ink.", "section": "typography" },
+      { "name": "The One Accent Word Rule", "body": "Use Halant for at most one short phrase per heading. Never set a full heading or body text in Halant.", "section": "typography" },
+      { "name": "The No Blur Rule", "body": "Shadows have zero blur. The starter's soft shadows (lift, media, globe, stamp, hero call-to-action) are leftovers and do not belong to this system.", "section": "elevation" },
+      { "name": "The Straight Seam Rule", "body": "Sections never overlap with rounded tops; the starter's overlapping section edges stay off.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do match the live site at 1440px and 390px before you add anything new.",
+      "Do give every card one accent color and a 6px hard offset shadow in it.",
+      "Do rotate accent colors across sibling cards.",
+      "Do set headings in Poppins 700, Camp Green on light backgrounds.",
+      "Do use 0.8em corners for cards and buttons and 0.4em for fields and tags.",
+      "Do keep a visible Signal Red focus ring and touch targets of at least 44px.",
+      "Do give every scroll animation a static version for reduced motion."
+    ],
+    "donts": [
+      "Don't use blurred drop shadows or the starter's shadow and animation tokens.",
+      "Don't use pill-shaped buttons. The live buttons have 0.8em corners.",
+      "Don't darken a primary button to green on hover. The live hover is Marigold with Pine Ink text.",
+      "Don't put body text in an accent color.",
+      "Don't give Summer Camp and School Year different layouts or fonts. One look serves both sides.",
+      "Don't add the starter's overlapping rounded section edges, grain textures or glow bands.",
+      "Don't type color values into section styles. Use the shared color tokens."
+    ]
+  }
+}
