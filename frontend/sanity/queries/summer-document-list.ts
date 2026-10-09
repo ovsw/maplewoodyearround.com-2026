@@ -12,7 +12,7 @@ export const summerDocumentListQuery = groq`
         kind == ^.^.^.kind
         && (!defined(group._ref) || (defined(group->_id) && group->visible != false))
       ]{
-        _key, title, kind, group->{_id, title}, "fileUrl": file.asset->url
+        _key, title, kind, group->{_id, title}, "fileUrl": coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url)
       }[defined(fileUrl)]}
     }
   }

@@ -11,7 +11,7 @@ export const contentDestinationProjection = `{
       ${internalReferenceHref}
     ),
     kind == "external" => external,
-    kind == "file" => file.asset->url
+    kind == "file" => coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url)
   )
 }`;
 
@@ -61,7 +61,7 @@ export const collectionItemsProjection = `
     agenda[]{${richTextContentQuery}},
     guest->{_id, title, time, subtitle, personName, companyName, image{${imageQuery}}, destination${contentDestinationProjection}},
     character->{_id, title, image{${imageQuery}}},
-    "fileUrl": file.asset->url, effectiveFrom
+    "fileUrl": coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url), effectiveFrom
   }
 `;
 

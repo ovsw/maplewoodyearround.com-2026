@@ -8,7 +8,7 @@ const destinationProjection = `{
       internal->_id == "blogIndex" || internal->_type == "blogIndex" => "/news",
       ${internalReferenceHref}
     ),
-    kind == "file" => file.asset->url,
+    kind == "file" => coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url),
     kind == "external" => external
   )
 }`;

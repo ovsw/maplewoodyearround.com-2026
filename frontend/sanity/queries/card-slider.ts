@@ -19,6 +19,6 @@ export const cardSliderQuery = groq`
     source, program, characterTime, ${collectionItemsProjection},
     // The calendar days list links the current printable calendar.
     "calendar": select(source == "playgroundEvent" => *[_type == "playgroundCalendar" && defined(file.asset)]
-      | order(effectiveFrom desc)[0]{_id, title, "fileUrl": file.asset->url})
+      | order(effectiveFrom desc)[0]{_id, title, "fileUrl": coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url)})
   }
 `;

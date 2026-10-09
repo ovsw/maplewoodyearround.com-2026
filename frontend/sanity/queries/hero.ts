@@ -22,7 +22,7 @@ export const heroQuery = groq`
       "href": select(
         url.type == "internal" => ${urlInternalHref},
         url.type == "external" => url.external,
-        url.type == "file" => url.file.asset->url,
+        url.type == "file" => coalesce(url.file.asset->url + "/" + url.file.asset->originalFilename, url.file.asset->url),
         url.href
       )
     }),

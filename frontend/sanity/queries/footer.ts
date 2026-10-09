@@ -12,7 +12,7 @@ const destinationProjection = `{
       internal->_type == "category" && defined(internal->slug.current) => "/blog/category/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/"),
       defined(internal->slug.current) => "/" + array::join(string::split(internal->slug.current, "/")[@ != ""], "/")
     ),
-    kind == "file" => file.asset->url,
+    kind == "file" => coalesce(file.asset->url + "/" + file.asset->originalFilename, file.asset->url),
     kind == "external" => external
   )
 }`;
