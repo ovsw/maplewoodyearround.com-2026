@@ -17,10 +17,10 @@ const values = (type) => type.of.map((member) => member.value).sort()
 const arrayReference = (type) => type.of.rest.name
 
 test('mapped collection targets exist with independent Summer Camp and School Year programs', () => {
-  for (const name of ['activity', 'facility', 'staffMember', 'testimonial', 'faq', 'sampleSchedule']) {
+  for (const name of ['facility', 'staffMember', 'testimonial', 'faq', 'sampleSchedule']) {
     assert.deepEqual(values(field(definition(name), 'program')), ['schoolYear', 'summerCamp'])
   }
-  for (const name of ['activityCategory', 'facilityCategory', 'faqCategory', 'grade', 'campGroup',
+  for (const name of ['summerActivity', 'schoolYearActivity', 'activityCategory','facilityCategory', 'faqCategory', 'grade', 'campGroup',
     'programOffering', 'playgroundCharacter', 'playgroundGuest', 'playgroundEvent', 'playgroundCalendar',
     'jobOpportunity', 'season', 'summerDocuments', 'post', 'category']) {
     definition(name)
@@ -32,8 +32,8 @@ test('source multi-references remain arrays, and facility grade mappings can rem
   assert.equal(arrayReference(field(definition('facility'), 'categories')), 'facilityCategory.reference')
   assert.equal(arrayReference(field(definition('facility'), 'grades')), 'grade.reference')
   assert.equal(definition('facility').attributes.grades.optional, true)
-  assert.equal(arrayReference(field(definition('activity'), 'groups')), 'campGroup.reference')
-  assert.equal(arrayReference(field(definition('activity'), 'programs')), 'programOffering.reference')
+  assert.equal(arrayReference(field(definition('summerActivity'), 'grades')), 'grade.reference')
+  assert.equal(arrayReference(field(definition('schoolYearActivity'), 'programs')), 'programOffering.reference')
   assert.equal(arrayReference(field(definition('campGroup'), 'grades')), 'grade.reference')
 })
 

@@ -180,7 +180,8 @@ function schoolYear(S: StructureBuilder) {
     sideDocuments(S, side, "programOffering", "Programs", Shapes),
     facilities(S, side, indexPageIds.schoolYearFacilities),
     group(S, "Activities", Palette, [
-      sideDocuments(S, side, "activity", "List", Palette),
+      // School Year activities have no side field.
+      documents(S, "schoolYearActivity", "List", Palette, { ordering: byOrder }),
     ]),
     sideDocuments(S, side, "staffMember", "Staff Members", IdCard, byName),
     sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock),
