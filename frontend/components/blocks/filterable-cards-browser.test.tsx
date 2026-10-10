@@ -35,7 +35,8 @@ describe("the By Age dropdown", () => {
 
     // A browser does not click an option the dropdown hid on press.
     expect(toggle).toHaveAttribute("aria-expanded", "true");
-    expect(onChange).toHaveBeenCalledWith({ ...noFilters, grades: ["k"] });
+    // The inline form animates the grid; only the phone sheet does not.
+    expect(onChange).toHaveBeenCalledWith({ ...noFilters, grades: ["k"] }, { animate: true });
   });
 
   it("closes when focus moves to another control", async () => {

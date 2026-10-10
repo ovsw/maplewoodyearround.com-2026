@@ -46,14 +46,14 @@ export default function FilterableCardsBrowser(props: ViewProps) {
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
   }, []);
-  const onChange = (next: CardFilters) => {
+  const onChange = (next: CardFilters, { animate }: ChangeOptions) => {
     // A view transition animates the grid from the old state to the new one
     // on the compositor: the browser snapshots each named card once and moves
     // the snapshots, with no script work per frame. The DOM update must be
     // synchronous inside the callback, hence flushSync. Browsers without the
     // API, and reduced motion, swap at once.
     const commit = () => flushSync(() => setFilters(next));
-    if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (animate && document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.startViewTransition(commit);
     } else {
       commit();
@@ -63,6 +63,15 @@ export default function FilterableCardsBrowser(props: ViewProps) {
   };
   return <FilterableCardsView {...props} filters={filters} onChange={onChange} />;
 }
+
+type ChangeOptions = {
+  /**
+   * Whether the grid animates to the new filters. Not while the phone Filters
+   * sheet is open: the cards are hidden behind it, and their snapshots would
+   * paint over the sheet for the length of the transition.
+   */
+  animate: boolean;
+};
 
 /** A CSS identifier for a view-transition-name, from any string. */
 function transitionName(prefix: string, raw: string) {
@@ -83,7 +92,7 @@ export function FilterableCardsView({
   intro,
   onChange,
   searchPlaceholder,
-}: ViewProps & { filters: CardFilters; onChange?: (filters: CardFilters) => void }) {
+}: ViewProps & { filters: CardFilters; onChange?: (filters: CardFilters, options: ChangeOptions) => void }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   // Choices that are not options any more (an old shared link) do not filter.
   const known = (chosen: string[], options: FilterOption[]) =>
@@ -94,7 +103,7 @@ export function FilterableCardsView({
     search: filters.search,
   };
   const visible = filterCards(cards, active);
-  const change = (next: Partial<CardFilters>) => onChange?.({ ...active, ...next });
+  const change = (next: Partial<CardFilters>) => onChange?.({ ...active, ...next }, { animate: !dialogOpen });
   const titleOf = (options: FilterOption[], slug: string) =>
     options.find((option) => option.slug === slug)?.title ?? slug;
   const tags = [

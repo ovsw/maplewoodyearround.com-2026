@@ -719,13 +719,31 @@ body {
 /* Filterable cards (the Summer Camp activities): a filter change runs as a
    view transition. Each card and chosen-filter tag is its own snapshot: the
    ones that stay glide to their new slot, the ones that leave shrink away,
-   and the arrivals rise in. The rest of the page swaps at once, and an open
-   dropdown keeps its own layer so the cards do not glide over it. The
-   component sets the names and classes inline. */
+   and the arrivals rise in. The rest of the page swaps at once. The
+   component sets the names and classes inline.
+
+   Every named element paints above the rest of the page while a transition
+   runs, whatever its z-index. So the layers that must stay on top get names
+   too, and an explicit order: an open filter dropdown above the cards, and
+   the sticky site header above both. */
+[data-site-header] {
+  view-transition-name: site-header;
+}
 ::view-transition-old(root),
 ::view-transition-new(root),
-::view-transition-group(filterable-cards-panel) {
+::view-transition-group(filterable-cards-panel),
+::view-transition-old(filterable-cards-panel),
+::view-transition-new(filterable-cards-panel),
+::view-transition-group(site-header),
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
   animation: none;
+}
+::view-transition-group(filterable-cards-panel) {
+  z-index: 1;
+}
+::view-transition-group(site-header) {
+  z-index: 2;
 }
 ::view-transition-group(.filterable-card),
 ::view-transition-group(.filterable-tag) {
