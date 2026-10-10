@@ -1,9 +1,7 @@
 import { LinkIcon, Menu, PanelsTopLeft, Sparkles } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import NavigationIconInput, {
-  createNavigationIconPreview,
-} from "../inputs/navigation-icon-input";
-import { isNavigationIconName } from "../inputs/lucide-icon-catalog";
+import { createIconPreview } from "../inputs/icon-input";
+import { iconField } from "../blocks/shared/icon";
 import { defineDestinationType } from "../blocks/shared/destination";
 
 const destination = defineDestinationType({
@@ -13,42 +11,8 @@ const destination = defineDestinationType({
 });
 
 const navigationIcon = defineField({
-  name: "icon",
-  title: "Icon",
-  type: "object",
+  ...iconField,
   description: "Optional. Choose an icon for a grouped navigation link.",
-  components: {
-    input: NavigationIconInput,
-  },
-  fields: [
-    defineField({
-      description: "The Lucide icon name chosen in the icon picker.",
-      name: "name",
-      title: "Name",
-      type: "string",
-    }),
-    // The icon's SVG markup, captured at pick time so the frontend can
-    // render it without bundling the full Lucide icon set.
-    defineField({
-      description: "Saved artwork for the chosen icon.",
-      name: "svg",
-      title: "SVG markup",
-      type: "string",
-      hidden: true,
-    }),
-  ],
-  validation: (rule) =>
-    rule.custom((value) => {
-      const icon = value as { name?: string; svg?: string } | undefined;
-      if (!icon?.name) return true;
-      if (!isNavigationIconName(icon.name)) {
-        return "Choose an icon from the navigation icon picker";
-      }
-      if (!icon.svg) {
-        return "Re-pick this icon so its artwork is stored with the document";
-      }
-      return true;
-    }),
 });
 
 const childLink = defineType({
@@ -77,11 +41,11 @@ const childLink = defineType({
     }),
   ],
   preview: {
-    select: { icon: "icon.name", title: "label", subtitle: "description" },
+    select: { icon: "icon.svg", title: "label", subtitle: "description" },
     prepare: ({ icon, title, subtitle }) => ({
       title,
       subtitle,
-      media: icon ? createNavigationIconPreview(icon) : undefined,
+      media: icon ? createIconPreview(icon) : undefined,
     }),
   },
 });
