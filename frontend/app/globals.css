@@ -715,3 +715,40 @@ body {
     display: none !important;
   }
 }
+
+/* Filterable cards (the Summer Camp activities): a filter change runs as a
+   view transition. Each card and chosen-filter tag is its own snapshot: the
+   ones that stay glide to their new slot, the ones that leave shrink away,
+   and the arrivals rise in. The rest of the page swaps at once, and an open
+   dropdown keeps its own layer so the cards do not glide over it. The
+   component sets the names and classes inline. */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(filterable-cards-panel) {
+  animation: none;
+}
+::view-transition-group(.filterable-card),
+::view-transition-group(.filterable-tag) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(.filterable-card):only-child,
+::view-transition-old(.filterable-tag):only-child {
+  animation: filterable-cards-shrink-out 0.16s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+::view-transition-new(.filterable-card):only-child,
+::view-transition-new(.filterable-tag):only-child {
+  animation: filterable-cards-rise-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+}
+@keyframes filterable-cards-shrink-out {
+  to {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+@keyframes filterable-cards-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}

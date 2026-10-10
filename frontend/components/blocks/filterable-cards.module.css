@@ -45,6 +45,7 @@
   margin-bottom: 0.5rem;
 }
 .clear {
+  animation: filters-fade-in 0.15s ease-out;
   padding: 0;
   border: 0;
   background: none;
@@ -89,6 +90,13 @@
 }
 .panel:focus {
   outline: none;
+}
+.panel[hidden] {
+  display: none;
+}
+/* The animation restarts each time the panel leaves display: none. */
+.panel:not([hidden]) {
+  animation: filters-drop-in 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .option {
   display: flex;
@@ -146,7 +154,6 @@
   margin-bottom: 2rem;
 }
 .tags {
-  position: relative; /* anchors a leaving tag while it fades */
   display: flex;
   flex: 1;
   flex-wrap: wrap;
@@ -154,9 +161,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-}
-.tags:empty {
-  display: none;
 }
 .tag {
   display: flex;
@@ -179,13 +183,13 @@
 .countNumber {
   display: inline-block;
   min-width: 1.25em;
+  animation: filters-fade-in 0.2s ease-out;
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
 
 /* Cards (product1). */
 .list {
-  position: relative; /* anchors leaving cards while they shrink away */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
   gap: 3rem 2rem;
@@ -221,11 +225,9 @@
   margin: 0;
   font-size: 0.875rem;
 }
-.list:empty {
-  display: none;
-}
 .empty {
   margin: 0;
+  animation: filters-rise-in 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 2.9rem;
   border: 1px solid #000;
   text-align: center;
@@ -347,9 +349,29 @@
     font-size: 1rem;
   }
 }
+@keyframes filters-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}
+@keyframes filters-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+/* The grid's view transition rules live in app/globals.css: the names a view
+   transition uses are global, and a CSS module would rename them. */
+
 @media (prefers-reduced-motion: reduce) {
-  .chevron {
+  .chevron,
+  .clear,
+  .countNumber,
+  .empty,
+  .panel:not([hidden]) {
     transition: none;
+    animation: none;
   }
   .overlay[data-state],
   .dialog[data-state] {

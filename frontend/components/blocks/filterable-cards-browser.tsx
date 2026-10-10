@@ -8,46 +8,11 @@ import {
   type FilterableCard,
 } from "@/lib/filterable-cards-filter";
 import { ChevronDown, ListFilter, Search, X } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion, type Transition } from "motion/react";
 import { useSearchParams } from "next/navigation";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import styles from "./filterable-cards.module.css";
-
-/*
- * Motion. A filter change re-sorts the grid: the cards that stay glide to
- * their new slot, the cards that leave shrink away first, and the arrivals
- * rise in behind them, one after the other. The same spring moves the chosen
- * filter tags, so the controls and the cards read as one system. With
- * reduced motion, nothing moves: states still fade so a change stays visible.
- */
-const glide: Transition = { damping: 32, mass: 0.7, stiffness: 300, type: "spring" };
-const arrive = { duration: 0.28, ease: [0.16, 1, 0.3, 1] as const };
-const leave = { duration: 0.16, ease: [0.4, 0, 1, 1] as const };
-const fade = { duration: 0.15 };
-
-function useMotionTokens() {
-  const reduced = useReducedMotion();
-  return {
-    reduced,
-    /**
-     * Props for the n-th item of an animated list. The layout FLIP moves the
-     * position only: an item never changes size, so nothing distorts. The
-     * entrance stagger caps so a long list never waits.
-     */
-    item: (index = 0) => ({
-      layout: reduced ? false : ("position" as const),
-      initial: reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12 },
-      animate: { opacity: 1, scale: 1, y: 0 },
-      exit: reduced ? { opacity: 0, transition: fade } : { opacity: 0, scale: 0.94, transition: leave },
-      transition: {
-        ...(reduced ? fade : arrive),
-        delay: reduced ? 0 : Math.min(index * 0.03, 0.24),
-        layout: reduced ? { duration: 0 } : glide,
-      },
-    }),
-  };
-}
 
 export type FilterOption = { slug: string; title: string };
 
@@ -74,12 +39,34 @@ type ViewProps = {
  */
 export default function FilterableCardsBrowser(props: ViewProps) {
   const params = useSearchParams();
-  const filters = readCardFilters(new URLSearchParams(params.toString()));
+  const [filters, setFilters] = useState(() => readCardFilters(new URLSearchParams(params.toString())));
+  // Back and forward restore the filters of that history entry.
+  useEffect(() => {
+    const restore = () => setFilters(readCardFilters(new URLSearchParams(window.location.search)));
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, []);
   const onChange = (next: CardFilters) => {
+    // A view transition animates the grid from the old state to the new one
+    // on the compositor: the browser snapshots each named card once and moves
+    // the snapshots, with no script work per frame. The DOM update must be
+    // synchronous inside the callback, hence flushSync. Browsers without the
+    // API, and reduced motion, swap at once.
+    const commit = () => flushSync(() => setFilters(next));
+    if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.startViewTransition(commit);
+    } else {
+      commit();
+    }
     const query = writeCardFilters(new URLSearchParams(window.location.search), next).toString();
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
   };
   return <FilterableCardsView {...props} filters={filters} onChange={onChange} />;
+}
+
+/** A CSS identifier for a view-transition-name, from any string. */
+function transitionName(prefix: string, raw: string) {
+  return `${prefix}-${raw.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
 }
 
 /*
@@ -110,7 +97,6 @@ export function FilterableCardsView({
   const change = (next: Partial<CardFilters>) => onChange?.({ ...active, ...next });
   const titleOf = (options: FilterOption[], slug: string) =>
     options.find((option) => option.slug === slug)?.title ?? slug;
-  const m = useMotionTokens();
   const tags = [
     ...active.categories.map((slug) => ({
       ariaLabel: `Remove filter: ${titleOf(categories, slug)}`,
@@ -173,48 +159,40 @@ export function FilterableCardsView({
       <div className={styles.inline}>{form("inline")}</div>
 
       <div className={styles.status}>
-        {/* The list stays mounted so a removed tag can leave before the list empties. */}
-        <ul aria-label="Chosen filters" className={styles.tags}>
-          <AnimatePresence initial={false} mode="popLayout">
+        {tags.length ? (
+          <ul aria-label="Chosen filters" className={styles.tags}>
             {tags.map((tag) => (
-              <motion.li key={tag.key} {...m.item()}>
+              <li
+                key={tag.key}
+                style={{ viewTransitionClass: "filterable-tag", viewTransitionName: transitionName("tag", tag.key) }}
+              >
                 <button aria-label={tag.ariaLabel} className={styles.tag} onClick={tag.remove} type="button">
                   {tag.title}
                   <X aria-hidden size={18} />
                 </button>
-              </motion.li>
+              </li>
             ))}
-          </AnimatePresence>
-        </ul>
+          </ul>
+        ) : null}
         <Count shown={visible.length} total={cards.length} />
       </div>
 
-      {/* The grid stays mounted so leaving cards can shrink away while the empty
-          notice, when there is one, fades in beneath them. */}
-      <ul className={styles.list}>
-        <AnimatePresence initial={false} mode="popLayout">
-          {visible.map((card, index) => (
-            <motion.li key={card._id} {...m.item(index)}>
+      {visible.length ? (
+        <ul className={styles.list}>
+          {visible.map((card) => (
+            <li
+              key={card._id}
+              style={{ viewTransitionClass: "filterable-card", viewTransitionName: transitionName("card", card._id) }}
+            >
               {card.node}
-            </motion.li>
+            </li>
           ))}
-        </AnimatePresence>
-      </ul>
-      <AnimatePresence initial={false}>
-        {visible.length ? null : (
-          <motion.p
-            animate={{ opacity: 1, y: 0 }}
-            className={styles.empty}
-            data-sanity={emptyStateDataSanity}
-            exit={{ opacity: 0, transition: fade }}
-            initial={m.reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
-            key="empty"
-            transition={m.reduced ? fade : arrive}
-          >
-            {emptyState}
-          </motion.p>
-        )}
-      </AnimatePresence>
+        </ul>
+      ) : (
+        <p className={styles.empty} data-sanity={emptyStateDataSanity}>
+          {emptyState}
+        </p>
+      )}
     </>
   );
 }
@@ -224,15 +202,9 @@ function Count({ shown, total }: { shown: number; total: number }) {
   return (
     <p aria-live="polite" className={styles.count} role="status">
       Showing{" "}
-      <motion.span
-        animate={{ opacity: 1 }}
-        className={styles.countNumber}
-        initial={{ opacity: 0 }}
-        key={shown}
-        transition={fade}
-      >
+      <span className={styles.countNumber} key={shown}>
         {shown}
-      </motion.span>{" "}
+      </span>{" "}
       of {total}
     </p>
   );
@@ -320,7 +292,6 @@ function MultiSelect({
   options: FilterOption[];
 }) {
   const [open, setOpen] = useState(false);
-  const reduced = useReducedMotion();
   const groupRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   // Safari does not focus a clicked button, so a click outside may not blur.
@@ -378,60 +349,40 @@ function MultiSelect({
       {/* The list takes focus, so a press on an option's name keeps focus
           inside the dropdown. Without it, focus moves to <main> (the skip
           link target), the dropdown closes, and the click chooses nothing. */}
-      <AnimatePresence initial={false}>
-        {open ? (
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            className={styles.panel}
-            exit={{ opacity: 0, transition: fade, y: reduced ? 0 : -4 }}
-            id={panelId}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-            key="panel"
-            tabIndex={-1}
-            transition={reduced ? fade : { duration: 0.2, ease: arrive.ease }}
-          >
-            {options.map((option) => (
-              <label className={styles.option} key={option.slug}>
-                <input
-                  checked={chosen.includes(option.slug)}
-                  onChange={(event) =>
-                    onChange(
-                      event.target.checked
-                        ? [...chosen, option.slug]
-                        : chosen.filter((slug) => slug !== option.slug),
-                    )
-                  }
-                  type="checkbox"
-                  value={option.slug}
-                />
-                {option.title}
-              </label>
-            ))}
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <div
+        className={styles.panel}
+        hidden={!open}
+        id={panelId}
+        style={{ viewTransitionName: open ? "filterable-cards-panel" : undefined }}
+        tabIndex={-1}
+      >
+        {options.map((option) => (
+          <label className={styles.option} key={option.slug}>
+            <input
+              checked={chosen.includes(option.slug)}
+              onChange={(event) =>
+                onChange(
+                  event.target.checked
+                    ? [...chosen, option.slug]
+                    : chosen.filter((slug) => slug !== option.slug),
+                )
+              }
+              type="checkbox"
+              value={option.slug}
+            />
+            {option.title}
+          </label>
+        ))}
+      </div>
     </div>
   );
 }
 
 /** The small "Clear" link beside a group label: it fades in with the first choice. */
 function ClearButton({ children, onClick, shown }: { children: ReactNode; onClick: () => void; shown: boolean }) {
-  return (
-    <AnimatePresence initial={false}>
-      {shown ? (
-        <motion.button
-          animate={{ opacity: 1 }}
-          className={styles.clear}
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          key="clear"
-          onClick={onClick}
-          transition={fade}
-          type="button"
-        >
-          {children}
-        </motion.button>
-      ) : null}
-    </AnimatePresence>
-  );
+  return shown ? (
+    <button className={styles.clear} onClick={onClick} type="button">
+      {children}
+    </button>
+  ) : null;
 }
