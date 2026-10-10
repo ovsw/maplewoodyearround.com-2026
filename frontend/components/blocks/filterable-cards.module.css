@@ -90,9 +90,6 @@
 .panel:focus {
   outline: none;
 }
-.panel[hidden] {
-  display: none;
-}
 .option {
   display: flex;
   gap: 0.75rem;
@@ -149,6 +146,7 @@
   margin-bottom: 2rem;
 }
 .tags {
+  position: relative; /* anchors a leaving tag while it fades */
   display: flex;
   flex: 1;
   flex-wrap: wrap;
@@ -156,6 +154,9 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.tags:empty {
+  display: none;
 }
 .tag {
   display: flex;
@@ -175,9 +176,16 @@
   margin: 0 0 0 auto;
   font-size: 0.875rem;
 }
+.countNumber {
+  display: inline-block;
+  min-width: 1.25em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
 
 /* Cards (product1). */
 .list {
+  position: relative; /* anchors leaving cards while they shrink away */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
   gap: 3rem 2rem;
@@ -213,6 +221,9 @@
   margin: 0;
   font-size: 0.875rem;
 }
+.list:empty {
+  display: none;
+}
 .empty {
   margin: 0;
   padding: 2.9rem;
@@ -220,12 +231,19 @@
   text-align: center;
 }
 
-/* The phone and tablet filter panel. */
+/* The phone and tablet filter panel. Radix keeps it mounted until the closing
+   animation ends, so it can slide away as it slid in. */
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 60;
   background: rgb(0 0 0 / 0.5);
+}
+.overlay[data-state="open"] {
+  animation: filters-fade-in 0.25s ease-out;
+}
+.overlay[data-state="closed"] {
+  animation: filters-fade-out 0.2s ease-in forwards;
 }
 .dialog {
   position: fixed;
@@ -237,6 +255,50 @@
   color: var(--maplewood-ink);
   font-family: var(--font-body);
   line-height: 1.5;
+}
+.dialog[data-state="open"] {
+  animation: filters-sheet-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dialog[data-state="closed"] {
+  animation: filters-sheet-out 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+@keyframes filters-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Separate closing keyframes: Radix waits for the close only when the
+   animation name changes, so a reversed opening animation would not run. */
+@keyframes filters-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes filters-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes filters-sheet-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
 }
 .dialogTitle {
   margin: 0 0 1.5rem;
@@ -288,5 +350,9 @@
 @media (prefers-reduced-motion: reduce) {
   .chevron {
     transition: none;
+  }
+  .overlay[data-state],
+  .dialog[data-state] {
+    animation: none;
   }
 }
