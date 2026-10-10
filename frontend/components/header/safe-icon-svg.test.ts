@@ -1,7 +1,16 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
-// Every icon the Studio picker offers, as it is stored with the content.
-import pickerSvgs from "../../../studio/schemas/inputs/material-icons.json";
 import { isSafeIconSvg } from "./safe-icon-svg";
+
+// Every icon the Studio picker offers, as it is stored with the content.
+// Read at test time: the Website build does not include the Studio folder.
+const pickerSvgs: Record<string, string> = JSON.parse(
+  readFileSync(
+    path.resolve(__dirname, "../../../studio/schemas/inputs/material-icons.json"),
+    "utf8",
+  ),
+);
 
 describe("isSafeIconSvg", () => {
   it("accepts every icon the Studio picker offers", () => {
