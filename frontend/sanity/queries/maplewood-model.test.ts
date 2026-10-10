@@ -132,7 +132,7 @@ describe("Maplewood collection projections", () => {
       ],
     );
     expect(section.items[0].grades).toEqual([
-      { _id: "grade", title: "Grade 2", slug: { current: "grade-2" } },
+      { _id: "grade", title: "Grade 2", slug: { current: "grade-2" }, order: null },
     ]);
     expect(section.items[1].grades).toBeNull();
   });
@@ -233,8 +233,8 @@ describe("Maplewood collection projections", () => {
         documents,
       );
       const frog = section.items.find((item: Fixture) => item._id === "frog-water-slide");
-      expect(frog.category).toEqual({ _id: "swimming", title: "Swimming", slug: null });
-      expect(frog.grades).toEqual([{ _id: "3rd", title: "3rd Grade", slug: null }]);
+      expect(frog.category).toEqual({ _id: "swimming", title: "Swimming", slug: null, order: null });
+      expect(frog.grades).toEqual([{ _id: "3rd", title: "3rd Grade", slug: null, order: 4 }]);
     });
 
     it("shows no Summer activities in a School Year section", async () => {
