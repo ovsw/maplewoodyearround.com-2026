@@ -69,7 +69,8 @@ export default function FilterableCards({
   title,
 }: FilterableCardsProps) {
   const visibleItems = (items ?? []).filter((item) => stegaClean(item.title)?.trim());
-  if (!title || !visibleItems.length) return null;
+  // The heading is for screen readers only, so a missing title must not hide the cards.
+  if (!visibleItems.length) return null;
 
   const sectionKey = stegaClean(_key);
   const headingId = `filterable-cards-${sectionKey}-title`;
@@ -124,7 +125,7 @@ export default function FilterableCards({
     >
       <div className={css.container}>
         <h2 className="sr-only" data-sanity={dataAttribute?.("title")} id={headingId}>
-          {title}
+          {title || "Filters"}
         </h2>
         <Suspense fallback={<FilterableCardsView {...view} filters={noFilters} />}>
           <FilterableCardsBrowser {...view} />
