@@ -79,8 +79,9 @@ Nurse's Office.
 A grouping of facilities on one side, for example Health & Safety.
 
 **Sample schedule**:
-An example day for one program, as a list of time slots. A slot names an
-activity or a break such as Lunch.
+An example day for one or more programs of one side, as a list of time
+slots. A slot has a label, such as an activity or a break like Lunch, and can
+name an activity of the same side.
 
 **Staff member**:
 A person on a side's team, shown on that side's staff pages.
@@ -154,7 +155,8 @@ the Studio.
 - An **Age program** covers a range of **Grades**. A **Camp group**'s age
   program follows from its grades.
 - A **School Year activity** belongs to one or more School Year **Programs**.
-- A **Sample schedule** belongs to one **Program**.
+- A **Sample schedule** belongs to one or more **Programs** of one side.
+  2 Day and 3 Day Preschool share one.
 - A **Facility** can have **Grades**. School Year facilities have none until
   Maplewood confirms them.
 - A **Play Center day** falls inside a School Year **Season** and has at most

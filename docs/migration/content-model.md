@@ -79,8 +79,8 @@ every non-home page:
   the introduction in `subtitle`, the closing lines in `description` (one per
   line) and the program photo from the stylesheet. They show every
   testimonial on all screens; only the home wall is shortened on phones.
-- Collection sliders gained a `grade` filter. The daily-schedule sliders use
-  sample schedules by age group; Special Events use the activity category and,
+- Collection sliders gained a `grade` filter. The daily-schedule sliders show
+  one Sample schedule (see issue #53 below); Special Events use the activity category and,
   where the source list is narrower, the grade named in the section label.
 - A rate table may have one unnamed price column (the K–9 tables); its
   heading row is then hidden.
@@ -544,7 +544,7 @@ Import the destination mode from source switches and the rendered link, not just
 | `indoor-outdoor` | `location`, `Indoor` or `Outdoor`.                           |
 | `order`          | `order`                                                      |
 
-### SC Sample Schedules → `sampleSchedule` (`program = summerCamp`)
+### SC Sample Schedules → `sampleSchedule` rows (`program = summerCamp`, until issue #53)
 
 | Webflow field | Sanity field                                                                       |
 | ------------- | ---------------------------------------------------------------------------------- |
@@ -556,7 +556,7 @@ Import the destination mode from source switches and the rendered link, not just
 | `order`       | `order`                                                                            |
 | `description` | `description`                                                                      |
 
-### SY Sample Schedules → `sampleSchedule` (`program = schoolYear`)
+### SY Sample Schedules → `sampleSchedule` rows (`program = schoolYear`, until issue #53)
 
 | Webflow field | Sanity field             |
 | ------------- | ------------------------ |
@@ -567,6 +567,17 @@ Import the destination mode from source switches and the rendered link, not just
 | `program`     | `audience`: `Preschool`. |
 | `order`       | `order`                  |
 | `description` | `description`            |
+
+These tables are the import mapping. Issue #53 joined these one-row-per-slot records into one `sampleSchedule`
+for each sample day: `title`, side (`program`), `programs[]` (at least one
+Program of that side) and ordered `slots[]`. A slot keeps the row's `name`
+as `time`, its `activity` text as `label`, its `description` and `image`,
+and references the Summer or School Year activity of that name when one
+exists. The age groups map to Programs: `Preschool & Kindergarten` to
+Preschool & Kindergarten, `1st–7th Grade` to K-7th Grade Program,
+`CIT (8th–9th grade)` to Teen Leadership (C.I.T.), and `Preschool` to both
+2 Day Preschool and 3 Day Preschool. A card slider selects the record with
+its `sampleSchedule` reference instead of the `audience` text.
 
 ### Playground Calendar PDFs → `playgroundCalendar`
 
@@ -632,7 +643,7 @@ These are stored content contracts. The later page issues supply the source-matc
 | `section_blog-post-header3`                              | `post` route                                             | Title, date, author, category and image belong to the article document.                                                        |
 | `section_content29`                                      | `post.body` and author reference                         | Article body and author footer; not a duplicate insertable section.                                                            |
 
-`section_blog66` uses these sources: Play Center calendar days/PDFs; activities by program/location and `activityCategory`; playground characters; birthday-party `playgroundGuest` records; facilities by `facilityCategory`; and sample schedules by program/audience. The two `/contact` registration-card lists (`contact24` cards) are authored cards with editable links and use `registrationCards`. Do not create fictional CMS source records to explain a source wrapper.
+`section_blog66` uses these sources: Play Center calendar days/PDFs; activities by program/location and `activityCategory`; playground characters; birthday-party `playgroundGuest` records; facilities by `facilityCategory`; and one Sample schedule by reference. The two `/contact` registration-card lists (`contact24` cards) are authored cards with editable links and use `registrationCards`. Do not create fictional CMS source records to explain a source wrapper.
 
 Summer program cards without a Webflow collection become `programOffering` documents from their public page content. Keep their source/page identity and `listingGroup` explicit. This permits the same filter-based pattern as SY Programs without duplicating a program's text into each page.
 

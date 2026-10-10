@@ -165,7 +165,7 @@ function summerCamp(S: StructureBuilder) {
     ]),
     documents(S, "campGroup", "Groups", Users, { ordering: byOrder }),
     sideDocuments(S, side, "staffMember", "Staff Members", IdCard, byName),
-    sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock),
+    sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock, byTitle),
     sideDocuments(S, side, "faq", "FAQs", MessageCircleQuestion),
     sideDocuments(S, side, "testimonial", "Testimonials", Quote),
   ]);
@@ -181,7 +181,7 @@ function schoolYear(S: StructureBuilder) {
       documents(S, "schoolYearActivity", "List", Palette, { ordering: byOrder }),
     ]),
     sideDocuments(S, side, "staffMember", "Staff Members", IdCard, byName),
-    sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock),
+    sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock, byTitle),
     // Play Center records are School Year only and have no side field.
     group(S, "Play Center", ToyBrick, [
       documents(S, "playgroundEvent", "Calendar", CalendarDays, {

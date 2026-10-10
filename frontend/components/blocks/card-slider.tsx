@@ -24,6 +24,7 @@ type CardSliderProps = Extract<
 };
 
 type Item = NonNullable<CardSliderProps["items"]>[number];
+type Schedule = NonNullable<CardSliderProps["schedule"]>;
 
 // A calendar date such as "Sat. Oct 3". Dates are stored as calendar days.
 const dayFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
@@ -83,6 +84,38 @@ function CalendarDay({
   );
 }
 
+/** The slots of a Sample schedule, each named by its time with its label as heading. */
+function ScheduleSlots({
+  schedule,
+  itemDataAttribute,
+}: {
+  schedule: Schedule;
+  itemDataAttribute?: CardSliderProps["itemDataAttribute"];
+}) {
+  const slots = (schedule.slots ?? []).filter((slot) => stegaClean(slot.label)?.trim());
+  return slots.map((slot) => {
+    const edit = (field: string) =>
+      itemDataAttribute?.(schedule._id, schedule._type, `slots[_key=="${slot._key}"].${field}`);
+    return (
+      <li className={css.sliderCard} key={slot._key}>
+        <div className={[css.cardSmall, css.sliderImage].join(" ")} data-sanity={edit("image")}>
+          <SourceImage image={slot.image} sizes="(max-width: 767px) 80vw, 20rem" width={640} />
+        </div>
+        <div className={css.sliderCardText}>
+          <p className={programs.time} data-sanity={edit("time")}>
+            <Clock aria-hidden size={20} />
+            {slot.time}
+          </p>
+          <h3 className={css.h6} data-sanity={edit("label")}>
+            {slot.label}
+          </h3>
+          {slot.description ? <p data-sanity={edit("description")}>{slot.description}</p> : null}
+        </div>
+      </li>
+    );
+  });
+}
+
 /** Collection cards in a slider (Webflow blog66), such as one facility category. */
 export default function CardSlider({
   _key,
@@ -96,6 +129,7 @@ export default function CardSlider({
   icon,
   itemDataAttribute,
   items,
+  schedule,
   source,
   tagline,
   title,
@@ -103,7 +137,9 @@ export default function CardSlider({
   const cards = (items ?? []).filter(
     (item) => stegaClean(item.title)?.trim() || item._type === "playgroundEvent",
   );
-  if (!title || !cards.length) return null;
+  const slotCount = (schedule?.slots ?? []).filter((slot) => stegaClean(slot.label)?.trim()).length;
+  const count = schedule ? slotCount : cards.length;
+  if (!title || !count) return null;
   const headingId = `card-slider-${stegaClean(_key)}-title`;
   // The calendar shows its buttons below the days, as live.
   const calendarDays = stegaClean(source) === "playgroundEvent";
@@ -141,8 +177,8 @@ export default function CardSlider({
           </div>
           {calendarDays ? null : <SourceActions actions={actions} allOutline dataAttribute={dataAttribute} />}
         </div>
-        <CardSliderTrack count={cards.length} label={stegaClean(title) ?? "Cards"}>
-          {cards.map((item) => item._type === "playgroundEvent" ? (
+        <CardSliderTrack count={count} label={stegaClean(title) ?? "Cards"}>
+          {schedule ? <ScheduleSlots itemDataAttribute={itemDataAttribute} schedule={schedule} /> : cards.map((item) => item._type === "playgroundEvent" ? (
             <li className={css.sliderCard} key={item._id}>
               <CalendarDay characterTime={characterTime} item={item} itemDataAttribute={itemDataAttribute} />
             </li>
@@ -155,22 +191,9 @@ export default function CardSlider({
                 <SourceImage image={item.image} sizes="(max-width: 767px) 80vw, 20rem" width={640} />
               </div>
               <div className={css.sliderCardText}>
-                {item._type === "sampleSchedule" ? (
-                  // A sample schedule entry is named by its time; the activity is its heading.
-                  <>
-                    <p className={programs.time} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
-                      <Clock aria-hidden size={20} />
-                      {item.title}
-                    </p>
-                    <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "activity")}>
-                      {item.activity}
-                    </h3>
-                  </>
-                ) : (
-                  <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
-                    {item.title}
-                  </h3>
-                )}
+                <h3 className={css.h6} data-sanity={itemDataAttribute?.(item._id, item._type, "title")}>
+                  {item.title}
+                </h3>
                 {item.description ? (
                   <p data-sanity={itemDataAttribute?.(item._id, item._type, "description")}>{item.description}</p>
                 ) : null}

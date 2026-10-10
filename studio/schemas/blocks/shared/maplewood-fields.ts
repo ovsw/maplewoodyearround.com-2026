@@ -112,11 +112,11 @@ export const collectionFilterFields = [
     options: { list: ["Indoor", "Outdoor", "Special"] },
   }),
   defineField({
-    name: "audience",
-    title: "Sample schedule filter",
-    type: "string",
-    description:
-      "For sample schedules: use the exact program or age-group label.",
+    name: "sampleSchedule",
+    title: "Sample schedule",
+    type: "reference",
+    to: [{ type: "sampleSchedule" }],
+    description: "For a sample schedule: the day to show, slot by slot.",
   }),
   defineField({
     name: "programOffering",

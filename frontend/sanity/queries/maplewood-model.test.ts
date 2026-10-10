@@ -367,6 +367,56 @@ describe("Maplewood collection projections", () => {
       ).items,
     ).toHaveLength(0);
   });
+
+  it("shows one Sample schedule with its slots in order, their labels and the referenced activities", async () => {
+    const schedule = (_id: string, labels: string[]) => ({
+      _id,
+      _type: "sampleSchedule",
+      title: _id,
+      program: "summerCamp",
+      programs: [ref("preschool-and-kindergarten")],
+      slots: labels.map((label, index) => ({
+        _key: `slot-${index}`,
+        _type: "sampleScheduleSlot",
+        time: `${9 + index}:00`,
+        label,
+        ...(label === "Soccer" && { activity: ref("soccer") }),
+      })),
+    });
+    const section = await project(
+      cardSliderQuery,
+      {
+        _type: "cardSlider",
+        source: "sampleSchedule",
+        program: "summerCamp",
+        sampleSchedule: ref("preschool-day"),
+      },
+      [
+        schedule("preschool-day", ["Roundup", "Soccer", "Lunch"]),
+        schedule("teen-day", ["Archery"]),
+        { _id: "soccer", _type: "summerActivity", title: "Soccer", slug: { current: "soccer" } },
+      ],
+    );
+    expect(section.items).toEqual([]);
+    expect(section.schedule._id).toBe("preschool-day");
+    expect(
+      section.schedule.slots.map((slot: Fixture) => [slot.time, slot.label, (slot.activity as Fixture | null)?._id ?? null]),
+    ).toEqual([
+      ["9:00", "Roundup", null],
+      ["10:00", "Soccer", "soccer"],
+      ["11:00", "Lunch", null],
+    ]);
+    expect(section.schedule.slots[1].activity).toMatchObject({ _type: "summerActivity", title: "Soccer" });
+  });
+
+  it("gives no Sample schedule to a slider of another collection", async () => {
+    const section = await project(
+      cardSliderQuery,
+      { _type: "cardSlider", source: "facility", sampleSchedule: ref("preschool-day") },
+      [{ _id: "preschool-day", _type: "sampleSchedule", title: "Day", slots: [] }],
+    );
+    expect(section.schedule).toBeNull();
+  });
 });
 
 describe("Maplewood destination and staff projections", () => {
