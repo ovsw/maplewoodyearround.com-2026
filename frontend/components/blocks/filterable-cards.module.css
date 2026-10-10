@@ -140,7 +140,7 @@
 .searchInput::-webkit-search-cancel-button {
   display: none;
 }
-:is(.toggle, .filtersButton, .clear, .tag, .close, .option input, .searchInput):focus-visible {
+:is(.toggle, .filtersButton, .clear, .tag, .close, .option input):focus-visible {
   outline: 3px solid var(--maplewood-focus);
   outline-offset: 2px;
 }

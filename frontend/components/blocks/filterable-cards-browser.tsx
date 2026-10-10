@@ -302,7 +302,7 @@ function FilterForm({
           <Search aria-hidden className={styles.searchIcon} size={20} />
           <input
             autoComplete="off"
-            className={styles.searchInput}
+            className={`${styles.searchInput} focus-field`}
             enterKeyHint="search"
             id={searchId}
             maxLength={256}

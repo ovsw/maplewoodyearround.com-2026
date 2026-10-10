@@ -370,6 +370,15 @@
   }
 }
 
+/* Text fields: a 2px edge in the section's link color (Camp Green, Sunshine
+   Gold on green). A Signal Red ring on a field reads as an error. */
+@utility focus-field {
+  &:focus-visible {
+    outline: 2px solid var(--color-link);
+    outline-offset: -1px;
+  }
+}
+
 @utility field-white {
   --color-background: var(--neutral-surface-white);
   --color-foreground: var(--neutral-ink);
