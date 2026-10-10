@@ -39,20 +39,30 @@ type ViewProps = {
  */
 export default function FilterableCardsBrowser(props: ViewProps) {
   const params = useSearchParams();
+  // The controls show each change at once; the cards follow inside the view
+  // transition. With one state for both, React would put the search field
+  // back to its old text until the transition commits, and a key pressed in
+  // between would be lost.
   const [filters, setFilters] = useState(() => readCardFilters(new URLSearchParams(params.toString())));
+  const [shown, setShown] = useState(filters);
   // Back and forward restore the filters of that history entry.
   useEffect(() => {
-    const restore = () => setFilters(readCardFilters(new URLSearchParams(window.location.search)));
+    const restore = () => {
+      const restored = readCardFilters(new URLSearchParams(window.location.search));
+      setFilters(restored);
+      setShown(restored);
+    };
     window.addEventListener("popstate", restore);
     return () => window.removeEventListener("popstate", restore);
   }, []);
   const onChange = (next: CardFilters, { animate }: ChangeOptions) => {
+    setFilters(next);
     // A view transition animates the grid from the old state to the new one
     // on the compositor: the browser snapshots each named card once and moves
     // the snapshots, with no script work per frame. The DOM update must be
     // synchronous inside the callback, hence flushSync. Browsers without the
     // API, and reduced motion, swap at once.
-    const commit = () => flushSync(() => setFilters(next));
+    const commit = () => flushSync(() => setShown(next));
     if (animate && document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.startViewTransition(commit);
     } else {
@@ -61,7 +71,7 @@ export default function FilterableCardsBrowser(props: ViewProps) {
     const query = writeCardFilters(new URLSearchParams(window.location.search), next).toString();
     window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
   };
-  return <FilterableCardsView {...props} filters={filters} onChange={onChange} />;
+  return <FilterableCardsView {...props} filters={filters} onChange={onChange} shown={shown} />;
 }
 
 type ChangeOptions = {
@@ -92,40 +102,49 @@ export function FilterableCardsView({
   intro,
   onChange,
   searchPlaceholder,
-}: ViewProps & { filters: CardFilters; onChange?: (filters: CardFilters, options: ChangeOptions) => void }) {
+  shown = filters,
+}: ViewProps & {
+  /** The filters the controls show. */
+  filters: CardFilters;
+  onChange?: (filters: CardFilters, options: ChangeOptions) => void;
+  /** The filters the cards, tags and count show: `filters` once the grid has moved. */
+  shown?: CardFilters;
+}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   // Choices that are not options any more (an old shared link) do not filter.
   const known = (chosen: string[], options: FilterOption[]) =>
     chosen.filter((slug) => options.some((option) => option.slug === slug));
-  const active: CardFilters = {
-    categories: known(filters.categories, categories),
-    grades: known(filters.grades, grades),
-    search: filters.search,
-  };
-  const visible = filterCards(cards, active);
+  const knownFilters = (value: CardFilters): CardFilters => ({
+    categories: known(value.categories, categories),
+    grades: known(value.grades, grades),
+    search: value.search,
+  });
+  const active = knownFilters(filters);
+  const current = knownFilters(shown);
+  const visible = filterCards(cards, current);
   const change = (next: Partial<CardFilters>) => onChange?.({ ...active, ...next }, { animate: !dialogOpen });
   const titleOf = (options: FilterOption[], slug: string) =>
     options.find((option) => option.slug === slug)?.title ?? slug;
   const tags = [
-    ...active.categories.map((slug) => ({
+    ...current.categories.map((slug) => ({
       ariaLabel: `Remove filter: ${titleOf(categories, slug)}`,
       key: `category-${slug}`,
       remove: () => change({ categories: active.categories.filter((item) => item !== slug) }),
       title: titleOf(categories, slug),
     })),
-    ...active.grades.map((slug) => ({
+    ...current.grades.map((slug) => ({
       ariaLabel: `Remove filter: ${titleOf(grades, slug)}`,
       key: `grade-${slug}`,
       remove: () => change({ grades: active.grades.filter((item) => item !== slug) }),
       title: titleOf(grades, slug),
     })),
-    ...(active.search.trim()
+    ...(current.search.trim()
       ? [
           {
-            ariaLabel: `Remove search: ${active.search.trim()}`,
+            ariaLabel: `Remove search: ${current.search.trim()}`,
             key: "search",
             remove: () => change({ search: "" }),
-            title: active.search.trim(),
+            title: current.search.trim(),
           },
         ]
       : []),
@@ -142,30 +161,38 @@ export function FilterableCardsView({
     />
   );
 
+  // A list with search only shows the search field on every screen: a Filters
+  // panel with one field would only add a step.
+  const hasDropdowns = categories.length > 0 || grades.length > 0;
+
   return (
     <>
-      <div className={styles.header}>
-        {intro}
-        <DialogPrimitive.Root onOpenChange={setDialogOpen} open={dialogOpen}>
-          <DialogPrimitive.Trigger className={styles.filtersButton}>
-            <ListFilter aria-hidden size={20} />
-            Filters
-          </DialogPrimitive.Trigger>
-          <DialogPrimitive.Portal>
-            <DialogPrimitive.Overlay className={styles.overlay} />
-            <DialogPrimitive.Content aria-describedby={undefined} className={styles.dialog}>
-              <DialogPrimitive.Title className={styles.dialogTitle}>Filters</DialogPrimitive.Title>
-              {form("dialog")}
-              <Count shown={visible.length} total={cards.length} />
-              <DialogPrimitive.Close aria-label="Close filters" className={styles.close}>
-                <X aria-hidden size={28} />
-              </DialogPrimitive.Close>
-            </DialogPrimitive.Content>
-          </DialogPrimitive.Portal>
-        </DialogPrimitive.Root>
-      </div>
+      {intro || hasDropdowns ? (
+        <div className={styles.header}>
+          {intro}
+          {hasDropdowns ? (
+            <DialogPrimitive.Root onOpenChange={setDialogOpen} open={dialogOpen}>
+              <DialogPrimitive.Trigger className={styles.filtersButton}>
+                <ListFilter aria-hidden size={20} />
+                Filters
+              </DialogPrimitive.Trigger>
+              <DialogPrimitive.Portal>
+                <DialogPrimitive.Overlay className={styles.overlay} />
+                <DialogPrimitive.Content aria-describedby={undefined} className={styles.dialog}>
+                  <DialogPrimitive.Title className={styles.dialogTitle}>Filters</DialogPrimitive.Title>
+                  {form("dialog")}
+                  <Count shown={visible.length} total={cards.length} />
+                  <DialogPrimitive.Close aria-label="Close filters" className={styles.close}>
+                    <X aria-hidden size={28} />
+                  </DialogPrimitive.Close>
+                </DialogPrimitive.Content>
+              </DialogPrimitive.Portal>
+            </DialogPrimitive.Root>
+          ) : null}
+        </div>
+      ) : null}
 
-      <div className={styles.inline}>{form("inline")}</div>
+      <div className={hasDropdowns ? styles.inline : undefined}>{form("inline")}</div>
 
       <div className={styles.status}>
         {tags.length ? (
@@ -241,20 +268,24 @@ function FilterForm({
       onSubmit={(event) => event.preventDefault()}
       role="search"
     >
-      <MultiSelect
-        chosen={filters.categories}
-        id={`${idPrefix}-category`}
-        label="By Category"
-        onChange={(next) => change({ categories: next })}
-        options={categories}
-      />
-      <MultiSelect
-        chosen={filters.grades}
-        id={`${idPrefix}-grade`}
-        label="By Age"
-        onChange={(next) => change({ grades: next })}
-        options={grades}
-      />
+      {categories.length ? (
+        <MultiSelect
+          chosen={filters.categories}
+          id={`${idPrefix}-category`}
+          label="By Category"
+          onChange={(next) => change({ categories: next })}
+          options={categories}
+        />
+      ) : null}
+      {grades.length ? (
+        <MultiSelect
+          chosen={filters.grades}
+          id={`${idPrefix}-grade`}
+          label="By Age"
+          onChange={(next) => change({ grades: next })}
+          options={grades}
+        />
+      ) : null}
       <div className={styles.group}>
         <div className={styles.groupLabel}>
           <label htmlFor={searchId}>Search</label>
