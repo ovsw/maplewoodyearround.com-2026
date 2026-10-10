@@ -312,6 +312,39 @@ describe("Maplewood collection projections", () => {
     });
   });
 
+  it("returns a Play Center day with its Character, Special guest and outdoor activity", async () => {
+    const section = await project(
+      cardSliderQuery,
+      { _type: "cardSlider", source: "playgroundEvent", program: "schoolYear" },
+      [
+        {
+          _id: "october-3",
+          _type: "playgroundEvent",
+          title: "Video Game Man",
+          date: "2026-10-03T00:00:00.000Z",
+          hasGuest: true,
+          guest: ref("face-painting"),
+          character: ref("video-game-man"),
+          outdoorActivity: ref("pony-rides"),
+        },
+        { _id: "face-painting", _type: "playgroundGuest", title: "Face Painting" },
+        { _id: "video-game-man", _type: "playgroundCharacter", title: "Video Game Man" },
+        {
+          _id: "pony-rides",
+          _type: "schoolYearActivity",
+          title: "Pony Rides",
+          location: "Outdoor",
+          programs: [ref("indoor-play-center")],
+        },
+      ],
+    );
+    expect(section.items).toHaveLength(1);
+    const [day] = section.items;
+    expect(day.guest).toMatchObject({ _id: "face-painting", title: "Face Painting" });
+    expect(day.character).toMatchObject({ _id: "video-game-man", title: "Video Game Man" });
+    expect(day.outdoorActivity).toMatchObject({ _id: "pony-rides", title: "Pony Rides" });
+  });
+
   it("includes Playground guests in School Year without a synthetic program field", async () => {
     const documents = [
       { _id: "guest", _type: "playgroundGuest", title: "Guest" },

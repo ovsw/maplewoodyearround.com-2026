@@ -14868,6 +14868,36 @@
     }
   },
   {
+    "type": "type",
+    "name": "schoolYearActivity.reference",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_ref": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          }
+        },
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "reference"
+          }
+        },
+        "_weak": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
+        }
+      },
+      "dereferencesTo": "schoolYearActivity"
+    }
+  },
+  {
     "name": "playgroundEvent",
     "type": "document",
     "attributes": {
@@ -14937,6 +14967,14 @@
         "value": {
           "type": "inline",
           "name": "playgroundCharacter.reference"
+        },
+        "optional": true
+      },
+      "outdoorActivity": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "schoolYearActivity.reference"
         },
         "optional": true
       },
@@ -15360,36 +15398,6 @@
         }
       },
       "dereferencesTo": "summerActivity"
-    }
-  },
-  {
-    "type": "type",
-    "name": "schoolYearActivity.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "schoolYearActivity"
     }
   },
   {
