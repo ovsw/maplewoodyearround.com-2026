@@ -317,7 +317,10 @@ function MultiSelect({
         <span>{summary}</span>
         <ChevronDown aria-hidden className={styles.chevron} size={20} />
       </button>
-      <div className={styles.panel} hidden={!open} id={panelId}>
+      {/* The list takes focus, so a press on an option's name keeps focus
+          inside the dropdown. Without it, focus moves to <main> (the skip
+          link target), the dropdown closes, and the click chooses nothing. */}
+      <div className={styles.panel} hidden={!open} id={panelId} tabIndex={-1}>
         {options.map((option) => (
           <label className={styles.option} key={option.slug}>
             <input
