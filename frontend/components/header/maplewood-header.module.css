@@ -81,6 +81,31 @@
   overflow-y: auto;
   outline: none;
 }
+/* Radix keeps the dialog mounted until the closing animation ends. The open
+   animation fills backwards only, so no clip stays behind to cut off a later
+   window resize. The closing curve mirrors the opening one, but runs faster. */
+.dialog[data-state="open"] {
+  animation: menu-reveal 0.6s var(--ease-reveal) backwards;
+}
+.dialog[data-state="closed"] {
+  animation: menu-conceal 0.4s cubic-bezier(0.8, 0, 0.8, 0.3) forwards;
+}
+@keyframes menu-reveal {
+  from {
+    clip-path: circle(0 at var(--menu-origin, 100% 0));
+  }
+  to {
+    clip-path: circle(var(--menu-radius, 150vmax) at var(--menu-origin, 100% 0));
+  }
+}
+@keyframes menu-conceal {
+  from {
+    clip-path: circle(var(--menu-radius, 150vmax) at var(--menu-origin, 100% 0));
+  }
+  to {
+    clip-path: circle(0 at var(--menu-origin, 100% 0));
+  }
+}
 .dialog .bar {
   position: sticky;
   top: 0;
@@ -255,5 +280,8 @@
 @media (prefers-reduced-motion: reduce) {
   .header {
     transition: none;
+  }
+  .dialog[data-state] {
+    animation: none;
   }
 }
