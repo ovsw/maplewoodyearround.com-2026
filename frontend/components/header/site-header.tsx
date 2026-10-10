@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { Dialog } from "radix-ui";
 import { Menu, X, MessagesSquare, PanelsTopLeft } from "lucide-react";
 import { HeaderBrand } from "./brand";
@@ -24,7 +24,28 @@ export function Header({
   theme?: HeaderTheme;
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const close = () => setMobileMenuOpen(false);
+  const [reveal, setReveal] = useState<CSSProperties>();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  // The menu opens as a circle growing from the Menu button and closes back
+  // into it. The dialog's Close button sits in the same place, so one origin
+  // serves both ways. Measure on every change: scroll and resize move it.
+  const setMenuOpen = (open: boolean) => {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    if (rect) {
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      );
+      setReveal({
+        "--menu-origin": `${x}px ${y}px`,
+        "--menu-radius": `${radius}px`,
+      } as CSSProperties);
+    }
+    setMobileMenuOpen(open);
+  };
+  const close = () => setMenuOpen(false);
   const featured = model.navigation.items.filter(
     (item) => item.kind === "link",
   );
@@ -55,13 +76,17 @@ export function Header({
     </HeaderLink>
   ));
   return (
-    <Dialog.Root open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+    <Dialog.Root open={mobileMenuOpen} onOpenChange={setMenuOpen}>
       <SiteHeaderShell theme={theme} forceVisible={mobileMenuOpen}>
         <div className={styles.bar}>
           {brand}
           <div className={styles.controls}>
             <div className={styles.actions}>{actions}</div>
-            <Dialog.Trigger className={styles.toggle} aria-label="Open menu">
+            <Dialog.Trigger
+              className={styles.toggle}
+              aria-label="Open menu"
+              ref={triggerRef}
+            >
               <Menu aria-hidden="true" />
               <span>Menu</span>
             </Dialog.Trigger>
@@ -70,7 +95,11 @@ export function Header({
       </SiteHeaderShell>
       <Dialog.Portal>
         <Dialog.Overlay />
-        <Dialog.Content className={styles.dialog} aria-describedby={undefined}>
+        <Dialog.Content
+          className={styles.dialog}
+          aria-describedby={undefined}
+          style={reveal}
+        >
           <Dialog.Title className="sr-only">Main navigation</Dialog.Title>
           <div className={styles.bar}>
             {brand}
