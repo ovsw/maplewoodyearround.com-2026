@@ -61,3 +61,7 @@ test("an icon without a known two-tone match stops the run", () => {
 test("a two-tone icon keeps its name", () => {
   assert.equal(twoToneName({ name: "pool", svg: SVGS.pool }), "pool");
 });
+
+test("an inherited object property is not a known icon name", () => {
+  assert.equal(twoToneName({ name: "constructor", svg: "<svg></svg>" }), undefined);
+});

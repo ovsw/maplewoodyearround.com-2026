@@ -88,7 +88,6 @@ export const reference = (key, documentId) => ({
  * Names come from studio/schemas/inputs/material-icon-names.ts.
  */
 export function icon(name) {
-  const svg = ICON_SVGS[name];
-  if (!svg) throw new Error(`Unknown icon: ${name}`);
-  return { name, svg };
+  if (!Object.hasOwn(ICON_SVGS, name)) throw new Error(`Unknown icon: ${name}`);
+  return { name, svg: ICON_SVGS[name] };
 }

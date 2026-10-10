@@ -95,7 +95,7 @@ export const artworkHash = (svg) => createHash("sha256").update(svg).digest("hex
 /** The two-tone icon name for a stored icon, or undefined when it is unknown. */
 export function twoToneName(icon) {
   if (icon.name && SVGS[icon.name] === icon.svg) return icon.name;
-  if (icon.name) return BY_LUCIDE_NAME[icon.name];
+  if (icon.name) return Object.hasOwn(BY_LUCIDE_NAME, icon.name) ? BY_LUCIDE_NAME[icon.name] : undefined;
   return icon.svg ? BY_ARTWORK[artworkHash(icon.svg)] : undefined;
 }
 

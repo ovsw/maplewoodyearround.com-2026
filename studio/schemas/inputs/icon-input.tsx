@@ -1,4 +1,5 @@
 import { SearchIcon } from "@sanity/icons/Search";
+import { TrashIcon } from "@sanity/icons/Trash";
 import { useEffect, useId, useMemo, useState } from "react";
 import {
   Box,
@@ -12,13 +13,17 @@ import {
   TextInput,
   useToast,
 } from "@sanity/ui";
-import { set, type ObjectInputProps } from "sanity";
+import { set, unset, type ObjectInputProps } from "sanity";
+// The Website's allowlist: stored markup can arrive through the API, which
+// skips Studio validation, so Studio draws only markup the Website would draw.
+import { isSafeIconSvg } from "../../../frontend/components/header/safe-icon-svg";
 import { iconNames, loadIconSvgs } from "./icon-catalog";
 
 const PAGE_SIZE = 60;
 
-/** Stored icon markup, drawn at a fixed size. */
+/** Stored icon markup, drawn at a fixed size. Unsafe markup draws nothing. */
 function IconGlyph({ svg, size = 20 }: { svg: string; size?: number }) {
+  if (!isSafeIconSvg(svg)) return null;
   return (
     <span
       aria-hidden="true"
@@ -124,18 +129,34 @@ export default function IconInput(props: ObjectInputProps) {
 
   return (
     <>
-      <Button
-        disabled={props.readOnly}
-        icon={value?.svg ? <IconGlyph svg={value.svg} /> : undefined}
-        id={props.elementProps.id}
-        mode="ghost"
-        onBlur={props.elementProps.onBlur}
-        onClick={openPicker}
-        onFocus={props.elementProps.onFocus}
-        text={selectedName || (value?.svg ? "Unnamed icon" : "Choose an icon")}
-        type="button"
-        width="fill"
-      />
+      <Flex gap={2}>
+        <Box flex={1}>
+          <Button
+            disabled={props.readOnly}
+            icon={value?.svg ? <IconGlyph svg={value.svg} /> : undefined}
+            id={props.elementProps.id}
+            mode="ghost"
+            onBlur={props.elementProps.onBlur}
+            onClick={openPicker}
+            onFocus={props.elementProps.onFocus}
+            text={selectedName || (value?.svg ? "Unnamed icon" : "Choose an icon")}
+            type="button"
+            width="fill"
+          />
+        </Box>
+        {value ? (
+          <Button
+            aria-label="Remove icon"
+            disabled={props.readOnly}
+            icon={TrashIcon}
+            mode="ghost"
+            onClick={() => props.onChange(unset())}
+            title="Remove icon"
+            tone="critical"
+            type="button"
+          />
+        ) : null}
+      </Flex>
 
       {open ? (
         <Dialog header="Choose an icon" id={dialogId} onClose={close} width={4}>

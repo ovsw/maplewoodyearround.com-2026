@@ -15,12 +15,11 @@ const checkIcon = (value: unknown, required: boolean) => {
 /** An icon from the Material two-tone set, chosen in the icon picker. */
 export const iconField = defineField({
   name: "icon",
-  title: "Icon",
   type: "object",
   description: "Choose an icon from the picker.",
   components: { input: IconInput },
   fields: [
-    defineField({ name: "name", title: "Name", type: "string" }),
+    defineField({ name: "name", type: "string" }),
     // The icon artwork is stored with the content, so the Website does not
     // bundle an icon set.
     defineField({
