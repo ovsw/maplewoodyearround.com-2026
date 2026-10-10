@@ -195,6 +195,31 @@ used); calendar days without a guest show the character photo across the
 card instead of the template's fallback photo; slider and FAQ introductions
 show inline links as plain text.
 
+## Summer Camp activities page (issue #76)
+
+No new section type was needed: `/summer-camp/activities` is `innerHero`,
+`filterableCards` (source Summer activities) and `storyFeature`.
+
+- The cards are every visible Summer activity, in the order field. The
+  filters are the live ones: "By Category" and "By Age" each choose one or
+  more options (any chosen option matches; the two filters narrow each other),
+  and the keyword search needs every typed word in the name or text. The
+  options are the categories and grades the cards use, in each record's
+  order field, then by name.
+- The filters are in the URL query, one repeated key per choice:
+  `?category=<slug>&grade=<slug>&search=<words>`. A shared link opens the
+  same view.
+- Phones and tablets show the intro and a Filters button that opens the
+  filters in a panel, as live. Desktop hides the intro, as live.
+- The live section has no visible heading. Its `title` ("Filters") is the
+  section's screen-reader heading. `emptyState` is the no-result message
+  (the live page has none).
+
+Known differences: the chosen filters show in the dropdown button ("Achievement",
+"2 selected") as well as in the tags; live always shows "select". The live
+"Summer Camp" breadcrumb opens the Seasons page; here it opens `/summer-camp`,
+as on the other Summer Camp pages.
+
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 
 ## Import rules

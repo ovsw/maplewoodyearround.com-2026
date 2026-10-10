@@ -268,7 +268,8 @@ export default function Blocks({
           : block._type === "cardSlider" ||
               block._type === "programCards" ||
               block._type === "summerDocumentList" ||
-              block._type === "jobList"
+              block._type === "jobList" ||
+              block._type === "filterableCards"
             ? {
                 dataAttribute,
                 itemDataAttribute: stega
