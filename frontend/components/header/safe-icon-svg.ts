@@ -1,9 +1,8 @@
 /**
  * Fail-closed allowlist check for the icon SVG markup stored in Sanity.
  *
- * The markup is produced by the Studio picker, either from Lucide components
- * or from the two-tone camp icon catalog, so real values fit a very narrow
- * grammar: nested drawing elements whose attributes are always double-quoted. Anything outside that grammar — unknown elements,
+ * The markup comes from the Studio picker's Material two-tone icon set, so
+ * real values fit a very narrow grammar: nested drawing elements whose attributes are always double-quoted. Anything outside that grammar — unknown elements,
  * unknown or unquoted attributes, event handlers, stray angle brackets — is
  * rejected rather than stripped, so a write made around the Studio cannot
  * reach dangerouslySetInnerHTML.
@@ -33,8 +32,11 @@ const ALLOWED_ATTRIBUTES = new Set([
   "stroke-linejoin",
   "class",
   "aria-hidden",
-  // Two-tone camp icons draw their secondary shape at reduced opacity.
+  // Two-tone icons draw their secondary shape at reduced opacity.
   "opacity",
+  "fill-opacity",
+  "fill-rule",
+  "clip-rule",
   "d",
   "cx",
   "cy",

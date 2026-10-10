@@ -3,9 +3,11 @@
 // Every builder takes an explicit key so a rerun of the seed writes the same
 // keys and Studio keeps its click-to-edit paths stable.
 
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { dynamicIconImports } from "lucide-react/dynamic.mjs";
+import { readFileSync } from "node:fs";
+
+const ICON_SVGS = JSON.parse(
+  readFileSync(new URL("../../schemas/inputs/material-icons.json", import.meta.url), "utf8"),
+);
 
 export const span = (key, text, marks = []) => ({ _key: key, _type: "span", marks, text });
 
@@ -82,15 +84,10 @@ export const reference = (key, documentId) => ({
 });
 
 /**
- * A stored lucide icon `{ name, svg }`, the shape the icon picker writes.
- * Names come from studio/schemas/inputs/lucide-icon-names.ts.
+ * A stored icon `{ name, svg }`, the shape the icon picker writes.
+ * Names come from studio/schemas/inputs/material-icon-names.ts.
  */
-export async function icon(name) {
-  const load = dynamicIconImports[name];
-  if (!load) throw new Error(`Unknown lucide icon: ${name}`);
-  const module = await load();
-  return {
-    name,
-    svg: renderToStaticMarkup(createElement(module.default, { "aria-hidden": true })),
-  };
+export function icon(name) {
+  if (!Object.hasOwn(ICON_SVGS, name)) throw new Error(`Unknown icon: ${name}`);
+  return { name, svg: ICON_SVGS[name] };
 }
