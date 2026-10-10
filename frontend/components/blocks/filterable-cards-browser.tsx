@@ -45,10 +45,14 @@ export default function FilterableCardsBrowser(props: ViewProps) {
   // between would be lost.
   const [filters, setFilters] = useState(() => readCardFilters(new URLSearchParams(params.toString())));
   const [shown, setShown] = useState(filters);
+  // The newest filters. A transition's update runs later, even when a newer
+  // change or Back skips the transition, so it shows these, never its own.
+  const latest = useRef(filters);
   // Back and forward restore the filters of that history entry.
   useEffect(() => {
     const restore = () => {
       const restored = readCardFilters(new URLSearchParams(window.location.search));
+      latest.current = restored;
       setFilters(restored);
       setShown(restored);
     };
@@ -56,13 +60,14 @@ export default function FilterableCardsBrowser(props: ViewProps) {
     return () => window.removeEventListener("popstate", restore);
   }, []);
   const onChange = (next: CardFilters, { animate }: ChangeOptions) => {
+    latest.current = next;
     setFilters(next);
     // A view transition animates the grid from the old state to the new one
     // on the compositor: the browser snapshots each named card once and moves
     // the snapshots, with no script work per frame. The DOM update must be
     // synchronous inside the callback, hence flushSync. Browsers without the
     // API, and reduced motion, swap at once.
-    const commit = () => flushSync(() => setShown(next));
+    const commit = () => flushSync(() => setShown(latest.current));
     if (animate && document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document.startViewTransition(commit);
     } else {

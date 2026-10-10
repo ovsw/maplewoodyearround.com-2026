@@ -1,7 +1,7 @@
 import { noFilters, type CardFilters } from "@/lib/filterable-cards-filter";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import FilterableCardsBrowser, { FilterableCardsView } from "./filterable-cards-browser";
 
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams() }));
@@ -77,39 +77,60 @@ describe("a list without filter options", () => {
 });
 
 describe("the search field", () => {
-  it("keeps every letter typed before the cards' animation runs", async () => {
-    // The browser runs a view transition's update a frame later; hold them all.
-    const pending: (() => void)[] = [];
+  // The browser runs a view transition's update a frame later; hold them all.
+  let pending: (() => void)[] = [];
+  beforeEach(() => {
+    pending = [];
+    window.history.replaceState(null, "", "/");
     Object.defineProperty(document, "startViewTransition", {
       configurable: true,
       value: (update: () => void) => {
         pending.push(update);
       },
     });
-    try {
-      const user = userEvent.setup();
-      render(
-        <FilterableCardsBrowser
-          cards={[
-            { _id: "lake", categories: [], grades: [], text: "Lake", node: <h3>Lake</h3> },
-            { _id: "lobby", categories: [], grades: [], text: "Lobby", node: <h3>Lobby</h3> },
-          ]}
-          categories={[]}
-          emptyState="No facilities match this search."
-          grades={[]}
-          searchPlaceholder="Keyword"
-        />,
-      );
+  });
+  afterEach(() => {
+    Reflect.deleteProperty(document, "startViewTransition");
+  });
 
-      await user.type(screen.getByRole("searchbox"), "lake");
-      expect(screen.getByRole("searchbox")).toHaveValue("lake");
-      expect(screen.getByRole("status")).toHaveTextContent("Showing 2 of 2");
+  function renderBrowser() {
+    render(
+      <FilterableCardsBrowser
+        cards={[
+          { _id: "lake", categories: [], grades: [], text: "Lake", node: <h3>Lake</h3> },
+          { _id: "lobby", categories: [], grades: [], text: "Lobby", node: <h3>Lobby</h3> },
+        ]}
+        categories={[]}
+        emptyState="No facilities match this search."
+        grades={[]}
+        searchPlaceholder="Keyword"
+      />,
+    );
+  }
 
-      act(() => pending.forEach((update) => update()));
-      expect(screen.getByRole("status")).toHaveTextContent("Showing 1 of 2");
-      expect(window.location.search).toBe("?search=lake");
-    } finally {
-      Reflect.deleteProperty(document, "startViewTransition");
-    }
+  it("keeps every letter typed before the cards' animation runs", async () => {
+    const user = userEvent.setup();
+    renderBrowser();
+
+    await user.type(screen.getByRole("searchbox"), "lake");
+    expect(screen.getByRole("searchbox")).toHaveValue("lake");
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 2 of 2");
+
+    act(() => pending.forEach((update) => update()));
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 1 of 2");
+    expect(window.location.search).toBe("?search=lake");
+  });
+
+  it("keeps the cards Back restored when an older animation runs later", async () => {
+    const user = userEvent.setup();
+    renderBrowser();
+
+    await user.type(screen.getByRole("searchbox"), "lake");
+    window.history.replaceState(null, "", "/");
+    act(() => window.dispatchEvent(new PopStateEvent("popstate")));
+    act(() => pending.forEach((update) => update()));
+
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 2 of 2");
   });
 });
