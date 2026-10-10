@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@iconify-json/ic": "^1.2.4",
-    "@sanity/blueprints": "^0.20.2",
+    "@sanity/blueprints": "^0.28.0",
     "@sanity/client": "^7.23.0",
     "@sanity/eslint-config-studio": "^6.0.0",
     "@sanity/types": "^6.16.0",
