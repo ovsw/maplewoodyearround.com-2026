@@ -1,8 +1,10 @@
 import { noFilters, type CardFilters } from "@/lib/filterable-cards-filter";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
-import { FilterableCardsView } from "./filterable-cards-browser";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import FilterableCardsBrowser, { FilterableCardsView } from "./filterable-cards-browser";
+
+vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams() }));
 
 function renderView(onChange: (filters: CardFilters) => void) {
   // The site's <main> takes focus (the skip link target), so a press on
@@ -48,5 +50,87 @@ describe("the By Age dropdown", () => {
     expect(toggle).toHaveAttribute("aria-expanded", "true");
     await user.click(screen.getByRole("searchbox"));
     expect(toggle).toHaveAttribute("aria-expanded", "false");
+  });
+});
+
+describe("a list without filter options", () => {
+  it("shows only the search field, with no Filters panel", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <FilterableCardsView
+        cards={[{ _id: "lake", categories: [], grades: [], text: "Lake", node: <h3>Lake</h3> }]}
+        categories={[]}
+        emptyState="No facilities match this search."
+        filters={noFilters}
+        grades={[]}
+        onChange={onChange}
+        searchPlaceholder="Keyword"
+      />,
+    );
+
+    expect(screen.queryByRole("button", { name: "Filters" })).toBeNull();
+    expect(screen.queryByRole("group", { name: /^By / })).toBeNull();
+    await user.type(screen.getByRole("searchbox"), "l");
+    expect(onChange).toHaveBeenCalledWith({ ...noFilters, search: "l" }, { animate: true });
+  });
+});
+
+describe("the search field", () => {
+  // The browser runs a view transition's update a frame later; hold them all.
+  let pending: (() => void)[] = [];
+  beforeEach(() => {
+    pending = [];
+    window.history.replaceState(null, "", "/");
+    Object.defineProperty(document, "startViewTransition", {
+      configurable: true,
+      value: (update: () => void) => {
+        pending.push(update);
+      },
+    });
+  });
+  afterEach(() => {
+    Reflect.deleteProperty(document, "startViewTransition");
+  });
+
+  function renderBrowser() {
+    render(
+      <FilterableCardsBrowser
+        cards={[
+          { _id: "lake", categories: [], grades: [], text: "Lake", node: <h3>Lake</h3> },
+          { _id: "lobby", categories: [], grades: [], text: "Lobby", node: <h3>Lobby</h3> },
+        ]}
+        categories={[]}
+        emptyState="No facilities match this search."
+        grades={[]}
+        searchPlaceholder="Keyword"
+      />,
+    );
+  }
+
+  it("keeps every letter typed before the cards' animation runs", async () => {
+    const user = userEvent.setup();
+    renderBrowser();
+
+    await user.type(screen.getByRole("searchbox"), "lake");
+    expect(screen.getByRole("searchbox")).toHaveValue("lake");
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 2 of 2");
+
+    act(() => pending.forEach((update) => update()));
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 1 of 2");
+    expect(window.location.search).toBe("?search=lake");
+  });
+
+  it("keeps the cards Back restored when an older animation runs later", async () => {
+    const user = userEvent.setup();
+    renderBrowser();
+
+    await user.type(screen.getByRole("searchbox"), "lake");
+    window.history.replaceState(null, "", "/");
+    act(() => window.dispatchEvent(new PopStateEvent("popstate")));
+    act(() => pending.forEach((update) => update()));
+
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+    expect(screen.getByRole("status")).toHaveTextContent("Showing 2 of 2");
   });
 });

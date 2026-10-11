@@ -138,7 +138,7 @@ A deep camp green and warm cream hold the page; five bright notice colors give e
 - **Lake Mint** (mint) and **Meadow Green** (mint-dark): notices and School Year marks.
 - **Party Lilac** (purple) and **Deep Violet** (purple-dark): notices and Play Center marks.
 - **Sky Blue** (blue) and **Lake Blue** (blue-dark): notices and gift-card marks.
-- **Signal Red** (focus): the focus ring, "Join our Team" marks and red notices.
+- **Signal Red** (focus): the focus ring of buttons, links and other controls (not text fields), "Join our Team" marks and red notices.
 
 ### Neutral
 
@@ -233,7 +233,7 @@ Solid, confident and easy to tap.
 ### Inputs / Fields
 
 - **Style:** 1px solid border in the current text color, 0.4em corners, 10px by 13px padding, transparent or white fill.
-- **Focus:** Signal Red outline, 2px, offset 3px.
+- **Focus:** a 2px outline over the field's edge in the section's link color: Camp Green, or Sunshine Gold on Green. Never Signal Red: on a field it reads as an error.
 - **Messages:** the newsletter keeps the exact success and failure messages of the source.
 
 ### Navigation
@@ -256,7 +256,7 @@ Small labels for grades, categories and dates: 0.4em corners, a light neutral fi
 - **Do** rotate accent colors across sibling cards.
 - **Do** set headings in Poppins 700, Camp Green on light backgrounds.
 - **Do** use 0.8em corners for cards and buttons and 0.4em for fields and tags.
-- **Do** keep a visible Signal Red focus ring and touch targets of at least 44px.
+- **Do** keep a visible focus ring (Signal Red on buttons and links, Camp Green on text fields) and touch targets of at least 44px.
 - **Do** give every scroll animation a static version for reduced motion.
 
 ### Don't:

@@ -140,7 +140,7 @@
 .searchInput::-webkit-search-cancel-button {
   display: none;
 }
-:is(.toggle, .filtersButton, .clear, .tag, .close, .option input, .searchInput):focus-visible {
+:is(.toggle, .filtersButton, .clear, .tag, .close, .option input):focus-visible {
   outline: 3px solid var(--maplewood-focus);
   outline-offset: 2px;
 }
@@ -336,11 +336,18 @@
   .inline {
     display: none;
   }
+  /* A search-only form stays inline: the field takes half the width. */
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .list {
     grid-template-columns: 1fr 1fr;
   }
 }
 @media (max-width: 767px) {
+  .groups {
+    grid-template-columns: 1fr;
+  }
   .list {
     grid-template-columns: 1fr;
     gap: 3rem 1.25rem;
