@@ -220,6 +220,24 @@ Known differences: the chosen filters show in the dropdown button ("Achievement"
 "Summer Camp" breadcrumb opens the Seasons page; here it opens `/summer-camp`,
 as on the other Summer Camp pages.
 
+## School Year facilities page (issue #77)
+
+No new section type was needed: `/school-year/facilities` is `innerHero` and
+`filterableCards` (source Facilities, program School Year).
+
+- The cards are every visible School Year facility, in the order field, with
+  the Summer activities card look.
+- Search only. Ovi decided on 2026-10-10 to leave out the live "By Category"
+  and "By Age" filters until Maplewood chooses the facility filters: the live
+  filters do not work. Only the Summer activities source shows dropdowns; a
+  list without them shows the search field on every screen, with no Filters
+  button. The search is in the URL query (`?search=<words>`).
+- The live intro ("Use the filter options below…") is left out: this page has
+  no filter options. `title` is the screen-reader heading.
+
+Known differences: no Category and Age dropdowns; no category tags on the
+desktop card photos.
+
 This is the field and section contract for [issue #6](https://github.com/ovsw/maplewoodyearround.com-2026/issues/6). Source definitions come from [the authenticated CMS inventory](cms-inventory.md) and [its schema evidence](cms-schema-evidence.json). Page order and display behavior come from [the public inventory](inventory.md), its source evidence and reference images. This document contains schema metadata and public behavior only, not private item values.
 
 ## Import rules
@@ -678,7 +696,7 @@ The header and footer sit outside the Page Builder section sequence. Their conte
 
 Use `filterableCards.source = facility` and `program = schoolYear` for `/school-year/facilities`, as the authenticated inventory's page-use register specifies. Its category memberships come from SY Facilities `category` references. Do not change the source to SY Activities merely because the source page calls its search field “activity.”
 
-A read-only check of the live page on 2026-10-03 found grade labels in the filter controls, but card fields marked `age`, `category` and `bunk` contain the literal placeholder “This is some text inside of a div block.” SY Facilities has no grade field. Thus these public controls do not establish a facility-to-grade relation. Keep editable `facility.grades[]` references for confirmed assignments and leave them unset during source import. The grade-filter requirement remains in scope for #13; missing assignments are a data blocker, not permission to remove the filter. Repair category behavior from real CMS references; obtain confirmed grade applicability before promising a functional grade filter for facilities. Do not assign every grade, copy placeholder labels, or infer ages from a facility name. Summer activity grades do have a source: SC Activities → SC Groups → SC Grades.
+A read-only check of the live page on 2026-10-03 found grade labels in the filter controls, but card fields marked `age`, `category` and `bunk` contain the literal placeholder “This is some text inside of a div block.” SY Facilities has no grade field. Thus these public controls do not establish a facility-to-grade relation. Keep editable `facility.grades[]` references for confirmed assignments and leave them unset during source import. On 2026-10-10 Ovi decided that the page has search only until Maplewood chooses its filters (issue #77). Repair category behavior from real CMS references; obtain confirmed grade applicability before promising a functional grade filter for facilities. Do not assign every grade, copy placeholder labels, or infer ages from a facility name. Summer activity grades do have a source: SC Activities → SC Groups → SC Grades.
 
 ## Editable external destinations
 

@@ -49,8 +49,10 @@ function termsOf(item: Item): { categories: Term[]; grades: Term[] } {
 }
 
 /*
- * Filterable cards — a collection (the Summer activities) as a card grid
- * with the live page's filters: category, grade and keyword search.
+ * Filterable cards — a collection as a card grid with keyword search. The
+ * Summer activities also have the live page's category and grade filters.
+ * The other collections have search only until Maplewood chooses their
+ * filters: the live School Year facilities filters had no real data (#77).
  *
  * The live section has no visible heading, so the heading is for screen
  * readers only. The intro shows on phones and tablets, beside the Filters
@@ -66,11 +68,13 @@ export default function FilterableCards({
   itemDataAttribute,
   items,
   searchPlaceholder,
+  source,
   title,
 }: FilterableCardsProps) {
   const visibleItems = (items ?? []).filter((item) => stegaClean(item.title)?.trim());
   // The heading is for screen readers only, so a missing title must not hide the cards.
   if (!visibleItems.length) return null;
+  const hasDropdowns = stegaClean(source) === "summerActivity";
 
   const sectionKey = stegaClean(_key);
   const headingId = `filterable-cards-${sectionKey}-title`;
@@ -105,10 +109,10 @@ export default function FilterableCards({
 
   const view = {
     cards,
-    categories: optionsFrom(visibleItems.flatMap((item) => termsOf(item).categories)),
+    categories: hasDropdowns ? optionsFrom(visibleItems.flatMap((item) => termsOf(item).categories)) : [],
     emptyState: stegaClean(emptyState)?.trim() || "No activities match these filters.",
     emptyStateDataSanity: dataAttribute?.("emptyState"),
-    grades: optionsFrom(visibleItems.flatMap((item) => termsOf(item).grades)),
+    grades: hasDropdowns ? optionsFrom(visibleItems.flatMap((item) => termsOf(item).grades)) : [],
     intro: stegaClean(description)?.trim() ? (
       <p className={styles.intro} data-sanity={dataAttribute?.("description")}>
         {description}
