@@ -42,6 +42,12 @@ and PRs. Use ignored local env files for credentials. Private details belong
 in the Basecamp document. Only copy contact details already on the public site.
 Leave Webflow and Airtable data intact.
 
+The Airtable base "MDC WEBSITE" holds the content of the live Webflow CMS.
+Read it yourself with the read-only `AIRTABLE_TOKEN` in `studio/.env.local`
+and the Airtable REST API. Do not ask Ovi for Airtable content or exports.
+If a worktree does not have the token, copy it from the main checkout's
+`studio/.env.local`.
+
 ## Dataset safety
 
 Required migration and draft writes have standing permission. Before the
