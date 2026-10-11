@@ -9,7 +9,7 @@
     "start": "sanity start",
     "build": "sanity build",
     "deploy": "node ../scripts/deploy-studio.mjs",
-    "generate:lucide-icons": "node scripts/generate-lucide-icon-catalog.mjs",
+    "generate:material-icons": "node scripts/generate-material-icon-catalog.mjs",
     "test:presentation": "node --test presentation/presentation.test.mjs",
     "typegen": "rm -f schema.json && sanity schema extract; test -f schema.json && sanity typegen generate",
     "typecheck": "tsc --noEmit",
@@ -41,6 +41,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@iconify-json/ic": "^1.2.4",
     "@sanity/blueprints": "^0.20.2",
     "@sanity/client": "^7.23.0",
     "@sanity/eslint-config-studio": "^6.0.0",

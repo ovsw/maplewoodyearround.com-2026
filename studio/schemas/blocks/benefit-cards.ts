@@ -1,10 +1,8 @@
 import { LayoutGrid } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
-import NavigationIconInput, {
-  createNavigationIconPreview,
-} from "../inputs/navigation-icon-input";
-import { isNavigationIconName } from "../inputs/lucide-icon-catalog";
+import { createIconPreview } from "../inputs/icon-input";
+import { iconField } from "./shared/icon";
 
 const richTextToPlainText = (value: unknown): string => {
   if (!Array.isArray(value)) return "";
@@ -24,31 +22,8 @@ const benefitCard = defineArrayMember({
   type: "object",
   fields: [
     defineField({
-      name: "icon",
-      title: "Icon",
-      type: "object",
+      ...iconField,
       description: "Choose an icon that helps identify this feature.",
-      components: {
-        input: NavigationIconInput,
-      },
-      fields: [
-        defineField({ name: "name", title: "Name", type: "string" }),
-        // The icon's SVG markup, captured at pick time so the frontend can
-        // render it without bundling the full Lucide icon set.
-        defineField({ name: "svg", title: "SVG markup", type: "string", hidden: true }),
-      ],
-      validation: (rule) =>
-        rule.custom((value) => {
-          const icon = value as { name?: string; svg?: string } | undefined;
-          if (!icon?.name) return true;
-          if (!isNavigationIconName(icon.name)) {
-            return "Choose an icon from the icon picker";
-          }
-          if (!icon.svg) {
-            return "Re-pick this icon so its artwork is stored with the document";
-          }
-          return true;
-        }),
     }),
     defineField({
       name: "title",
@@ -66,11 +41,11 @@ const benefitCard = defineArrayMember({
     }),
   ],
   preview: {
-    select: { icon: "icon.name", title: "title" },
+    select: { icon: "icon.svg", title: "title" },
     prepare: ({ icon, title }) => ({
       title: title || "Untitled Card",
       subtitle: "Feature",
-      media: icon ? createNavigationIconPreview(icon) : undefined,
+      media: icon ? createIconPreview(icon) : undefined,
     }),
   },
 });

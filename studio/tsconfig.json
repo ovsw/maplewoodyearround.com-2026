@@ -11,6 +11,7 @@
     "allowImportingTsExtensions": true,
     "types": ["node"],
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "jsx": "preserve",
     "incremental": true,
     "preserveSymlinks": true,

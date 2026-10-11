@@ -1,10 +1,8 @@
 import { Rows3 } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { sectionBackgroundField } from "./shared/section-background";
-import NavigationIconInput, {
-  createNavigationIconPreview,
-} from "../inputs/navigation-icon-input";
-import { isNavigationIconName } from "../inputs/lucide-icon-catalog";
+import { createIconPreview } from "../inputs/icon-input";
+import { requiredIconField } from "./shared/icon";
 
 const richTextToPlainText = (value: unknown): string => {
   if (!Array.isArray(value)) return "";
@@ -45,34 +43,8 @@ const row = defineArrayMember({
   type: "object",
   fields: [
     defineField({
-      name: "icon",
-      title: "Icon",
-      type: "object",
+      ...requiredIconField,
       description: "Choose an icon shown beside this row heading.",
-      components: {
-        input: NavigationIconInput,
-      },
-      fields: [
-        defineField({ name: "name", title: "Name", type: "string" }),
-        defineField({
-          name: "svg",
-          title: "SVG markup",
-          type: "string",
-          hidden: true,
-        }),
-      ],
-      validation: (rule) =>
-        rule.custom((value) => {
-          const icon = value as { name?: string; svg?: string } | undefined;
-          if (!icon?.name) return "Choose an icon";
-          if (!isNavigationIconName(icon.name)) {
-            return "Choose an icon from the icon picker";
-          }
-          if (!icon.svg) {
-            return "Re-pick this icon so its artwork is stored with the document";
-          }
-          return true;
-        }),
     }),
     defineField({
       name: "title",
@@ -110,13 +82,13 @@ const row = defineArrayMember({
     }),
   ],
   preview: {
-    select: { icon: "icon.name", items: "items", title: "title" },
+    select: { icon: "icon.svg", items: "items", title: "title" },
     prepare: ({ icon, items, title }) => {
       const count = Array.isArray(items) ? items.length : 0;
       return {
         title: title || "Untitled Row",
         subtitle: `${count} ${count === 1 ? "item" : "items"}`,
-        media: icon ? createNavigationIconPreview(icon) : undefined,
+        media: icon ? createIconPreview(icon) : undefined,
       };
     },
   },

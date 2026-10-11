@@ -1,9 +1,9 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { programOptions } from "../../documents/maplewood-fields";
-import NavigationIconInput, {
-  createNavigationIconPreview,
-} from "../../inputs/navigation-icon-input";
-import { isNavigationIconName } from "../../inputs/lucide-icon-catalog";
+import { createIconPreview } from "../../inputs/icon-input";
+import { iconField } from "./icon";
+
+export { iconField };
 
 export const sectionDescriptionField = defineField({
   name: "description",
@@ -291,33 +291,6 @@ export const sectionAnchorField = defineField({
     rule.regex(/^[a-z0-9][a-z0-9-]*$/, { name: "anchor" }),
 });
 
-export const iconField = defineField({
-  name: "icon",
-  title: "Icon",
-  type: "object",
-  description: "Choose an icon from the picker.",
-  components: { input: NavigationIconInput },
-  fields: [
-    defineField({ name: "name", title: "Name", type: "string" }),
-    // The icon artwork is stored with the content, so the Website does not
-    // bundle an icon set. Imported source icons keep their own artwork.
-    defineField({
-      name: "svg",
-      title: "SVG markup",
-      type: "string",
-      hidden: true,
-    }),
-  ],
-  validation: (rule) =>
-    rule.custom((value) => {
-      const icon = value as { name?: string; svg?: string } | undefined;
-      if (!icon?.name) return true;
-      if (!isNavigationIconName(icon.name)) return "Choose an icon from the icon picker";
-      if (!icon.svg) return "Re-pick this icon so its artwork is stored with the document";
-      return true;
-    }),
-});
-
 /** A short point with an icon, such as "Safety First" beside a story. */
 export const featureItem = defineType({
   name: "featureItem",
@@ -340,10 +313,10 @@ export const featureItem = defineType({
     }),
   ],
   preview: {
-    select: { title: "title", icon: "icon.name" },
+    select: { title: "title", icon: "icon.svg" },
     prepare: ({ title, icon }) => ({
       title: title || "Point",
-      media: icon ? createNavigationIconPreview(icon) : undefined,
+      media: icon ? createIconPreview(icon) : undefined,
     }),
   },
 });

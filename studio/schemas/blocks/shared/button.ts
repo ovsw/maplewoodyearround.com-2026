@@ -1,8 +1,6 @@
 import { defineField, defineType } from "sanity";
-import NavigationIconInput, {
-  createNavigationIconPreview,
-} from "../../inputs/navigation-icon-input";
-import { isNavigationIconName } from "../../inputs/lucide-icon-catalog";
+import { createIconPreview } from "../../inputs/icon-input";
+import { iconField } from "./icon";
 
 export default defineType({
   name: "button",
@@ -33,38 +31,17 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "icon",
-      title: "Icon",
-      type: "object",
+      ...iconField,
       description: "Optional icon shown before the button text.",
-      components: {
-        input: NavigationIconInput,
-      },
-      fields: [
-        defineField({ name: "name", title: "Name", type: "string" }),
-        defineField({ name: "svg", title: "SVG markup", type: "string", hidden: true }),
-      ],
-      validation: (rule) =>
-        rule.custom((value) => {
-          const icon = value as { name?: string; svg?: string } | undefined;
-          if (!icon?.name) return true;
-          if (!isNavigationIconName(icon.name)) {
-            return "Choose an icon from the icon picker";
-          }
-          if (!icon.svg) {
-            return "Re-pick this icon so its artwork is stored with the button";
-          }
-          return true;
-        }),
     }),
     defineField({ name: "url", title: "URL", type: "customUrl" }),
   ],
   preview: {
-    select: { icon: "icon.name", title: "text", subtitle: "url.external" },
+    select: { icon: "icon.svg", title: "text", subtitle: "url.external" },
     prepare: ({ icon, title, subtitle }) => ({
       title,
       subtitle,
-      media: icon ? createNavigationIconPreview(icon) : undefined,
+      media: icon ? createIconPreview(icon) : undefined,
     }),
   },
 });
