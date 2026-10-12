@@ -12,10 +12,10 @@ import {
   getPostReadTime,
   type BlogPostSidebar,
 } from "@/components/post-sidebar/model";
-import {
-  PostSidebar,
-  PostTableOfContentsRail,
-} from "@/components/post-sidebar/post-sidebar";
+import { PostSidebar } from "@/components/post-sidebar/post-sidebar";
+import newsCss from "@/components/news/news.module.css";
+import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
 import { documentDataAttribute } from "@/components/blog-card";
 import RichTextContent from "@/components/rich-text-content";
 import { dataset, projectId } from "@/sanity/lib/env";
@@ -95,18 +95,14 @@ function PostContent({
 }) {
   const body = post.body ?? [];
   const bodyModel = createPostBodyModel(body);
-  const hasPostSidebar = Boolean(blogPostSidebar?.actions?.length);
-  const hasTableOfContents = bodyModel.showTableOfContents;
-  const layoutName = hasTableOfContents
-    ? hasPostSidebar
-      ? "three-column"
-      : "toc-column"
-    : hasPostSidebar
-      ? "two-column"
-      : "single-column";
   const readTime = getPostReadTime(body);
   const postSlug = post.slug?.current?.replace(/^\/+|\/+$/g, "") || "";
-  const postCanonicalPath = postPath(postSlug) || "/blog";
+  const postCanonicalPath = postPath(postSlug) || "/news";
+  const author = post.author;
+  const authorRole = stegaClean(author?.role)?.trim();
+  const authorDataAttribute = author
+    ? documentDataAttribute({ id: author._id, stega, type: "author" })
+    : undefined;
   const blogPostSettingsDataAttribute = blogPostSidebar
     ? documentDataAttribute({
         id: blogPostSidebar._id,
@@ -126,11 +122,11 @@ function PostContent({
     : undefined;
 
   return (
-    <section>
+    <>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
-          { name: "Blog", path: "/blog" },
+          { name: "News", path: "/news" },
           { name: post.title || "Post", path: postCanonicalPath },
         ]}
         siteUrl={siteUrl}
@@ -138,25 +134,53 @@ function PostContent({
       <BlogPostingJsonLd post={post} siteUrl={siteUrl} />
       <VideoJsonLd content={body} />
       <PostHero post={post} readTime={readTime} stega={stega} />
-      <div data-post-layout={layoutName}>
-        {bodyModel.showTableOfContents ? (
-          <PostTableOfContentsRail headings={bodyModel.headings} />
-        ) : null}
-        <article>
+      <article className={newsCss.postBody}>
+        <div className={newsCss.postBodyInner}>
           {body.length ? (
             <RichTextContent
+              className={newsCss.richText}
               dataSanity={bodyDataAttribute}
               getHeadingId={bodyModel.getHeadingId}
               value={body}
             />
           ) : null}
-        </article>
-        <PostSidebar
-          dataAttribute={blogPostSettingsDataAttribute}
-          sidebar={blogPostSidebar}
-        />
-      </div>
-    </section>
+          {author?.name ? (
+            <>
+              <hr className={newsCss.divider} />
+              <div className={newsCss.postAuthor}>
+                {author.image?.asset?._id ? (
+                  <Image
+                    alt=""
+                    data-sanity={authorDataAttribute?.("image")}
+                    height={56}
+                    sizes="56px"
+                    src={urlFor(author.image).width(112).height(112).url()}
+                    width={56}
+                  />
+                ) : null}
+                <div>
+                  <p
+                    className={newsCss.postAuthorName}
+                    data-sanity={authorDataAttribute?.("name")}
+                  >
+                    {author.name}
+                  </p>
+                  {authorRole ? (
+                    <p data-sanity={authorDataAttribute?.("role")}>
+                      {author.role}, Maplewood
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            </>
+          ) : null}
+          <PostSidebar
+            dataAttribute={blogPostSettingsDataAttribute}
+            sidebar={blogPostSidebar}
+          />
+        </div>
+      </article>
+    </>
   );
 }
 

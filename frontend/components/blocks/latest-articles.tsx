@@ -1,6 +1,5 @@
-import { FeaturedPostCard, PostGrid } from "@/components/blog-card";
-import BlogPagination from "@/components/blog-pagination";
-import { getBlogResultsLabel, type BlogListing } from "@/lib/blog-index";
+import { PostGrid } from "@/components/blog-card";
+import type { BlogListing } from "@/lib/blog-index";
 import { getSafeLinkHref } from "@/lib/safe-href";
 import { cn } from "@/lib/utils";
 import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
@@ -9,13 +8,14 @@ import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { sectionThemeClass } from "./section-theme";
 import HomeNews from "./home-news";
+import NewsIndex from "@/components/news/news-index";
 
 type PageBlock =
   | NonNullable<NonNullable<HOME_PAGE_QUERY_RESULT>["blocks"]>[number]
   | NonNullable<NonNullable<PAGE_QUERY_RESULT>["blocks"]>[number];
 
 type LatestArticlesProps = Extract<PageBlock, { _type: "latestArticles" }> & {
-  /** Set on the Blog page: every post, one page at a time. */
+  /** Set on the News page: every post, one page at a time. */
   blogListing?: BlogListing;
   dataAttribute?: (path: string) => string | undefined;
 };
@@ -23,9 +23,6 @@ type LatestArticlesProps = Extract<PageBlock, { _type: "latestArticles" }> & {
 /** The query returns the newest 12 posts; the editor picks how many show. */
 const DEFAULT_LIMIT = 3;
 const MAX_LIMIT = 12;
-
-/** The Blog page list's id; its links to page 2 and on land here. */
-const LISTING_ID = "latest-posts";
 
 /** The field utility on the section root re-points the job tokens, so only
  *  the secondary-text recipes, whose alpha differs on Green, stay here. */
@@ -51,11 +48,10 @@ export function resolvePostLimit(limit?: number | null) {
 }
 
 /*
- * Latest Posts — built from shadcnblocks blog47 (heading row with an
- * all-posts link over a three-column card grid) and blog53 (the wide
- * featured post). On a page it shows the newest few posts. On the Blog page
- * the route hands it `blogListing`: page one leads with the newest post
- * large, and every page ends with pagination.
+ * Latest Posts. On the News page the route hands it `blogListing`, and it
+ * renders the News index: the newest post large, then cards. With "featured
+ * first" it is the home page news section. Otherwise it shows the newest few
+ * posts as a card grid.
  */
 export default function LatestArticles({
   _key,
@@ -72,7 +68,17 @@ export default function LatestArticles({
   limit,
   title,
 }: LatestArticlesProps) {
-  if (featuredFirst && !blogListing)
+  if (blogListing)
+    return (
+      <NewsIndex
+        blogListing={blogListing}
+        dataAttribute={dataAttribute}
+        description={description}
+        eyebrow={eyebrow}
+        title={title}
+      />
+    );
+  if (featuredFirst)
     return (
       <HomeNews
         _type="latestArticles"
@@ -90,18 +96,15 @@ export default function LatestArticles({
         dataAttribute={dataAttribute}
       />
     );
-  const posts = blogListing
-    ? blogListing.posts
-    : (articles ?? []).slice(0, resolvePostLimit(limit));
-  if (!blogListing && !posts.length) return null;
+  const posts = (articles ?? []).slice(0, resolvePostLimit(limit));
+  if (!posts.length) return null;
 
   const tone = stegaClean(background) === "green" ? "dark" : "light";
   const field = fields[tone];
   const headingId = `latest-posts-${stegaClean(_key)}-title`;
-  const button = blogListing ? undefined : buttons?.[0];
+  const button = buttons?.[0];
   const buttonHref = getSafeLinkHref(button?.href);
   const buttonLabel = stegaClean(button?.text)?.trim();
-  const featured = blogListing?.featured ?? null;
   // The dispatcher passes `dataAttribute` only when Presentation editing is on.
   const stega = Boolean(dataAttribute);
 
@@ -109,7 +112,7 @@ export default function LatestArticles({
     <section
       aria-labelledby={headingId}
       className={cn("py-section", sectionThemeClass(background))}
-      id={blogListing ? LISTING_ID : `latest-posts-${stegaClean(_key)}`}
+      id={`latest-posts-${stegaClean(_key)}`}
     >
       <div className="container-content">
         <header className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -162,46 +165,12 @@ export default function LatestArticles({
           ) : null}
         </header>
 
-        {featured ? (
-          <div className="mb-6">
-            <FeaturedPostCard
-              fallbackImage={fallbackImage}
-              post={featured}
-              stega={stega}
-              tone={tone}
-            />
-          </div>
-        ) : null}
-
-        {posts.length ? (
-          <PostGrid
-            fallbackImage={fallbackImage}
-            posts={posts}
-            stega={stega}
-            tone={tone}
-          />
-        ) : (
-          <p className={cn("text-lg", field.muted)}>
-            {featured ? "No more posts yet." : "No posts yet."}
-          </p>
-        )}
-
-        {blogListing && posts.length ? (
-          <footer className="mt-14 flex flex-col items-center gap-5">
-            <p className={cn("text-label tabular-nums", field.muted)}>
-              {getBlogResultsLabel(
-                blogListing.pagination.currentPage,
-                posts.length,
-                blogListing.pagination.totalItems,
-              )}
-            </p>
-            <BlogPagination
-              hash={LISTING_ID}
-              onDark={tone === "dark"}
-              pagination={blogListing.pagination}
-            />
-          </footer>
-        ) : null}
+        <PostGrid
+          fallbackImage={fallbackImage}
+          posts={posts}
+          stega={stega}
+          tone={tone}
+        />
       </div>
     </section>
   );

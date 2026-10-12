@@ -1,13 +1,12 @@
-import {
-  documentDataAttribute,
-  PublicationDate,
-} from "@/components/blog-card";
+import { documentDataAttribute } from "@/components/blog-card";
+import { NewsCategoryTag } from "@/components/news/news-index";
+import css from "@/components/news/news.module.css";
 import { urlFor } from "@/sanity/lib/image";
 import type { POST_QUERY_RESULT } from "@/sanity.types";
+import { ChevronRight } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
-import { categoryPath } from "@/lib/routes";
 
 type PostHeroProps = {
   post: NonNullable<POST_QUERY_RESULT>;
@@ -15,23 +14,19 @@ type PostHeroProps = {
   stega: boolean;
 };
 
-function getInitials(value: string | null | undefined) {
-  const name = stegaClean(value)?.trim();
-  if (!name) return "A";
-
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "long",
+    timeZone: "UTC",
+    year: "numeric",
+  }).format(new Date(value));
 }
 
+/** The live post header: breadcrumb, title and byline beside the photo. */
 export default function PostHero({ post, readTime, stega }: PostHeroProps) {
-  const { author, category, excerpt, image, publishedAt, title } = post;
-  const categorySlug = stegaClean(category?.slug?.current)?.replace(/^\/+|\/+$/g, "");
-  const categoryHref = categoryPath(categorySlug);
-  const authorName = stegaClean(author?.name)?.trim();
+  const { author, category, image, title } = post;
+  const publishedAt = stegaClean(post.publishedAt);
   const postDataAttribute = documentDataAttribute({ id: post._id, stega, type: "post" });
   const authorDataAttribute = author
     ? documentDataAttribute({ id: author._id, stega, type: "author" })
@@ -41,76 +36,66 @@ export default function PostHero({ post, readTime, stega }: PostHeroProps) {
     : undefined;
 
   return (
-    <>
-      <header>
-        {category?.title && categoryHref ? (
-          <Link
-            data-sanity={categoryDataAttribute?.("title")}
-            href={categoryHref}
-          >
-            {category.title}
-          </Link>
-        ) : null}
-        {title ? (
-          <h1 data-sanity={postDataAttribute?.("title")}>
-            {title}
-          </h1>
-        ) : null}
-        {excerpt ? (
-          <p data-sanity={postDataAttribute?.("excerpt")}>
-            {excerpt}
-          </p>
-        ) : null}
+    <header className={css.section}>
+      <div className={[css.container, css.postHeader].join(" ")}>
         <div>
-          {author ? (
-            <p>
-              {author.image?.asset?._id ? (
-                <span data-sanity={authorDataAttribute?.("image")}>
-                  <Image
-                    alt={stegaClean(author.image.alt) || authorName || "Post author"}
-                    blurDataURL={author.image.asset.metadata?.lqip || undefined}
-                    height={40}
-                    placeholder={author.image.asset.metadata?.lqip ? "blur" : undefined}
-                    sizes="40px"
-                    src={urlFor(author.image).width(80).height(80).quality(100).url()}
-                    width={40}
+          <nav aria-label="Breadcrumb">
+            <ol className={css.breadcrumbs}>
+              <li>
+                <Link href="/news">Blog</Link>
+                {category ? <ChevronRight aria-hidden size={16} /> : null}
+              </li>
+              {category ? (
+                <li>
+                  <NewsCategoryTag
+                    category={category}
+                    dataAttribute={categoryDataAttribute}
                   />
-                </span>
-              ) : (
-                <span
-                  aria-hidden="true"
-                  data-sanity={authorDataAttribute?.("image")}
-                >
-                  {getInitials(author.name)}
-                </span>
-              )}
-              {author.name ? (
-                <span data-sanity={authorDataAttribute?.("name")}>
-                  {author.name}
-                </span>
+                </li>
               ) : null}
+            </ol>
+          </nav>
+          {title ? (
+            <h1 className={css.postTitle} data-sanity={postDataAttribute?.("title")}>
+              {title}
+            </h1>
+          ) : null}
+          {author?.name ? (
+            <p className={css.byline}>
+              By{" "}
+              <strong data-sanity={authorDataAttribute?.("name")}>{author.name}</strong>
             </p>
           ) : null}
-          <p>
-            <PublicationDate dataAttribute={postDataAttribute} value={publishedAt} />
-            {publishedAt ? <span aria-hidden="true">•</span> : null}
+          <p className={css.meta}>
+            {publishedAt ? (
+              <>
+                <time
+                  data-sanity={postDataAttribute?.("publishedAt")}
+                  dateTime={publishedAt}
+                >
+                  {formatDate(publishedAt)}
+                </time>
+                <span aria-hidden="true">•</span>
+              </>
+            ) : null}
             <span>{readTime}</span>
           </p>
         </div>
-      </header>
-      {image?.asset?._id ? (
-        <figure data-sanity={postDataAttribute?.("image")}>
-          <Image
-            alt={stegaClean(image.alt) || ""}
-            blurDataURL={image.asset.metadata?.lqip || undefined}
-            height={image.asset.metadata?.dimensions?.height ?? 900}
-            placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
-            sizes="(min-width: 1280px) 1280px, calc(100vw - 2rem)"
-            src={urlFor(image).quality(100).url()}
-            width={image.asset.metadata?.dimensions?.width ?? 1600}
-          />
-        </figure>
-      ) : null}
-    </>
+        {image?.asset?._id ? (
+          <figure className={css.postImage} data-sanity={postDataAttribute?.("image")}>
+            <Image
+              alt={stegaClean(image.alt) || ""}
+              blurDataURL={image.asset.metadata?.lqip || undefined}
+              height={image.asset.metadata?.dimensions?.height ?? 900}
+              placeholder={image.asset.metadata?.lqip ? "blur" : undefined}
+              preload
+              sizes="(max-width: 991px) 90vw, 50vw"
+              src={urlFor(image).width(1600).quality(90).url()}
+              width={image.asset.metadata?.dimensions?.width ?? 1600}
+            />
+          </figure>
+        ) : null}
+      </div>
+    </header>
   );
 }

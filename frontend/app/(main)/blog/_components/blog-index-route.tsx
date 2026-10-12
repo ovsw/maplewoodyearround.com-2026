@@ -87,22 +87,18 @@ export async function BlogIndexRoute({
     notFound();
   }
   const blocks = withBlogListingSection(blogIndex.blocks ?? []);
-  const hasHero = blocks.some(
-    (block) => block._type === "hero" || block._type === "innerHero",
-  );
 
   return (
     <>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
-          { name: "Blog", path: getBlogCanonicalPath(currentPage) },
+          { name: "News", path: getBlogCanonicalPath(currentPage) },
         ]}
         siteUrl={siteUrl}
       />
       <FaqPageJsonLd blocks={blogIndex.blocks ?? []} />
-      {/* The Hero carries the page heading; without one, keep an outline. */}
-      {!hasHero ? <h1 className="sr-only">{blogIndex.title}</h1> : null}
+      {/* The News listing section carries the page heading. */}
       <Blocks
         blocks={blocks}
         blogListing={{

@@ -15,8 +15,13 @@ const nextConfig = {
   cacheComponents: true,
   cacheLife: { default: sanity },
   rewrites() {
-    // Keep Maplewood's public post URLs while reusing the existing renderer.
-    return [{ source: "/post/:slug", destination: "/blog/:slug" }];
+    // Keep Maplewood's public News and post URLs while reusing the existing
+    // renderer.
+    return [
+      { source: "/news", destination: "/blog" },
+      { source: "/news/:page(\\d+)", destination: "/blog/:page" },
+      { source: "/post/:slug", destination: "/blog/:slug" },
+    ];
   },
   async redirects() {
     const client = createClient({

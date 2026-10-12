@@ -12,6 +12,7 @@ export type CategoryReference = {
   _id: string;
   title?: string | null;
   slug?: { current?: string | null } | null;
+  color?: string | null;
 };
 
 export type BlogPost = Omit<

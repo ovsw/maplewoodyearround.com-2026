@@ -56,7 +56,7 @@ export function calculateBlogPagination(
   };
 }
 
-export function getBlogPaginationUrl(page: number, basePath = "/blog") {
+export function getBlogPaginationUrl(page: number, basePath = "/news") {
   const normalizedBasePath = `/${basePath.replace(/^\/+|\/+$/g, "")}`;
   return page === 1 ? normalizedBasePath : `${normalizedBasePath}/${page}`;
 }
