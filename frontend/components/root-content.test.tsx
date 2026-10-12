@@ -102,50 +102,48 @@ describe("RootContentView", () => {
     expect(
       screen.getByRole("complementary", { name: "Post actions" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Post introduction")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Post title" }),
+    ).toBeInTheDocument();
   });
 
-  it("omits the table of contents for a thin post and keeps the CTA after the article", () => {
-    const thinPost = {
-      ...post,
-      body: [heading("first", "First"), heading("second", "Second")],
-    } as unknown as NonNullable<POST_QUERY_RESULT>;
-    const { container } = render(
-      <RootContentView
-        blogPostSidebar={blogPostSidebar}
-        content={thinPost}
-        perspective="published"
-        stega={false}
-      />,
-    );
-
-    const layout = container.querySelector('[data-post-layout="two-column"]');
-    expect(screen.queryByRole("navigation", { name: "Table of Contents" })).not.toBeInTheDocument();
-    expect(layout?.querySelector("article")?.nextElementSibling).toHaveAttribute(
-      "aria-label",
-      "Post actions",
-    );
-  });
-
-  it("shows the table of contents for a heading-rich post", () => {
+  it("shows the live post layout: no table of contents, author card after the text", () => {
     const headingRichPost = {
       ...post,
+      author: {
+        _id: "author-1",
+        _type: "author",
+        image: null,
+        name: "Sharon Maynard",
+        role: "Marketing Coordinator",
+      },
       body: [
         heading("first", "First"),
         heading("second", "Second"),
         heading("third", "Third"),
       ],
+      category: {
+        _id: "category-1",
+        _type: "category",
+        color: "#54e3ff",
+        slug: { _type: "slug", current: "school-year" },
+        title: "School-Year",
+      },
     } as unknown as NonNullable<POST_QUERY_RESULT>;
     render(
       <RootContentView
-        blogPostSidebar={blogPostSidebar}
         content={headingRichPost}
         perspective="published"
         stega={false}
       />,
     );
 
-    expect(screen.getByRole("navigation", { name: "Table of Contents" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Table of Contents" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute("href", "/news");
+    // The category is a label, as on the live site, not a link.
+    expect(screen.queryByRole("link", { name: "School-Year" })).not.toBeInTheDocument();
+    expect(screen.getByText("School-Year")).toBeInTheDocument();
+    expect(screen.getByText("Marketing Coordinator, Maplewood")).toBeInTheDocument();
   });
 
   it("emits exactly one BlogPosting script for posts and none for pages", () => {

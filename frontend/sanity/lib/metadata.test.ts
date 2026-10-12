@@ -389,7 +389,7 @@ describe("description resolution", () => {
     expect(descriptions(metadata)).toEqual(
       Array(3).fill("Summer camp in Ontario. Page 2."),
     );
-    expect(metadata.alternates.canonical).toBe("https://example.test/blog/2");
+    expect(metadata.alternates.canonical).toBe("https://example.test/news/2");
   });
 
   it("uses category description fallbacks with pagination", () => {

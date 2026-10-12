@@ -364,6 +364,8 @@ The source CMS name and displayed author name are distinct. The plural-parent sw
 
 The featured-news title, date and link must come from one selected post. The known public date mismatch needs source confirmation; do not invent a date or substitute another article.
 
+Publication is the live switch (issue #16). The six posts that are "Active" in Airtable are published; the 22 "Archived" posts are unpublished drafts, so they keep their content and an editor can publish one again. `/news` (the `blogIndex` document) shows the newest published post large, with its own title, date and link, then the other published posts as cards. `/post/<slug>` opens a published post; `/post` alone is a 404. In Presentation, drafts show too, so `/news` there also lists the Archived drafts.
+
 ### Blog Authors → `author`
 
 | Webflow field | Sanity field   |

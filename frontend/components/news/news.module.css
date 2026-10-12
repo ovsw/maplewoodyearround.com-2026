@@ -204,6 +204,9 @@
 .byline strong {
   font-weight: 600;
 }
+.postHeader .meta {
+  font-size: 0.875rem;
+}
 .postImage {
   overflow: hidden;
   margin: 0;
@@ -383,6 +386,9 @@
   }
   .postBody {
     padding-bottom: 4rem;
+  }
+  .postAuthorName {
+    font-size: 1rem;
   }
   .richText {
     margin-bottom: 2rem;
