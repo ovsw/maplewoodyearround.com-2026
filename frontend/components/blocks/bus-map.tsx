@@ -11,11 +11,12 @@ export default function BusMap({
   description,
   cards,
   stops,
+  camp,
   actions,
   dataAttribute,
 }: SectionProps<"busMap">) {
   // Popups show plain text: drop Presentation's hidden edit markers.
-  const model = buildBusMapModel(stegaClean(stops));
+  const model = buildBusMapModel(stegaClean(stops), stegaClean(camp));
   return (
     <section className={css.bus}>
       <div className={css.container}>
@@ -51,6 +52,7 @@ export default function BusMap({
           </div>
           <BusStopMap
             stops={model.stops}
+            camp={model.camp}
             apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
             mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
           />

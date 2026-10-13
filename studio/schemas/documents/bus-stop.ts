@@ -1,5 +1,6 @@
 import { Bus } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import { nearCamp } from "../validation/near-camp";
 
 /** The Studio list and the Website sort stops by town, then by name. */
 export const busStopOrdering = [
@@ -44,6 +45,7 @@ export default defineType({
       type: "geopoint",
       description:
         "The latitude and longitude of the pin. A stop without a pin stays off the map.",
+      validation: (rule) => rule.custom(nearCamp).warning(),
     }),
     defineField({
       name: "shownOnMap",

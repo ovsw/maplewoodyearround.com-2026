@@ -1,14 +1,26 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { buildBusMapModel, type BusStopInput } from "@/lib/bus-map-model";
+import {
+  buildBusMapModel,
+  type BusStopInput,
+  type CampLocationInput,
+} from "@/lib/bus-map-model";
 import type { BusMapLibraries } from "@/lib/google-maps";
 import BusMap from "./bus-map";
 import BusStopMap, {
   BUS_MAP_UNAVAILABLE,
   BUS_STOP_PIN_SRC,
+  CAMP_PIN_LOGO_SRC,
   type BusMapServices,
 } from "./bus-stop-map";
+
+// The section uses the real Google loader: replace it with the fake below.
+const googleLoader = vi.hoisted(() => ({ load: vi.fn() }));
+vi.mock("@/lib/google-maps", () => ({
+  loadBusMapLibraries: googleLoader.load,
+  onGoogleMapsAuthFailure: () => () => {},
+}));
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -33,7 +45,12 @@ const stopInputs: BusStopInput[] = [
     shownOnMap: true,
   },
 ];
-const stops = buildBusMapModel(stopInputs).stops;
+const campInput: CampLocationInput = {
+  name: "Maplewood Day Camp and Enrichment Center",
+  address: "150 Foundry St #106, South Easton, MA",
+  location: { lat: 42.0075788, lng: -71.0734431 },
+};
+const { stops, camp } = buildBusMapModel(stopInputs, campInput);
 
 /** Holds the IntersectionObserver callback so a test can scroll the map near. */
 function viewport() {
@@ -199,6 +216,77 @@ describe("BusStopMap", () => {
     expect(link?.getAttribute("rel")).toContain("noopener");
   });
 
+  it("adds the camp as a larger logo pin on top and fits it with the stops", async () => {
+    const view = viewport();
+    const { drawn, libraries } = fakeGoogle();
+    render(
+      <BusStopMap
+        stops={stops}
+        camp={camp}
+        apiKey="key"
+        mapId="map"
+        services={services(async () => libraries).value}
+      />,
+    );
+    view.near();
+    await waitFor(() => expect(drawn.markers).toHaveLength(3));
+    const campMarker = drawn.markers[2];
+    expect(campMarker.options.title).toBe("Maplewood Day Camp and Enrichment Center");
+    expect(campMarker.options.position).toEqual(camp?.position);
+    const logo = (campMarker.options.content as HTMLElement).querySelector("img");
+    expect(logo?.getAttribute("src")).toBe(CAMP_PIN_LOGO_SRC);
+    expect(logo?.width).toBeGreaterThan(40);
+    expect(campMarker.options.zIndex).toBeGreaterThan(stops.length);
+    expect(drawn.fitted).toEqual([
+      ...stops.map((stop) => stop.position),
+      { lat: 42.0075788, lng: -71.0734431 },
+    ]);
+  });
+
+  it("opens the camp popup with the name, the address and Get directions", async () => {
+    const view = viewport();
+    const { drawn, libraries } = fakeGoogle();
+    render(
+      <BusStopMap
+        stops={stops}
+        camp={camp}
+        apiKey="key"
+        mapId="map"
+        services={services(async () => libraries).value}
+      />,
+    );
+    view.near();
+    await waitFor(() => expect(drawn.markers).toHaveLength(3));
+    act(() => drawn.markers[2].clicks.forEach((click) => click()));
+    const [popup] = drawn.popups;
+    expect(popup.textContent).toContain("Maplewood Day Camp and Enrichment Center");
+    expect(popup.textContent).toContain("150 Foundry St #106, South Easton, MA");
+    const link = popup.querySelector("a");
+    expect(link?.textContent).toBe("Get directions");
+    expect(link?.getAttribute("href")).toBe(
+      "https://www.google.com/maps/dir/?api=1&destination=42.0075788,-71.0734431",
+    );
+    expect(link?.getAttribute("target")).toBe("_blank");
+  });
+
+  it("draws no camp pin when the Camp location is empty", async () => {
+    const view = viewport();
+    const { drawn, libraries } = fakeGoogle();
+    render(
+      <BusStopMap
+        stops={stops}
+        camp={null}
+        apiKey="key"
+        mapId="map"
+        services={services(async () => libraries).value}
+      />,
+    );
+    view.near();
+    await waitFor(() => expect(drawn.markers).toHaveLength(2));
+    for (const marker of drawn.markers)
+      expect((marker.options.content as HTMLElement).getAttribute("src")).toBe(BUS_STOP_PIN_SRC);
+  });
+
   it("shows the message when there is no key or no Map ID", async () => {
     viewport();
     const { rerender } = render(<BusStopMap stops={stops} mapId="map" />);
@@ -245,7 +333,7 @@ describe("BusStopMap", () => {
 
 describe("BusMap section", () => {
   const section = (
-    props: { stops?: BusStopInput[] } = {},
+    props: { stops?: BusStopInput[]; camp?: CampLocationInput | null } = {},
   ): ComponentProps<typeof BusMap> =>
     ({
       _key: "bus",
@@ -256,6 +344,7 @@ describe("BusMap section", () => {
       cards: [],
       actions: [],
       stops: stopInputs,
+      camp: campInput,
       ...props,
     }) as unknown as ComponentProps<typeof BusMap>;
 
@@ -271,6 +360,33 @@ describe("BusMap section", () => {
       screen.getByRole("region", { name: "Map of the summer bus stops" }),
     ).toBeInTheDocument();
     expect(screen.queryByText(BUS_MAP_UNAVAILABLE)).toBeNull();
+  });
+
+  it("draws the camp from the Camp location next to the stops", async () => {
+    const view = viewport();
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "key");
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID", "map");
+    const { drawn, libraries } = fakeGoogle();
+    googleLoader.load.mockResolvedValue(libraries);
+    render(<BusMap {...section()} />);
+    view.near();
+    await waitFor(() => expect(drawn.markers).toHaveLength(3));
+    expect(drawn.markers.map((marker) => marker.options.title)).toEqual([
+      "Gilmore Hall",
+      "Gavins Pond Soccer Fields",
+      "Maplewood Day Camp and Enrichment Center",
+    ]);
+  });
+
+  it("draws only the stops when Global Settings has no Camp location", async () => {
+    const view = viewport();
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "key");
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID", "map");
+    const { drawn, libraries } = fakeGoogle();
+    googleLoader.load.mockResolvedValue(libraries);
+    render(<BusMap {...section({ camp: null })} />);
+    view.near();
+    await waitFor(() => expect(drawn.markers).toHaveLength(2));
   });
 
   it("shows the message when no stop is shown on the map", async () => {

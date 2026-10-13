@@ -2,7 +2,8 @@
 
 /*
  * The native Google bus map. It draws one green "M" pin for each shown Bus
- * stop and fits them all on load. Google's script loads only when the map
+ * stop, plus a larger pin with the Maplewood logo for the Camp location, and
+ * fits them all on load. Google's script loads only when the map
  * comes near the viewport. Page scrolling never zooms the map: Google's
  * cooperative gestures need two fingers on touch and Ctrl+scroll on desktop.
  *
@@ -10,7 +11,7 @@
  * refuses the key, the map area shows "The map is not available right now."
  */
 import { useEffect, useRef, useState } from "react";
-import type { BusStopPin } from "@/lib/bus-map-model";
+import type { BusMapPoint, BusStopPin, CampPin } from "@/lib/bus-map-model";
 import {
   loadBusMapLibraries,
   onGoogleMapsAuthFailure,
@@ -20,7 +21,13 @@ import css from "./maplewood-home.module.css";
 
 export const BUS_MAP_UNAVAILABLE = "The map is not available right now.";
 export const BUS_STOP_PIN_SRC = "/images/bus-map/bus-stop-pin.png";
+export const CAMP_PIN_LOGO_SRC = "/images/bus-map/camp-pin-logo.webp";
 const PIN_SIZE = 40;
+/** The camp pin's logo, at least three times as wide as a stop pin. */
+const CAMP_LOGO_WIDTH = 132;
+const CAMP_LOGO_HEIGHT = 29;
+/** Room around the pins when the map fits them: the camp pin is taller. */
+const CAMP_FIT_PADDING = 64;
 const ONE_STOP_ZOOM = 14;
 /** Start loading this far before the map scrolls into view. */
 const LOAD_MARGIN = "400px 0px";
@@ -37,6 +44,8 @@ const googleServices: BusMapServices = {
 
 type Props = {
   stops: BusStopPin[];
+  /** The Camp location's pin; none when it is empty. */
+  camp?: CampPin | null;
   apiKey?: string | null;
   mapId?: string | null;
   /** Replaces Google in tests. */
@@ -51,25 +60,35 @@ export function BusMapUnavailable() {
   );
 }
 
-function popup(stop: BusStopPin): HTMLElement {
+type PopupText = { name: string; address: string; href: string; link: string };
+
+function popup({ name, address, href, link }: PopupText): HTMLElement {
   const box = document.createElement("div");
   box.className = css.mapPopup;
-  const name = document.createElement("strong");
-  name.textContent = stop.name;
-  box.append(name);
-  if (stop.address) {
-    const address = document.createElement("p");
-    address.textContent = stop.address;
-    box.append(address);
+  if (name) {
+    const title = document.createElement("strong");
+    title.textContent = name;
+    box.append(title);
   }
-  const link = document.createElement("a");
-  link.href = stop.googleMapsUrl;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = "View in Google Maps";
-  box.append(link);
+  if (address) {
+    const line = document.createElement("p");
+    line.textContent = address;
+    box.append(line);
+  }
+  const anchor = document.createElement("a");
+  anchor.href = href;
+  anchor.target = "_blank";
+  anchor.rel = "noopener noreferrer";
+  anchor.textContent = link;
+  box.append(anchor);
   return box;
 }
+
+const stopPopup = (stop: BusStopPin) =>
+  popup({ name: stop.name, address: stop.address, href: stop.googleMapsUrl, link: "View in Google Maps" });
+
+const campPopup = (camp: CampPin) =>
+  popup({ name: camp.name, address: camp.address, href: camp.directionsUrl, link: "Get directions" });
 
 function pinImage(): HTMLImageElement {
   const image = document.createElement("img");
@@ -81,10 +100,25 @@ function pinImage(): HTMLImageElement {
   return image;
 }
 
+/** A white card with the Maplewood logo and a green point under it. */
+function campPinElement(): HTMLElement {
+  const pin = document.createElement("div");
+  pin.className = css.campPin;
+  const image = document.createElement("img");
+  image.src = CAMP_PIN_LOGO_SRC;
+  image.width = CAMP_LOGO_WIDTH;
+  image.height = CAMP_LOGO_HEIGHT;
+  image.alt = "";
+  image.draggable = false;
+  pin.append(image);
+  return pin;
+}
+
 function drawMap(
   element: HTMLElement,
   libraries: BusMapLibraries,
   stops: BusStopPin[],
+  camp: CampPin | null,
   mapId: string,
 ) {
   const { Map, InfoWindow, LatLngBounds, AdvancedMarkerElement } = libraries;
@@ -103,19 +137,37 @@ function drawMap(
       gmpClickable: true,
     });
     marker.addEventListener("gmp-click", () => {
-      info.setContent(popup(stop));
+      info.setContent(stopPopup(stop));
       info.open({ map, anchor: marker });
     });
     return marker;
   });
+  if (camp) {
+    const marker = new AdvancedMarkerElement({
+      map,
+      position: camp.position,
+      content: campPinElement(),
+      title: camp.name || "Maplewood",
+      gmpClickable: true,
+      // The camp stays on top where it overlaps a nearby stop.
+      zIndex: stops.length + 1,
+    });
+    marker.addEventListener("gmp-click", () => {
+      info.setContent(campPopup(camp));
+      info.open({ map, anchor: marker });
+    });
+    markers.push(marker);
+  }
 
-  if (stops.length === 1) {
-    map.setCenter(stops[0].position);
+  const points: BusMapPoint[] = stops.map((stop) => stop.position);
+  if (camp) points.push(camp.position);
+  if (points.length === 1) {
+    map.setCenter(points[0]);
     map.setZoom(ONE_STOP_ZOOM);
   } else {
     const bounds = new LatLngBounds();
-    for (const stop of stops) bounds.extend(stop.position);
-    map.fitBounds(bounds, PIN_SIZE);
+    for (const point of points) bounds.extend(point);
+    map.fitBounds(bounds, camp ? CAMP_FIT_PADDING : PIN_SIZE);
   }
 
   return () => {
@@ -126,6 +178,7 @@ function drawMap(
 
 export default function BusStopMap({
   stops,
+  camp = null,
   apiKey,
   mapId,
   services = googleServices,
@@ -173,7 +226,7 @@ export default function BusStopMap({
     services
       .load(apiKey)
       .then((libraries) => {
-        if (active) clear = drawMap(target, libraries, stops, mapId);
+        if (active) clear = drawMap(target, libraries, stops, camp, mapId);
       })
       .catch(fail);
     return () => {
@@ -182,7 +235,7 @@ export default function BusStopMap({
       errors.disconnect();
       clear();
     };
-  }, [usable, near, failed, apiKey, mapId, stops, services]);
+  }, [usable, near, failed, apiKey, mapId, stops, camp, services]);
 
   if (!usable || failed) return <BusMapUnavailable />;
   return (
