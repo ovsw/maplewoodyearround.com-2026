@@ -9,6 +9,7 @@
  *
  * When there is no key or Map ID, no stop, the script fails, or Google
  * refuses the key, the map area shows "The map is not available right now."
+ * On Home and Contact the message links to the stop list on the Bus page.
  */
 import { useEffect, useRef, useState } from "react";
 import type { BusMapPoint, BusStopPin, CampPin } from "@/lib/bus-map-model";
@@ -20,6 +21,7 @@ import {
 import css from "./maplewood-home.module.css";
 
 export const BUS_MAP_UNAVAILABLE = "The map is not available right now.";
+export const STOP_LIST_LINK = "See the list of bus stops";
 export const BUS_STOP_PIN_SRC = "/images/bus-map/bus-stop-pin.png";
 export const CAMP_PIN_LOGO_SRC = "/images/bus-map/camp-pin-logo.webp";
 const PIN_SIZE = 40;
@@ -48,14 +50,24 @@ type Props = {
   camp?: CampPin | null;
   apiKey?: string | null;
   mapId?: string | null;
+  /** The stop list's address, linked from the "not available" message. */
+  stopListHref?: string | null;
   /** Replaces Google in tests. */
   services?: BusMapServices;
 };
 
-export function BusMapUnavailable() {
+export function BusMapUnavailable({ stopListHref }: { stopListHref?: string | null }) {
   return (
     <div className={css.mapUnavailable} role="status">
-      <p>{BUS_MAP_UNAVAILABLE}</p>
+      <p>
+        {BUS_MAP_UNAVAILABLE}
+        {stopListHref ? (
+          <>
+            <br />
+            <a href={stopListHref}>{STOP_LIST_LINK}</a>
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }
@@ -181,6 +193,7 @@ export default function BusStopMap({
   camp = null,
   apiKey,
   mapId,
+  stopListHref,
   services = googleServices,
 }: Props) {
   const element = useRef<HTMLDivElement>(null);
@@ -237,7 +250,7 @@ export default function BusStopMap({
     };
   }, [usable, near, failed, apiKey, mapId, stops, camp, services]);
 
-  if (!usable || failed) return <BusMapUnavailable />;
+  if (!usable || failed) return <BusMapUnavailable stopListHref={stopListHref} />;
   return (
     <div
       ref={element}

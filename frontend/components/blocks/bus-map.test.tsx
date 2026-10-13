@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -8,8 +8,10 @@ import {
 } from "@/lib/bus-map-model";
 import type { BusMapLibraries } from "@/lib/google-maps";
 import BusMap from "./bus-map";
+import BusStopList, { NO_TOWN, STOP_LIST_SUMMARY } from "./bus-stop-list";
 import BusStopMap, {
   BUS_MAP_UNAVAILABLE,
+  STOP_LIST_LINK,
   BUS_STOP_PIN_SRC,
   CAMP_PIN_LOGO_SRC,
   type BusMapServices,
@@ -333,7 +335,12 @@ describe("BusStopMap", () => {
 
 describe("BusMap section", () => {
   const section = (
-    props: { stops?: BusStopInput[]; camp?: CampLocationInput | null } = {},
+    props: {
+      stops?: BusStopInput[];
+      camp?: CampLocationInput | null;
+      showStopList?: boolean | null;
+      stopList?: { href: string | null } | null;
+    } = {},
   ): ComponentProps<typeof BusMap> =>
     ({
       _key: "bus",
@@ -404,5 +411,131 @@ describe("BusMap section", () => {
     vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID", "map");
     render(<BusMap {...section()} />);
     expect(await unavailable()).toBeVisible();
+  });
+
+  it("links the message to the Bus page stop list on Home and Contact", async () => {
+    viewport();
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "");
+    render(
+      <BusMap
+        {...section({
+          stopList: { href: "/summer-camp/bus-transportation#bus-map" },
+        })}
+      />,
+    );
+    expect(await unavailable()).toBeVisible();
+    expect(screen.getByRole("link", { name: STOP_LIST_LINK })).toHaveAttribute(
+      "href",
+      "/summer-camp/bus-transportation#bus-map",
+    );
+    expect(screen.queryByText(STOP_LIST_SUMMARY, { exact: false })).toBeNull();
+  });
+
+  it("shows the message without a link when no page shows the stop list", async () => {
+    viewport();
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "");
+    render(<BusMap {...section({ stopList: null })} />);
+    expect(await unavailable()).toBeVisible();
+    expect(screen.queryByRole("link", { name: STOP_LIST_LINK })).toBeNull();
+  });
+
+  it("shows the stop list under the map only when its switch is on", async () => {
+    viewport();
+    vi.stubEnv("NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "");
+    const { rerender } = render(<BusMap {...section()} />);
+    expect(screen.queryByText(STOP_LIST_SUMMARY, { exact: false })).toBeNull();
+    rerender(
+      <BusMap
+        {...section({
+          showStopList: true,
+          stopList: { href: "/summer-camp/bus-transportation#bus-map" },
+        })}
+      />,
+    );
+    expect(screen.getByText(STOP_LIST_SUMMARY, { exact: false })).toBeVisible();
+    // The list is right under the map: the message does not link to it.
+    expect(await unavailable()).toBeVisible();
+    expect(screen.queryByRole("link", { name: STOP_LIST_LINK })).toBeNull();
+  });
+});
+
+describe("BusStopList", () => {
+  const inputs: BusStopInput[] = [
+    ...stopInputs,
+    {
+      _id: "bus-stop-easton-library",
+      name: "Ames Free Library",
+      address: "53 Main St, Easton, MA 02356",
+      town: "easton",
+      location: { lat: 42.06, lng: -71.1 },
+    },
+    {
+      _id: "bus-stop-easton-a",
+      name: "Easton Middle School",
+      address: "98 Columbus Ave, Easton, MA 02356",
+      town: "Easton",
+      location: { lat: 42.03, lng: -71.12 },
+    },
+    {
+      _id: "bus-stop-hidden",
+      name: "Hidden stop",
+      address: "1 Hidden Rd",
+      town: "Canton",
+      location: { lat: 42.1, lng: -71.1 },
+      shownOnMap: false,
+    },
+    {
+      _id: "bus-stop-no-town",
+      name: "Unnamed lot",
+      address: "",
+      town: "",
+      location: { lat: 42.0, lng: -71.0 },
+    },
+  ];
+  const { towns } = buildBusMapModel(inputs, campInput);
+
+  it("is folded closed by default and counts the stops", () => {
+    const { container } = render(<BusStopList towns={towns} />);
+    const details = container.querySelector("details");
+    expect(details).not.toBeNull();
+    expect(details?.open).toBe(false);
+    expect(details?.querySelector("summary")).toHaveTextContent(
+      `${STOP_LIST_SUMMARY} (5)`,
+    );
+  });
+
+  it("groups the stops by town A to Z, then by stop name, each with its address", () => {
+    render(<BusStopList towns={towns} />);
+    const headings = screen
+      .getAllByRole("heading", { level: 3, hidden: true })
+      .map((heading) => heading.textContent);
+    expect(headings).toEqual([NO_TOWN, "easton", "Raynham", "Sharon"]);
+    const easton = screen
+      .getAllByRole("heading", { level: 3, hidden: true })[1]
+      .closest("section") as HTMLElement;
+    expect(
+      within(easton)
+        .getAllByRole("listitem", { hidden: true })
+        .map((item) => item.textContent),
+    ).toEqual([
+      "Ames Free Library 53 Main St, Easton, MA 02356",
+      "Easton Middle School 98 Columbus Ave, Easton, MA 02356",
+    ]);
+    expect(screen.queryByText("Hidden stop")).toBeNull();
+  });
+
+  it("is plain text for screen readers: no hidden text and no map-only content", () => {
+    const { container } = render(<BusStopList towns={towns} />);
+    expect(container.querySelector("[aria-hidden], [role=presentation]")).toBeNull();
+    const items = screen.getAllByRole("listitem", { hidden: true });
+    expect(items).toHaveLength(5);
+    expect(items[items.length - 1]).toHaveTextContent(
+      "Gavins Pond Soccer Fields 120 Gavins Pond Rd, Sharon, MA 02067",
+    );
+  });
+
+  it("renders nothing when no stop is shown", () => {
+    const { container } = render(<BusStopList towns={[]} />);
+    expect(container).toBeEmptyDOMElement();
   });
 });

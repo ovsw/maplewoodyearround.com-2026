@@ -219,6 +219,7 @@
   color: #243021;
   font-size: 20px;
   line-height: 1.5;
+  white-space: pre-line;
 }
 .busGrid {
   display: grid;
@@ -269,6 +270,66 @@
   color: #243021;
   font-size: 18px;
   text-align: center;
+}
+/* The Bus page has no cards or buttons beside the map: the map takes the width. */
+.busGridMapOnly {
+  grid-template-columns: 1fr;
+}
+.mapUnavailable a {
+  display: inline-block;
+  margin-top: 12px;
+  color: #006601;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.stopList {
+  margin-top: 48px;
+  border: 2px solid #006601;
+  border-radius: 0.8em;
+  background: #fff;
+  color: #243021;
+}
+.stopList summary {
+  cursor: pointer;
+  padding: 20px 24px;
+  color: #006601;
+  font-size: 18px;
+  font-weight: 700;
+}
+.stopList summary:focus-visible {
+  outline: 3px solid #006601;
+  outline-offset: 2px;
+}
+.stopTowns {
+  columns: 3 260px;
+  column-gap: 40px;
+  padding: 0 24px 24px;
+}
+.stopTowns section {
+  break-inside: avoid;
+  margin-bottom: 28px;
+}
+.stopTowns h3 {
+  margin: 0 0 12px;
+  color: #006601;
+  font-size: 20px;
+}
+.stopTowns ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stopTowns li > * {
+  display: block;
+}
+.stopTowns li strong {
+  font-size: 16px;
+}
+.stopTowns li span {
+  font-size: 14px;
+  line-height: 1.4;
 }
 .campPin {
   position: relative;

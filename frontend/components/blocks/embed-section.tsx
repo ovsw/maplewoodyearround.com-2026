@@ -26,8 +26,9 @@ const httpsUrl = (value?: string | null) => {
 };
 
 /*
- * Provider embeds: the bus stop map (Webflow gallery1), the Airtable form
- * frame, the Cognito tour form (content30) and the Events Calendar. Pasted
+ * Provider embeds: the Airtable form frame, the Cognito tour form
+ * (content30) and the Events Calendar. The bus stop map is a bus map
+ * section (#88), not an embed. Pasted
  * markup never runs; the Cognito and Events Calendar loaders are fixed code,
  * and the form or calendar is chosen by its public IDs.
  */

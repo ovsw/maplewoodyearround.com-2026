@@ -60,7 +60,7 @@ export default defineType({
       type: "string",
       description: "The service supplying this embedded content.",
       options: {
-        list: ["Cognito", "Airtable", "Events Calendar", "Map", "Other"],
+        list: ["Cognito", "Airtable", "Events Calendar", "Other"],
       },
     }),
     sectionActionsField,

@@ -168,7 +168,7 @@ export const embedUrlField = defineField({
   title: "Embed URL",
   type: "url",
   description:
-    "The HTTPS embed address supplied by Cognito, Airtable, Events Calendar or the map provider. Do not paste script or iframe code.",
+    "The HTTPS embed address supplied by Cognito, Airtable or Events Calendar. Do not paste script or iframe code.",
   validation: (rule) => rule.uri({ scheme: ["https"] }),
 });
 

@@ -1689,10 +1689,6 @@
               },
               {
                 "type": "string",
-                "value": "Map"
-              },
-              {
-                "type": "string",
                 "value": "Other"
               }
             ]
@@ -3722,6 +3718,13 @@
           },
           "optional": true
         },
+        "anchorId": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
+        },
         "title": {
           "type": "objectAttribute",
           "value": {
@@ -3784,6 +3787,13 @@
                 "name": "contentAction"
               }
             }
+          },
+          "optional": true
+        },
+        "showStopList": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
           },
           "optional": true
         }

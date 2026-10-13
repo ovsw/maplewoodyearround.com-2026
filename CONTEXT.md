@@ -179,6 +179,7 @@ the Studio.
   change every summer.
 - The bus map shows every shown **Bus stop** that has a pin, plus the **Camp
   location**. **Bus stops** are grouped and sorted by town, then by name.
+  The Free Bus Transportation page also lists them as text under its map.
 
 ## Editing
 
