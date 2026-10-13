@@ -13,7 +13,7 @@ import BusStopMap, {
   BUS_MAP_UNAVAILABLE,
   STOP_LIST_LINK,
   BUS_STOP_PIN_SRC,
-  CAMP_PIN_LOGO_SRC,
+  CAMP_PIN_SRC,
   type BusMapServices,
 } from "./bus-stop-map";
 
@@ -218,7 +218,7 @@ describe("BusStopMap", () => {
     expect(link?.getAttribute("rel")).toContain("noopener");
   });
 
-  it("adds the camp as a larger logo pin on top and fits it with the stops", async () => {
+  it("adds the camp as a larger yellow pin on top and fits it with the stops", async () => {
     const view = viewport();
     const { drawn, libraries } = fakeGoogle();
     render(
@@ -235,9 +235,9 @@ describe("BusStopMap", () => {
     const campMarker = drawn.markers[2];
     expect(campMarker.options.title).toBe("Maplewood Day Camp and Enrichment Center");
     expect(campMarker.options.position).toEqual(camp?.position);
-    const logo = (campMarker.options.content as HTMLElement).querySelector("img");
-    expect(logo?.getAttribute("src")).toBe(CAMP_PIN_LOGO_SRC);
-    expect(logo?.width).toBeGreaterThan(40);
+    const pin = campMarker.options.content as HTMLImageElement;
+    expect(pin.getAttribute("src")).toBe(CAMP_PIN_SRC);
+    expect(pin.width).toBeGreaterThan(28);
     expect(campMarker.options.zIndex).toBeGreaterThan(stops.length);
     expect(drawn.fitted).toEqual([
       ...stops.map((stop) => stop.position),

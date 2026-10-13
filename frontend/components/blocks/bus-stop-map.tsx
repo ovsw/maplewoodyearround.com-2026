@@ -2,7 +2,7 @@
 
 /*
  * The native Google bus map. It draws one green bus pin for each shown Bus
- * stop, plus a larger pin with the Maplewood logo for the Camp location, and
+ * stop, plus a larger yellow "M" pin on top for the Camp location, and
  * fits them all on load. Google's script loads only when the map
  * comes near the viewport. Page scrolling never zooms the map: Google's
  * cooperative gestures need two fingers on touch and Ctrl+scroll on desktop.
@@ -23,13 +23,13 @@ import css from "./maplewood-home.module.css";
 export const BUS_MAP_UNAVAILABLE = "The map is not available right now.";
 export const STOP_LIST_LINK = "See the list of bus stops";
 export const BUS_STOP_PIN_SRC = "/images/bus-map/bus-stop-pin.svg";
-export const CAMP_PIN_LOGO_SRC = "/images/bus-map/camp-pin-logo.webp";
+export const CAMP_PIN_SRC = "/images/bus-map/camp-pin.svg";
 /** The stop pin: a green map pin with a white bus. Its tip marks the stop. */
 const PIN_WIDTH = 28;
 const PIN_HEIGHT = 35;
-/** The camp pin's logo, at least three times as wide as a stop pin. */
-const CAMP_LOGO_WIDTH = 132;
-const CAMP_LOGO_HEIGHT = 29;
+/** The camp pin: a larger yellow pin with a green border and a green "M". */
+const CAMP_PIN_WIDTH = 48;
+const CAMP_PIN_HEIGHT = 60;
 /** Room around the pins when the map fits them: the camp pin is taller. */
 const CAMP_FIT_PADDING = 64;
 const ONE_STOP_ZOOM = 14;
@@ -114,18 +114,15 @@ function pinImage(): HTMLImageElement {
   return image;
 }
 
-/** A white card with the Maplewood logo and a green point under it. */
-function campPinElement(): HTMLElement {
-  const pin = document.createElement("div");
-  pin.className = css.campPin;
+function campPinElement(): HTMLImageElement {
   const image = document.createElement("img");
-  image.src = CAMP_PIN_LOGO_SRC;
-  image.width = CAMP_LOGO_WIDTH;
-  image.height = CAMP_LOGO_HEIGHT;
+  image.className = css.campPin;
+  image.src = CAMP_PIN_SRC;
+  image.width = CAMP_PIN_WIDTH;
+  image.height = CAMP_PIN_HEIGHT;
   image.alt = "";
   image.draggable = false;
-  pin.append(image);
-  return pin;
+  return image;
 }
 
 function drawMap(
