@@ -30,6 +30,8 @@ const PIN_HEIGHT = 35;
 /** The camp pin: a larger yellow pin with a green border and a green "M". */
 const CAMP_PIN_WIDTH = 48;
 const CAMP_PIN_HEIGHT = 60;
+const STOP_Z_INDEX = 1;
+const CAMP_Z_INDEX = 2;
 /** Room around the pins when the map fits them: the camp pin is taller. */
 const CAMP_FIT_PADDING = 64;
 const ONE_STOP_ZOOM = 14;
@@ -146,6 +148,9 @@ function drawMap(
       content: pinImage(),
       title: stop.name,
       gmpClickable: true,
+      // Without a zIndex Google puts lower pins in front of everything,
+      // the camp too. A fixed order keeps the camp on top.
+      zIndex: STOP_Z_INDEX,
     });
     marker.addEventListener("gmp-click", () => {
       info.setContent(stopPopup(stop));
@@ -161,7 +166,7 @@ function drawMap(
       title: camp.name || "Maplewood",
       gmpClickable: true,
       // The camp stays on top where it overlaps a nearby stop.
-      zIndex: stops.length + 1,
+      zIndex: CAMP_Z_INDEX,
     });
     marker.addEventListener("gmp-click", () => {
       info.setContent(campPopup(camp));

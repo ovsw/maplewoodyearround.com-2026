@@ -238,7 +238,8 @@ describe("BusStopMap", () => {
     const pin = campMarker.options.content as HTMLImageElement;
     expect(pin.getAttribute("src")).toBe(CAMP_PIN_SRC);
     expect(pin.width).toBeGreaterThan(28);
-    expect(campMarker.options.zIndex).toBeGreaterThan(stops.length);
+    for (const marker of drawn.markers.slice(0, 2))
+      expect(campMarker.options.zIndex).toBeGreaterThan(marker.options.zIndex ?? Infinity);
     expect(drawn.fitted).toEqual([
       ...stops.map((stop) => stop.position),
       { lat: 42.0075788, lng: -71.0734431 },
