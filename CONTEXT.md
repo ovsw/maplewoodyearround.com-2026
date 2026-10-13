@@ -89,6 +89,19 @@ A person on a side's team, shown on that side's staff pages.
 **Leadership**:
 The staff members who run Maplewood as a whole. They have no side.
 
+## Summer bus
+
+**Bus stop**:
+A summer bus pick-up and drop-off location, shown on the bus map. It has a
+name, an address, a town and a pin. An editor can hide a stop for a season
+without deleting it.
+_Avoid_: pin, marker, location (for a stop)
+
+**Camp location**:
+The single place of the camp itself, shown on the bus map with its own pin.
+It is never a Bus stop.
+_Avoid_: camp stop, camp pin (as a Bus stop)
+
 ## Play Center
 
 **Play Center**:
@@ -164,6 +177,9 @@ the Studio.
   activity**.
 - **Group schedules** and **Welcome letters** belong to one **Camp group** and
   change every summer.
+- The bus map shows every shown **Bus stop** that has a pin, plus the **Camp
+  location**. **Bus stops** are grouped and sorted by town, then by name.
+  The Free Bus Transportation page also lists them as text under its map.
 
 ## Editing
 

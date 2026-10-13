@@ -1,5 +1,6 @@
-import { Contact, Globe2, ImageIcon, Settings } from "lucide-react";
+import { Contact, Globe2, ImageIcon, MapPin, Settings } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { AddressPinScope, AddressSearchInput, PinInput } from "../inputs/address-pin-input";
 import { imageField } from "./maplewood-fields";
 
 const socialLink = defineType({
@@ -59,6 +60,42 @@ const contactDetails = defineType({
       type: "array",
       of: [defineArrayMember({ type: "string" })],
       validation: (rule) => rule.max(4),
+    }),
+  ],
+});
+
+const campLocation = defineType({
+  name: "campLocation",
+  title: "Camp location",
+  type: "object",
+  icon: MapPin,
+  description:
+    "The camp itself on every bus map: a larger pin with the Maplewood logo. It is never a Bus stop.",
+  // Lets the address field place and move the pin (see address-pin.ts).
+  components: { input: AddressPinScope },
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+      description:
+        "Shown in bold in the camp's map popup, for example \"Maplewood Day Camp and Enrichment Center\".",
+    }),
+    defineField({
+      name: "address",
+      title: "Address",
+      type: "string",
+      description:
+        "Shown to parents exactly as typed, under the name. Type it and pick a Google suggestion to place the pin. You can edit the text after picking.",
+      components: { input: AddressSearchInput },
+    }),
+    defineField({
+      name: "location",
+      title: "Pin",
+      type: "geopoint",
+      description:
+        "The latitude and longitude of the camp. Without a pin the map shows no camp. \"Get directions\" leads here.",
+      components: { input: PinInput },
     }),
   ],
 });
@@ -135,6 +172,12 @@ const settings = defineType({
       group: "contact",
     }),
     defineField({
+      name: "campLocation",
+      title: "Camp location",
+      type: "campLocation",
+      group: "contact",
+    }),
+    defineField({
       description: "Add and order links to public social profiles.",
       name: "socialLinks",
       title: "Social links",
@@ -185,6 +228,6 @@ const settings = defineType({
   },
 });
 
-export const settingsSchemaTypes = [socialLink, contactDetails];
+export const settingsSchemaTypes = [socialLink, contactDetails, campLocation];
 
 export default settings;

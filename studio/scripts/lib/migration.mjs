@@ -11,9 +11,12 @@
 //     },
 //   }
 //
-// `dataset` holds `documents`, `get(id)` and `note(line)`. A note is a line
-// the plan prints before the changes, for example a summary or a case the
-// migration leaves alone on purpose.
+// `dataset` holds `documents`, `get(id)`, `note(line)` and `create(document)`.
+// A note is a line the plan prints before the changes, for example a summary
+// or a case the migration leaves alone on purpose. `create` adds a record that
+// does not exist yet; its id sets its state, so an id without a prefix is
+// published. A migration creates only the ids that `get` does not find, so a
+// second run creates nothing.
 //
 // The change runs on every stored version: the published document and its
 // draft each get their own call, so both change. It returns the document
@@ -87,7 +90,13 @@ const label = (document) =>
 export function planMigration(migration, documents) {
   const before = new Map(documents.map((document) => [document._id, document]));
   const notes = [];
-  const change = migration.prepare({ documents, get: (id) => before.get(id), note: (line) => notes.push(line) });
+  const additions = [];
+  const change = migration.prepare({
+    documents,
+    get: (id) => before.get(id),
+    note: (line) => notes.push(line),
+    create: (document) => additions.push(structuredClone(document)),
+  });
   const after = new Map();
 
   for (const document of documents) {
@@ -98,6 +107,11 @@ export function planMigration(migration, documents) {
       if (after.has(output._id)) throw new Error(`Two documents would have the id ${output._id}`);
       after.set(output._id, output);
     }
+  }
+  for (const document of additions) {
+    if (before.has(document._id)) throw new Error(`${document._id} already exists; create only new records`);
+    if (after.has(document._id)) throw new Error(`Two documents would have the id ${document._id}`);
+    after.set(document._id, document);
   }
 
   const created = [...after.values()].filter((document) => !before.has(document._id));

@@ -213,3 +213,40 @@ test("an applied run writes after the backup, deletes last", async () => {
     ["delete", "gone", undefined],
   ]);
 });
+
+test("a migration can create new records, and never over an existing id", () => {
+  const creating = (ids) => ({
+    description: "test",
+    prepare(dataset) {
+      for (const id of ids) if (!dataset.get(id)) dataset.create({ _id: id, _type: "busStop", name: id });
+      return (document) => document;
+    },
+  });
+  const plan = planMigration(creating(["stop-a", "stop-b"]), [{ _id: "stop-a", _type: "busStop", name: "Edited" }]);
+  assert.deepEqual(plan.created, [{ _id: "stop-b", _type: "busStop", name: "stop-b" }]);
+  assert.deepEqual(plan.changed, []);
+
+  const careless = {
+    description: "test",
+    prepare(dataset) {
+      dataset.create({ _id: "stop-a", _type: "busStop" });
+      return (document) => document;
+    },
+  };
+  assert.throws(() => planMigration(careless, [{ _id: "stop-a", _type: "busStop" }]), /stop-a already exists/);
+  assert.throws(
+    () =>
+      planMigration(
+        {
+          description: "test",
+          prepare(dataset) {
+            dataset.create({ _id: "stop-c", _type: "busStop" });
+            dataset.create({ _id: "stop-c", _type: "busStop" });
+            return (document) => document;
+          },
+        },
+        [],
+      ),
+    /Two documents would have the id stop-c/,
+  );
+});

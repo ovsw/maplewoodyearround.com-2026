@@ -11,6 +11,7 @@ import {
   season,
 } from "./schemas/documents/maplewood-categories";
 import campGroup from "./schemas/documents/camp-group";
+import busStop from "./schemas/documents/bus-stop";
 import sampleSchedule, { sampleScheduleSlot } from "./schemas/documents/sample-schedule";
 import jobOpportunity from "./schemas/documents/job-opportunity";
 import {
@@ -119,6 +120,7 @@ export const schemaTypes = [
   grade,
   season,
   campGroup,
+  busStop,
   sampleSchedule,
   sampleScheduleSlot,
   jobOpportunity,

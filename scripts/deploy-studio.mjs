@@ -5,6 +5,14 @@ import path from "node:path";
 import { parseEnv } from "node:util";
 
 const studioDirectory = path.resolve(import.meta.dirname, "../studio");
+// Public settings with the same value in the local and the deployed Studio,
+// kept only in the ignored studio/.env.local because they must not be
+// committed. The Studio Google key allows both localhost:3333 and
+// maplewood.sanity.studio.
+const sharedLocalPublicNames = new Set([
+  "SANITY_STUDIO_GOOGLE_MAPS_API_KEY",
+  "SANITY_STUDIO_GOOGLE_MAPS_MAP_ID",
+]);
 
 try {
   if (process.argv.length > 2) {
@@ -23,10 +31,15 @@ try {
   if (!token) {
     throw new Error("Set SANITY_DEPLOY_TOKEN in studio/.env.local before deploying Studio.");
   }
+  if (!local.SANITY_STUDIO_GOOGLE_MAPS_API_KEY?.trim()) {
+    throw new Error("Set SANITY_STUDIO_GOOGLE_MAPS_API_KEY in studio/.env.local before deploying Studio: the Bus stop map input needs it.");
+  }
   // Sanity also reads .env.local through Vite. Merely omitting it from the
   // child environment does not keep local-only public variables out of builds.
   const localOnlyPublicNames = Object.keys(local).filter((name) =>
-    /^(SANITY_STUDIO_|SANITY_APP_)/.test(name) && !Object.hasOwn(production, name),
+    /^(SANITY_STUDIO_|SANITY_APP_)/.test(name) &&
+    !Object.hasOwn(production, name) &&
+    !sharedLocalPublicNames.has(name),
   );
   if (localOnlyPublicNames.length) {
     throw new Error(`Set explicit production values for local public settings before deploying: ${localOnlyPublicNames.join(", ")}`);

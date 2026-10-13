@@ -42,6 +42,7 @@ function toItem(record) {
     item.filter = last(child, "filter")?.[0];
     item.params = last(child, "params")?.[0];
     item.openChild = last(child, "child")?.[0];
+    item.ordering = last(child, "defaultOrdering")?.[0];
   } else if (child.kind === "editor") {
     item.type = last(child, "schemaType")[0];
     item.documentId = last(child, "documentId")[0];
@@ -126,6 +127,7 @@ test("the root menu follows the OVS starter shape", () => {
     "Facilities",
     "Activities",
     "Groups",
+    "Bus stops",
     "Staff Members",
     "Sample Schedules",
     "FAQs",
@@ -207,6 +209,17 @@ test("each side's lists show only records of that side", () => {
   const staff = find(root, "Summer Camp", "Staff Members");
   assert.match(staff.filter, /profileGroup != "leadership"/);
   assert.match(find(root, "Leadership").filter, /profileGroup == "leadership"/);
+});
+
+test("Bus stops lists every stop by town, then by name", () => {
+  const stops = find(root, "Summer Camp", "Bus stops");
+  assert.equal(stops.type, "busStop");
+  // The summer bus belongs to Summer Camp, but a stop has no side field.
+  assert.equal(stops.filter, undefined);
+  assert.deepEqual(stops.ordering, [
+    { field: "town", direction: "asc" },
+    { field: "name", direction: "asc" },
+  ]);
 });
 
 test("Index items open the page that shows the list", () => {
