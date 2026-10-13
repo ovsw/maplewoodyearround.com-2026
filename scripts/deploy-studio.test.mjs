@@ -12,12 +12,14 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+const KEY = "SANITY_DEPLOY_TOKEN=test-token\nSANITY_STUDIO_GOOGLE_MAPS_API_KEY=studio-maps-key\n";
+
 function deploy(t, { production, local, inherited, args = [], exitCode = 0 } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "maplewood-deploy-test-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   for (const directory of ["scripts", "studio", "bin"]) mkdirSync(path.join(root, directory));
   copyFileSync(new URL("./deploy-studio.mjs", import.meta.url), path.join(root, "scripts/deploy-studio.mjs"));
-  writeFileSync(path.join(root, "studio/.env.local"), local ?? "SANITY_DEPLOY_TOKEN=test-token\nSANITY_STUDIO_PREVIEW_URL=http://localhost:3006\nSANITY_STUDIO_APP_ID=local-app\n");
+  writeFileSync(path.join(root, "studio/.env.local"), local ?? `${KEY}SANITY_STUDIO_PREVIEW_URL=http://localhost:3006\nSANITY_STUDIO_APP_ID=local-app\n`);
   writeFileSync(path.join(root, "studio/.env.production"), production ?? "SANITY_STUDIO_PREVIEW_URL=https://maplewoodyearround-com-2026.vercel.app\nSANITY_STUDIO_APP_ID=production-app\n");
   const pnpm = path.join(root, "bin/pnpm");
   writeFileSync(pnpm, `#!${process.execPath}
@@ -28,6 +30,7 @@ console.log(JSON.stringify({
   appId: process.env.SANITY_STUDIO_APP_ID,
   token: process.env.SANITY_AUTH_TOKEN,
   localOnly: process.env.SANITY_STUDIO_LOCAL_ONLY,
+  mapsKey: process.env.SANITY_STUDIO_GOOGLE_MAPS_API_KEY,
   mode: process.env.SANITY_ACTIVE_ENV,
   nodeEnv: process.env.NODE_ENV,
 }));
@@ -106,7 +109,7 @@ test("deployment requires the token from the local file", (t) => {
 });
 
 test("deployment blocks local-only public settings that Sanity would load again", (t) => {
-  const result = deploy(t, { local: "SANITY_DEPLOY_TOKEN=test-token\nSANITY_STUDIO_LOCAL_ONLY=private-local-value\n" });
+  const result = deploy(t, { local: `${KEY}SANITY_STUDIO_LOCAL_ONLY=private-local-value\n` });
   assert.equal(result.status, 1, result.stderr);
   assert.equal(result.stdout, "");
   assert.match(result.stderr, /SANITY_STUDIO_LOCAL_ONLY/);
@@ -121,4 +124,21 @@ test("deployment cannot skip the build with extra CLI arguments", (t) => {
 
 test("a failed Sanity deployment returns its failure status", (t) => {
   assert.equal(deploy(t, { exitCode: 7 }).status, 7);
+});
+
+test("the Studio Google Maps key and Map ID may come from the ignored local file only", (t) => {
+  const result = deploy(t, { local: `${KEY}SANITY_STUDIO_GOOGLE_MAPS_MAP_ID=map-id\n` });
+  assert.equal(result.status, 0, result.stderr);
+  // Sanity's build reads them from studio/.env.local itself; the guard does
+  // not copy the key into the deploy command's environment or its output.
+  const output = JSON.parse(result.stdout.trim().split("\n").at(-1));
+  assert.equal(output.mapsKey, undefined);
+  assert.doesNotMatch(result.stdout + result.stderr, /studio-maps-key/);
+});
+
+test("deployment requires the Studio Google Maps key", (t) => {
+  const result = deploy(t, { local: "SANITY_DEPLOY_TOKEN=test-token\n" });
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.match(result.stderr, /SANITY_STUDIO_GOOGLE_MAPS_API_KEY/);
 });

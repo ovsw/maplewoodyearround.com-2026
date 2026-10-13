@@ -1,5 +1,6 @@
 import { Bus } from "lucide-react";
 import { defineField, defineType } from "sanity";
+import { AddressPinScope, AddressSearchInput, PinInput } from "../inputs/address-pin-input";
 import { nearCamp } from "../validation/near-camp";
 
 /** The Studio list and the Website sort stops by town, then by name. */
@@ -15,6 +16,8 @@ export default defineType({
   icon: Bus,
   description:
     "A summer bus pick-up and drop-off location, shown on the bus map.",
+  // Lets the address field place and move the pin (see address-pin.ts).
+  components: { input: AddressPinScope },
   fields: [
     defineField({
       name: "name",
@@ -25,13 +28,6 @@ export default defineType({
       validation: (rule) => rule.required().error("Give the stop a name."),
     }),
     defineField({
-      name: "address",
-      title: "Address",
-      type: "string",
-      description:
-        "Shown to parents exactly as typed, under the name. For example \"Easton, MA 02356\".",
-    }),
-    defineField({
       name: "town",
       title: "Town",
       type: "string",
@@ -40,11 +36,20 @@ export default defineType({
       validation: (rule) => rule.required().error("Give the stop a town."),
     }),
     defineField({
+      name: "address",
+      title: "Address",
+      type: "string",
+      description:
+        "Shown to parents exactly as typed, under the name, for example \"Easton, MA 02356\". Type it and pick a Google suggestion to place the pin. You can edit the text after picking.",
+      components: { input: AddressSearchInput },
+    }),
+    defineField({
       name: "location",
       title: "Pin",
       type: "geopoint",
       description:
         "The latitude and longitude of the pin. A stop without a pin stays off the map.",
+      components: { input: PinInput },
       validation: (rule) => rule.custom(nearCamp).warning(),
     }),
     defineField({

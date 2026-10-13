@@ -30,6 +30,14 @@ The deploy guard uses production settings for the deployed preview and app ID.
 It uses the dedicated `SANITY_DEPLOY_TOKEN`; content operations use
 `SANITY_AUTH_TOKEN`. Keep both values private.
 
+The Bus stop and Camp location input uses the Studio Google Maps key
+`SANITY_STUDIO_GOOGLE_MAPS_API_KEY` and Map ID
+`SANITY_STUDIO_GOOGLE_MAPS_MAP_ID`. They live only in the ignored
+`studio/.env.local`, because the deploy builds the Studio from it. The key
+allows both `localhost:3333` and `maplewood.sanity.studio`, so the local value
+is the deployed value. The deploy guard stops without the key. This key is
+separate from the map-only website key.
+
 Run from the repository root:
 
 ```bash

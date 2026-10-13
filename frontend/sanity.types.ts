@@ -2602,8 +2602,8 @@ export type BusStop = {
   _updatedAt: string;
   _rev: string;
   name?: string;
-  address?: string;
   town?: string;
+  address?: string;
   location?: Geopoint;
   shownOnMap?: boolean;
 };

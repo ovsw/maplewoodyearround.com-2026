@@ -1,5 +1,6 @@
 import { Contact, Globe2, ImageIcon, MapPin, Settings } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { AddressPinScope, AddressSearchInput, PinInput } from "../inputs/address-pin-input";
 import { imageField } from "./maplewood-fields";
 
 const socialLink = defineType({
@@ -70,6 +71,8 @@ const campLocation = defineType({
   icon: MapPin,
   description:
     "The camp itself on every bus map: a larger pin with the Maplewood logo. It is never a Bus stop.",
+  // Lets the address field place and move the pin (see address-pin.ts).
+  components: { input: AddressPinScope },
   fields: [
     defineField({
       name: "name",
@@ -82,7 +85,9 @@ const campLocation = defineType({
       name: "address",
       title: "Address",
       type: "string",
-      description: "Shown to parents exactly as typed, under the name.",
+      description:
+        "Shown to parents exactly as typed, under the name. Type it and pick a Google suggestion to place the pin. You can edit the text after picking.",
+      components: { input: AddressSearchInput },
     }),
     defineField({
       name: "location",
@@ -90,6 +95,7 @@ const campLocation = defineType({
       type: "geopoint",
       description:
         "The latitude and longitude of the camp. Without a pin the map shows no camp. \"Get directions\" leads here.",
+      components: { input: PinInput },
     }),
   ],
 });

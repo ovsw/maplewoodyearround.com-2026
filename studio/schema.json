@@ -15741,14 +15741,14 @@
         },
         "optional": true
       },
-      "address": {
+      "town": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
         },
         "optional": true
       },
-      "town": {
+      "address": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
