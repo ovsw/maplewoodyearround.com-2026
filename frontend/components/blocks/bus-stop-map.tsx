@@ -11,7 +11,7 @@
  * refuses the key, the map area shows "The map is not available right now."
  * On Home and Contact the message links to the stop list on the Bus page.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { BusMapPoint, BusStopPin, CampPin } from "@/lib/bus-map-model";
 import {
   loadBusMapLibraries,
@@ -219,6 +219,13 @@ export default function BusStopMap({
     return () => observer.disconnect();
   }, [usable, near]);
 
+  // A server refresh (for example a live edit in Presentation) sends equal
+  // data as new objects: keep the map unless the stops or the camp changed.
+  const stopsSignature = JSON.stringify(stops);
+  const campSignature = JSON.stringify(camp);
+  const shownStops = useMemo<BusStopPin[]>(() => JSON.parse(stopsSignature), [stopsSignature]);
+  const shownCamp = useMemo<CampPin | null>(() => JSON.parse(campSignature), [campSignature]);
+
   // Load Google's script and draw the stops.
   useEffect(() => {
     if (!usable || !near || failed || !apiKey || !mapId) return;
@@ -239,7 +246,7 @@ export default function BusStopMap({
     services
       .load(apiKey)
       .then((libraries) => {
-        if (active) clear = drawMap(target, libraries, stops, camp, mapId);
+        if (active) clear = drawMap(target, libraries, shownStops, shownCamp, mapId);
       })
       .catch(fail);
     return () => {
@@ -248,7 +255,7 @@ export default function BusStopMap({
       errors.disconnect();
       clear();
     };
-  }, [usable, near, failed, apiKey, mapId, stops, camp, services]);
+  }, [usable, near, failed, apiKey, mapId, shownStops, shownCamp, services]);
 
   if (!usable || failed) return <BusMapUnavailable stopListHref={stopListHref} />;
   return (

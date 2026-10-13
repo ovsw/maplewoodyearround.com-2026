@@ -37,6 +37,7 @@ import {
   applyAddressPinEvent,
   offersMovePin,
   roundPoint,
+  samePoint,
   storedChanges,
   toPinPoint,
   type AddressPinEvent,
@@ -80,15 +81,18 @@ type LocationValue = { address?: unknown; location?: unknown } | undefined;
 export function AddressPinScope(props: ObjectInputProps) {
   const { onChange, schemaType } = props;
   const value = props.value as LocationValue;
-  const [pending, setPending] = useState<PinPoint | null>(null);
-  const state = useMemo<AddressPinState>(
-    () => ({
+  // The waiting position remembers the pin it was offered against. When the
+  // stored pin changes from outside this input (another editor, a discarded
+  // draft, a restored revision), the offer no longer applies.
+  const [pending, setPending] = useState<{ point: PinPoint; pin: PinPoint | null } | null>(null);
+  const state = useMemo<AddressPinState>(() => {
+    const pin = toPinPoint(value?.location);
+    return {
       address: typeof value?.address === "string" ? value.address : "",
-      pin: toPinPoint(value?.location),
-      pending,
-    }),
-    [value?.address, value?.location, pending],
-  );
+      pin,
+      pending: pending && samePoint(pending.pin, pin) ? pending.point : null,
+    };
+  }, [value?.address, value?.location, pending]);
   const current = useRef(state);
   current.current = state;
   const hasValue = value !== undefined;
@@ -113,7 +117,7 @@ export function AddressPinScope(props: ObjectInputProps) {
         onChange(hasValue ? patches : [setIfMissing({ _type: (schemaType as ObjectSchemaType).name }), ...patches]);
       }
       current.current = after;
-      setPending(after.pending);
+      setPending(after.pending ? { point: after.pending, pin: after.pin } : null);
     },
     [onChange, schemaType, hasValue],
   );
