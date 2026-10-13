@@ -164,7 +164,7 @@ describe("BusStopMap", () => {
     await waitFor(() => expect(google.value.load).toHaveBeenCalledWith("key"));
   });
 
-  it("draws one green M pin per stop, fits them all and never zooms on page scroll", async () => {
+  it("draws one green bus pin per stop, fits them all and never zooms on page scroll", async () => {
     const view = viewport();
     const { drawn, libraries } = fakeGoogle();
     render(
@@ -185,7 +185,7 @@ describe("BusStopMap", () => {
     for (const marker of drawn.markers) {
       const pin = marker.options.content as HTMLImageElement;
       expect(pin.getAttribute("src")).toBe(BUS_STOP_PIN_SRC);
-      expect(pin.width).toBe(40);
+      expect([pin.width, pin.height]).toEqual([28, 35]);
     }
     expect(drawn.markers.map((marker) => marker.options.title)).toEqual([
       "Gilmore Hall",

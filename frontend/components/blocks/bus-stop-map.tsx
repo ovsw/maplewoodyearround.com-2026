@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * The native Google bus map. It draws one green "M" pin for each shown Bus
+ * The native Google bus map. It draws one green bus pin for each shown Bus
  * stop, plus a larger pin with the Maplewood logo for the Camp location, and
  * fits them all on load. Google's script loads only when the map
  * comes near the viewport. Page scrolling never zooms the map: Google's
@@ -22,9 +22,11 @@ import css from "./maplewood-home.module.css";
 
 export const BUS_MAP_UNAVAILABLE = "The map is not available right now.";
 export const STOP_LIST_LINK = "See the list of bus stops";
-export const BUS_STOP_PIN_SRC = "/images/bus-map/bus-stop-pin.png";
+export const BUS_STOP_PIN_SRC = "/images/bus-map/bus-stop-pin.svg";
 export const CAMP_PIN_LOGO_SRC = "/images/bus-map/camp-pin-logo.webp";
-const PIN_SIZE = 40;
+/** The stop pin: a green map pin with a white bus. Its tip marks the stop. */
+const PIN_WIDTH = 28;
+const PIN_HEIGHT = 35;
 /** The camp pin's logo, at least three times as wide as a stop pin. */
 const CAMP_LOGO_WIDTH = 132;
 const CAMP_LOGO_HEIGHT = 29;
@@ -105,8 +107,8 @@ const campPopup = (camp: CampPin) =>
 function pinImage(): HTMLImageElement {
   const image = document.createElement("img");
   image.src = BUS_STOP_PIN_SRC;
-  image.width = PIN_SIZE;
-  image.height = PIN_SIZE;
+  image.width = PIN_WIDTH;
+  image.height = PIN_HEIGHT;
   image.alt = "";
   image.draggable = false;
   return image;
@@ -179,7 +181,7 @@ function drawMap(
   } else {
     const bounds = new LatLngBounds();
     for (const point of points) bounds.extend(point);
-    map.fitBounds(bounds, camp ? CAMP_FIT_PADDING : PIN_SIZE);
+    map.fitBounds(bounds, camp ? CAMP_FIT_PADDING : PIN_HEIGHT);
   }
 
   return () => {
