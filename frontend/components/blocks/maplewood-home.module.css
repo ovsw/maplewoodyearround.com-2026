@@ -252,12 +252,40 @@
 .benefits article:nth-child(3) svg {
   color: #007bac;
 }
-.map {
+.map,
+.mapUnavailable {
   width: 100%;
   min-height: 620px;
   height: 100%;
   border: 2px solid #006601;
   border-radius: 0.8em;
+  overflow: hidden;
+}
+.mapUnavailable {
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: #fff;
+  color: #243021;
+  font-size: 18px;
+  text-align: center;
+}
+.mapPopup {
+  display: grid;
+  gap: 4px;
+  max-width: 240px;
+  color: #243021;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.mapPopup strong {
+  color: #006601;
+  font-size: 16px;
+}
+.mapPopup a {
+  color: #006601;
+  font-weight: 700;
+  text-decoration: underline;
 }
 .bus .action {
   font-size: 14px;
@@ -524,7 +552,8 @@
   .busGrid {
     margin-top: 48px;
   }
-  .map {
+  .map,
+  .mapUnavailable {
     min-height: 480px;
   }
   .newsFeatured,

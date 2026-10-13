@@ -1,5 +1,7 @@
 import { BusFront, Users, ShieldCheck } from "lucide-react";
-import { getSafeLinkHref } from "@/lib/safe-href";
+import { stegaClean } from "next-sanity";
+import { buildBusMapModel } from "@/lib/bus-map-model";
+import BusStopMap from "./bus-stop-map";
 import { SectionActions, type SectionProps } from "./maplewood-section";
 import css from "./maplewood-home.module.css";
 const icons = [BusFront, Users, ShieldCheck];
@@ -8,14 +10,12 @@ export default function BusMap({
   eyebrow,
   description,
   cards,
-  embedUrl,
+  stops,
   actions,
   dataAttribute,
 }: SectionProps<"busMap">) {
-  const embed = getSafeLinkHref(embedUrl);
-  const safeEmbed = embed?.startsWith("https://snazzymaps.com/embed/")
-    ? embed
-    : null;
+  // Popups show plain text: drop Presentation's hidden edit markers.
+  const model = buildBusMapModel(stegaClean(stops));
   return (
     <section className={css.bus}>
       <div className={css.container}>
@@ -49,15 +49,11 @@ export default function BusMap({
             </div>
             <SectionActions actions={actions} dataAttribute={dataAttribute} />
           </div>
-          {safeEmbed ? (
-            <iframe
-              src={safeEmbed}
-              title="Maplewood bus pickup locations"
-              loading="lazy"
-              className={css.map}
-              data-sanity={dataAttribute?.("embedUrl")}
-            />
-          ) : null}
+          <BusStopMap
+            stops={model.stops}
+            apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+            mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
+          />
         </div>
       </div>
     </section>

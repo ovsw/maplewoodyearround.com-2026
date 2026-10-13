@@ -5,7 +5,6 @@ import {
   sectionDescriptionField,
   sectionActionsField,
   contentCardsField,
-  embedUrlField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -17,7 +16,6 @@ export default defineType({
     sectionTitleField,
     defineField({ name: "eyebrow", title: "Short label", type: "string" }),
     sectionDescriptionField,
-    embedUrlField,
     contentCardsField,
     sectionActionsField,
   ],

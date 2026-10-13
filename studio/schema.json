@@ -3743,13 +3743,6 @@
           },
           "optional": true
         },
-        "embedUrl": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          },
-          "optional": true
-        },
         "cards": {
           "type": "objectAttribute",
           "value": {
