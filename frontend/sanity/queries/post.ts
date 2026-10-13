@@ -24,6 +24,7 @@ const POST_PROJECTION = groq`{
       _id,
       _type,
       name,
+      role,
       image {
         ${imageQuery}
       }
@@ -32,7 +33,8 @@ const POST_PROJECTION = groq`{
       _id,
       _type,
       title,
-      slug
+      slug,
+      color
     },
     _createdAt,
     _updatedAt,

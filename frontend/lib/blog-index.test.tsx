@@ -217,10 +217,10 @@ describe("blog index", () => {
   });
 
   it("builds canonical pagination and category paths", () => {
-    expect(getBlogPaginationUrl(1)).toBe("/blog");
-    expect(getBlogPaginationUrl(2)).toBe("/blog/2");
-    expect(getBlogCanonicalPath(1)).toBe("/blog");
-    expect(getBlogCanonicalPath(3)).toBe("/blog/3");
+    expect(getBlogPaginationUrl(1)).toBe("/news");
+    expect(getBlogPaginationUrl(2)).toBe("/news/2");
+    expect(getBlogCanonicalPath(1)).toBe("/news");
+    expect(getBlogCanonicalPath(3)).toBe("/news/3");
     expect(getBlogPaginationUrl(1, "/blog/category/news/")).toBe(
       "/blog/category/news",
     );
@@ -316,10 +316,8 @@ describe("blog index", () => {
       pagination: calculateBlogPagination(0, 1),
       posts: [],
     });
-    // No Hero section: the page still has its heading for assistive tech.
-    expect(
-      screen.getByRole("heading", { level: 1, name: "Blog" }),
-    ).toBeInTheDocument();
+    // The News listing section carries the page heading, so the route adds none.
+    expect(screen.queryByRole("heading", { level: 1 })).not.toBeInTheDocument();
   });
 
   it("lists the posts even when the Blog page has no Latest Posts section yet", () => {
@@ -340,7 +338,7 @@ describe("blog index", () => {
     ]);
   });
 
-  it("shows a clear empty state when the first page has only the latest post", () => {
+  it("shows the page heading and the latest post large when it is the only post", () => {
     const props = {
       _key: "listing",
       _type: "latestArticles",
@@ -356,14 +354,18 @@ describe("blog index", () => {
 
     render(<LatestArticles {...props} />);
 
+    expect(
+      screen.getByRole("heading", { level: 1, name: "All the news" }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Summer update" })).toHaveAttribute(
       "href",
       "/post/summer-update",
     );
-    expect(screen.getByText("No more posts yet.")).toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(1);
+    expect(screen.queryByText("No news yet.")).not.toBeInTheDocument();
   });
 
-  it("paginates the Blog page listing and opens later pages at the list", () => {
+  it("paginates the News listing and opens later pages at the list", () => {
     const props = {
       _key: "listing",
       _type: "latestArticles",
@@ -381,7 +383,7 @@ describe("blog index", () => {
 
     expect(screen.getByRole("link", { name: "Go to page 3" })).toHaveAttribute(
       "href",
-      "/blog/3#latest-posts",
+      "/news/3#latest-posts",
     );
     expect(screen.getByRole("link", { name: "Go to page 2" })).toHaveAttribute(
       "aria-current",
@@ -389,6 +391,6 @@ describe("blog index", () => {
     );
     expect(
       screen.getByRole("link", { name: "Go to previous page" }),
-    ).toHaveAttribute("href", "/blog#latest-posts");
+    ).toHaveAttribute("href", "/news#latest-posts");
   });
 });

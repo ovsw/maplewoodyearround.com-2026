@@ -12,6 +12,7 @@ export const blogPostProjection = `
   publishedAt,
   "excerpt": pt::text(excerpt),
   image {${imageQuery}},
-  author->{name, image{${imageQuery}}},
-  category->{_id, title, slug}
+  "wordCount": count(string::split(pt::text(body), " ")),
+  author->{name, role, image{${imageQuery}}},
+  category->{_id, title, slug, color}
 `;

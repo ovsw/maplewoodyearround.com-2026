@@ -10,6 +10,7 @@ const posts = Array.from({ length: 6 }, (_, index) => ({
   slug: { _type: "slug" as const, current: `news-${index}` },
   publishedAt: null,
   excerpt: "News summary",
+  wordCount: 3,
   image: null,
   author: null,
   category: {

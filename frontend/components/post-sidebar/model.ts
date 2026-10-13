@@ -131,5 +131,10 @@ export function getPostReadTime(value: PortableTextProps["value"]) {
     }
   }
 
-  return `${Math.max(1, Math.round(wordCount / 200))} min read`;
+  return formatReadTime(wordCount);
+}
+
+/** Reading time at 200 words a minute, never less than one minute. */
+export function formatReadTime(wordCount?: number | null) {
+  return `${Math.max(1, Math.round((wordCount ?? 0) / 200))} min read`;
 }

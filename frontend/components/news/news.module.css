@@ -1,0 +1,409 @@
+/* The News index and post pages, ported from the live Maplewood Webflow
+   stylesheet (section_blog7, section_blog-post-header3, section_content29).
+   Sizes and colours follow its components; class names describe roles. */
+
+.section {
+  padding: 7rem 5%;
+  background: #fff;
+  color: var(--maplewood-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.container {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+/* Index header */
+.intro {
+  max-width: 48rem;
+  margin-bottom: 5rem;
+}
+.tagline {
+  margin: 0;
+  font-weight: 600;
+}
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.breadcrumbs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+.title {
+  margin: 1rem 0 1.5rem;
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--maplewood-green);
+}
+.description {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+/* Cards */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border: 3px solid var(--maplewood-green);
+  border-radius: 0.8em;
+  box-shadow: 6px 6px 0 var(--maplewood-green);
+}
+.featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 5rem;
+}
+.cardImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.featured .cardImage {
+  height: 100%;
+  aspect-ratio: 8 / 6;
+}
+.cardContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+}
+.featured .cardContent {
+  padding: 3rem;
+}
+.tag {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #aaaaaaad;
+  border-radius: 0.4em;
+  background: #eee;
+  color: #000;
+  font-size: 0.875rem;
+}
+.cardTitle {
+  margin: 0.5rem 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--maplewood-green);
+}
+.featured .cardTitle {
+  margin: 1rem 0;
+  font-size: 2rem;
+  line-height: 1.3;
+}
+/* The whole card opens the post, as on the live site. */
+.cardTitle a {
+  color: inherit;
+  text-decoration: none;
+}
+.cardTitle a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.cardTitle a:focus-visible {
+  outline: none;
+}
+.card:has(.cardTitle a:focus-visible) {
+  outline: 3px solid var(--maplewood-green);
+  outline-offset: 4px;
+}
+.card:has(.cardTitle a:hover) .cardTitle {
+  text-decoration: underline;
+}
+.cardExcerpt {
+  margin: 0;
+}
+.author {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+}
+.authorImage {
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  margin-right: 1rem;
+  object-fit: cover;
+  border-radius: 100%;
+  box-shadow: 3px 3px 0 0 var(--maplewood-green);
+}
+.authorName {
+  margin: 0;
+  font-weight: 600;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem 2rem;
+}
+.empty {
+  margin: 0;
+  font-size: 1.125rem;
+}
+.pagination {
+  margin-top: 4rem;
+}
+
+/* Post header */
+.postHeader {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  gap: 4rem 5rem;
+  align-items: stretch;
+}
+.postTitle {
+  margin: 2rem 0 3rem;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--maplewood-green);
+}
+.byline {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 0 0.25rem;
+}
+.byline strong {
+  font-weight: 600;
+}
+.postHeader .meta {
+  font-size: 0.875rem;
+}
+.postImage {
+  overflow: hidden;
+  margin: 0;
+  border: 3px solid var(--maplewood-green);
+  border-radius: 0.8em;
+  box-shadow: 6px 6px 0 var(--maplewood-green);
+}
+.postImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+/* Post body */
+.postBody {
+  padding: 0 5% 7rem;
+  background: #fff;
+  color: var(--maplewood-ink);
+}
+.postBodyInner {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+.richText {
+  margin-bottom: 4rem;
+}
+/* The parent class outranks the shared renderer's utility classes. */
+.postBodyInner .richText {
+  color: var(--maplewood-ink);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.postBodyInner .richText p {
+  margin: 0 0 1rem;
+}
+.postBodyInner .richText :is(h2, h3, h4) {
+  margin: 1.5rem 0 1rem;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--maplewood-green);
+}
+.postBodyInner .richText :is(ul, ol) {
+  margin: 1rem 0;
+  padding-left: 1.25rem;
+}
+.postBodyInner .richText ul {
+  list-style: disc;
+}
+.postBodyInner .richText ol {
+  list-style: decimal;
+}
+.postBodyInner .richText li {
+  margin: 0.25rem 0;
+  padding-left: 0.5rem;
+}
+.postBodyInner .richText a {
+  color: var(--maplewood-green);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.postBodyInner .richText strong {
+  color: inherit;
+  font-weight: 700;
+}
+.postBodyInner .richText > :last-child {
+  margin-bottom: 0;
+}
+.divider {
+  height: 2px;
+  margin: 0 0 3rem;
+  border: 0;
+  background: var(--maplewood-green);
+}
+.postAuthor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.postAuthor img {
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border: 3px solid var(--maplewood-green);
+  border-radius: 100%;
+}
+.postAuthor p {
+  margin: 0;
+}
+.postAuthorName {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .section {
+    padding-block: 6rem;
+  }
+  .intro {
+    margin-bottom: 4.5rem;
+  }
+  .title {
+    font-size: 3.25rem;
+  }
+  .featured {
+    margin-bottom: 4.5rem;
+  }
+  .featured .cardContent {
+    padding: 2rem;
+  }
+  .featured .cardTitle {
+    font-size: 1.75rem;
+  }
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .postHeader {
+    grid-template-columns: 1fr;
+  }
+  .postTitle {
+    font-size: 2.75rem;
+  }
+  .postBody {
+    padding-bottom: 6rem;
+  }
+  .richText {
+    margin-bottom: 3rem;
+  }
+  .divider {
+    margin-bottom: 2.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    padding-block: 4rem;
+  }
+  .intro {
+    margin-bottom: 3rem;
+  }
+  .title {
+    margin: 0.75rem 0 1.25rem;
+    font-size: 2.5rem;
+  }
+  .description {
+    font-size: 1rem;
+  }
+  .featured {
+    grid-template-columns: 1fr;
+    margin-bottom: 3rem;
+  }
+  .featured .cardContent {
+    padding: 1.5rem;
+  }
+  .featured .cardTitle {
+    margin: 0.75rem 0;
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  .cardTitle {
+    font-size: 1.25rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .postHeader {
+    gap: 3rem;
+  }
+  .postTitle {
+    margin: 1.5rem 0 2rem;
+    font-size: 2.25rem;
+  }
+  .postBody {
+    padding-bottom: 4rem;
+  }
+  .postAuthorName {
+    font-size: 1rem;
+  }
+  .richText {
+    margin-bottom: 2rem;
+  }
+  .divider {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .cardContent,
+  .featured .cardContent {
+    padding-inline: 1.25rem;
+  }
+  .postAuthor {
+    margin-bottom: 1rem;
+  }
+}
