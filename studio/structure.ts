@@ -1,6 +1,7 @@
 import {
   Award,
   Backpack,
+  Bus,
   BriefcaseBusiness,
   CalendarClock,
   CalendarDays,
@@ -67,6 +68,10 @@ const byName: Ordering = [
   { field: "name", direction: "asc" },
 ];
 const byTitle: Ordering = [{ field: "title", direction: "asc" }];
+const byTownThenName: Ordering = [
+  { field: "town", direction: "asc" },
+  { field: "name", direction: "asc" },
+];
 
 function documents(
   S: StructureBuilder,
@@ -164,6 +169,8 @@ function summerCamp(S: StructureBuilder) {
       }),
     ]),
     documents(S, "campGroup", "Groups", Users, { ordering: byOrder }),
+    // The summer bus runs for Summer Camp only; stops have no side field.
+    documents(S, "busStop", "Bus stops", Bus, { ordering: byTownThenName }),
     sideDocuments(S, side, "staffMember", "Staff Members", IdCard, byName),
     sideDocuments(S, side, "sampleSchedule", "Sample Schedules", CalendarClock, byTitle),
     sideDocuments(S, side, "faq", "FAQs", MessageCircleQuestion),

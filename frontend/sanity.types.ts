@@ -2579,6 +2579,26 @@ export type SampleSchedule = {
   >;
 };
 
+export type BusStop = {
+  _id: string;
+  _type: "busStop";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  address?: string;
+  town?: string;
+  location?: Geopoint;
+  shownOnMap?: boolean;
+};
+
+export type Geopoint = {
+  _type: "geopoint";
+  lat?: number;
+  lng?: number;
+  alt?: number;
+};
+
 export type CampGroup = {
   _id: string;
   _type: "campGroup";
@@ -2924,13 +2944,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type Geopoint = {
-  _type: "geopoint";
-  lat?: number;
-  lng?: number;
-  alt?: number;
-};
-
 export type AllSanitySchemaTypes =
   | Icon
   | FeatureItemIcon
@@ -3075,6 +3088,8 @@ export type AllSanitySchemaTypes =
   | SummerActivityReference
   | SampleScheduleSlot
   | SampleSchedule
+  | BusStop
+  | Geopoint
   | CampGroup
   | Season
   | Grade
@@ -3094,8 +3109,7 @@ export type AllSanitySchemaTypes =
   | SanityImageMetadata
   | SanityFileAsset
   | SanityAssetSourceData
-  | SanityImageAsset
-  | Geopoint;
+  | SanityImageAsset;
 
 // Source: ../frontend/sanity/queries/blog-index.ts
 // Variable: BLOG_INDEX_QUERY
