@@ -28,7 +28,15 @@ export default async function MainLayout({
       <main id="main-content" tabIndex={-1}>
         {children}
       </main>
-      <SanityLive includeDrafts={isDraftMode} />
+      {/* In production, the Sanity Function in studio/functions/invalidate-tags
+          expires changed content on publish. Open pages wait for it, so they
+          never reload the old version. */}
+      <SanityLive
+        includeDrafts={isDraftMode}
+        waitFor={
+          process.env.VERCEL_ENV === "production" ? "function" : undefined
+        }
+      />
       {isDraftMode && (
         <>
           <DisableDraftMode />
