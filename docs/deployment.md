@@ -15,6 +15,25 @@ Use `NEXT_PUBLIC_SITE_ENV=production` only in production.
 Local and preview deployments must send `noindex`.
 Keep secrets in Vercel and ignored local files.
 
+`NEXT_PUBLIC_SITE_URL` is the canonical host. In Production it is
+`https://www.maplewoodyearround.com`, also before the domain switch, so
+canonicals, the sitemap and structured data already name `www`. Preview and
+Development use the Vercel URL. Every other host, including the Vercel URLs
+of the production deployment, sends `X-Robots-Tag: noindex`.
+
+## Search parity
+
+`node scripts/seo-parity.mjs [origin]` compares the live Webflow site with the
+new site: every live sitemap URL plus the 3 policy pages (status, title,
+description, canonical, Open Graph and Twitter tags, structured data), and
+robots.txt, the sitemap, the old-path redirects and the `noindex` header. It
+exits with 1 when it finds a difference. The origin defaults to the Vercel
+production URL. Old Webflow paths are Redirect records in Studio; add each
+new one to `knownRedirects` in the script.
+
+Accepted difference: the live site titles every news post "MDC 3.0", a
+Webflow bug. The new site uses each post's SEO title.
+
 Require the GitHub `Release gate` on `main`.
 Merge only after it succeeds on the current PR head.
 Do not use an administrator bypass.

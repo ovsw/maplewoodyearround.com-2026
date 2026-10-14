@@ -105,10 +105,8 @@ describe("generatePageMetadata", () => {
     const url = new URL(image.url);
 
     expect(metadata.openGraph.type).toBe("article");
-    expect(metadata.title).toBe("Market trends");
-    expect(metadata.openGraph.title).toBe(
-      "Market trends | Example Company",
-    );
+    expect(metadata.title).toEqual({ absolute: "Market trends" });
+    expect(metadata.openGraph.title).toBe("Market trends");
     expect(metadata.openGraph).toHaveProperty(
       "publishedTime",
       post.publishedAt,
@@ -120,7 +118,7 @@ describe("generatePageMetadata", () => {
     });
     expect(metadata.twitter).toMatchObject({
       card: "summary_large_image",
-      title: "Market trends | Example Company",
+      title: "Market trends",
       images: [image],
     });
     expect(

@@ -43,11 +43,9 @@ export function SeoTitleInput(props: StringInputProps) {
           </Text>
           <Text size={1}>{finalTitle}</Text>
           <Text muted size={1}>
-            {overrideTitle?.includes("|")
-              ? "Using the complete title exactly as written. The automatic suffix is disabled."
-              : overrideTitle?.trim()
-                ? `Using the override above. “| ${studioSiteName}” is added automatically.`
-                : `Using the content title. “| ${studioSiteName}” is added automatically.`}
+            {overrideTitle?.trim()
+              ? "Using the title above exactly as written."
+              : `Using the content title. “| ${studioSiteName}” is added automatically.`}
           </Text>
           {warnings.map((warning) => (
             <Text key={warning} size={1}>

@@ -9,7 +9,7 @@ describe("public sitemap", () => {
   it("always fetches published content and retains category eligibility", async () => {
     const home = {
       _type: "homePage",
-      url: "https://example.test/",
+      url: "https://example.test",
       lastModified: "2026-10-01T00:00:00Z",
     };
     const category = {
@@ -29,6 +29,10 @@ describe("public sitemap", () => {
     ]);
     expect(sanityFetchMetadata).toHaveBeenCalledWith(
       expect.objectContaining({ perspective: "published" }),
+    );
+    // Webflow lists the home page without a trailing slash.
+    expect(sanityFetchMetadata.mock.calls[0][0].query).toMatch(
+      /_type == "homePage" => \$baseUrl,/,
     );
   });
 });

@@ -26,7 +26,7 @@ import {
   SHARING_IMAGE_WIDTH,
   sharingImageUrl,
 } from "@/sanity/lib/image";
-import { resolveSeoTitle } from "../../../shared/seo-title";
+import { normalizeSeoTitle, resolveSeoTitle } from "../../../shared/seo-title";
 import { resolveSeoDescription } from "../../../shared/seo-description";
 const isProduction = process.env.NEXT_PUBLIC_SITE_ENV === "production";
 
@@ -137,7 +137,7 @@ function resolveArchiveTitles({
   });
   const pageTitleResolution = resolveSeoTitle({
     fallbackTitle: getBlogPageTitle(baseTitleResolution.pageTitle, page),
-    ...(overrideTitle?.includes("|")
+    ...(normalizeSeoTitle(overrideTitle)
       ? { overrideTitle: getBlogPageTitle(baseTitleResolution.finalTitle, page) }
       : {}),
     siteName,

@@ -3,7 +3,7 @@ import FaqPageJsonLd from "@/components/faq-json-ld";
 import VideoJsonLd from "@/components/video-json-ld";
 import WebsiteJsonLd from "@/components/website-json-ld";
 import { siteUrl } from "@/lib/site-url";
-import { fetchHomePage } from "@/sanity/lib/fetch";
+import { fetchHomePage, fetchSanitySettings } from "@/sanity/lib/fetch";
 import { generatePageMetadata } from "@/sanity/lib/metadata";
 import { fetchSeoSettings } from "@/sanity/lib/seo-settings";
 import MissingSanityPage from "@/components/ui/missing-sanity-page";
@@ -45,7 +45,11 @@ async function DynamicIndexPage() {
 }
 
 async function CachedIndexPage({ perspective, stega }: DynamicFetchOptions) {
-  const page = await fetchHomePage({ perspective, stega });
+  // Structured data must not carry Stega markers, so settings skip them.
+  const [page, settings] = await Promise.all([
+    fetchHomePage({ perspective, stega }),
+    fetchSanitySettings({ perspective, stega: false }),
+  ]);
 
   if (!page) {
     if (perspective === "published") {
@@ -69,7 +73,17 @@ async function CachedIndexPage({ perspective, stega }: DynamicFetchOptions) {
 
   return (
     <>
-      <WebsiteJsonLd siteUrl={siteUrl} />
+      <WebsiteJsonLd
+        organization={{
+          description: page.meta?.description || page.description,
+          logo: settings?.logo?.light?.asset?.url,
+          email: settings?.contact?.email,
+          telephone: settings?.contact?.phone,
+          address: settings?.contact?.menuAddress,
+          sameAs: settings?.socialLinks?.map((link) => link.url),
+        }}
+        siteUrl={siteUrl}
+      />
       <FaqPageJsonLd blocks={blocks} />
       <VideoJsonLd content={blocks} />
       {!hasHero ? <h1>{page.title}</h1> : null}

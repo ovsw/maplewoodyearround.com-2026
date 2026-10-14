@@ -15,7 +15,7 @@ export default defineField({
       name: "title",
       type: "string",
       title: "SEO title override",
-      description: `Optional. Titles without a pipe get “| ${studioSiteName}” automatically. Titles containing a pipe are used as written.`,
+      description: `Optional. Used exactly as written. When empty, the content title is used with “| ${studioSiteName}” added.`,
       components: { input: SeoTitleInput },
       validation: (rule) =>
         rule

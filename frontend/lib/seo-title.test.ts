@@ -6,16 +6,23 @@ import {
 } from "../../shared/seo-title";
 
 describe("resolveSeoTitle", () => {
-  it("uses a page override with the site name suffix", () => {
+  it("uses a page override exactly as written, as Webflow did", () => {
     expect(
       resolveSeoTitle({
         fallbackTitle: "Services",
         overrideTitle: "Custom services",
       }),
     ).toMatchObject({
-      finalTitle: "Custom services | Maplewood",
-      metadataTitle: "Custom services",
+      finalTitle: "Custom services",
+      metadataTitle: { absolute: "Custom services" },
       pageTitle: "Custom services",
+    });
+  });
+
+  it("adds the site name suffix to the content title fallback", () => {
+    expect(resolveSeoTitle({ fallbackTitle: "Services" })).toMatchObject({
+      finalTitle: "Services | Maplewood",
+      metadataTitle: "Services",
     });
   });
 
@@ -53,7 +60,7 @@ describe("getSeoTitleWarnings", () => {
 
     expect(warnings).toEqual([
       "Review the repeated term “website” for readability.",
-      "The final 80-character title may be shortened in search results.",
+      "The final 68-character title may be shortened in search results.",
     ]);
   });
 });

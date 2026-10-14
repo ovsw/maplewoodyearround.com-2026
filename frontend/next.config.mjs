@@ -14,6 +14,18 @@ function requiredEnvironmentValue(name) {
 const nextConfig = {
   cacheComponents: true,
   cacheLife: { default: sanity },
+  headers() {
+    // Only the canonical host may be indexed. Previews, local servers and the
+    // Vercel URLs of a production deployment all send noindex.
+    const canonicalHost = new URL(requiredEnvironmentValue("NEXT_PUBLIC_SITE_URL")).host;
+    return [
+      {
+        source: "/:path*",
+        missing: [{ type: "host", value: canonicalHost }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+    ];
+  },
   rewrites() {
     // Keep Maplewood's public News and post URLs while reusing the existing
     // renderer.

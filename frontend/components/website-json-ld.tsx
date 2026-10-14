@@ -1,10 +1,17 @@
 import {
   createWebsiteJsonLd,
   serializeWebsiteJsonLd,
+  type OrganizationDetails,
 } from "@/lib/website-json-ld";
 
-export default function WebsiteJsonLd({ siteUrl }: { siteUrl: string }) {
-  const value = createWebsiteJsonLd(siteUrl);
+export default function WebsiteJsonLd({
+  organization,
+  siteUrl,
+}: {
+  organization?: OrganizationDetails;
+  siteUrl: string;
+}) {
+  const value = createWebsiteJsonLd(siteUrl, organization);
 
   return (
     <script
