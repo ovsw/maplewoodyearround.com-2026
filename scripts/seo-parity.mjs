@@ -60,7 +60,8 @@ export function readSeoTags(html) {
     .flatMap(([, body]) => {
       try {
         const value = JSON.parse(body);
-        return (value['@graph'] || [value]).map((item) => item['@type']).flat();
+        const items = Array.isArray(value) ? value : (value?.['@graph'] || [value]);
+        return items.map((item) => item?.['@type']).flat().filter(Boolean);
       } catch {
         return ['invalid'];
       }
@@ -107,7 +108,13 @@ export function comparePage(pagePath, live, next) {
 }
 
 function request(url) {
-  return fetch(url, {redirect: 'manual', headers: {'user-agent': 'maplewood-seo-parity'}});
+  return fetch(url, {redirect: 'manual', signal: AbortSignal.timeout(30000), headers: {'user-agent': 'maplewood-seo-parity'}});
+}
+
+async function fetchText(url) {
+  const response = await request(url);
+  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+  return response.text();
 }
 
 async function fetchPage(url) {
@@ -137,12 +144,12 @@ export function sitemapLocations(xml) {
 export async function compareSite(newOrigin, livePaths) {
   const differences = [];
   const [liveRobots, newRobots] = await Promise.all(
-    [liveOrigin, newOrigin].map(async (origin) => robotsDirectives(await (await request(`${origin}/robots.txt`)).text())),
+    [liveOrigin, newOrigin].map(async (origin) => robotsDirectives(await fetchText(`${origin}/robots.txt`))),
   );
   for (const line of liveRobots) if (!newRobots.includes(line)) differences.push({field: 'robots.txt', live: line, next: null});
   for (const line of newRobots) if (!liveRobots.includes(line)) differences.push({field: 'robots.txt', live: null, next: line});
 
-  const locations = sitemapLocations(await (await request(`${newOrigin}/sitemap.xml`)).text());
+  const locations = sitemapLocations(await fetchText(`${newOrigin}/sitemap.xml`));
   const expected = new Set([...livePaths, ...policyPaths].map(expectedCanonical));
   for (const location of expected) if (!locations.includes(location)) differences.push({field: 'sitemap', live: location, next: null});
   for (const location of locations) if (!expected.has(location)) differences.push({field: 'sitemap', live: null, next: location});
@@ -167,7 +174,7 @@ export async function compareSite(newOrigin, livePaths) {
 }
 
 export async function readLiveSitemap() {
-  return sitemapLocations(await (await request(`${liveOrigin}/sitemap.xml`)).text()).map(pathOf);
+  return sitemapLocations(await fetchText(`${liveOrigin}/sitemap.xml`)).map(pathOf);
 }
 
 export async function run(newOrigin = defaultNewOrigin) {

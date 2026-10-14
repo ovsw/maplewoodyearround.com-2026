@@ -30,5 +30,9 @@ describe("public sitemap", () => {
     expect(sanityFetchMetadata).toHaveBeenCalledWith(
       expect.objectContaining({ perspective: "published" }),
     );
+    // Webflow lists the home page without a trailing slash.
+    expect(sanityFetchMetadata.mock.calls[0][0].query).toMatch(
+      /_type == "homePage" => \$baseUrl,/,
+    );
   });
 });

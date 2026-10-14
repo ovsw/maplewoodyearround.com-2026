@@ -36,6 +36,7 @@ test("a Redirect an editor already made for the path stays as it is", () => {
   const plan = planMigration(migration, [playCenter, existing]);
   assert.ok(isEmpty(plan));
   assert.match(plan.notes[0], /stays as it is/);
+  assert.ok(isEmpty(planMigration(migration, [existing])), "it does not need the page then");
 });
 
 test("the run stops when the Play Center page is missing", () => {

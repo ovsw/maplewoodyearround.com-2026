@@ -17,6 +17,13 @@ export default {
 
   prepare(dataset) {
     for (const redirect of LEGACY_REDIRECTS) {
+      const taken = dataset.documents.find(
+        (document) => document._type === "redirect" && document.source?.current === redirect.source,
+      );
+      if (taken) {
+        dataset.note(`${redirect.source} has a Redirect record already (${taken._id}) and stays as it is.`);
+        continue;
+      }
       const pages = dataset.documents.filter(
         (document) =>
           document._type === "page" &&
@@ -25,13 +32,6 @@ export default {
       );
       if (pages.length !== 1) {
         throw new Error(`${pages.length} published pages have the slug ${redirect.destinationSlug}, not 1`);
-      }
-      const taken = dataset.documents.find(
-        (document) => document._type === "redirect" && document.source?.current === redirect.source,
-      );
-      if (taken) {
-        dataset.note(`${redirect.source} has a Redirect record already (${taken._id}) and stays as it is.`);
-        continue;
       }
       if (dataset.get(redirect.id)) continue;
       dataset.note(`${redirect.source} → /${redirect.destinationSlug} (301, active)`);
