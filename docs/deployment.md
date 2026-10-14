@@ -19,6 +19,58 @@ Require the GitHub `Release gate` on `main`.
 Merge only after it succeeds on the current PR head.
 Do not use an administrator bypass.
 
+## Content goes live on publish
+
+The Website keeps the Sanity content of each page in its cache, and each
+cached read carries Sanity's sync tags: labels for the content it used.
+`<SanityLive />` expires them only while a visitor has a page open, so the
+Sanity Function `invalidate-tags` (`studio/functions/invalidate-tags`) does it
+on every publish, with no visitor needed. This is next-sanity's "guaranteed
+live content updates" setup:
+
+1. After a publish, Sanity calls the function with the sync tags of the
+   changed content.
+2. The function sends them to `/api/revalidate-tags`, which expires each one.
+   Every page that shows the change is fresh on its next visit, and no other
+   page is.
+3. The function calls `done()`, also when the Website did not answer. Only
+   then does Sanity tell open pages about the change
+   (`<SanityLive waitFor="function" />` in production), so they never reload
+   the old version. Preview deployments and local development keep the
+   default behavior.
+
+Settings:
+
+- Blueprint: `studio/sanity.blueprint.ts`, stack `production` in project
+  `193h5qm1`.
+- Function: `invalidate-tags`, for dataset `193h5qm1.production`.
+- Function variable `REVALIDATE_TAGS_URL`:
+  `https://maplewoodyearround-com-2026.vercel.app/api/revalidate-tags`. Change
+  it to the production domain at launch.
+- Function variable `SANITY_REVALIDATE_SECRET`: the same value as the
+  Website's.
+- Website variable `SANITY_REVALIDATE_SECRET`: in Vercel, Production,
+  sensitive, and in the ignored `frontend/.env.local`.
+
+The route refuses a call without the secret. Set a function variable with
+`pnpm --dir studio exec sanity functions env add invalidate-tags <KEY> <VALUE>`.
+
+Deploy a changed function from the repository root, then check its log after a
+publish. The log must show that the Website expired the sync tags and that
+`done()` returned HTTP 2xx.
+
+```bash
+pnpm --dir studio exec sanity blueprints plan
+pnpm --dir studio exec sanity blueprints deploy
+pnpm --dir studio exec sanity functions test invalidate-tags --data '{"syncTags":["test"]}' --timeout 20
+pnpm --dir studio exec sanity functions logs invalidate-tags
+```
+
+A new checkout links to the stack with
+`pnpm --dir studio exec sanity blueprints config --edit --project-id 193h5qm1 --stack production`
+(the link is in the ignored `studio/.sanity/`). Each publish uses one function
+run from the Sanity plan's included usage.
+
 ## Studio
 
 The hostname is `maplewood.sanity.studio`.

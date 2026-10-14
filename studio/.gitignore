@@ -40,5 +40,8 @@ next-env.d.ts
 # sanity runtime (auto-generated)
 /.sanity/
 
+# local function builds (`sanity functions test` and `dev`)
+/functions/*/.build/
+
 # dataset backups
 /backups/
