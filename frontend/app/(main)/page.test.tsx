@@ -12,7 +12,10 @@ vi.mock("@/components/blocks", () => ({
 vi.mock("@/components/faq-json-ld", () => ({ default: () => null }));
 vi.mock("@/components/video-json-ld", () => ({ default: () => null }));
 vi.mock("@/components/website-json-ld", () => ({ default: () => null }));
-vi.mock("@/sanity/lib/fetch", () => ({ fetchHomePage: vi.fn() }));
+vi.mock("@/sanity/lib/fetch", () => ({
+  fetchHomePage: vi.fn(),
+  fetchSanitySettings: vi.fn().mockResolvedValue(null),
+}));
 vi.mock("@/sanity/lib/live", () => ({
   getDynamicFetchOptions: vi.fn(),
   sanityFetchMetadata: vi.fn(),

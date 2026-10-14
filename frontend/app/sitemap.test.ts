@@ -9,7 +9,7 @@ describe("public sitemap", () => {
   it("always fetches published content and retains category eligibility", async () => {
     const home = {
       _type: "homePage",
-      url: "https://example.test/",
+      url: "https://example.test",
       lastModified: "2026-10-01T00:00:00Z",
     };
     const category = {

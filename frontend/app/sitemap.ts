@@ -15,7 +15,7 @@ const VIEWABLE_TYPES = [
 
 const urlQuery = `
   'url': select(
-    _id == "homePage" && _type == "homePage" => $baseUrl + "/",
+    _id == "homePage" && _type == "homePage" => $baseUrl,
     _id == "blogIndex" => $baseUrl + "/news",
     _id == "parentDashboard" => $baseUrl + "/parent-dashboard",
     _type == "post" => $baseUrl + "/post/" + array::join(string::split(slug.current, "/")[@ != ""], "/"),

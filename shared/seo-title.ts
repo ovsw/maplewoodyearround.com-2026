@@ -55,18 +55,20 @@ export function resolveSeoTitle({
     : stripLegacySeoTitleSuffix(normalizedOverride, siteName) ||
       stripLegacySeoTitleSuffix(fallbackTitle, siteName) ||
       siteName;
-  const finalTitle = hasManualSuffix
-    ? pageTitle
+  // Webflow used each SEO title exactly as written, and search engines know
+  // the pages by those titles. Only the content title fallback gets the suffix.
+  const finalTitle = normalizedOverride
+    ? normalizedOverride
     : pageTitle.toLowerCase() === siteName.toLowerCase()
       ? siteName
       : `${pageTitle} | ${siteName}`;
 
   return {
     finalTitle,
-    // A pipe means the editor supplied the complete title. Absolute titles
-    // bypass the layout template so the default suffix is not added twice.
+    // Absolute titles bypass the layout template so the default suffix is not
+    // added to an override or added twice.
     metadataTitle:
-      isHomepage || hasManualSuffix || finalTitle === siteName
+      isHomepage || normalizedOverride || finalTitle === siteName
         ? { absolute: finalTitle }
         : pageTitle,
     openGraphTitle: finalTitle,
@@ -84,23 +86,12 @@ export function getSeoTitleWarnings({
   overrideTitle?: string | null;
   siteName?: string;
 }) {
-  const normalizedOverride = normalizeSeoTitle(overrideTitle);
   const { finalTitle, pageTitle } = resolveSeoTitle({
     fallbackTitle,
     overrideTitle,
     siteName,
   });
   const warnings: string[] = [];
-
-  if (
-    !normalizedOverride.includes("|") &&
-    normalizedOverride &&
-    stripLegacySeoTitleSuffix(normalizedOverride, siteName) !==
-      normalizedOverride
-  ) {
-    warnings.push("Remove the manual legacy suffix; the default suffix is automatic.");
-  }
-
   const lowerTitle = pageTitle.toLowerCase();
   const repeatedTerm = IMPORTANT_TERMS.find((term) => {
     const matches = lowerTitle.match(new RegExp(`\\b${term}s?\\b`, "g"));

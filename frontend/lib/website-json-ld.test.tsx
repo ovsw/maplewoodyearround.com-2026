@@ -30,6 +30,26 @@ describe("WebsiteJsonLd", () => {
     });
   });
 
+  it("adds the organization facts that are present", () => {
+    const [organization] = createWebsiteJsonLd("https://example.com", {
+      description: " Day camp since 1965. ",
+      email: "",
+      logo: "https://cdn.example.com/logo.webp",
+      sameAs: ["https://facebook.com/example", null, " "],
+      telephone: null,
+    })["@graph"];
+
+    expect(organization).toEqual({
+      "@type": "Organization",
+      "@id": "https://example.com/#organization",
+      name: "Example Company",
+      url: "https://example.com",
+      description: "Day camp since 1965.",
+      logo: "https://cdn.example.com/logo.webp",
+      sameAs: ["https://facebook.com/example"],
+    });
+  });
+
   it("escapes less-than signs when serialized", () => {
     const value = createWebsiteJsonLd("https://example.com");
     value["@graph"][0].url = "https://example.com/<unsafe>";
