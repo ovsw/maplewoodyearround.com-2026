@@ -35,8 +35,13 @@ function PageContent({
   const needsTitleHeader =
     blocks[0]?._type !== "hero" &&
     blocks[0]?._type !== "innerHero" &&
-    // Program cards with breadcrumbs are the page header, as on /summer-camp/programs.
-    !(blocks[0]?._type === "programCards" && blocks[0].breadcrumbs?.length) &&
+    blocks[0]?._type !== "tabbedHero" &&
+    // Program and icon cards with breadcrumbs are the page header, as on
+    // /summer-camp/programs and /school-year/programs.
+    !(
+      (blocks[0]?._type === "programCards" || blocks[0]?._type === "iconCards") &&
+      blocks[0].breadcrumbs?.length
+    ) &&
     // The director story and the calendar section carry their page's heading.
     blocks[0]?._type !== "directorIntro" &&
     !(blocks[0]?._type === "embedSection" && stegaClean(blocks[0].provider) === "Events Calendar") &&

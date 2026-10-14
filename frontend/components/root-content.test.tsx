@@ -85,6 +85,39 @@ describe("RootContentView", () => {
     ).toBeInTheDocument();
   });
 
+  it.each([
+    [
+      "the School Year tabbed hero",
+      {
+        _key: "hero",
+        _type: "tabbedHero",
+        tabs: [{ _key: "tab", label: "Preschool", title: "Preschool Program" }],
+      },
+      "Preschool Program",
+    ],
+    [
+      "icon cards with breadcrumbs",
+      {
+        _key: "programs",
+        _type: "iconCards",
+        breadcrumbs: [{ _key: "crumb", label: "Home" }],
+        cards: [{ _key: "card", title: "Vacation Program" }],
+        title: "School Year Programs",
+      },
+      "School Year Programs",
+    ],
+  ])("leaves the main heading to %s", (_, block, title) => {
+    render(
+      <RootContentView
+        content={{ ...page, blocks: [block] } as typeof page}
+        perspective="published"
+        stega={false}
+      />,
+    );
+
+    expect(screen.getAllByRole("heading", { level: 1 }).map((h) => h.textContent)).toEqual([title]);
+  });
+
   it("gates the post sidebar to post root content", () => {
     const { rerender } = render(
       <RootContentView content={page} perspective="published" stega={false} />,

@@ -403,6 +403,8 @@
 /* Policy text (content30): document headings and 16 px copy. */
 .document {
   font-size: 1rem;
+  /* Long web addresses wrap instead of widening the page on phones. */
+  overflow-wrap: anywhere;
 }
 .document :is(h2, h3, h4) {
   margin-top: 1.5rem;

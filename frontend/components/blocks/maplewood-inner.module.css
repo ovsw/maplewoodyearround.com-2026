@@ -735,6 +735,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 .sliderButtons {
@@ -765,8 +766,12 @@
   outline: 3px solid var(--maplewood-focus);
   outline-offset: 2px;
 }
+/* Many cards give many dots: wrap them so the page never scrolls sideways. */
 .sliderDots {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
   gap: 0.5em;
 }
 .sliderDot,
@@ -1224,6 +1229,10 @@
   }
   .sliderControls {
     display: flex;
+  }
+  /* The live phone layout shows only the arrows. */
+  .sliderDots {
+    display: none;
   }
 }
 
