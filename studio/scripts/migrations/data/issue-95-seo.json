@@ -1,0 +1,665 @@
+[
+  {
+    "id": "blogIndex",
+    "path": "/news",
+    "title": "Maplewood Blog",
+    "from": {
+      "title": "Latest news from Maplewood Day Camp and Enrichment Center",
+      "description": "Read up on the latest news and announcements from Maplewood Day Camp and Enrichment Center."
+    },
+    "to": {
+      "title": "Camp News & Announcements | Maplewood, South Easton, MA",
+      "description": "News from Maplewood Day Camp and Enrichment Center in South Easton, MA: events, programs, memberships and gift ideas. Read the latest updates."
+    }
+  },
+  {
+    "id": "homePage",
+    "path": "/",
+    "title": "Unleash Your Child's Summer Camp Adventure Today!",
+    "from": {
+      "title": "Children's Summer Camp in South Easton, MA | Maplewood",
+      "description": "Join our children's summer camp in South Easton, MA, where kids create unforgettable memories through fun activities and personalized attention."
+    },
+    "to": {
+      "title": "Children's Summer Camp in South Easton, MA | Maplewood",
+      "description": "Summer day camp in South Easton, MA for ages 3–14 since 1965: 50+ activities, heated pools, swim lessons and free buses. Schedule a tour today!"
+    }
+  },
+  {
+    "id": "wf-page-4eb950636535d637",
+    "path": "/contact",
+    "title": "Contact & Enrollment",
+    "from": {
+      "title": "Contact Maplewood Day Camp and Enrichment Center in South Easton, MA",
+      "description": "Reach out to Maplewood Day Camp in South Easton, MA for inquiries. Email us at info@maplewoodcamp.com or call (508) 238-2387."
+    },
+    "to": {
+      "title": "Contact Maplewood Day Camp | South Easton, MA",
+      "description": "Visit Maplewood at 150 Foundry Street, South Easton, MA, call (508) 238-2387 or email info@maplewoodyearround.com. Register or ask us a question."
+    }
+  },
+  {
+    "id": "wf-page-1be3dcff46f2b7f8",
+    "path": "/cookie-policy",
+    "title": "Cookies Policy",
+    "from": {
+      "title": "Maplewood Year Round Cookie Policy Overview",
+      "description": "Discover how MaplewoodYearRound.com uses cookies to enhance your experience, improve functionality, and personalize marketing. Learn about your options."
+    },
+    "to": {
+      "title": "Cookie Policy | Maplewood Year Round",
+      "description": "Read how MaplewoodYearRound.com uses cookies to run the site, measure visits and remember your choices, and how you can manage or turn off cookies."
+    }
+  },
+  {
+    "id": "wf-page-f1facc25d28e7169",
+    "path": "/director-lee",
+    "title": "Lee's Story",
+    "from": {
+      "title": "Lee Pinstein: Camp Director at Maplewood in Easton, MA",
+      "description": "Join Lee Pinstein, the dedicated camp director at Maplewood in Easton, MA, as he creates a nurturing environment for children to learn and grow."
+    },
+    "to": {
+      "title": "Lee Pinstein, Camp Director | Maplewood, South Easton, MA",
+      "description": "Meet Lee Pinstein, Maplewood's owner and camp director, who grew up at camp and now leads it with his family's vision. Read Lee's story here."
+    }
+  },
+  {
+    "id": "wf-page-f7cd11ad5b843244",
+    "path": "/faqs",
+    "title": "FAQs",
+    "from": {
+      "title": "Frequent questions answered | Maplewood Day Camp in South Easton, MA",
+      "description": "Explore our FAQs to find answers about Maplewood Day Camp in South Easton, MA. Contact us for more information!"
+    },
+    "to": {
+      "title": "Summer Camp & School Year FAQs | Maplewood, South Easton",
+      "description": "Answers to common questions about Maplewood Summer Camp and School Year programs in South Easton, MA. Can't find yours? Call us at (508) 238-2387."
+    }
+  },
+  {
+    "id": "wf-page-ec56202ad3db9d5c",
+    "path": "/history",
+    "title": "Maplewood History",
+    "from": {
+      "title": "The Maplewood Story: A Legacy of Summer Camp Joy",
+      "description": "Discover the inspiring journey of Hal and Sandy, who created Maplewood Country Day Camp over 60 years ago, fostering joy, community, and lifelong friendships."
+    },
+    "to": {
+      "title": "Maplewood History: A Family Day Camp Since 1965",
+      "description": "How Hal and Sandy turned a small swimming lake in South Easton, MA into Maplewood Day Camp, and how their family carries it on. Read our story."
+    }
+  },
+  {
+    "id": "wf-page-ee0b395db7958b92",
+    "path": "/leadership",
+    "title": "Leadership",
+    "from": {
+      "title": "Meet the Leadership Team at Maplewood Day Camp",
+      "description": "Get to know the dedicated leadership team behind Maplewood Day Camp, ensuring a fun, safe, and enriching experience for all campers."
+    },
+    "to": {
+      "title": "Leadership Team | Maplewood Day Camp, South Easton, MA",
+      "description": "Meet the directors and managers who run Maplewood Day Camp and School Year programs, and find their emails. Schedule a tour to meet them in person."
+    }
+  },
+  {
+    "id": "wf-page-528432a89dd02884",
+    "path": "/maplewood-main-calendar",
+    "title": "Maplewood Full Calendar",
+    "from": {
+      "title": "Maplewood Main Calendar",
+      "description": "Access essential resources for Maplewood campers, including important dates, forms, and lunch orders. Stay informed and organized for a great camp experience!"
+    },
+    "to": {
+      "title": "Events Calendar | Maplewood, South Easton, MA",
+      "description": "The calendar for all things Maplewood in South Easton, MA: if an event is not on it, it is not happening. Check the dates and plan your next visit."
+    }
+  },
+  {
+    "id": "wf-page-a01940840c1af279",
+    "path": "/maplewood-seasons",
+    "title": "We're open Year-Round!",
+    "from": {
+      "title": "Explore Our Camp Seasons at Maplewood Day Camp",
+      "description": "Discover the diverse camp seasons at Maplewood Day Camp, including Summer Day Camp and School Year Day Camp with over 50 activities for children aged 3-14."
+    },
+    "to": {
+      "title": "Year-Round Camp Seasons | Maplewood, South Easton, MA",
+      "description": "Maplewood is open year-round in South Easton, MA: Summer Day Camp and School Year programs for children aged 3–14. Explore both seasons today."
+    }
+  },
+  {
+    "id": "wf-page-aa492b8d01558c15",
+    "path": "/our-values",
+    "title": "Our Values",
+    "from": {
+      "title": "Maplewood Day Camp: Fun, Friendship, and Growth | South Easton, MA",
+      "description": "Discover Maplewood Camp, where children thrive in a nurturing environment filled with fun, teamwork, and cherished traditions. Join us for lifelong memories!"
+    },
+    "to": {
+      "title": "Our Values: Family, Fun & Friendship | Maplewood Day Camp",
+      "description": "At Maplewood in South Easton, MA, campers, parents and staff are treated like family. See the values behind our programs, then come visit us."
+    }
+  },
+  {
+    "id": "wf-page-81e51d8c796fc7fe",
+    "path": "/privacy-policy",
+    "title": "Privacy Policy",
+    "from": {
+      "title": "Maplewood Year Round Privacy Policy",
+      "description": "Understand how MaplewoodYearRound.com collects and uses your personal information. Read our comprehensive privacy policy for your data protection."
+    },
+    "to": {
+      "title": "Privacy Policy | Maplewood Year Round",
+      "description": "Read how MaplewoodYearRound.com collects, uses and protects the personal information of families and visitors, and how to contact us about it."
+    }
+  },
+  {
+    "id": "wf-page-8ba3b3208d13939d",
+    "path": "/school-year",
+    "title": "Indoor / Outdoor Play Center",
+    "from": {
+      "title": "Transformative Summer Camp Experiences for Kids | Maplewood Day Camp",
+      "description": "Discover how our summer camp fosters growth, confidence, and lifelong friendships. Read happy parent testimonials about their children's joyful experiences!"
+    },
+    "to": {
+      "title": "School Year Preschool, Play Center & Classes | South Easton",
+      "description": "From September to June, Maplewood in South Easton, MA offers preschool, enrichment classes, a play center and birthday parties. Explore the programs."
+    }
+  },
+  {
+    "id": "wf-page-73092e06d6363de2",
+    "path": "/school-year/facilities",
+    "title": "Facilities",
+    "from": {
+      "title": "School Year Facilities | Maplewood",
+      "description": "Our facilities are designed with safety and engagement in mind, providing a nurturing environment for children to thrive."
+    },
+    "to": {
+      "title": "School Year Facilities | Maplewood, South Easton, MA",
+      "description": "See the safe, engaging spaces where Maplewood's preschool, classes and play center run in South Easton, MA. Schedule a visit to see them in person."
+    }
+  },
+  {
+    "id": "wf-page-0322148a011532f3",
+    "path": "/school-year/programs",
+    "title": "2025 School Year Programs",
+    "from": {
+      "title": "Explore 2025 School Year Programs for Kids | Maplewood Day Camp",
+      "description": "Join our 2025 School Year Programs at Maplewood! Engage in fun learning activities, enjoy our playground, and celebrate birthdays with special characters."
+    },
+    "to": {
+      "title": "School Year Programs for Kids | Maplewood, South Easton MA",
+      "description": "Compare Maplewood's school year programs in South Easton, MA: preschool, enrichment classes, vacation weeks, play center and parties. Find your fit."
+    }
+  },
+  {
+    "id": "wf-page-8151cdb491dcb8e0",
+    "path": "/school-year/programs/birthday-parties",
+    "title": "Birthday Parties",
+    "from": {
+      "title": "Exciting Kids Birthday Party Venue in Easton, MA",
+      "description": "Celebrate your child's birthday at our South Easton venue with exciting activities, character visits, and dedicated staff for a memorable party!"
+    },
+    "to": {
+      "title": "Kids Birthday Parties in South Easton, MA | Maplewood",
+      "description": "Book your child's birthday party at Maplewood's play center in South Easton, MA: a favorite character visit, 25+ activities, setup and cleanup."
+    }
+  },
+  {
+    "id": "wf-page-a6fad5922a3eac0e",
+    "path": "/school-year/programs/enrichment-classes",
+    "title": "Enrichment Classes",
+    "from": {
+      "title": "Children's Enrichment Classes in South Easton, MA",
+      "description": "Enroll your child in fun enrichment classes in South Easton, MA. Explore gymnastics, arts, and sports tailored for ages 2-5."
+    },
+    "to": {
+      "title": "Enrichment Classes for Ages 2–5 | Maplewood, South Easton",
+      "description": "Gymnastics, sports, art and Flying Solo classes for children aged 2–5 in South Easton, MA, on their own or with preschool. Register for a session."
+    }
+  },
+  {
+    "id": "wf-page-a8cf498a0b4b682d",
+    "path": "/school-year/programs/enrichment-classes/arts-class",
+    "title": "Art Enrichment Class",
+    "from": {
+      "title": "Ignite Creativity with Maplewood Art Classes for kids South Easton MA",
+      "description": "Spark creativity with Maplewood’s arts & crafts classes! Fun, hands-on activities for kids in South Easton, MA."
+    },
+    "to": {
+      "title": "Kids Art Class in South Easton, MA | Maplewood",
+      "description": "Hands-on art class for preschoolers in South Easton, MA: painting, drawing, collage, clay and more to build creativity and skills. Register online today."
+    }
+  },
+  {
+    "id": "wf-page-44831c3d1f32bf05",
+    "path": "/school-year/programs/enrichment-classes/flying-solo",
+    "title": "Flying Solo",
+    "from": {
+      "title": "Independent Play Program for Kids in South Easton, MA",
+      "description": "Enroll your kids in our Flying Solo Program in South Easton, MA. Help them become independent while enjoying fun activities with peers."
+    },
+    "to": {
+      "title": "Flying Solo Preschool Prep Class | Maplewood, South Easton",
+      "description": "Flying Solo helps children aged 2–4 in South Easton, MA get used to time away from parents before preschool, with songs and art. Register online today."
+    }
+  },
+  {
+    "id": "wf-page-0d9c09c58ffa7ed6",
+    "path": "/school-year/programs/enrichment-classes/gymnastics-class",
+    "title": "Gymnastics Enrichment Program",
+    "from": {
+      "title": "Fun Gymnastics Classes for Kids in South Easton, MA",
+      "description": "Enroll your kids in fun gymnastics classes in South Easton, MA. They will master essential skills while building confidence and teamwork!"
+    },
+    "to": {
+      "title": "Kids Gymnastics Class in South Easton, MA | Maplewood",
+      "description": "Gymnastics class for ages 3–5 in South Easton, MA: tumbling, balance beam and bars through fun games that build strength and confidence. Register online."
+    }
+  },
+  {
+    "id": "wf-page-13d0f2ada15a2027",
+    "path": "/school-year/programs/enrichment-classes/sports-enrichment-class",
+    "title": "Sports Enrichment Class",
+    "from": {
+      "title": "Engaging Sports Program for Kids | Maplewood Day Camp in Easton MA",
+      "description": "Encourage your child to explore sports like basketball and soccer while building teamwork, confidence, and fitness in a fun environment."
+    },
+    "to": {
+      "title": "Preschool Sports Class in South Easton, MA | Maplewood",
+      "description": "Basketball, soccer and hockey for Maplewood preschool families in South Easton, MA. Kids build ball skills, teamwork and confidence. Register online today."
+    }
+  },
+  {
+    "id": "wf-page-7a1f8f13aee4592e",
+    "path": "/school-year/programs/indoor-outdoor-play-center",
+    "title": "Indoor / Outdoor Play Center",
+    "from": {
+      "title": "Explore Maplewood Indoor/Outdoor Playground in South Easton, MA",
+      "description": "Join us at Maplewood for exciting indoor and outdoor playground sessions, arts & crafts classes, and rock climbing fun for kids this February!"
+    },
+    "to": {
+      "title": "Indoor/Outdoor Playground in South Easton, MA | Maplewood",
+      "description": "Play center for kids aged 6 and under in South Easton, MA: 25+ indoor activities, outdoor play, character visits and special events. Buy tickets online."
+    }
+  },
+  {
+    "id": "wf-page-507845ab55135e1d",
+    "path": "/school-year/programs/preschool-program",
+    "title": "Preschool Program",
+    "from": {
+      "title": "Maplewood Preschool: Nurturing Young Minds",
+      "description": "Join our unique preschool program where experienced teachers foster curiosity and confidence in a safe, spacious environment. Enroll today!"
+    },
+    "to": {
+      "title": "Preschool in South Easton, MA for Ages 3–5 | Maplewood",
+      "description": "Play-based preschool in South Easton, MA for ages 3–5: 2- and 3-day options, small classes and experienced teachers, September to June. Schedule a tour."
+    }
+  },
+  {
+    "id": "wf-page-9b528ee4330e69f1",
+    "path": "/school-year/programs/vacation-program",
+    "title": "School-Age Vacation Program",
+    "from": {
+      "title": "Engaging Vacation Program for Kids | Maplewood Day Camp in Easton, MA",
+      "description": "Keep your children active and engaged during school breaks with our enriching vacation program. Discover a variety of activities designed for ages 2-4!"
+    },
+    "to": {
+      "title": "School Vacation Program for Kids | Maplewood, Easton, MA",
+      "description": "February and April vacation weeks at Maplewood in South Easton, MA for kids in K–8th grade: sports, art, climbing and more. Before and after care. Sign up."
+    }
+  },
+  {
+    "id": "wf-page-aa9914ca2004c6ac",
+    "path": "/school-year/schedule-a-tour",
+    "title": "Facility Tours",
+    "from": {
+      "title": "Schedule a School Year Tour | Maplewood",
+      "description": "Jus let us know you'd like a tour and we'll take care of the rest."
+    },
+    "to": {
+      "title": "Schedule a School Year Tour | Maplewood, South Easton, MA",
+      "description": "Tour Maplewood's preschool and school year programs in South Easton, MA with one of our teachers. Tours take 30–45 minutes. Request your tour today."
+    }
+  },
+  {
+    "id": "wf-page-064f26b3a558dfdd",
+    "path": "/school-year/staff-roster",
+    "title": "Staff Roster",
+    "from": {
+      "title": "Meet Our School Year Team | Maplewood Day Camp, MA",
+      "description": "Discover the dedicated individuals behind Maplewood's School Year Programs. Join us as we create unforgettable summer experiences!"
+    },
+    "to": {
+      "title": "School Year Staff | Maplewood, South Easton, MA",
+      "description": "Meet the teachers and staff who run Maplewood's preschool, classes and play center in South Easton, MA. Get to know them before you visit us."
+    }
+  },
+  {
+    "id": "wf-page-d898a7755e51ab30",
+    "path": "/staff",
+    "title": "Maplewood Staff",
+    "from": {
+      "title": "Join the Maplewood Day Camp Family in 2025",
+      "description": "Experience an unforgettable summer at Maplewood Day Camp, where friendship, fun, and personal growth come together in a family-focused environment."
+    },
+    "to": {
+      "title": "Working at Maplewood: Summer Camp Staff Life | Easton, MA",
+      "description": "See why staff return to Maplewood Day Camp in South Easton, MA year after year: a family feel, friends for life and real growth. Read our staff FAQs."
+    }
+  },
+  {
+    "id": "wf-page-23231bfdf55b820c",
+    "path": "/staff-opportunities",
+    "title": "Staff Opportunities",
+    "from": {
+      "title": "Join Maplewood: Summer Camp Job Opportunities",
+      "description": "Become part of the Maplewood family this summer! Join us in making a difference in children's lives while gaining valuable experience."
+    },
+    "to": {
+      "title": "Summer Camp & School Year Jobs | Maplewood, Easton, MA",
+      "description": "See current job openings at Maplewood in South Easton, MA for summer camp and school year roles. Learn, grow and work with kids. Apply online today."
+    }
+  },
+  {
+    "id": "wf-page-fbfd7006b158b3a8",
+    "path": "/summer-camp",
+    "title": "Maplewood Summer Camp",
+    "from": {
+      "title": "Summer Camp at Maplewood: Adventure Awaits | Day Camp in Easton, MA",
+      "description": "Join Maplewood's Summer Day Camp for an unforgettable experience filled with fun activities and the best swimming program in the area for children aged 3-14."
+    },
+    "to": {
+      "title": "Summer Day Camp in South Easton, MA | Maplewood",
+      "description": "Maplewood Summer Day Camp in South Easton, MA: programs for ages 3–14, Club Day electives, 2- to 8-week sessions and a safe, caring staff. Register now."
+    }
+  },
+  {
+    "id": "wf-page-22ce4c4e131eb3dc",
+    "path": "/summer-camp/activities",
+    "title": "Exciting Activities",
+    "from": {
+      "title": "Over 50 Activities | Maplewood Summer Camp in South Easton, MA",
+      "description": "Easily filter and discover engaging activities for your child based on age, bunk, or type. Start exploring fun options today!"
+    },
+    "to": {
+      "title": "50+ Summer Camp Activities | Maplewood, South Easton, MA",
+      "description": "Swimming, sports, arts, climbing and more: filter Maplewood's 50+ summer camp activities in South Easton, MA by age, group or type. Start exploring."
+    }
+  },
+  {
+    "id": "wf-page-fd6df62e1bb8967a",
+    "path": "/summer-camp/bus-transportation",
+    "title": "Free Bus Transportation",
+    "from": {
+      "title": "Safe and Independent Transportation for Kids at Maplewood",
+      "description": "Discover how Maplewood's trained bus staff ensures a secure and enjoyable ride for your child, fostering independence and comfort from the start."
+    },
+    "to": {
+      "title": "Free Summer Camp Bus Service | Maplewood, South Easton, MA",
+      "description": "Free camp bus from 50+ stops in Easton, Sharon, Mansfield, Brockton and more, with trained drivers and monitors. Find your nearest Maplewood stop."
+    }
+  },
+  {
+    "id": "wf-page-817630ea53810156",
+    "path": "/summer-camp/camper-daily-photos",
+    "title": "Camper Daily Photos",
+    "from": {
+      "title": "Camper Daily Photos",
+      "description": "\"A picture is worth a thousand words.\"Using our online services provider, CampMinder, we upload hundreds of pictures each night."
+    },
+    "to": {
+      "title": "Camper Daily Photos with Campanion | Maplewood Summer Camp",
+      "description": "See photos of your camper every day of summer with the Campanion app, which uses Face Finder to show the photos of your child. Set it up in minutes."
+    }
+  },
+  {
+    "id": "wf-page-d1f7bc1459d27ff5",
+    "path": "/summer-camp/changes-notification-form",
+    "title": "Changes & Notifications Form",
+    "from": {
+      "title": "Changes / Notification Form",
+      "description": "Reach out to Maplewood Day Camp in South Easton, MA for inquiries. Email us at info@maplewoodcamp.com or call (508) 238-2387."
+    },
+    "to": {
+      "title": "Drop-off & Pick-up Changes Form | Maplewood Summer Camp",
+      "description": "Use this short form to tell Maplewood Summer Camp about a change to your child's drop-off or pick-up schedule. Questions? Call us at (508) 238-2387."
+    }
+  },
+  {
+    "id": "wf-page-564126d6995e2d00",
+    "path": "/summer-camp/dates-and-rates",
+    "title": "Dates & Rates",
+    "from": {
+      "title": "Dates & Rates Summer Day Camp in Easton, MA | Maplewood",
+      "description": "Discover Maplewood Summer Camp's enrollment policies and pricing in Easton, MA. Contact us for more details about our summer camp programs."
+    },
+    "to": {
+      "title": "Summer Camp Dates & Rates | Maplewood, South Easton, MA",
+      "description": "Session dates, rates and payment info for Maplewood Summer Camp in South Easton, MA, from preschool to 9th grade. Choose your weeks and register."
+    }
+  },
+  {
+    "id": "wf-page-9bc327644db7254e",
+    "path": "/summer-camp/facilities",
+    "title": "Our Camp Facilities",
+    "from": {
+      "title": "Summer Camp Facilities | Maplewood Summer Day Camp in Easton, MA",
+      "description": "Our facilities are designed with safety and engagement in mind, providing a nurturing environment for children to thrive."
+    },
+    "to": {
+      "title": "Summer Camp Facilities | Maplewood, South Easton, MA",
+      "description": "Heated pools, a lake for boating, an air-conditioned gym, sports fields and arts spaces: explore Maplewood's summer camp grounds in South Easton, MA."
+    }
+  },
+  {
+    "id": "wf-page-cf13187c8a641467",
+    "path": "/summer-camp/my-hot-lunchbox",
+    "title": "My Hot Lunchbox",
+    "from": {
+      "title": "Order Delicious Lunches Easily with My Hot Lunchbox | Maplewood",
+      "description": "Sign up for My Hot Lunchbox to access daily menus, place orders, and manage meal plans effortlessly. Enjoy convenient lunch delivery for your campers!"
+    },
+    "to": {
+      "title": "Camp Lunch Orders with My Hot Lunchbox | Maplewood",
+      "description": "Order hot camp lunches from local restaurants with My Hot Lunchbox, delivered to Maplewood. Order by noon the day before. See how to sign up."
+    }
+  },
+  {
+    "id": "wf-page-98261c99c2fa9c40",
+    "path": "/summer-camp/programs",
+    "title": "Summer Camp Programs",
+    "from": {
+      "title": "Summer Camp Programs | Maplewood Day Camp",
+      "description": "At Maplewood Country Day Camp parents will find programs for all ages.  Whether you have a 3-year-old or a 14-year-old, you'll feel that everyone is included and supported."
+    },
+    "to": {
+      "title": "Summer Camp Programs for Ages 3–14 | Maplewood, Easton MA",
+      "description": "Maplewood summer camp programs in South Easton, MA: Preschool & Kindergarten, 1st–7th Grade and Teen Leadership (C.I.T.). Find your child's program."
+    }
+  },
+  {
+    "id": "wf-page-1b86cff4318d025d",
+    "path": "/summer-camp/programs/1st-7th-grade",
+    "title": "1st-7th Grade",
+    "from": {
+      "title": "1st-7th Grade Program | Maplewood Summer Camp",
+      "description": "Discover a summer camp with a low camper-to-counselor ratio, custom schedules, and top-notch facilities. Your child will thrive in a supportive environment!"
+    },
+    "to": {
+      "title": "1st–7th Grade Summer Camp | Maplewood, South Easton, MA",
+      "description": "Summer camp for 1st to 7th graders in South Easton, MA: a 3:1 camper-to-counselor ratio, Club Day electives, a heated pool and 50+ activities. Register now."
+    }
+  },
+  {
+    "id": "wf-page-f4461ca86db4c347",
+    "path": "/summer-camp/programs/preschool-and-kindergarten",
+    "title": "Preschool & Kindergarten",
+    "from": {
+      "title": "Preschool & Kindergarten Program | Maplewood Summer Camp",
+      "description": "Discover a summer camp with a low camper-to-counselor ratio, varied activities, and top-notch facilities to ensure your child's fun and safety."
+    },
+    "to": {
+      "title": "Preschool & Kindergarten Summer Camp | Maplewood, Easton MA",
+      "description": "Summer camp for ages 3–5 in South Easton, MA: a 4:1 camper-to-counselor ratio, a mix of active and calm time, and a heated pool. Reserve your spot."
+    }
+  },
+  {
+    "id": "wf-page-2de46516928173a9",
+    "path": "/summer-camp/programs/teen-leadership-cit",
+    "title": "8th & 9th Grades - C.I.T.",
+    "from": {
+      "title": "Teen Leadership (C.I.T.) Program | Maplewood Summer Camp",
+      "description": "Discover a summer camp that fosters learning, adventure, and friendships. Our caring staff and flexible Club Day schedule ensure a personalized experience."
+    },
+    "to": {
+      "title": "Teen Leadership (C.I.T.) Program | Maplewood Summer Camp",
+      "description": "Counselor in Training program for campers entering 8th and 9th grade in South Easton, MA: learn to lead, plus climbing and the ropes course. Enroll now."
+    }
+  },
+  {
+    "id": "wf-page-11ec99dd59f8a554",
+    "path": "/summer-camp/schedule-a-tour",
+    "title": "Camp Tours",
+    "from": {
+      "title": "Schedule a Summer Camp Tour | Maplewood",
+      "description": "Jus let us know you'd like a tour and we'll take care of the rest. During Summer Camp tours are given Monday-Friday, between 10 am and 2 pm and last approximately 45 minutes to 1 hour."
+    },
+    "to": {
+      "title": "Schedule a Summer Camp Tour | Maplewood, South Easton, MA",
+      "description": "Visit Maplewood Summer Camp in South Easton, MA. Summer tours run Monday to Friday, 10 am–2 pm, and take about an hour. Request your tour online."
+    }
+  },
+  {
+    "id": "wf-page-d305394d37addc0d",
+    "path": "/summer-camp/staff-roster",
+    "title": "Staff Roster",
+    "from": {
+      "title": "Meet Our Summer Camp Team at Maplewood Day Camp, MA",
+      "description": "Discover the dedicated individuals behind Maplewood's Summer Camp. Join us as we create unforgettable summer experiences!"
+    },
+    "to": {
+      "title": "Summer Camp Staff | Maplewood, South Easton, MA",
+      "description": "Meet the counselors, specialists and directors who make Maplewood Summer Camp happen in South Easton, MA. Get to know them before camp starts."
+    }
+  },
+  {
+    "id": "wf-page-715fe625c44653ea",
+    "path": "/summer-camp/summer-camp-welcome-letters",
+    "title": "Summer Camp Welcome Letters",
+    "from": {
+      "title": "Summer Camp Welcome Letters",
+      "description": "Download PDF with the Parent Welcome Letter for your camper's group."
+    },
+    "to": {
+      "title": "Summer Camp Welcome Letters | Maplewood",
+      "description": "Download the Parent Welcome Letter for your camper's group at Maplewood Summer Camp, with personal notes from the counselors. Find your group here."
+    }
+  },
+  {
+    "id": "wf-page-ef3853a6873ad367",
+    "path": "/summer-camp/summer-group-schedules",
+    "title": "Summer Camp Group Schedules",
+    "from": {
+      "title": "Summer Group Schedules | Maplewood",
+      "description": "Download PDF with the full activity schedule for your camper's group."
+    },
+    "to": {
+      "title": "Summer Camp Group Schedules | Maplewood",
+      "description": "Download the full activity schedule for your camper's group at Maplewood Summer Camp in South Easton, MA. Find your child's group and plan the week."
+    }
+  },
+  {
+    "id": "wf-page-92559ae107aee5ef",
+    "path": "/summer-camp/swim-instruction",
+    "title": "Learn to Swim",
+    "from": {
+      "title": "Swim Instruction | Maplewood Summer Camp",
+      "description": "Discover Maplewood Camp, where children thrive in a nurturing environment filled with fun, teamwork, and cherished traditions. Join us for lifelong memories!"
+    },
+    "to": {
+      "title": "Kids Swim Lessons in South Easton, MA | Maplewood Camp",
+      "description": "Daily swim lessons in two heated pools in South Easton, MA, taught by certified instructors. Beginners get 1:1 attention. 30,000+ kids learned here."
+    }
+  },
+  {
+    "id": "wf-page-2012a6c4308c3ca7",
+    "path": "/terms-and-conditions",
+    "title": "Terms & Conditions",
+    "from": {
+      "title": "Maplewood Year Round Terms & Conditions",
+      "description": "Review the comprehensive Terms & Conditions for MaplewoodYearRound.com. Understand your rights and responsibilities while using our services."
+    },
+    "to": {
+      "title": "Terms & Conditions | Maplewood Year Round",
+      "description": "Read the terms that apply when you use MaplewoodYearRound.com or place an order with Maplewood, including your license, our liability and your rights."
+    }
+  },
+  {
+    "id": "parentDashboard",
+    "path": "/parent-dashboard",
+    "title": "Parent Dashboard",
+    "from": {
+      "title": "Parent Dashboard | Maplewood",
+      "description": "Access essential resources for Maplewood campers, including important dates, forms, and lunch orders. Stay informed and organized for a great camp experience!"
+    },
+    "to": {
+      "title": "Parent Dashboard: Forms, Schedules & Links | Maplewood",
+      "description": "Waivers, registration, group schedules, packing lists, lunch orders and bus stops for Maplewood families, all in one place. Find what you need."
+    }
+  },
+  {
+    "id": "wf-677d49d61db2a021fe854a5a-68bae0494d90843440d5bee6",
+    "path": "/post/enrichment-classes",
+    "title": "Enrichment Classes",
+    "from": {
+      "title": "Enrichment Classes",
+      "description": "Children's Enrichment Classes"
+    },
+    "to": {
+      "title": "Now Enrolling: Gymnastics, Sports & Art Classes | Maplewood",
+      "description": "Our enrichment classes, from gymnastics to preschool readiness, help young children build confidence, coordination and creativity. Enroll your child now."
+    }
+  },
+  {
+    "id": "wf-677d49d61db2a021fe854a5a-677d4d9e55c567db693017dd",
+    "path": "/post/great-gift-ideas",
+    "title": "Great Gift Ideas",
+    "from": {
+      "title": "Gift Cards",
+      "description": "Maplewood's gift cards make an ideal present for summer camps, preschools, indoor/outdoor playgrounds, and various classes. These gift cards not only bring joy and encourage learning but also spark a sense of adventure, all while eliminating the stress of last-minute shopping."
+    },
+    "to": {
+      "title": "Maplewood Gift Cards: Camp, Preschool & Play Gifts",
+      "description": "Give a Maplewood gift card for summer camp, preschool, the indoor/outdoor playground or children's classes in South Easton, MA. Buy a gift card today."
+    }
+  },
+  {
+    "id": "wf-677d49d61db2a021fe854a5a-6a1d59f4cf9446e834d2e493",
+    "path": "/post/meet-you-at-the-playground-copy",
+    "title": "Indoor/Outdoor Play Center",
+    "from": {
+      "title": "The best of both worlds — only at Maplewood.",
+      "description": "The best of both worlds — only at Maplewood."
+    },
+    "to": {
+      "title": "Indoor/Outdoor Play Center: Outdoor Adventure, Indoor Fun",
+      "description": "Where big outdoor adventures meet indoor imagination: the Indoor/Outdoor Play Center at Maplewood in South Easton, MA. See the schedule and visit us."
+    }
+  },
+  {
+    "id": "wf-677d49d61db2a021fe854a5a-6842ce3c3b074bd9e3ef4785",
+    "path": "/post/we-know-how-to-throw-a-party",
+    "title": "Birthday Parties ",
+    "from": {
+      "title": "Birthday Parties at the Play Center",
+      "description": "Have your Child's Birthday at our Indoor/Outdoor Playground."
+    },
+    "to": {
+      "title": "Throw Your Child's Birthday Party at Our Play Center",
+      "description": "Weekday afternoon, Saturday morning and private weekend birthday parties at Maplewood's indoor playground, September to May. See details and book."
+    }
+  }
+]
