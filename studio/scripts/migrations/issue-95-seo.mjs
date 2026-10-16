@@ -2,7 +2,7 @@
 // are too long, too short, miss the place or repeat another page. The run
 // proposes new values in each page's draft for Ovi's review. The published
 // versions do not change. A draft that already exists is changed only while
-// its SEO values are still the published ones.
+// its SEO values and the published ones are still the values recorded here.
 
 import { readFileSync } from "node:fs";
 
@@ -29,16 +29,16 @@ export default {
       if (!published || published.title !== change.title)
         throw new Error(`${id} is not the published page "${change.title}"`);
       const draft = dataset.get(`drafts.${id}`);
+      if (sameSeo((draft ?? published).meta, change.to)) continue;
+      if (!sameSeo(published.meta, change.from)) {
+        dataset.note(`Left alone: "${change.path}" has published SEO values an editor changed.`);
+        continue;
+      }
       if (!draft) {
-        if (!sameSeo(published.meta, change.from)) {
-          dataset.note(`Left alone: "${change.path}" has published SEO values an editor changed.`);
-          continue;
-        }
         const copy = Object.fromEntries(Object.entries(published).filter(([key]) => !SYSTEM.includes(key)));
         dataset.create(withSeo({ ...copy, _id: `drafts.${id}` }, change.to));
       } else if (sameSeo(draft.meta, change.from)) pending.add(draft._id);
-      else if (!sameSeo(draft.meta, change.to))
-        dataset.note(`Left alone: the draft of "${change.path}" has SEO values an editor changed.`);
+      else dataset.note(`Left alone: the draft of "${change.path}" has SEO values an editor changed.`);
     }
 
     return (document) =>

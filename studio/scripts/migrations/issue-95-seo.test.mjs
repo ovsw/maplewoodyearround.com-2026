@@ -70,6 +70,16 @@ test("a published page whose SEO values an editor changed gets no draft", () => 
   assert.match(result.notes.join("\n"), /published SEO values an editor changed/);
 });
 
+test("an old draft is left alone when an editor changed the published SEO values", () => {
+  const [first] = changes;
+  const edited = documents.map((document) =>
+    document._id === first.id ? { ...document, meta: { title: "Editor's title" } } : document,
+  );
+  const result = planMigration(migration, [...edited, published(`drafts.${first.id}`)]);
+  assert.ok(!result.changed.some((change) => change.before._id === `drafts.${first.id}`));
+  assert.match(result.notes.join("\n"), new RegExp(`Left alone: "${first.path}" has published SEO values`));
+});
+
 test("a different page under a known id stops the run", () => {
   const renamed = documents.map((document, index) => (index === 0 ? { ...document, title: "Renamed" } : document));
   assert.throws(() => planMigration(migration, renamed), /is not the published page/);
