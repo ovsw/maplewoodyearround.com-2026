@@ -21,7 +21,17 @@ export default defineType({
     }),
     sectionDescriptionField,
     sectionActionsField,
-    ...sectionVideoFields,
+    // The hero may show only its still image, so its video is optional.
+    ...sectionVideoFields.map((field) =>
+      field.name === "videoMp4"
+        ? {
+            ...field,
+            description:
+              "Optional. Leave both videos empty to show the still image only.",
+            validation: undefined,
+          }
+        : field,
+    ),
     defineField({
       name: "overlayOpacity",
       title: "Video shading",

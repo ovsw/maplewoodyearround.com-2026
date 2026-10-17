@@ -72,6 +72,17 @@ describe("BackgroundVideo motion preferences", () => {
     );
     expect(env.pause).toHaveBeenCalled();
   });
+  it("waits for the page to finish loading before it starts", async () => {
+    const env = environment(false);
+    vi.spyOn(document, "readyState", "get").mockReturnValue("loading");
+    render(<BackgroundVideo mp4="/camp.mp4" />);
+    env.visible(true);
+    expect(env.play).not.toHaveBeenCalled();
+    act(() => {
+      window.dispatchEvent(new Event("load"));
+    });
+    await waitFor(() => expect(env.play).toHaveBeenCalledTimes(1));
+  });
   it("keeps the static poster when reduced motion is requested", () => {
     const env = environment(true);
     render(<BackgroundVideo mp4="/camp.mp4" poster="/poster.jpg" />);
