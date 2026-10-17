@@ -159,12 +159,6 @@ export type SanityFileAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
 };
 
-export type VideoMp4 = {
-  asset?: SanityFileAssetReference;
-  media?: unknown;
-  _type: "file";
-};
-
 export type VideoWebm = {
   asset?: SanityFileAssetReference;
   media?: unknown;
@@ -178,6 +172,12 @@ export type Poster = {
   crop?: SanityImageCrop;
   alt?: string;
   _type: "image";
+};
+
+export type VideoMp4 = {
+  asset?: SanityFileAssetReference;
+  media?: unknown;
+  _type: "file";
 };
 
 export type RegistrationCards = {
@@ -693,7 +693,11 @@ export type VideoHero = {
       _key: string;
     } & ContentAction
   >;
-  videoMp4?: VideoMp4;
+  videoMp4?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
   videoWebm?: VideoWebm;
   poster?: Poster;
   overlayOpacity?: number;
@@ -2976,9 +2980,9 @@ export type AllSanitySchemaTypes =
   | HeroTabImage
   | FilmButton
   | SanityFileAssetReference
-  | VideoMp4
   | VideoWebm
   | Poster
+  | VideoMp4
   | RegistrationCards
   | IconCards
   | TabbedHero

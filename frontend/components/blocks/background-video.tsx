@@ -19,8 +19,16 @@ export default function BackgroundVideo({
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let visible = false;
+    // The video downloads only once it plays, so holding playback until the
+    // page has loaded keeps it from competing with the rest of the page.
+    let pageLoaded = document.readyState === "complete";
     const update = () => {
-      if (preference.matches || !visible || manuallyPaused.current) {
+      if (
+        preference.matches ||
+        !visible ||
+        !pageLoaded ||
+        manuallyPaused.current
+      ) {
         video.current?.pause();
         setPlaying(false);
       } else {
@@ -34,10 +42,16 @@ export default function BackgroundVideo({
       visible = entry.isIntersecting;
       update();
     });
+    const onPageLoad = () => {
+      pageLoaded = true;
+      update();
+    };
+    if (!pageLoaded) window.addEventListener("load", onPageLoad, { once: true });
     if (video.current) observer.observe(video.current);
     preference.addEventListener("change", update);
     return () => {
       observer.disconnect();
+      window.removeEventListener("load", onPageLoad);
       preference.removeEventListener("change", update);
     };
   }, []);
