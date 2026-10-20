@@ -725,7 +725,7 @@ The [external link register](inventory.md#external-link-register) is the URL-by-
 
 `embedSection.provider` selects a controlled provider integration; `frameTitle` describes it for assistive technology. Public form/account/calendar identifiers are content, not API keys. Keep secrets in the hosting environment. The renderer owns provider scripts and must not execute pasted script markup.
 
-The required singletons are `settings`, `navigation`, `footer`, `parentDashboard` and `homePage`, with the existing news index/settings. Settings owns public contact details, social links, logos, the GA measurement ID and Hotjar site ID. The footer owns newsletter text; Formspark credentials remain in hosting environment variables. The newsletter uses Formspark with a honeypot. Cognito/Airtable and other retained forms continue to use their existing services.
+The required singletons are `settings`, `navigation`, `footer`, `parentDashboard` and `homePage`, with the existing news index/settings. Settings owns public contact details, social links, logos, the GA measurement ID and Hotjar site ID. The footer owns newsletter text; Formspark credentials remain in hosting environment variables. The newsletter uses Formspark with a honeypot and a Cloudflare Turnstile bot check. Cognito/Airtable and other retained forms continue to use their existing services.
 
 ## Studio, routes and completion
 

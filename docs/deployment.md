@@ -21,6 +21,25 @@ canonicals, the sitemap and structured data already name `www`. Preview and
 Development use the Vercel URL. Every other host, including the Vercel URLs
 of the production deployment, sends `X-Robots-Tag: noindex`.
 
+## Newsletter
+
+The footer form sends each signup to `/api/newsletter`. The route sends it on
+to Formspark only after Cloudflare Turnstile confirms that a person, not a
+bot, filled in the form. Most visitors see no check; a visitor whom
+Cloudflare finds suspicious gets a checkbox to click.
+
+- `FORMSPARK_FORM_ID`: the form in Maplewood's Formspark account.
+- `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` (sensitive):
+  the Turnstile widget `maplewoodyearround.com` in Ovi's Cloudflare account,
+  mode Managed, for the host `maplewoodyearround.com`. Production only.
+- Preview and Development use Cloudflare's test keys, which always pass:
+  site key `1x00000000000000000000AA`, secret key
+  `1x0000000000000000000000000000000AA`. A preview signup still reaches
+  Formspark and sends the staff notification.
+
+Without these variables the form answers "Something went wrong" and sends
+nothing.
+
 ## Search parity
 
 `node scripts/seo-parity.mjs [origin]` compares the live Webflow site with the

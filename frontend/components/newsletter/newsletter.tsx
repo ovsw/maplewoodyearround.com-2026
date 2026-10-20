@@ -1,8 +1,16 @@
 "use client";
 
-import { useId, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+  type RefObject,
+} from "react";
 import Link from "next/link";
 import styles from "./newsletter.module.css";
+import { loadTurnstile } from "./turnstile";
 
 export type NewsletterCopy = {
   heading?: string | null;
@@ -11,11 +19,89 @@ export type NewsletterCopy = {
   errorMessage?: string | null;
 };
 
+type PendingToken = {
+  resolve(token: string): void;
+  reject(error: Error): void;
+};
+
+// Gets a fresh Turnstile token for each submission. The script loads when
+// the form nears the screen, so visitors who never scroll to the footer do
+// not download it.
+function useTurnstileToken(
+  siteKey: string | undefined,
+  container: RefObject<HTMLDivElement | null>,
+) {
+  const widget = useRef<string | undefined>(undefined);
+  const pending = useRef<PendingToken | undefined>(undefined);
+
+  useEffect(() => {
+    const element = container.current;
+    if (!element || !siteKey || typeof IntersectionObserver === "undefined")
+      return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        loadTurnstile().catch(() => undefined);
+      },
+      { rootMargin: "600px" },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [siteKey, container]);
+
+  useEffect(
+    () => () => {
+      if (widget.current) window.turnstile?.remove(widget.current);
+    },
+    [],
+  );
+
+  async function token() {
+    if (!siteKey) throw new Error("Turnstile site key missing");
+    const turnstile = await loadTurnstile();
+    if (!container.current) throw new Error("Turnstile container missing");
+    const settle = (finish: (handlers: PendingToken) => void) => {
+      if (pending.current) finish(pending.current);
+      pending.current = undefined;
+    };
+    const fail = () =>
+      settle((handlers) => handlers.reject(new Error("Turnstile failed")));
+    const result = new Promise<string>((resolve, reject) => {
+      pending.current = { resolve, reject };
+    });
+    if (widget.current === undefined) {
+      widget.current = turnstile.render(container.current, {
+        sitekey: siteKey,
+        action: "newsletter",
+        execution: "execute",
+        appearance: "interaction-only",
+        retry: "never",
+        callback: (value) => settle((handlers) => handlers.resolve(value)),
+        "error-callback": fail,
+        "expired-callback": fail,
+        "timeout-callback": fail,
+      });
+    } else {
+      turnstile.reset(widget.current);
+    }
+    turnstile.execute(widget.current);
+    return result;
+  }
+
+  return token;
+}
+
 export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
   const id = useId();
   const [status, setStatus] = useState<
     "idle" | "pending" | "success" | "error"
   >("idle");
+  const challenge = useRef<HTMLDivElement>(null);
+  const turnstileToken = useTurnstileToken(
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+    challenge,
+  );
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,12 +110,14 @@ export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
     const fields = new FormData(form);
     setStatus("pending");
     try {
+      const token = await turnstileToken();
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: fields.get("email"),
           _honeypot: fields.get("_honeypot"),
+          turnstileToken: token,
         }),
       });
       if (!response.ok) throw new Error("Submission failed");
@@ -79,6 +167,8 @@ export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
           {status === "pending" ? "Please wait..." : "Subscribe"}
         </button>
       </form>
+      {/* Shows a checkbox only when Cloudflare needs the visitor to click. */}
+      <div ref={challenge} />
       <p className={styles.privacy} id={`${id}-privacy`}>
         By subscribing you agree to our{" "}
         <Link href="/privacy-policy">Privacy Policy</Link> and provide consent
