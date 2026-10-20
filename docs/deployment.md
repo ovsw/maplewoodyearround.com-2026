@@ -64,8 +64,8 @@ Settings:
   `193h5qm1`.
 - Function: `invalidate-tags`, for dataset `193h5qm1.production`.
 - Function variable `REVALIDATE_TAGS_URL`:
-  `https://maplewoodyearround-com-2026.vercel.app/api/revalidate-tags`. Change
-  it to the production domain at launch.
+  `https://www.maplewoodyearround.com/api/revalidate-tags` (since the launch,
+  2026-10-20).
 - Function variable `SANITY_REVALIDATE_SECRET`: the same value as the
   Website's.
 - Website variable `SANITY_REVALIDATE_SECRET`: in Vercel, Production,
