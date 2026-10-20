@@ -100,11 +100,14 @@ export const playgroundEvent = defineType({
       type: "richTextContent",
       description: "The activities and details for this day.",
     }),
-    switchField(
-      "hasGuest",
-      "Show special guest",
-      "Show the guest information for this day.",
-    ),
+    {
+      ...switchField(
+        "hasGuest",
+        "Show special guest",
+        "Show the guest information for this day.",
+      ),
+      initialValue: true,
+    },
     switchField(
       "customDay",
       "Custom day",
