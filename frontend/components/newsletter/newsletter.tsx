@@ -9,6 +9,7 @@ import {
   type RefObject,
 } from "react";
 import Link from "next/link";
+import { CircleCheck } from "lucide-react";
 import styles from "./newsletter.module.css";
 import { loadTurnstile } from "./turnstile";
 
@@ -98,10 +99,16 @@ export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
     "idle" | "pending" | "success" | "error"
   >("idle");
   const challenge = useRef<HTMLDivElement>(null);
+  const message = useRef<HTMLDivElement>(null);
   const turnstileToken = useTurnstileToken(
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
     challenge,
   );
+
+  // The form disappears on success, so keyboard focus moves to the message.
+  useEffect(() => {
+    if (status === "success") message.current?.focus();
+  }, [status]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -134,60 +141,79 @@ export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
       aria-label={copy.heading || "Newsletter"}
     >
       {copy.heading && <h2>{copy.heading}</h2>}
-      {copy.description && <p>{copy.description}</p>}
-      <form
-        className={styles.form}
-        onSubmit={submit}
-        aria-busy={status === "pending"}
-      >
-        <label className="sr-only" htmlFor={`${id}-email`}>
-          Email address
-        </label>
-        <input
-          id={`${id}-email`}
-          type="email"
-          name="email"
-          required
-          maxLength={254}
-          autoComplete="email"
-          placeholder="Enter your email"
-          aria-describedby={`${id}-privacy ${id}-status`}
-        />
-        <div hidden aria-hidden="true">
-          <label htmlFor={`${id}-website`}>Leave this field empty</label>
+      {/* The invitation to join is pointless once the visitor has joined. */}
+      {copy.description && status !== "success" && <p>{copy.description}</p>}
+      {status !== "success" && (
+        <form
+          className={styles.form}
+          onSubmit={submit}
+          aria-busy={status === "pending"}
+        >
+          <label className="sr-only" htmlFor={`${id}-email`}>
+            Email address
+          </label>
           <input
-            id={`${id}-website`}
-            name="_honeypot"
-            type="text"
-            tabIndex={-1}
-            autoComplete="off"
+            id={`${id}-email`}
+            type="email"
+            name="email"
+            required
+            maxLength={254}
+            autoComplete="email"
+            placeholder="Enter your email"
+            aria-describedby={`${id}-privacy ${id}-status`}
           />
-        </div>
-        <button type="submit" disabled={status === "pending"}>
-          {status === "pending" ? "Please wait..." : "Subscribe"}
-        </button>
-      </form>
+          <div hidden aria-hidden="true">
+            <label htmlFor={`${id}-website`}>Leave this field empty</label>
+            <input
+              id={`${id}-website`}
+              name="_honeypot"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+          <button type="submit" disabled={status === "pending"}>
+            {status === "pending" ? "Please wait..." : "Subscribe"}
+          </button>
+        </form>
+      )}
       {/* Shows a checkbox only when Cloudflare needs the visitor to click. */}
       <div ref={challenge} />
-      <p className={styles.privacy} id={`${id}-privacy`}>
-        By subscribing you agree to our{" "}
-        <Link href="/privacy-policy">Privacy Policy</Link> and provide consent
-        to receive updates from Maplewood Enrichment Center.
-      </p>
-      <p
-        className={styles.status}
+      {status !== "success" && (
+        <p className={styles.privacy} id={`${id}-privacy`}>
+          By subscribing you agree to our{" "}
+          <Link href="/privacy-policy">Privacy Policy</Link> and provide
+          consent to receive updates from Maplewood Enrichment Center.
+        </p>
+      )}
+      <div
+        ref={message}
+        className={status === "success" ? styles.success : styles.status}
         id={`${id}-status`}
         role="status"
         aria-live="polite"
         aria-atomic="true"
+        tabIndex={-1}
       >
-        {status === "success" &&
-          (copy.successMessage ||
-            "Thank you! Your submission has been received!")}
-        {status === "error" &&
-          (copy.errorMessage ||
-            "Oops! Something went wrong while submitting the form.")}
-      </p>
+        {status === "success" && (
+          <>
+            <CircleCheck className={styles.successIcon} aria-hidden="true" />
+            <div>
+              <p className={styles.successTitle}>You&rsquo;re subscribed!</p>
+              <p>
+                {copy.successMessage ||
+                  "Thank you! Your submission has been received!"}
+              </p>
+            </div>
+          </>
+        )}
+        {status === "error" && (
+          <p>
+            {copy.errorMessage ||
+              "Oops! Something went wrong while submitting the form."}
+          </p>
+        )}
+      </div>
     </section>
   );
 }

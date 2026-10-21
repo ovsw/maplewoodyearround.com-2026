@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Newsletter } from "./newsletter";
 import type { Turnstile, TurnstileOptions } from "./turnstile";
@@ -45,7 +45,7 @@ it("keeps the email after an error and announces a successful retry", async () =
     .mockResolvedValueOnce({ ok: true });
   vi.stubGlobal("fetch", submit);
   const user = userEvent.setup();
-  render(<Newsletter />);
+  render(<Newsletter copy={{ description: "Join our newsletter." }} />);
   const email = screen.getByRole("textbox", { name: "Email address" });
   await user.type(email, "reader@example.com");
   await user.click(screen.getByRole("button", { name: "Subscribe" }));
@@ -56,10 +56,18 @@ it("keeps the email after an error and announces a successful retry", async () =
   ).toBeInTheDocument();
   expect(email).toHaveValue("reader@example.com");
   await user.click(screen.getByRole("button", { name: "Subscribe" }));
+  // The form gives way to a confirmation that holds keyboard focus.
+  const confirmation = await screen.findByRole("status");
   expect(
-    await screen.findByText("Thank you! Your submission has been received!"),
-  ).toHaveAttribute("role", "status");
-  expect(email).toHaveValue("");
+    await within(confirmation).findByText("You’re subscribed!"),
+  ).toBeInTheDocument();
+  expect(confirmation).toHaveTextContent(
+    "Thank you! Your submission has been received!",
+  );
+  expect(confirmation).toHaveFocus();
+  expect(email).not.toBeInTheDocument();
+  expect(screen.queryByText("Join our newsletter.")).toBeNull();
+  expect(screen.queryByRole("button", { name: "Subscribe" })).toBeNull();
   expect(submit).toHaveBeenCalledTimes(2);
   // Cloudflare accepts each token once, so every submission gets a new one.
   expect(sentBodies(submit)).toEqual([

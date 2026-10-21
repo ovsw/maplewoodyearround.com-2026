@@ -58,6 +58,40 @@
   font-size: 0.875rem;
   margin-top: 0.5rem;
 }
+/* After a signup the form gives way to a notice card, so the visitor sees
+   at once that it worked. */
+.success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  margin: 1rem 6px 6px 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.8em;
+  background: var(--maplewood-cream);
+  color: var(--maplewood-ink);
+  box-shadow: 6px 6px 0 var(--maplewood-gold);
+}
+.success:focus {
+  outline: none;
+}
+/* Cream, so the ring stays apart from the gold shadow. */
+.success:focus-visible {
+  outline: 2px solid var(--maplewood-cream);
+  outline-offset: 4px;
+}
+.successIcon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--maplewood-green);
+}
+.successTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--maplewood-green);
+}
 @media (max-width: 479px) {
   .form {
     flex-direction: column;
