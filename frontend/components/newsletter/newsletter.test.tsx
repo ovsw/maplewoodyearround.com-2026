@@ -45,7 +45,7 @@ it("keeps the email after an error and announces a successful retry", async () =
     .mockResolvedValueOnce({ ok: true });
   vi.stubGlobal("fetch", submit);
   const user = userEvent.setup();
-  render(<Newsletter />);
+  render(<Newsletter copy={{ description: "Join our newsletter." }} />);
   const email = screen.getByRole("textbox", { name: "Email address" });
   await user.type(email, "reader@example.com");
   await user.click(screen.getByRole("button", { name: "Subscribe" }));
@@ -66,6 +66,7 @@ it("keeps the email after an error and announces a successful retry", async () =
   );
   expect(confirmation).toHaveFocus();
   expect(email).not.toBeInTheDocument();
+  expect(screen.queryByText("Join our newsletter.")).toBeNull();
   expect(screen.queryByRole("button", { name: "Subscribe" })).toBeNull();
   expect(submit).toHaveBeenCalledTimes(2);
   // Cloudflare accepts each token once, so every submission gets a new one.

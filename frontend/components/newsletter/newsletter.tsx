@@ -141,7 +141,8 @@ export function Newsletter({ copy = {} }: { copy?: NewsletterCopy }) {
       aria-label={copy.heading || "Newsletter"}
     >
       {copy.heading && <h2>{copy.heading}</h2>}
-      {copy.description && <p>{copy.description}</p>}
+      {/* The invitation to join is pointless once the visitor has joined. */}
+      {copy.description && status !== "success" && <p>{copy.description}</p>}
       {status !== "success" && (
         <form
           className={styles.form}
