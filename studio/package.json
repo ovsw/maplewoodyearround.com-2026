@@ -11,7 +11,7 @@
     "deploy": "node ../scripts/deploy-studio.mjs",
     "generate:material-icons": "node scripts/generate-material-icon-catalog.mjs",
     "test:presentation": "node --test presentation/presentation.test.mjs",
-    "typegen": "rm -f schema.json && sanity schema extract; test -f schema.json && sanity typegen generate",
+    "typegen": "node scripts/extract-schema.mjs && sanity typegen generate",
     "typecheck": "tsc --noEmit",
     "page:text": "node --env-file=.env.local scripts/print-page-text.mjs",
     "sanity:query": "node --env-file=.env.local scripts/query.mjs",

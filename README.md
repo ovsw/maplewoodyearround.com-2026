@@ -31,6 +31,8 @@ Run commands from the repository root. Add dependencies with
 - `pnpm page-builder:new <name>` creates a registered section.
 - `pnpm sanity:query '<groq>'` reads content with local credentials.
 - `pnpm verify` runs required checks before each PR.
+- `pnpm typegen` skips the slow schema extract when its inputs did not change;
+  `SCHEMA_EXTRACT_FORCE=1 pnpm typegen` extracts anyway.
 - `pnpm deploy:studio` deploys Studio with the production guard.
 
 Read `docs/agents/page-builder.md` before section changes. Change schemas,
