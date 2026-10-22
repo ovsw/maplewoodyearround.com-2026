@@ -33,8 +33,8 @@
     "typecheck": "pnpm --dir frontend typecheck && pnpm --dir studio typecheck",
     "lint": "pnpm --dir frontend lint",
     "test": "pnpm --dir frontend test && node --test 'scripts/*.test.mjs' 'frontend/**/*.test.mjs' 'studio/**/*.test.mjs'",
-    "verify:static": "pnpm verify:typegen && pnpm typecheck && pnpm lint && pnpm test",
-    "verify:build": "pnpm build && PLAYWRIGHT_REUSE_BUILD=1 pnpm --dir frontend test:smoke",
+    "verify:static": "pnpm verify:typegen && node scripts/run-parallel.mjs \"pnpm --dir frontend typecheck\" \"pnpm --dir studio typecheck\" \"pnpm lint\" \"pnpm test\"",
+    "verify:build": "node scripts/run-parallel.mjs \"pnpm --dir frontend build\" \"pnpm --dir studio build\" && PLAYWRIGHT_REUSE_BUILD=1 pnpm --dir frontend test:smoke",
     "verify": "pnpm verify:static && pnpm verify:build"
   },
   "engines": {
