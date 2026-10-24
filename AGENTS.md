@@ -125,3 +125,17 @@ Use the canonical labels `needs-triage`, `needs-info`, `ready-for-agent`,
 
 This repository uses a single-context domain-doc layout. See
 `docs/agents/domain.md`.
+
+### Clark's editing guide
+
+Clark, the client editing bot, reads `docs/agents/editing.md` with every
+request from the Maplewood staff. Update it when a content rule or the
+client's vocabulary changes; `pnpm registry set-guide` in the Clark repo
+loads the new text.
+
+### Clark's editing guide
+
+Clark, the client editing bot, reads `docs/agents/editing.md` with every
+request from the Maplewood staff. Update it when a content rule or the
+client's vocabulary changes; `pnpm registry set-guide` in the Clark repo
+loads the new text.
