@@ -1,12 +1,18 @@
 import { stegaClean } from "next-sanity";
 import { cacheLife } from "next/cache";
 
-// The Play Center is in Maplewood, New Jersey. "en-CA" writes "YYYY-MM-DD".
-const maplewoodDayFormat = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" });
+// The Play Center is in Maplewood, New Jersey.
+const maplewoodDayFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
 
 /** The calendar day in Maplewood at `now`, as "YYYY-MM-DD". */
 export function maplewoodDate(now: Date) {
-  return maplewoodDayFormat.format(now);
+  const parts = Object.fromEntries(maplewoodDayFormat.formatToParts(now).map(({ type, value }) => [type, value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
 /**
