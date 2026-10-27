@@ -1,0 +1,37 @@
+import { stegaClean } from "next-sanity";
+import { cacheLife } from "next/cache";
+
+// The Play Center is in Maplewood, New Jersey.
+const maplewoodDayFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** The calendar day in Maplewood at `now`, as "YYYY-MM-DD". */
+export function maplewoodDate(now: Date) {
+  const parts = Object.fromEntries(maplewoodDayFormat.formatToParts(now).map(({ type, value }) => [type, value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+/**
+ * Today in Maplewood. Pages that use it refresh every hour, so the Play
+ * Center calendar moves on to a new day without a content edit.
+ */
+export async function getMaplewoodToday(): Promise<string> {
+  "use cache";
+  cacheLife("hours");
+  return maplewoodDate(new Date());
+}
+
+/**
+ * The Play Center calendar days from `today` on, as the live site shows them.
+ * Dates are stored as calendar days at midnight UTC.
+ */
+export function upcomingPlayCenterDays<Day extends { date?: string | null }>(days: Day[], today: string) {
+  return days.filter((day) => {
+    const date = stegaClean(day.date);
+    return !date || date.slice(0, 10) >= today;
+  });
+}

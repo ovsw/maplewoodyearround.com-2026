@@ -3,6 +3,7 @@ import { CalendarDays, Clock } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import programs from "./maplewood-programs.module.css";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
+import { getMaplewoodToday, upcomingPlayCenterDays } from "@/lib/play-center-days";
 import CardSliderTrack from "./card-slider-track";
 import {
   accentClass,
@@ -117,7 +118,7 @@ function ScheduleSlots({
 }
 
 /** Collection cards in a slider (Webflow blog66), such as one facility category. */
-export default function CardSlider({
+export default async function CardSlider({
   _key,
   accent,
   actions,
@@ -134,15 +135,17 @@ export default function CardSlider({
   tagline,
   title,
 }: CardSliderProps) {
-  const cards = (items ?? []).filter(
+  // The calendar shows its buttons below the days, as live.
+  const calendarDays = stegaClean(source) === "playgroundEvent";
+  const listed = (items ?? []).filter(
     (item) => stegaClean(item.title)?.trim() || item._type === "playgroundEvent",
   );
+  // The calendar starts at today, as live.
+  const cards = calendarDays ? upcomingPlayCenterDays(listed, await getMaplewoodToday()) : listed;
   const slotCount = (schedule?.slots ?? []).filter((slot) => stegaClean(slot.label)?.trim()).length;
   const count = schedule ? slotCount : cards.length;
   if (!title || !count) return null;
   const headingId = `card-slider-${stegaClean(_key)}-title`;
-  // The calendar shows its buttons below the days, as live.
-  const calendarDays = stegaClean(source) === "playgroundEvent";
   const calendarUrl = calendarDays ? stegaClean(calendar?.fileUrl) : undefined;
   return (
     <section
