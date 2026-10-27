@@ -20,6 +20,7 @@ export default function CardSliderTrack({
   label: string;
 }) {
   const track = useRef<HTMLUListElement>(null);
+  const controls = useRef<HTMLDivElement>(null);
   const drag = useRef<{ id: number; x: number; left: number; moved: boolean } | null>(null);
   const [active, setActive] = useState(0);
   // Cards that can sit at the left edge. The last cards share the end position.
@@ -58,16 +59,35 @@ export default function CardSliderTrack({
     };
   }, [update]);
 
-  const go = (index: number) => {
-    const node = track.current;
-    const positions = offsets();
-    if (!node || !positions.length) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    node.scrollTo({
-      left: positions[Math.max(0, Math.min(positions.length - 1, index))],
-      behavior: reduce ? "auto" : "smooth",
-    });
-  };
+  const go = useCallback(
+    (index: number) => {
+      const node = track.current;
+      const positions = offsets();
+      if (!node || !positions.length) return;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      node.scrollTo({
+        left: positions[Math.max(0, Math.min(positions.length - 1, index))],
+        behavior: reduce ? "auto" : "smooth",
+      });
+    },
+    [offsets],
+  );
+
+  // Studio Presentation turns every click in an editable section into "edit
+  // this section", so the buttons would not move the cards there. Inside a
+  // frame, the buttons handle their clicks before the edit overlay sees them.
+  useEffect(() => {
+    const node = controls.current;
+    if (!node || window.self === window.top) return;
+    const onClick = (event: MouseEvent) => {
+      const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>("button[data-go]") : null;
+      if (!button || !node.contains(button)) return;
+      event.stopPropagation();
+      go(Number(button.dataset.go));
+    };
+    window.addEventListener("click", onClick, true);
+    return () => window.removeEventListener("click", onClick, true);
+  }, [go]);
 
   // Mouse dragging. Touch and pen keep the browser's native swipe.
   const onPointerDown = (event: React.PointerEvent<HTMLUListElement>) => {
@@ -113,12 +133,12 @@ export default function CardSliderTrack({
 
   return (
     <div className={css.slider}>
-      <div className={css.sliderControls}>
+      <div className={css.sliderControls} ref={controls}>
         <div className={css.sliderButtons}>
-          <button aria-label={`Previous: ${label}`} className={css.sliderButton} disabled={active === 0} onClick={() => go(active - 1)} type="button">
+          <button aria-label={`Previous: ${label}`} className={css.sliderButton} data-go={active - 1} disabled={active === 0} onClick={() => go(active - 1)} type="button">
             <ArrowLeft aria-hidden size={16} />
           </button>
-          <button aria-label={`Next: ${label}`} className={css.sliderButton} disabled={active >= stops - 1} onClick={() => go(active + 1)} type="button">
+          <button aria-label={`Next: ${label}`} className={css.sliderButton} data-go={active + 1} disabled={active >= stops - 1} onClick={() => go(active + 1)} type="button">
             <ArrowRight aria-hidden size={16} />
           </button>
         </div>
@@ -129,6 +149,7 @@ export default function CardSliderTrack({
                 aria-current={index === active ? "true" : undefined}
                 aria-label={`${label}: position ${index + 1} of ${stops}`}
                 className={index === active ? css.sliderDotActive : css.sliderDot}
+                data-go={index}
                 key={index}
                 onClick={() => go(index)}
                 type="button"
