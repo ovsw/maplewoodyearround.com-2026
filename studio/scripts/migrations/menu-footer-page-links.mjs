@@ -6,6 +6,8 @@
 // into the drafts of the menu and the footer for Ovi's review; the published
 // versions do not change. A draft that already exists is changed in place.
 
+import { versionPrefix } from "../lib/migration.mjs";
+
 const SYSTEM = ["_rev", "_createdAt", "_updatedAt"];
 const RECORDS = ["navigation", "footer"];
 const DESTINATION_TYPES = new Set(["navigationDestination", "footerDestination"]);
@@ -22,7 +24,7 @@ export function sitePath(value) {
 export function pageIdsByPath(documents) {
   const ids = new Map();
   for (const document of documents) {
-    if (document._id.includes(".")) continue;
+    if (versionPrefix(document._id)) continue;
     if (document._type === "homePage") ids.set("/", document._id);
     else if (document._type === "blogIndex") ids.set("/news", document._id);
     else if (document._type === "parentDashboard") ids.set("/parent-dashboard", document._id);
