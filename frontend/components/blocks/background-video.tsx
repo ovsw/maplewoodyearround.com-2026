@@ -68,6 +68,11 @@ export default function BackgroundVideo({
       setPlaying(false);
     };
   }, [desktop]);
+  useEffect(() => {
+    // The viewport became small after the video played: drop the loaded
+    // resource so the poster shows again instead of a frozen frame.
+    if (!desktop) video.current?.load();
+  }, [desktop]);
   return (
     <>
       <video
