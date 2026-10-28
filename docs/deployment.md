@@ -114,7 +114,8 @@ run from the Sanity plan's included usage.
 The hostname is `maplewood.sanity.studio`.
 Use Sanity project `193h5qm1`, dataset `production`, and Studio app ID
 `eweifpwe25l4mo1ia1cqub9o`.
-Its preview must point to the deployed Maplewood Website.
+Its preview must point to the live Maplewood Website,
+https://www.maplewoodyearround.com, not a Vercel URL.
 Use `studio/.env.local` for authentication and local preview settings.
 The deploy guard uses production settings for the deployed preview and app ID.
 It uses the dedicated `SANITY_DEPLOY_TOKEN`; content operations use
