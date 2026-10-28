@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { sectionVideoFields } from "./shared/maplewood-fields";
+import { muxVideoField, sectionVideoFields } from "./shared/maplewood-fields";
 
 const directorPanel = defineArrayMember({
   name: "directorPanel",
@@ -39,6 +39,7 @@ export default defineType({
       of: [directorPanel],
       validation: (rule) => rule.required().min(1),
     }),
+    muxVideoField,
     ...sectionVideoFields,
   ],
   preview: {

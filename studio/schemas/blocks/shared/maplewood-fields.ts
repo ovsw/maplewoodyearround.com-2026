@@ -127,20 +127,44 @@ export const collectionFilterFields = [
   }),
 ];
 
+/** True when the block holds a Mux video, so its video files are optional. */
+const hasMuxVideo = (parent: unknown) =>
+  Boolean((parent as { muxVideo?: { asset?: unknown } } | undefined)?.muxVideo?.asset);
+
+/**
+ * The preferred background video. Mux streams it in the size each screen
+ * needs; the block's video files play only when this field is empty.
+ */
+export const muxVideoField = defineField({
+  name: "muxVideo",
+  title: "Background video (Mux)",
+  type: "mux.video",
+  description:
+    "Preferred. Upload the background video here; Mux streams it in the right size for each screen. The video files below play only when this is empty.",
+  options: { acceptedMimeTypes: ["video/*"] },
+});
+
 export const sectionVideoFields = [
   defineField({
     name: "videoMp4",
     title: "MP4 video",
     type: "file",
-    description: "Upload the background video to Sanity.",
+    description:
+      "Fallback. Plays only when the block has no Mux video. Required without one.",
     options: { accept: "video/mp4" },
-    validation: (rule) => rule.required(),
+    validation: (rule) =>
+      rule.custom((value, context) =>
+        value || hasMuxVideo(context.parent)
+          ? true
+          : "Add a Mux video above, or upload an MP4 file.",
+      ),
   }),
   defineField({
     name: "videoWebm",
     title: "WebM video",
     type: "file",
-    description: "Optional WebM copy of the same background video.",
+    description:
+      "Optional fallback: a WebM copy of the MP4 file. Not needed with a Mux video.",
     options: { accept: "video/webm" },
   }),
   defineField({
