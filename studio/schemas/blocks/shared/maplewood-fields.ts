@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { type ValidationContext, defineArrayMember, defineField, defineType } from "sanity";
 import { programOptions } from "../../documents/maplewood-fields";
 import { createIconPreview } from "../../inputs/icon-input";
 import { iconField } from "./icon";
@@ -127,9 +127,25 @@ export const collectionFilterFields = [
   }),
 ];
 
-/** True when the block holds a Mux video, so its video files are optional. */
-const hasMuxVideo = (parent: unknown) =>
-  Boolean((parent as { muxVideo?: { asset?: unknown } } | undefined)?.muxVideo?.asset);
+/**
+ * True when the block's Mux video can play on the site: the asset is ready and
+ * has a public playback ID. This mirrors the website's `muxPlaybackIdProjection`,
+ * so the MP4 file is optional only when the site would stream from Mux.
+ */
+const hasPlayableMuxVideo = async (context: ValidationContext) => {
+  const ref = (context.parent as { muxVideo?: { asset?: { _ref?: string } } } | undefined)
+    ?.muxVideo?.asset?._ref;
+  if (!ref) return false;
+  const playable = await context
+    .getClient({ apiVersion: "2026-03-23" })
+    .fetch<boolean | null>(
+      `*[_id == $ref][0]{
+        "ok": status == "ready" && count(data.playback_ids[policy == "public"]) > 0
+      }.ok`,
+      { ref },
+    );
+  return playable === true;
+};
 
 /**
  * The preferred background video. Mux streams it in the size each screen
@@ -153,10 +169,10 @@ export const sectionVideoFields = [
       "Fallback. Plays only when the block has no Mux video. Required without one.",
     options: { accept: "video/mp4" },
     validation: (rule) =>
-      rule.custom((value, context) =>
-        value || hasMuxVideo(context.parent)
+      rule.custom(async (value, context) =>
+        value || (await hasPlayableMuxVideo(context))
           ? true
-          : "Add a Mux video above, or upload an MP4 file.",
+          : "Upload an MP4 file, or add a Mux video above and wait until Mux has finished processing it.",
       ),
   }),
   defineField({
