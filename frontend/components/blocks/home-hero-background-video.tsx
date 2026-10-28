@@ -1,18 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef } from "react";
+import { useMediaQuery } from "@/lib/use-media-query";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-
-function subscribe(onStoreChange: () => void) {
-  const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
-  mediaQuery.addEventListener("change", onStoreChange);
-  return () => mediaQuery.removeEventListener("change", onStoreChange);
-}
-
-function prefersReducedMotion() {
-  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
-}
+/** Matches the hero's `lg` desktop layout. Smaller screens show the poster. */
+export const HOME_HERO_VIDEO_QUERY = "(min-width: 1024px)";
 
 type HomeHeroBackgroundVideoProps = {
   poster?: string;
@@ -23,11 +16,11 @@ export default function HomeHeroBackgroundVideo({
   poster,
   src,
 }: HomeHeroBackgroundVideoProps) {
-  const reduceMotion = useSyncExternalStore(
-    subscribe,
-    prefersReducedMotion,
-    () => true,
-  );
+  const reduceMotion = useMediaQuery(REDUCED_MOTION_QUERY, true);
+  // Phones and small tablets never mount the video, so they never download
+  // it; the hero's poster image shows instead.
+  const desktop = useMediaQuery(HOME_HERO_VIDEO_QUERY, false);
+  const showVideo = desktop && !reduceMotion;
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Decoding a looping video is constant CPU/GPU work, so pause it whenever
@@ -42,9 +35,9 @@ export default function HomeHeroBackgroundVideo({
     });
     observer.observe(video);
     return () => observer.disconnect();
-  }, [reduceMotion]);
+  }, [showVideo]);
 
-  if (reduceMotion) return null;
+  if (!showVideo) return null;
 
   return (
     <video
