@@ -19,6 +19,10 @@ vi.mock("@/sanity/lib/live", () => ({
     <div data-include-drafts={String(includeDrafts)} data-testid="sanity-live" />
   ),
 }));
+vi.mock("@/sanity/lib/preview-actions", () => ({
+  perspectiveChange: vi.fn(),
+  variantChange: vi.fn(),
+}));
 vi.mock("next-sanity/visual-editing", () => ({
   VisualEditing: () => <div data-testid="visual-editing" />,
 }));
