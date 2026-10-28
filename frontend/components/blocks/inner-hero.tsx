@@ -37,6 +37,7 @@ export default function InnerHero({
   highlightText,
   image,
   linksLabel,
+  muxPlaybackId,
   poster,
   title,
   videoMp4Url,
@@ -46,14 +47,16 @@ export default function InnerHero({
   if (!heading) return null;
   const headingId = `inner-hero-${stegaClean(_key)}-title`;
 
-  const video = stegaClean(videoMp4Url) || stegaClean(videoWebmUrl);
+  const playbackId = stegaClean(muxPlaybackId);
+  const video = playbackId || stegaClean(videoMp4Url) || stegaClean(videoWebmUrl);
   return (
     <>
       {/* The Play Center header opens with a video band above the heading. */}
       {video ? (
-        <div className={css.heroVideo} data-sanity={dataAttribute?.("videoMp4")}>
+        <div className={css.heroVideo} data-sanity={dataAttribute?.(playbackId ? "muxVideo" : "videoMp4")}>
           <BackgroundVideo
             className={css.heroVideoMedia}
+            muxPlaybackId={playbackId}
             mp4={stegaClean(videoMp4Url)}
             poster={poster?.asset ? urlFor(poster).width(1920).url() : undefined}
             webm={stegaClean(videoWebmUrl)}

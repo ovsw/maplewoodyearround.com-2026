@@ -3,6 +3,7 @@ import { imageQuery } from "./shared/image";
 import { simpleRichTextQuery } from "./shared/simple-rich-text";
 import { urlInternalHref } from "./shared/internal-href";
 import { urlFileUrl } from "./shared/file-url";
+import { muxPlaybackIdProjection } from "./shared/maplewood";
 
 // @sanity-typegen-ignore
 export const homeHeroQuery = groq`
@@ -31,6 +32,7 @@ export const homeHeroQuery = groq`
         url.href
       )
     }),
+    ${muxPlaybackIdProjection},
     videoUrl,
     disableVideo,
     filmButton {

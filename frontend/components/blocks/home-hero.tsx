@@ -70,6 +70,7 @@ export default function HomeHero({
   disableVideo,
   filmButton,
   image,
+  muxPlaybackId,
   shortBody,
   stats,
   title,
@@ -79,6 +80,10 @@ export default function HomeHero({
 
   const headingId = `home-hero-${stegaClean(_key)}-title`;
   const cleanVideoUrl = disableVideo ? undefined : stegaClean(videoUrl)?.trim();
+  // A Mux video takes precedence over the video URL.
+  const playbackId = disableVideo
+    ? undefined
+    : stegaClean(muxPlaybackId)?.trim() || undefined;
   const posterUrl =
     image?.asset?._id
       ? urlFor(image).width(1920).height(1080).fit("crop").url()
@@ -118,8 +123,12 @@ export default function HomeHero({
             src={urlFor(image).width(1920).height(1080).fit("crop").url()}
           />
         ) : null}
-        {cleanVideoUrl ? (
-          <HomeHeroBackgroundVideo poster={posterUrl} src={cleanVideoUrl} />
+        {playbackId || cleanVideoUrl ? (
+          <HomeHeroBackgroundVideo
+            playbackId={playbackId}
+            poster={posterUrl}
+            src={cleanVideoUrl}
+          />
         ) : null}
 
         {/* Gradient overlays: nav-legibility fade on phones, full wash on desktop */}

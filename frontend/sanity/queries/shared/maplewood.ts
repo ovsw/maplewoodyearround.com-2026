@@ -26,7 +26,19 @@ export const contentCardsProjection = `cards[]{
   ${contentActionsProjection}
 }`;
 
+/**
+ * The block's Mux playback ID, once Mux has finished processing the video.
+ * Only a public playback ID plays without a signed token, so a signed-only
+ * video returns null and the block falls back to its video files.
+ */
+export const muxPlaybackIdProjection = `
+  "muxPlaybackId": select(
+    muxVideo.asset->status == "ready" => muxVideo.asset->data.playback_ids[policy == "public"][0].id
+  )
+`;
+
 export const sectionVideoProjection = `
+  ${muxPlaybackIdProjection},
   "videoMp4Url": videoMp4.asset->url,
   "videoWebmUrl": videoWebm.asset->url,
   poster{${imageQuery}}

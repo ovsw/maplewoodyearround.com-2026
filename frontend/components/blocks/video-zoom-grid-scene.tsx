@@ -13,7 +13,7 @@ import css from "./hero.video-zoom-grid.module.css";
 type HeroVideoZoomGrid = SectionProps<"videoZoomGrid">;
 type HeroVideoZoomGridModule = Pick<
   HeroVideoZoomGrid,
-  "videoMp4Url" | "videoWebmUrl" | "gridImages" | "mobileImages"
+  "muxPlaybackId" | "videoMp4Url" | "videoWebmUrl" | "gridImages" | "mobileImages"
 > & { posterUrl?: string; children: React.ReactNode };
 
 type VideoMetrics = {
@@ -56,6 +56,7 @@ function getMobileSlots(images: HeroVideoZoomGrid["mobileImages"]) {
 
 export default function HeroVideoZoomGrid({
   children,
+  muxPlaybackId,
   videoMp4Url,
   videoWebmUrl,
   posterUrl,
@@ -239,9 +240,10 @@ export default function HeroVideoZoomGrid({
                 >
                   {index === 4 ? (
                     <>
-                      {videoMp4Url ? (
+                      {muxPlaybackId || videoMp4Url ? (
                         <BackgroundVideo
                           className={css.floatingVideoEl}
+                          muxPlaybackId={stegaClean(muxPlaybackId)}
                           mp4={stegaClean(videoMp4Url)}
                           webm={stegaClean(videoWebmUrl)}
                           poster={stegaClean(posterUrl)}
@@ -288,9 +290,10 @@ export default function HeroVideoZoomGrid({
                 >
                   {index === 1 ? (
                     <>
-                      {videoMp4Url ? (
+                      {muxPlaybackId || videoMp4Url ? (
                         <BackgroundVideo
                           className={css.floatingVideoEl}
+                          muxPlaybackId={stegaClean(muxPlaybackId)}
                           mp4={stegaClean(videoMp4Url)}
                           webm={stegaClean(videoWebmUrl)}
                           poster={stegaClean(posterUrl)}
