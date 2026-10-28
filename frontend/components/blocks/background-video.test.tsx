@@ -6,14 +6,14 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import BackgroundVideo from "./background-video";
+import BackgroundVideo, { BACKGROUND_VIDEO_QUERY } from "./background-video";
 
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
 
-function environment(reduced: boolean) {
+function environment(reduced: boolean, { desktop = true } = {}) {
   let intersect: (entries: { isIntersecting: boolean }[]) => void = () => {};
   let preferenceChanged = () => {};
   const preference = {
@@ -23,7 +23,14 @@ function environment(reduced: boolean) {
     },
     removeEventListener: vi.fn(),
   };
-  vi.stubGlobal("matchMedia", () => preference);
+  const viewport = {
+    matches: desktop,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  };
+  vi.stubGlobal("matchMedia", (query: string) =>
+    query === BACKGROUND_VIDEO_QUERY ? viewport : preference,
+  );
   vi.stubGlobal(
     "IntersectionObserver",
     class {
@@ -116,5 +123,37 @@ describe("BackgroundVideo motion preferences", () => {
       screen.getByRole("button", { name: "Play background video" }),
     ).toBeVisible();
     expect(env.pause).toHaveBeenCalled();
+  });
+});
+
+describe("BackgroundVideo viewport", () => {
+  it("renders no sources and no control on a small viewport", () => {
+    const env = environment(false, { desktop: false });
+    const { container } = render(
+      <BackgroundVideo mp4="/camp.mp4" webm="/camp.webm" poster="/poster.jpg" />,
+    );
+    env.visible(true);
+    const video = container.querySelector("video");
+    expect(video).toHaveAttribute("poster", "/poster.jpg");
+    expect(video).not.toHaveAttribute("src");
+    expect(container.querySelector("source")).toBeNull();
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(env.play).not.toHaveBeenCalled();
+  });
+
+  it("renders the sources and the control on a large viewport", async () => {
+    const env = environment(false, { desktop: true });
+    const { container } = render(
+      <BackgroundVideo mp4="/camp.mp4" webm="/camp.webm" poster="/poster.jpg" />,
+    );
+    const sources = [...container.querySelectorAll("source")].map((source) =>
+      source.getAttribute("src"),
+    );
+    expect(sources).toEqual(["/camp.webm", "/camp.mp4"]);
+    env.visible(true);
+    await waitFor(() => expect(env.play).toHaveBeenCalledTimes(1));
+    expect(
+      screen.getByRole("button", { name: "Pause background video" }),
+    ).toBeVisible();
   });
 });
