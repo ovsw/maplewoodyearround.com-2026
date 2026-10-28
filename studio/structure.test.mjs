@@ -77,6 +77,10 @@ const notInMenu = new Map([
     "teamMember",
     "OVS starter type with no Maplewood records; staff use staffMember",
   ],
+  [
+    "mux.videoAsset",
+    "Mux plugin record of an uploaded video; editors use the Videos tool and the Mux field",
+  ],
 ]);
 
 test("every document type that editors edit is in the menu", () => {
