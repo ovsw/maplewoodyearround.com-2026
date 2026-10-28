@@ -210,11 +210,26 @@ Rules:
 - Job openings (`jobOpportunity`) show on `/staff-opportunities`.
   Testimonials (`testimonial`) show on the pages of their side.
 
+## Menu, footer and site settings
+
+- The menu (`navigation`), the footer (`footer`) and the site settings
+  (`settings`: site name, logo, contact details, social links) are on every
+  page. Clark may change them, as far as their schema allows: add, remove,
+  rename or reorder menu links and groups, footer columns and footer links;
+  change the contact details and the social links.
+- Read the document first and change only what the request names; keep every
+  `_key`. Say in the plan that the change shows on every page.
+- A link goes to an existing page: copy the shape of an existing link in the
+  same document. Never invent a link shape.
+- When one of them has a draft that this task did not make, say in the plan
+  that a publish puts those unpublished changes live too.
+- A change that the schema cannot hold (a new kind of menu item, a new layout,
+  a different look) goes to Ovi.
+
 ## Never edit, and why
 
-- **Site Configuration**: `settings` (Global Settings), `navigation` (the
-  menu), `footer`. They are on every page; one wrong field breaks the whole
-  site. A menu change goes to Ovi.
+- The SEO fields of `settings` (the "Search & sharing" group): search
+  results depend on them. A change goes to Ovi.
 - **Redirects** (`redirect`): they take effect only after Ovi rebuilds the
   website.
 - **Blog Index** and **Blog Post Settings** (`blogIndex`, `blogPostSettings`):
