@@ -14,6 +14,7 @@ export default function VideoZoomGrid({
   actions,
   dataAttribute,
   poster,
+  muxPlaybackId,
   videoMp4Url,
   videoWebmUrl,
   gridImages,
@@ -21,6 +22,7 @@ export default function VideoZoomGrid({
 }: SectionProps<"videoZoomGrid">) {
   return (
     <VideoZoomGridScene
+      muxPlaybackId={muxPlaybackId}
       videoMp4Url={videoMp4Url}
       videoWebmUrl={videoWebmUrl}
       posterUrl={poster?.asset ? urlFor(poster).width(1600).url() : undefined}

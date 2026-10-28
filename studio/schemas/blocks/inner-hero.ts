@@ -1,6 +1,10 @@
 import { Mountain } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { breadcrumbsField, highlightTextField } from "./shared/maplewood-fields";
+import {
+  breadcrumbsField,
+  highlightTextField,
+  muxVideoField,
+} from "./shared/maplewood-fields";
 
 /** Flatten a minimalRichText value into plain text for the Studio preview. */
 const richTextToPlainText = (value: unknown): string => {
@@ -100,11 +104,17 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      ...muxVideoField,
+      title: "Video above the heading (Mux)",
+      description:
+        "Optional. Preferred for the background video shown in a band above the heading; visitors can pause it. The MP4 and WebM files below play only when this is empty.",
+    }),
+    defineField({
       name: "videoMp4",
       title: "Video above the heading (MP4)",
       type: "file",
       description:
-        "Optional background video shown in a band above the heading. Visitors can pause it.",
+        "Optional fallback. Plays only when there is no Mux video above.",
       options: { accept: "video/mp4" },
     }),
     defineField({
@@ -118,9 +128,11 @@ export default defineType({
       name: "poster",
       title: "Video still image",
       type: "image",
-      description: "Shown before playback and when a visitor requests reduced motion.",
+      description:
+        "Shown before playback and when a visitor requests reduced motion. Without one, a Mux video shows its own still frame.",
       options: { hotspot: true },
-      hidden: ({ parent }) => !parent?.videoMp4 && !parent?.videoWebm && !parent?.poster,
+      hidden: ({ parent }) =>
+        !parent?.muxVideo && !parent?.videoMp4 && !parent?.videoWebm && !parent?.poster,
     }),
     defineField({
       name: "facts",

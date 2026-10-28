@@ -8,6 +8,34 @@ import {
 import { afterEach, describe, expect, it, vi } from "vitest";
 import BackgroundVideo, { BACKGROUND_VIDEO_QUERY } from "./background-video";
 
+// The real Mux element attaches its stream with hls.js, which jsdom cannot
+// run. This stand-in records the props the component passes to it.
+vi.mock("@mux/mux-video-react", async () => {
+  const { createElement, forwardRef } =
+    await vi.importActual<typeof import("react")>("react");
+  return {
+    default: forwardRef<HTMLVideoElement, Record<string, unknown>>(
+      function MuxVideo(
+        { playbackId, streamType, disableTracking, autoPlay, ...props },
+        ref,
+      ) {
+        return createElement("video", {
+          ...props,
+          ref,
+          "data-testid": "mux-video",
+          "data-playback-id": playbackId,
+          "data-stream-type": streamType,
+          "data-tracking": disableTracking ? "off" : "on",
+          "data-autoplay": autoPlay ? "true" : undefined,
+        });
+      },
+    ),
+  };
+});
+
+/** Mux's public sample video, used only in tests. */
+const MUX_SAMPLE_ID = "DS00Spx1CV902MCtPj5WknGlR102V5HFkDe";
+
 afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
@@ -155,5 +183,81 @@ describe("BackgroundVideo viewport", () => {
     expect(
       screen.getByRole("button", { name: "Pause background video" }),
     ).toBeVisible();
+  });
+});
+
+describe("BackgroundVideo with a Mux video", () => {
+  it("streams the Mux video instead of the files on a large viewport", async () => {
+    const env = environment(false, { desktop: true });
+    const { container } = render(
+      <BackgroundVideo
+        muxPlaybackId={MUX_SAMPLE_ID}
+        mp4="/camp.mp4"
+        webm="/camp.webm"
+        poster="/poster.jpg"
+      />,
+    );
+    const video = await screen.findByTestId("mux-video");
+    expect(video).toHaveAttribute("data-playback-id", MUX_SAMPLE_ID);
+    expect(video).toHaveAttribute("data-stream-type", "on-demand");
+    expect(video).toHaveAttribute("poster", "/poster.jpg");
+    expect(video).toHaveAttribute("preload", "none");
+    expect(video).toHaveProperty("muted", true);
+    expect(video).toHaveProperty("loop", true);
+    expect(container.querySelectorAll("video")).toHaveLength(1);
+    expect(container.querySelector("source")).toBeNull();
+    env.visible(true);
+    await waitFor(() => expect(env.play).toHaveBeenCalledTimes(1));
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Pause background video" }),
+    );
+    expect(env.pause).toHaveBeenCalled();
+    expect(
+      screen.getByRole("button", { name: "Play background video" }),
+    ).toBeVisible();
+  });
+
+  it("uses the Mux still frame when the block has no poster", async () => {
+    environment(false, { desktop: true });
+    render(<BackgroundVideo muxPlaybackId={MUX_SAMPLE_ID} />);
+    expect(await screen.findByTestId("mux-video")).toHaveAttribute(
+      "poster",
+      `https://image.mux.com/${MUX_SAMPLE_ID}/thumbnail.webp`,
+    );
+  });
+
+  it("keeps reduced motion: the Mux video waits for the visitor", async () => {
+    const env = environment(true, { desktop: true });
+    render(<BackgroundVideo muxPlaybackId={MUX_SAMPLE_ID} poster="/p.jpg" />);
+    await screen.findByTestId("mux-video");
+    env.visible(true);
+    expect(env.play).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole("button", { name: "Play background video" }),
+    ).toBeVisible();
+  });
+
+  it("makes no Mux request on a small viewport", () => {
+    const env = environment(false, { desktop: false });
+    const { container } = render(
+      <BackgroundVideo muxPlaybackId={MUX_SAMPLE_ID} poster="/poster.jpg" />,
+    );
+    env.visible(true);
+    expect(screen.queryByTestId("mux-video")).toBeNull();
+    const video = container.querySelector("video");
+    expect(video).toHaveAttribute("poster", "/poster.jpg");
+    expect(video).not.toHaveAttribute("src");
+    expect(container.innerHTML).not.toContain("mux.com");
+    expect(screen.queryByRole("button")).toBeNull();
+    expect(env.play).not.toHaveBeenCalled();
+  });
+
+  it("falls back to the video files without a playback ID", () => {
+    environment(false, { desktop: true });
+    const { container } = render(
+      <BackgroundVideo muxPlaybackId={null} mp4="/camp.mp4" poster="/poster.jpg" />,
+    );
+    expect(screen.queryByTestId("mux-video")).toBeNull();
+    expect(container.querySelector("source")).toHaveAttribute("src", "/camp.mp4");
   });
 });

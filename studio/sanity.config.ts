@@ -3,6 +3,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { presentationTool } from "sanity/presentation";
 import { media, mediaAssetSource } from "sanity-plugin-media";
+import { muxInput } from "sanity-plugin-mux-input";
 import { requireStudioEnvironmentValue } from "./environment";
 import { schemaTypes } from "./schema-types";
 import { resolve } from "./presentation/resolve";
@@ -84,5 +85,15 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
     media(),
+    // Background videos stream from Mux. The Mux access token is entered once
+    // in the plugin's "Videos" tool and stored in the dataset, never in code.
+    // Playback is public: the site plays the videos without signed tokens.
+    muxInput({
+      defaultPublic: true,
+      defaultSigned: false,
+      acceptedMimeTypes: ["video/*"],
+      max_resolution_tier: "1080p",
+      allowedRolesForConfiguration: ["administrator"],
+    }),
   ],
 });
