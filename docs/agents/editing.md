@@ -264,6 +264,22 @@ Rules:
 - Calendar PDFs go to a new printable calendar document; group PDFs go on
   their camp group; dashboard PDFs go on their card.
 
+## Background videos
+
+- The video sections (the home page hero, the video zoom grid on the home and
+  School Year pages, the Play Center header, Lee's Story) have a field
+  **Background video (Mux)**. Mux streams the video in the right size for
+  each screen. The MP4 and WebM files (on the home hero, the video URL) are
+  the fallback and play only when the Mux field is empty.
+- To put a video on Mux, a person opens the section in Studio, drags the
+  video file onto **Background video (Mux)** (or clicks Upload), waits until
+  Mux shows the video as ready, and publishes. Phones show the still image,
+  not the video.
+- Clark cannot upload to Mux and must not change a Mux field. When the client
+  sends a new background video, tell them these steps or pass it to Ovi.
+- Ovi enters the Mux access token once, in Studio under **Videos**, then
+  **Configure plugin**. Until then the field cannot upload.
+
 ## How things are written on this site
 
 - Times: lowercase `am`/`pm`, ranges with a hyphen, as the client writes

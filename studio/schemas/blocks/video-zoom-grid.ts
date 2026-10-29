@@ -6,6 +6,7 @@ import {
   taglineField,
   sectionActionsField,
   sectionVideoFields,
+  muxVideoField,
 } from "./shared/maplewood-fields";
 
 export default defineType({
@@ -23,6 +24,7 @@ export default defineType({
     }),
     sectionDescriptionField,
     sectionActionsField,
+    muxVideoField,
     ...sectionVideoFields,
     defineField({
       name: "gridImages",

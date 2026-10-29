@@ -1,5 +1,6 @@
 import { Sparkles } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { muxVideoField } from "./shared/maplewood-fields";
 
 const homeHeroStat = defineArrayMember({
   name: "homeHeroStat",
@@ -63,11 +64,16 @@ export default defineType({
       validation: (rule) => rule.max(2),
     }),
     defineField({
+      ...muxVideoField,
+      description:
+        "Preferred. Upload the background video here; Mux streams it in the right size for each screen. Plays muted and looped behind the hero on desktop. The video URL below plays only when this is empty.",
+    }),
+    defineField({
       name: "videoUrl",
       title: "Background Video URL",
       type: "url",
       description:
-        "Direct link to an mp4 video file. Plays muted and looped behind the hero.",
+        "Fallback: a direct link to an mp4 video file. Plays only when there is no Mux video above.",
       validation: (rule) =>
         rule.uri({ scheme: ["http", "https"] }),
     }),
@@ -77,7 +83,7 @@ export default defineType({
       type: "boolean",
       initialValue: false,
       description:
-        "Show the background image instead of the video. Turns the video off without deleting its URL.",
+        "Show the background image instead of the video. Turns the Mux video and the video URL off without deleting them.",
     }),
     defineField({
       name: "filmButton",

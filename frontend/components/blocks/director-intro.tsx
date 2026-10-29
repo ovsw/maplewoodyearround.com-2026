@@ -18,6 +18,7 @@ type DirectorIntroProps = Extract<
 export default function DirectorIntro({
   _key,
   dataAttribute,
+  muxPlaybackId,
   panels,
   poster,
   videoMp4Url,
@@ -29,11 +30,12 @@ export default function DirectorIntro({
 
   return (
     <section aria-labelledby={headingId} className={about.director}>
-      <div className={about.directorMedia} data-sanity={dataAttribute?.("videoMp4")}>
+      <div className={about.directorMedia} data-sanity={dataAttribute?.(muxPlaybackId ? "muxVideo" : "videoMp4")}>
         <SourceImage className={about.directorPoster} image={poster} priority sizes="100vw" width={1920} />
-        {videoMp4Url || videoWebmUrl ? (
+        {muxPlaybackId || videoMp4Url || videoWebmUrl ? (
           <BackgroundVideo
             className={about.directorVideo}
+            muxPlaybackId={muxPlaybackId}
             mp4={videoMp4Url}
             poster={poster?.asset ? urlFor(poster).width(1920).url() : undefined}
             webm={videoWebmUrl}

@@ -16,6 +16,11 @@ The read token enables draft previews. `SANITY_AUTH_TOKEN` enables content
 operations; `SANITY_DEPLOY_TOKEN` is the separate Studio deployment token.
 Verify both workspaces target project `193h5qm1` and dataset `production`.
 
+Background videos stream from Mux: `sanity-plugin-mux-input` in Studio and
+`@mux/mux-video-react` on the website. Mux needs no env variable. An
+administrator enters the Mux access token once in Studio under **Videos**,
+then **Configure plugin**; the plugin stores it in the dataset.
+
 Run `pnpm dev` for both apps; read its output for assigned ports.
 Reuse a matching server already running on the required port.
 Add Website and Studio origins with `pnpm setup:sanity-cors`.
