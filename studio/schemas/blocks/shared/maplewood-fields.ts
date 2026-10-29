@@ -33,7 +33,7 @@ export const sectionActionsField = defineField({
   title: "Buttons",
   type: "array",
   description:
-    "Optional calls to action. A button without a destination is hidden.",
+    "Optional calls to action. A button without a destination is hidden, unless it is inactive.",
   of: [defineArrayMember({ type: "contentAction" })],
 });
 
@@ -55,8 +55,21 @@ export const contentAction = defineType({
       type: "contentDestination",
       description: "Choose an internal page, external URL or file.",
     }),
+    defineField({
+      name: "inactive",
+      title: "Inactive",
+      type: "boolean",
+      description:
+        "Show the text greyed out, with no link, for example before registration opens. The destination stays saved: turn this off to make the button work again.",
+    }),
   ],
-  preview: { select: { title: "label" } },
+  preview: {
+    select: { title: "label", inactive: "inactive" },
+    prepare: ({ title, inactive }) => ({
+      title,
+      subtitle: inactive ? "Inactive (no link)" : undefined,
+    }),
+  },
 });
 
 export const collectionSourceField = defineField({

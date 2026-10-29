@@ -7,7 +7,7 @@ import { simpleRichTextQuery } from "./shared/simple-rich-text";
 const dashboardCardsProjection = `{
   _key, title, text, accent, ${iconProjection},
   image{${imageQuery}},
-  link{label, destination${contentDestinationProjection}}
+  link{label, inactive, destination${contentDestinationProjection}}
 }`;
 
 export const PARENT_DASHBOARD_QUERY = defineQuery(`

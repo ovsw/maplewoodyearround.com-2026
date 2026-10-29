@@ -250,6 +250,25 @@
 .onDark.buttonLink {
   color: var(--maplewood-cream);
 }
+/* An action an editor marked inactive: dimmed text, no link, no hover change.
+   `span.` outranks the link classes of other section modules. */
+span.inactive {
+  cursor: default;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.buttonPrimary.inactive:hover {
+  border-color: var(--maplewood-green);
+  background: var(--maplewood-green);
+  color: var(--maplewood-cream);
+}
+.buttonSecondary.inactive:hover {
+  background: transparent;
+  color: var(--maplewood-green);
+}
+.pricingAction.inactive:hover {
+  filter: none;
+}
 
 /* Card frame used by images and cards (is-card / is-card-small) */
 .card {

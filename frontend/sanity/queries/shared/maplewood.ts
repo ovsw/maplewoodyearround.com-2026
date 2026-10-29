@@ -17,7 +17,7 @@ export const contentDestinationProjection = `{
 }`;
 
 export const contentActionsProjection = `actions[]{
-  _key, label, destination${contentDestinationProjection}
+  _key, label, inactive, destination${contentDestinationProjection}
 }`;
 
 export const contentCardsProjection = `cards[]{

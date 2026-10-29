@@ -25,7 +25,8 @@ Only types editors can insert directly belong in the top-level menu.
 
 Sanity owns editable content, links, media and embed URLs.
 Code owns layout, validation and safe rendering.
-Hide buttons with empty or `#` links. Preserve live paths.
+Hide buttons with empty or `#` links. Show an inactive button (`inactive`)
+as dimmed text without a link. Preserve live paths.
 
 Port the preserved Maplewood hero, zoom grid and header when required.
 Required scroll effects need a static reduced-motion version.

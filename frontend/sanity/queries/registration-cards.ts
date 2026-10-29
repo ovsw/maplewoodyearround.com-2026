@@ -15,7 +15,7 @@ export const registrationCardsQuery = groq`
     cards[]{
       _key, ${iconProjection}, accent, title,
       body[]{${simpleRichTextQuery}},
-      "links": links[]{_key, label, destination${contentDestinationProjection}}
+      "links": links[]{_key, label, inactive, destination${contentDestinationProjection}}
     }
   }
 `;

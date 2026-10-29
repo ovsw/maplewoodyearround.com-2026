@@ -91,6 +91,7 @@ type SourceButton = {
 type SourceAction = {
   _key: string;
   label?: string | null;
+  inactive?: boolean | null;
   destination?: { href?: string | null; openInNewTab?: boolean | null } | null;
 };
 
@@ -108,7 +109,8 @@ function ButtonLink({
   onDark,
   dataSanity,
 }: {
-  href: string;
+  /** No href shows the button greyed out, as text (an inactive action). */
+  href: string | null;
   label: React.ReactNode;
   variant: string;
   openInNewTab?: boolean;
@@ -121,6 +123,13 @@ function ButtonLink({
       : variant === "outline" || variant === "secondary"
         ? css.buttonSecondary
         : css.buttonPrimary;
+  if (href === null) {
+    return (
+      <span className={[css.button, style, css.inactive].join(" ")} data-sanity={dataSanity}>
+        <span>{label}</span>
+      </span>
+    );
+  }
   return (
     <Link
       className={[css.button, style, onDark ? css.onDark : ""].join(" ")}
@@ -181,13 +190,51 @@ export function SourceButtons({
   );
 }
 
-/** The actions that have a label and a usable destination. */
+/**
+ * The actions to show: those with a label and a usable destination, and those
+ * an editor marked inactive, which keep their label but get no href.
+ */
 export function visibleActions<T extends SourceAction>(actions?: T[] | null) {
-  return (actions ?? []).flatMap((action) => {
-    const href = usableHref(action.destination?.href);
+  return (actions ?? []).flatMap<T & { href: string | null }>((action) => {
     const label = stegaClean(action.label)?.trim();
-    return href && label ? [{ ...action, href }] : [];
+    if (!label) return [];
+    if (stegaClean(action.inactive) === true) return [{ ...action, href: null }];
+    const href = usableHref(action.destination?.href);
+    return href ? [{ ...action, href }] : [];
   });
+}
+
+/** A `visibleActions` item as a link, or as greyed-out text when inactive. */
+export function ActionLink({
+  action,
+  className,
+  dataSanity,
+  children,
+}: {
+  action: SourceAction & { href: string | null };
+  className?: string;
+  dataSanity?: string;
+  children: React.ReactNode;
+}) {
+  if (action.href === null) {
+    return (
+      <span className={[className, css.inactive].filter(Boolean).join(" ")} data-sanity={dataSanity}>
+        {children}
+      </span>
+    );
+  }
+  const newTab = stegaClean(action.destination?.openInNewTab) === true;
+  return (
+    <Link
+      className={className}
+      data-sanity={dataSanity}
+      href={action.href}
+      rel={newTab ? "noopener noreferrer" : undefined}
+      target={newTab ? "_blank" : undefined}
+    >
+      {children}
+    </Link>
+  );
 }
 
 /** Maplewood `contentAction` objects: the first is primary, others outline. */

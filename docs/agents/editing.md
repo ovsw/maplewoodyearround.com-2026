@@ -194,6 +194,15 @@ Rules:
 - Registration links (CampInTouch, Aluvii, Brightwheel, Active.com) appear on
   several pages. When the client changes one, find every place with
   `findDocuments` and list them in the plan; change all of them in one task.
+- A button or card link (`contentAction`) has `label`, `destination` and
+  `inactive`. To pause a button, for example until registration opens, set
+  `inactive` to `true` and set `label` to the client's words ("Registration
+  Begins November 23rd"). Keep `destination`: the website shows the label
+  greyed out, with no link. To turn the button back on, set `inactive` to
+  `false` and put back the label it had before. Write the old label in the
+  plan. When the client names a date to turn it back on, the switch-back is
+  its own task on that date.
+- Never remove a button's `destination` to hide or pause it.
 - Never change a page's `slug`, its `meta` (SEO) fields, or the pages `401`,
   `404` and `style-guide`.
 
