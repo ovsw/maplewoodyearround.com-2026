@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
@@ -6,6 +5,7 @@ import type { HOME_PAGE_QUERY_RESULT, PAGE_QUERY_RESULT } from "@/sanity.types";
 import { simpleRichTextComponents } from "@/components/simple-rich-text";
 import {
   accentClass,
+  ActionLink,
   Breadcrumbs,
   type DataAttribute,
   innerCss as css,
@@ -78,16 +78,10 @@ export default function IconCards({
                     </div>
                   ) : null}
                   {link ? (
-                    <Link
-                      className={styles.link}
-                      data-sanity={dataAttribute?.(`${path}.link`)}
-                      href={link.href}
-                      rel={stegaClean(link.destination?.openInNewTab) ? "noopener noreferrer" : undefined}
-                      target={stegaClean(link.destination?.openInNewTab) ? "_blank" : undefined}
-                    >
+                    <ActionLink action={link} className={styles.link} dataSanity={dataAttribute?.(`${path}.link`)}>
                       {link.label}
-                      <ChevronRight aria-hidden size={16} />
-                    </Link>
+                      {link.href === null ? null : <ChevronRight aria-hidden size={16} />}
+                    </ActionLink>
                   ) : null}
                 </div>
               </li>

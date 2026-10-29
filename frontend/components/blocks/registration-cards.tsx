@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { stegaClean } from "next-sanity";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import {
   accentClass,
+  ActionLink,
   type DataAttribute,
   innerCss as css,
   sectionBackground,
@@ -27,15 +27,13 @@ function CardLinks({ card, dataAttribute }: { card: Card; dataAttribute?: DataAt
   if (!links.length) return null;
   const path = `cards[_key=="${card._key}"].links`;
   const item = (link: (typeof links)[number]) => (
-    <Link
+    <ActionLink
+      action={link}
       className={css.inlineLink}
-      data-sanity={dataAttribute?.(`${path}[_key=="${link._key}"]`)}
-      href={link.href}
-      rel={stegaClean(link.destination?.openInNewTab) ? "noopener noreferrer" : undefined}
-      target={stegaClean(link.destination?.openInNewTab) ? "_blank" : undefined}
+      dataSanity={dataAttribute?.(`${path}[_key=="${link._key}"]`)}
     >
       {link.label}
-    </Link>
+    </ActionLink>
   );
   if (links.length === 1) return <p className={about.registrationLink}>{item(links[0])}</p>;
   return (

@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { Check } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import { stegaClean } from "next-sanity";
 import type { PAGE_QUERY_RESULT } from "@/sanity.types";
 import {
   accentClass,
+  ActionLink,
   type DataAttribute,
   innerCss as css,
   SectionTagline,
@@ -130,16 +130,14 @@ export default function PricingCards({
                 {visibleActions(plan.actions).length ? (
                   <div className={css.pricingActions}>
                     {visibleActions(plan.actions).map((action) => (
-                      <Link
+                      <ActionLink
+                        action={action}
                         className={css.pricingAction}
-                        data-sanity={dataAttribute?.(`${path}.actions[_key=="${action._key}"]`)}
-                        href={action.href}
+                        dataSanity={dataAttribute?.(`${path}.actions[_key=="${action._key}"]`)}
                         key={action._key}
-                        rel={stegaClean(action.destination?.openInNewTab) ? "noopener noreferrer" : undefined}
-                        target={stegaClean(action.destination?.openInNewTab) ? "_blank" : undefined}
                       >
                         {action.label}
-                      </Link>
+                      </ActionLink>
                     ))}
                   </div>
                 ) : null}

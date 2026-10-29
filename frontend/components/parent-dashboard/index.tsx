@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { createDataAttribute, stegaClean } from "next-sanity";
 import type { PARENT_DASHBOARD_QUERY_RESULT } from "@/sanity.types";
 import {
   accentClass,
+  ActionLink,
   innerCss as css,
   SectionTagline,
   SourceCopy,
@@ -99,7 +99,6 @@ function DashboardCards({
     <ul className={styles.cards}>
       {items.map(({ card, link }) => {
         const path = `${field}[_key=="${card._key}"]`;
-        const newTab = stegaClean(link.destination?.openInNewTab);
         const hasImage = Boolean(card.image?.asset?._id);
         return (
           <li
@@ -116,16 +115,10 @@ function DashboardCards({
               )}
               <h2 className={[css.h4, styles.title].join(" ")}>{card.title}</h2>
               {card.text ? <p className={styles.text}>{card.text}</p> : null}
-              <Link
-                className={styles.link}
-                data-sanity={dataAttribute(`${path}.link`)}
-                href={link.href}
-                rel={newTab ? "noopener noreferrer" : undefined}
-                target={newTab ? "_blank" : undefined}
-              >
+              <ActionLink action={link} className={styles.link} dataSanity={dataAttribute(`${path}.link`)}>
                 {link.label}
-                <ChevronRight aria-hidden size={16} />
-              </Link>
+                {link.href === null ? null : <ChevronRight aria-hidden size={16} />}
+              </ActionLink>
             </div>
           </li>
         );

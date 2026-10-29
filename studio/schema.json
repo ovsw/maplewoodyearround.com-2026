@@ -11962,6 +11962,13 @@
             "name": "contentDestination"
           },
           "optional": true
+        },
+        "inactive": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
         }
       }
     }
