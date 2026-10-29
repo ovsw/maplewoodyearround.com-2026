@@ -4,6 +4,7 @@ import { DisableDraftMode } from "@/components/disable-draft-mode";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { draftMode } from "next/headers";
 import { SanityLive } from "@/sanity/lib/live";
+import { perspectiveChange, variantChange } from "@/sanity/lib/preview-actions";
 
 export default async function MainLayout({
   children,
@@ -40,7 +41,10 @@ export default async function MainLayout({
       {isDraftMode && (
         <>
           <DisableDraftMode />
-          <VisualEditing />
+          <VisualEditing
+            onPerspectiveChange={perspectiveChange}
+            onVariantChange={variantChange}
+          />
         </>
       )}
       {isDraftMode ? (
