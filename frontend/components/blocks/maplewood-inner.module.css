@@ -250,24 +250,26 @@
 .onDark.buttonLink {
   color: var(--maplewood-cream);
 }
-/* An action an editor marked inactive: dimmed text, no link, no hover change.
-   `span.` outranks the link classes of other section modules. */
-span.inactive {
+/* An action an editor marked inactive: muted colours that keep the label
+   readable, no link and no hover change. `span.` outranks the link classes
+   of other section modules. */
+span.inactive,
+span.inactive:hover {
+  border-color: #b9bfb6;
+  color: #5f6b5c;
   cursor: default;
-  opacity: 0.5;
+  filter: none;
   text-decoration: none;
 }
-.buttonPrimary.inactive:hover {
-  border-color: var(--maplewood-green);
-  background: var(--maplewood-green);
-  color: var(--maplewood-cream);
+.buttonPrimary.inactive,
+.buttonPrimary.inactive:hover,
+.pricingAction.inactive,
+.pricingAction.inactive:hover {
+  background: #e4e6e0;
+  color: var(--maplewood-ink);
 }
 .buttonSecondary.inactive:hover {
   background: transparent;
-  color: var(--maplewood-green);
-}
-.pricingAction.inactive:hover {
-  filter: none;
 }
 
 /* Card frame used by images and cards (is-card / is-card-small) */
