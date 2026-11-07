@@ -90,13 +90,13 @@ it with the template's current version; edit the template, not this part.
 
 - **Readers:** families of campers and school-year children; there are no
   written reader profiles. Use the page's section in
-  `docs/migration/inventory.md` and the terms in `CONTEXT.md`.
+  `docs/migration/inventory.md` and the terms in `GLOSSARY.md`.
 - **Marketing plan:** none.
 - **Old site content:** the live site (until 2026-10-16), the page's part of
   `docs/migration/inventory.md`, and the captured references in
   `docs/migration/reference/`. Read the current Sanity text with
   `pnpm page:text <path>`.
-- **Facts about the client:** `CONTEXT.md` and the live site.
+- **Facts about the client:** `GLOSSARY.md` and the live site.
 
 ## Message rules
 
