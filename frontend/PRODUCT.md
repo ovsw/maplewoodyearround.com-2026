@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-Maplewood Day Camp and Enrichment Center is a family-owned children's center in South Easton, Massachusetts. It opened in 1965. It runs two businesses in one place: **Summer Camp** from June to August and **School Year** programs from September to June. This file records who the website is for and what it must do. `DESIGN.md` records how it looks. `CONTEXT.md` at the repository root defines the terms.
+Maplewood Day Camp and Enrichment Center is a family-owned children's center in South Easton, Massachusetts. It opened in 1965. It runs two businesses in one place: **Summer Camp** from June to August and **School Year** programs from September to June. This file records who the website is for and what it must do. `DESIGN.md` records how it looks. `GLOSSARY.md` at the repository root defines the terms.
 
 Facts come from the live site (checked 2026-10-09) and from Ovi (2026-10-09). Open questions are on the client to-dos in the MDC Basecamp project. Update this file when the client answers.
 
@@ -76,7 +76,7 @@ Facts a nearby camp or preschool cannot truthfully copy:
 - **Media live in Sanity** so editors can replace images, PDFs and the background videos.
 - **Functional motion stays** (header hide-on-scroll, sliders, tabs, filters, and scroll animations that a section needs). Each has a static version for reduced motion. Decorative fade-ins are dropped.
 - **Public repository.** No private personal data in code. Only contact details already on the public site.
-- Terms such as Side, Season, Grade, Program, Camp group and Play Center day are defined in `CONTEXT.md`.
+- Terms such as Side, Season, Grade, Program, Camp group and Play Center day are defined in `GLOSSARY.md`.
 
 ## Brand Commitments
 

@@ -2,7 +2,7 @@
 
 Read [spec issue #1](https://github.com/ovsw/maplewoodyearround.com-2026/issues/1)
 before work. Its decisions and "How the work runs" section govern the rebuild.
-Read `CONTEXT.md` and the current issue's acceptance criteria before editing.
+Read `GLOSSARY.md` and the current issue's acceptance criteria before editing.
 
 ## Work loop
 
