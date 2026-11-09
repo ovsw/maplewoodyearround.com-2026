@@ -42,7 +42,7 @@ it with the template's current version; edit the template, not this part.
 - **Logins:** page-card work uses Clark, the agents' Basecamp user (person
   `52809522`): add `--profile claude` to every `basecamp` command for
   this work. Ovi is person `52614802`.
-- **The card is the client's.** Clients see the card table. The card holds
+- **Clients see the card table.** The card holds
   only a short description (what the page is, what to check, the page
   link), subtasks for the facts the client confirms, and the client's
   comments. Plans and agent notes never go on the card.
