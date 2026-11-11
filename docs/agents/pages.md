@@ -46,11 +46,11 @@ it with the template's current version; edit the template, not this part.
   only a short description (what the page is, what to check, the page
   link), subtasks for the facts the client confirms, and the client's
   comments. Plans and agent notes never go on the card.
-- **Taking a page:** read the card's assignees. If Clark is assigned,
-  another run has the page: stop and tell Ovi. Otherwise assign Clark,
-  read the card again, and start only if Clark is now assigned.
-- **Assignment shows whose turn it is:** Clark while a run works; at
-  handover, remove Clark and assign Ovi; at Client Review, the client's
+- **Taking a page:** Ovi chooses which cards a run works on, so two runs
+  never share a card. A run never assigns Clark to a card (Ovi,
+  2026-11-11): every card event wakes Lois, and self-assignment only adds
+  events.
+- **Assignment:** at handover, assign Ovi; at Client Review, the client's
   reviewer.
 - **Statuses** (the card's column):
   - `/page-plan`: the card moves to To Build once its plan document exists.
