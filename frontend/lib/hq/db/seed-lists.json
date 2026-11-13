@@ -1,0 +1,1054 @@
+{
+  "note": "Camp groups and activities copied once from the Website's published content. SAMPLE: every Team is invented from the group's youngest grade (Preschool and Kindergarten: Team 1; 1st and 2nd: Team 2; 3rd to 5th: Team 3; 6th and up: Team 4) until Maplewood confirms the Teams. An activity with no grades on the Website is allowed for every grade. Lunch is added for schedules. Lunch and free swim are shared; the rest start as exclusive.",
+  "source": "Website (Sanity dataset \"production\", published), read on 2026-11-13",
+  "campGroups": [
+    {
+      "name": "Angels",
+      "grades": [
+        "grade_6",
+        "grade_7"
+      ],
+      "team": 4,
+      "teamIsSample": true
+    },
+    {
+      "name": "Aquanauts",
+      "grades": [
+        "grade_1"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "BeBopppers",
+      "grades": [
+        "grade_4"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Bunnies",
+      "grades": [
+        "grade_1"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Chipmunks",
+      "grades": [
+        "preschool",
+        "kindergarten"
+      ],
+      "team": 1,
+      "teamIsSample": true
+    },
+    {
+      "name": "CIT",
+      "grades": [
+        "grade_8",
+        "grade_9"
+      ],
+      "team": 4,
+      "teamIsSample": true
+    },
+    {
+      "name": "Jolly Rogers",
+      "grades": [
+        "grade_1"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Knights",
+      "grades": [
+        "grade_4"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Ladybugs",
+      "grades": [
+        "grade_1"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Leprechauns",
+      "grades": [
+        "grade_2"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Mermaids",
+      "grades": [
+        "grade_3"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Munchkins",
+      "grades": [
+        "kindergarten"
+      ],
+      "team": 1,
+      "teamIsSample": true
+    },
+    {
+      "name": "Muppets",
+      "grades": [
+        "preschool",
+        "kindergarten"
+      ],
+      "team": 1,
+      "teamIsSample": true
+    },
+    {
+      "name": "Musketeers",
+      "grades": [
+        "grade_3"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Navigators",
+      "grades": [
+        "grade_7"
+      ],
+      "team": 4,
+      "teamIsSample": true
+    },
+    {
+      "name": "Peanut-Rascal 5 Day",
+      "grades": [
+        "preschool"
+      ],
+      "team": 1,
+      "teamIsSample": true
+    },
+    {
+      "name": "Pinkies",
+      "grades": [
+        "grade_5"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Poodles",
+      "grades": [
+        "kindergarten"
+      ],
+      "team": 1,
+      "teamIsSample": true
+    },
+    {
+      "name": "Roadrunners",
+      "grades": [
+        "grade_2"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Rockettes",
+      "grades": [
+        "grade_4"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Sharks",
+      "grades": [
+        "grade_2"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    },
+    {
+      "name": "Stinkers",
+      "grades": [
+        "grade_6",
+        "grade_7"
+      ],
+      "team": 4,
+      "teamIsSample": true
+    },
+    {
+      "name": "Trailblazers",
+      "grades": [
+        "grade_6"
+      ],
+      "team": 4,
+      "teamIsSample": true
+    },
+    {
+      "name": "Unicorns",
+      "grades": [
+        "grade_3"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Vikings",
+      "grades": [
+        "grade_3"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Wild Ones",
+      "grades": [
+        "grade_5"
+      ],
+      "team": 3,
+      "teamIsSample": true
+    },
+    {
+      "name": "Witches",
+      "grades": [
+        "grade_2"
+      ],
+      "team": 2,
+      "teamIsSample": true
+    }
+  ],
+  "activities": [
+    {
+      "name": "Archery",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Arts & Crafts",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Barnyard",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Basketball",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Beach Volleyball",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Boating",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Bumper Boats",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Capture the Flag",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Carnival",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Ceramics",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Dance",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Disc Golf",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Diving",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Drama",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Fishing",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Flag Football",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Free Swim",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "shared"
+    },
+    {
+      "name": "Frog Water Slide",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "GaGa Ball",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Gold Rush",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Gymnastics",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Home Run Derby",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Jewelry/Macramé Making",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Kayaking",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Kickball",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Laser Tag",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Legos",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Low/High Ropes Course",
+      "grades": [
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Lunch",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "shared"
+    },
+    {
+      "name": "Macramé",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Martial Arts",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Math",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Mini-Golf",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Monster Splash Slide",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Music",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Paddle Boarding",
+      "grades": [
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Pedal Karts",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Penny Dive",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Pilo-Polo",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Rock'N'Ropes - Climb Adventure",
+      "grades": [
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Scavenger Hunt",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Senior Swimming",
+      "grades": [
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Soccer",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Summer Reading",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Swimming Lessons (daily)",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Tie-Dye Day",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Train Rides",
+      "grades": [
+        "preschool",
+        "kindergarten"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Tube Water Slide",
+      "grades": [
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Ultimate Frisbee",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Wiffle Ball",
+      "grades": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Yo-Yo",
+      "grades": [
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    },
+    {
+      "name": "Yoga",
+      "grades": [
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ],
+      "kind": "exclusive"
+    }
+  ]
+}

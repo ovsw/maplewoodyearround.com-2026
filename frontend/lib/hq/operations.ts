@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm";
 
 import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
+import { createListOperations } from "./lists.ts";
+import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
 
 /** Who is acting: a signed-in account, or a trusted command run by hand. */
 export type CampHqActor =
@@ -29,16 +31,27 @@ export const campHqRoleLabels: Record<CampHqRole, string> = {
   senior_staff: "Senior staff",
 };
 
-export type CampHqRefusalReason = "no-staff-record" | "admins-only";
+export type CampHqRefusalReason =
+  | "no-staff-record"
+  | "admins-only"
+  | "invalid-input"
+  | "not-found"
+  | "name-taken"
+  | "in-use";
 
-/** Thrown when Camp HQ refuses an operation. `reason` says why. */
+/**
+ * Thrown when Camp HQ refuses an operation. `reason` says why; `usedIn` lists
+ * where a record is still used when removing it is refused.
+ */
 export class CampHqRefusal extends Error {
   readonly reason: CampHqRefusalReason;
+  readonly usedIn: string[];
 
-  constructor(reason: CampHqRefusalReason, message: string) {
+  constructor(reason: CampHqRefusalReason, message: string, usedIn: string[] = []) {
     super(message);
     this.name = "CampHqRefusal";
     this.reason = reason;
+    this.usedIn = usedIn;
   }
 }
 
@@ -51,7 +64,15 @@ export function isCampHqRefusal(
   );
 }
 
-export function createCampHqOperations(db: CampHqDb) {
+export type CampHqOperationsOptions = {
+  /** Where a Camp group or activity is used. Defaults to Camp HQ's own checks. */
+  usageChecks?: CampHqUsageChecks;
+};
+
+export function createCampHqOperations(
+  db: CampHqDb,
+  { usageChecks = campHqUsageChecks }: CampHqOperationsOptions = {},
+) {
   async function findPerson(actor: CampHqActor): Promise<CampHqPerson | null> {
     if (actor.type !== "account") return null;
     const [row] = await db
@@ -89,6 +110,8 @@ export function createCampHqOperations(db: CampHqDb) {
   }
 
   return {
+    ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
+
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {
       return requirePerson(actor);

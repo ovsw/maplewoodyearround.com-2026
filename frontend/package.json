@@ -19,6 +19,7 @@
     "hq:db:generate": "drizzle-kit generate",
     "hq:db:migrate": "node --env-file-if-exists=.env.local scripts/hq-db-migrate.ts",
     "hq:make-admin": "node --env-file-if-exists=.env.local scripts/hq-make-admin.ts",
+    "hq:seed-lists": "node --env-file-if-exists=.env.local scripts/hq-seed-lists.ts",
     "shot": "node scripts/shot.mjs"
   },
   "dependencies": {

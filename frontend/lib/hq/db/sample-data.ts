@@ -1,9 +1,11 @@
 // SAMPLE DATA for the local database only. Every person here is invented and
-// named "Sample …". It never goes to Neon.
+// named "Sample …". It never goes to Neon. The Camp groups and activities come
+// from the committed seed file (seed-lists.json); their Teams are sample.
 import { and, eq, isNull, sql } from "drizzle-orm";
 
 import type { CampHqDb } from "./database.ts";
 import { staffMembers } from "./schema.ts";
+import { campHqSeed, loadSeedLists } from "./seed-lists.ts";
 
 const SAMPLE_ADMIN_ID = "00000000-0000-4000-8000-000000000001";
 const SAMPLE_LEADER_ID = "00000000-0000-4000-8000-000000000002";
@@ -19,7 +21,7 @@ const samplePeople = [
 export type SampleAccounts = { admin?: string; leader?: string };
 
 /**
- * Loads the sample people into an empty database, then links the Clerk test
+ * Loads the sample people and the seed lists into an empty database, then links the Clerk test
  * admin (as Admin) and test leader (as Senior staff) to their sample records
  * when those are still unlinked. Safe to run on every start.
  */
@@ -35,6 +37,7 @@ export async function loadSampleData(
       .insert(staffMembers)
       .values(samplePeople.map((person) => ({ ...person, createdAt: now, updatedAt: now })));
   }
+  await loadSeedLists(db, campHqSeed, { now });
 
   const links = [
     { id: SAMPLE_ADMIN_ID, clerkUserId: accounts.admin, role: "admin" },
