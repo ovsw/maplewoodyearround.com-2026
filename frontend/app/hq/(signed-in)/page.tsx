@@ -17,6 +17,7 @@ import {
 } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
 
+import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 import { STAFF_PATH } from "./staff/paths";
 
 export const metadata: Metadata = { title: { absolute: "Camp HQ" } };
@@ -110,11 +111,19 @@ async function CampHqHome() {
       <p className="text-muted-foreground">
         Your role: <span className="text-foreground">{campHqRoleLabels[person.role]}</span>
       </p>
-      {person.role === "admin" ? (
-        <Button asChild variant="outline" className="self-start">
-          <Link href={STAFF_PATH}>Staff and accounts</Link>
+      <nav aria-label="Camp HQ lists" className="mt-3 flex flex-wrap gap-3">
+        <Button asChild variant="outline">
+          <Link href={CAMP_GROUPS_PATH}>Camp groups</Link>
         </Button>
-      ) : null}
+        <Button asChild variant="outline">
+          <Link href={ACTIVITIES_PATH}>Activities</Link>
+        </Button>
+        {person.role === "admin" ? (
+          <Button asChild variant="outline">
+            <Link href={STAFF_PATH}>Staff and accounts</Link>
+          </Button>
+        ) : null}
+      </nav>
     </section>
   );
 }

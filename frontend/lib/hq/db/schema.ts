@@ -8,10 +8,14 @@ import {
   check,
   pgEnum,
   pgTable,
+  smallint,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+
+import { campHqGradeValues } from "../grades.ts";
 
 /** Senior staff lead a Camp group or run activities; Junior staff help. */
 export const staffKind = pgEnum("staff_kind", ["senior", "junior"]);
@@ -50,4 +54,49 @@ export const staffMembers = pgTable(
       sql`not ${table.accountSwitchedOff} or ${table.clerkUserId} is not null`,
     ),
   ],
+);
+
+/** Camp HQ's own grades, Preschool to 9th Grade (see lib/hq/grades.ts). */
+export const grade = pgEnum("grade", campHqGradeValues);
+
+/** Exclusive: one Camp group per time slot. Shared: many groups at once. */
+export const activityKind = pgEnum("activity_kind", ["exclusive", "shared"]);
+
+/** A Summer Camp group of campers. Camp HQ's own record, not the Website's. */
+export const campGroups = pgTable(
+  "camp_groups",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    grades: grade("grades").array().notNull(),
+    /** Team 1 (youngest) to Team 4 (oldest). */
+    team: smallint("team").notNull(),
+    /** True while the Team comes from the sample data and no Admin has set it. */
+    teamIsSample: boolean("team_is_sample").notNull().default(false),
+    changeLocation: text("change_location").notNull().default(""),
+    freeSwimLocation: text("free_swim_location").notNull().default(""),
+    lunchLocation: text("lunch_location").notNull().default(""),
+    swimLessonsLocation: text("swim_lessons_location").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("camp_groups_name_unique").on(sql`lower(${table.name})`),
+    check("camp_groups_team_range", sql`${table.team} between 1 and 4`),
+  ],
+);
+
+/** Something campers do at Summer Camp. Camp HQ's own record. */
+export const activities = pgTable(
+  "activities",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    /** The grades the activity is allowed for. */
+    grades: grade("grades").array().notNull(),
+    kind: activityKind("kind").notNull().default("exclusive"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [uniqueIndex("activities_name_unique").on(sql`lower(${table.name})`)],
 );

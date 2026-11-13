@@ -88,7 +88,11 @@ Which database Camp HQ uses:
   applies the migrations and loads the sample data when it opens. The sample
   data makes the Clerk test admin an Admin and the test leader a Senior staff
   member (it looks them up, and creates them when missing, with a
-  development `sk_test_` key). Delete the folder to start again. PGlite allows
+  development `sk_test_` key). It also loads the Camp groups and activities
+  from the committed `frontend/lib/hq/db/seed-lists.json` (their Teams are
+  sample). `pnpm --dir frontend hq:seed-lists` rebuilds that file from the
+  Website's published content; Camp HQ never reads the Website at run time.
+  Delete the folder to start again. PGlite allows
   one process at a time: stop the dev server before running a Camp HQ command
   against it.
 - **Vercel** (previews and production): the Neon database in `DATABASE_URL`.

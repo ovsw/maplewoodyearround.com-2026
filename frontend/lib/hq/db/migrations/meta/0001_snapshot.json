@@ -1,9 +1,185 @@
 {
-  "id": "c93bb18e-602b-4f9a-aeba-cda55f7f3226",
+  "id": "618cb913-7de4-46b2-99e5-c2d37a44095a",
   "prevId": "33443918-6c66-4348-a48a-e9e39a346e20",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.activities": {
+      "name": "activities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grades": {
+          "name": "grades",
+          "type": "grade[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "activity_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'exclusive'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "activities_name_unique": {
+          "name": "activities_name_unique",
+          "columns": [
+            {
+              "expression": "lower(\"name\")",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.camp_groups": {
+      "name": "camp_groups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grades": {
+          "name": "grades",
+          "type": "grade[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team": {
+          "name": "team",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team_is_sample": {
+          "name": "team_is_sample",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "change_location": {
+          "name": "change_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "free_swim_location": {
+          "name": "free_swim_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "lunch_location": {
+          "name": "lunch_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "swim_lessons_location": {
+          "name": "swim_lessons_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "camp_groups_name_unique": {
+          "name": "camp_groups_name_unique",
+          "columns": [
+            {
+              "expression": "lower(\"name\")",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "camp_groups_team_range": {
+          "name": "camp_groups_team_range",
+          "value": "\"camp_groups\".\"team\" between 1 and 4"
+        }
+      },
+      "isRLSEnabled": false
+    },
     "public.staff_members": {
       "name": "staff_members",
       "schema": "",
@@ -41,19 +217,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "account_email": {
-          "name": "account_email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "account_switched_off": {
-          "name": "account_switched_off",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -77,13 +240,6 @@
           "columns": [
             "clerk_user_id"
           ]
-        },
-        "staff_members_account_email_unique": {
-          "name": "staff_members_account_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "account_email"
-          ]
         }
       },
       "policies": {},
@@ -91,10 +247,6 @@
         "staff_members_role_needs_account": {
           "name": "staff_members_role_needs_account",
           "value": "(\"staff_members\".\"clerk_user_id\" is null) = (\"staff_members\".\"role\" is null)"
-        },
-        "staff_members_switched_off_needs_account": {
-          "name": "staff_members_switched_off_needs_account",
-          "value": "not \"staff_members\".\"account_switched_off\" or \"staff_members\".\"clerk_user_id\" is not null"
         }
       },
       "isRLSEnabled": false
@@ -107,6 +259,31 @@
       "values": [
         "admin",
         "senior_staff"
+      ]
+    },
+    "public.activity_kind": {
+      "name": "activity_kind",
+      "schema": "public",
+      "values": [
+        "exclusive",
+        "shared"
+      ]
+    },
+    "public.grade": {
+      "name": "grade",
+      "schema": "public",
+      "values": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
       ]
     },
     "public.staff_kind": {
