@@ -54,7 +54,7 @@ async function Activities() {
             </thead>
             <tbody>
               {activities.map((activity) => (
-                <tr key={activity.id} className="border-b border-border align-top">
+                <tr key={activity.id} className="border-b border-border align-middle">
                   <th scope="row" className="py-3 pr-4 font-semibold">
                     {isAdmin ? (
                       <Link

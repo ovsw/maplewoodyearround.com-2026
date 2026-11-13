@@ -45,9 +45,22 @@ export function sortGrades(grades: readonly CampHqGrade[]): CampHqGrade[] {
   return campHqGradeValues.filter((grade) => grades.includes(grade));
 }
 
-/** "Preschool, Kindergarten" for showing a list of grades. */
+/**
+ * The grades for reading, youngest first. Three or more grades in a row are
+ * shortened: "Preschool to 3rd Grade, 5th Grade".
+ */
 export function formatGrades(grades: readonly CampHqGrade[]) {
-  return sortGrades(grades)
-    .map((grade) => campHqGradeLabels[grade])
+  const positions = sortGrades(grades).map((grade) => campHqGradeValues.indexOf(grade));
+  const runs: number[][] = [];
+  for (const position of positions) {
+    const run = runs.at(-1);
+    if (run && run.at(-1) === position - 1) run.push(position);
+    else runs.push([position]);
+  }
+  const label = (position: number) => campHqGradeLabels[campHqGradeValues[position]];
+  return runs
+    .flatMap((run) =>
+      run.length >= 3 ? [`${label(run[0])} to ${label(run.at(-1)!)}`] : run.map(label),
+    )
     .join(", ");
 }

@@ -60,7 +60,7 @@ async function CampGroups() {
             </thead>
             <tbody>
               {groups.map((group) => (
-                <tr key={group.id} className="border-b border-border align-top">
+                <tr key={group.id} className="border-b border-border align-middle">
                   <th scope="row" className="py-3 pr-4 font-semibold">
                     {isAdmin ? (
                       <Link
