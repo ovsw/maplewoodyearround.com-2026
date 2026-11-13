@@ -37,6 +37,11 @@ export async function openLocalCampHqDatabase({
   now = new Date(),
 }: { env?: Env; now?: Date } = {}) {
   const database = await openPgliteDatabase(campHqLocalDataDir(env));
-  await loadSampleData(database.db, { now, accounts: await findSampleAccounts(env) });
+  try {
+    await loadSampleData(database.db, { now, accounts: await findSampleAccounts(env) });
+  } catch (error) {
+    await database.close().catch(() => {});
+    throw error;
+  }
   return database;
 }

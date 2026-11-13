@@ -59,7 +59,12 @@ export async function openPgliteDatabase(dataDir?: string) {
   if (dataDir) await mkdir(dataDir, { recursive: true });
   const client = dataDir ? new PGlite(dataDir) : new PGlite();
   const db = drizzle({ client, schema });
-  await migrate(db, { migrationsFolder: campHqMigrationsFolder() });
+  try {
+    await migrate(db, { migrationsFolder: campHqMigrationsFolder() });
+  } catch (error) {
+    await client.close().catch(() => {});
+    throw error;
+  }
   return { db: db as unknown as CampHqDb, close: () => client.close() };
 }
 
