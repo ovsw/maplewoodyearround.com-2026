@@ -204,6 +204,25 @@ describe("creating an account", () => {
     expect(staff.filter((entry) => entry.account?.status === "invited")).toHaveLength(1);
   });
 
+  it("links one staff member when the same account signs in twice at once", async () => {
+    test.fakeAccounts.refuseDirectCreation();
+    const rowan = await test.campHq.addStaffMember(asAdmin, { name: "Rowan Birch", kind: "senior" });
+    const sage = await test.campHq.addStaffMember(asAdmin, { name: "Sage Willow", kind: "senior" });
+    await test.campHq.createAccount(asAdmin, rowan.staffMemberId, "rowan@example.com");
+    await test.campHq.createAccount(asAdmin, sage.staffMemberId, "sage@example.com");
+
+    const newAccount: CampHqActor = { type: "account", clerkUserId: "user_two_emails" };
+    const [first, second] = await Promise.all([
+      test.campHq.acceptInvitation(as(newAccount), ["rowan@example.com", "sage@example.com"]),
+      test.campHq.acceptInvitation(as(newAccount), ["sage@example.com", "rowan@example.com"]),
+    ]);
+
+    expect(first?.staffMemberId).toBeDefined();
+    expect(second?.staffMemberId).toBe(first?.staffMemberId);
+    const staff = await test.campHq.listStaff(asAdmin);
+    expect(staff.filter((entry) => entry.account?.status === "invited")).toHaveLength(1);
+  });
+
   it("allows sign-in again when it links an account that was switched off", async () => {
     const rowan = await addWithAccount("Rowan Birch", "rowan@example.com");
     await test.campHq.switchAccountOff(asAdmin, rowan.staffMemberId);

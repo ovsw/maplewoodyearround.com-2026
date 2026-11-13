@@ -2,7 +2,7 @@
 // commands reach Camp HQ's database. Every operation takes the acting person
 // and the current time, and decides permissions itself, so no rule depends on
 // the page or the request proxy.
-import { and, asc, eq, inArray, isNull } from "drizzle-orm";
+import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
 
 import type { CampHqAccounts } from "./accounts.ts";
 import type { CampHqDb } from "./db/database.ts";
@@ -265,8 +265,18 @@ export function createCampHqOperations(
       if (emails.length === 0) return null;
       // An account can have several verified emails, each invited for a
       // different staff member. It links to one of them only: one account, one
-      // staff member.
+      // staff member. Sign-ins of the same account wait for each other here, so
+      // two at once cannot link two invitations.
       const linked = await db.transaction(async (tx) => {
+        await tx.execute(
+          sql`select pg_advisory_xact_lock(hashtext(${`camp-hq-accept:${actor.clerkUserId}`}))`,
+        );
+        const [already] = await tx
+          .select({ id: staffMembers.id })
+          .from(staffMembers)
+          .where(eq(staffMembers.clerkUserId, actor.clerkUserId))
+          .limit(1);
+        if (already) return null;
         const [invited] = await tx
           .select({ id: staffMembers.id })
           .from(staffMembers)
@@ -284,7 +294,7 @@ export function createCampHqOperations(
           .returning();
         return row ?? null;
       });
-      // A sign-in running at the same moment may have linked it already.
+      // A sign-in running at the same moment may have linked the account.
       if (!linked?.role) return findPerson(actor);
       return {
         staffMemberId: linked.id,
