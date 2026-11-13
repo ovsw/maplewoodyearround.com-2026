@@ -15,6 +15,13 @@
       "when": 1794608779535,
       "tag": "0001_camp_hq_lists",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794613093776,
+      "tag": "0002_camp_hq_group_schedules",
+      "breakpoints": true
     }
   ]
 }
