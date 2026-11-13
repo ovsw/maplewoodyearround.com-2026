@@ -4,6 +4,7 @@
 // Node scripts as well as by Next.js.
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   check,
   pgEnum,
   pgTable,
@@ -27,6 +28,13 @@ export const staffMembers = pgTable(
     /** The Clerk user id of the person's account; null when they have none. */
     clerkUserId: text("clerk_user_id").unique(),
     role: accountRole("role"),
+    /**
+     * The email the account was created or invited with, lower case. Set with
+     * no Clerk user id while an invitation waits to be accepted.
+     */
+    accountEmail: text("account_email").unique(),
+    /** True when an Admin has switched the account off: no sign-in, no access. */
+    accountSwitchedOff: boolean("account_switched_off").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
   },
@@ -35,6 +43,11 @@ export const staffMembers = pgTable(
     check(
       "staff_members_role_needs_account",
       sql`(${table.clerkUserId} is null) = (${table.role} is null)`,
+    ),
+    // Only an existing account can be switched off.
+    check(
+      "staff_members_switched_off_needs_account",
+      sql`not ${table.accountSwitchedOff} or ${table.clerkUserId} is not null`,
     ),
   ],
 );

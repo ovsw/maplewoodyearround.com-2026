@@ -1,5 +1,7 @@
 import "server-only";
 
+import { createClerkAccounts } from "./clerk-accounts.ts";
+import { getCampHqClerkKeys } from "./config.ts";
 import type { CampHqDb } from "./db/database.ts";
 import {
   getCampHqDatabaseMode,
@@ -33,5 +35,8 @@ export async function getCampHqOperations(): Promise<CampHqOperations> {
     cache.__campHqDb = undefined;
     throw error;
   });
-  return createCampHqOperations(await cache.__campHqDb);
+  const keys = getCampHqClerkKeys();
+  return createCampHqOperations(await cache.__campHqDb, {
+    accounts: keys ? createClerkAccounts(keys.secretKey) : undefined,
+  });
 }
