@@ -29,6 +29,7 @@ export const campHqTestUsers = [
 async function clerkRequest(fetchImpl, secretKey, path, init = {}) {
   const response = await fetchImpl(`${CLERK_API_URL}${path}`, {
     ...init,
+    signal: init.signal ?? AbortSignal.timeout(10_000),
     headers: {
       Authorization: `Bearer ${secretKey}`,
       "Content-Type": "application/json",
