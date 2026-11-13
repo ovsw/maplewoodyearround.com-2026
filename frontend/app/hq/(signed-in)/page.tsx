@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
+
+import { Button } from "@/components/ui/button";
 
 import {
   CampHqDatabaseUnavailable,
@@ -12,6 +15,8 @@ import {
   type CampHqPerson,
 } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
+
+import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 
 export const metadata: Metadata = { title: { absolute: "Camp HQ" } };
 
@@ -76,6 +81,14 @@ async function CampHqHome() {
       <p className="text-muted-foreground">
         Your role: <span className="text-foreground">{campHqRoleLabels[person.role]}</span>
       </p>
+      <nav aria-label="Camp HQ lists" className="mt-3 flex flex-wrap gap-3">
+        <Button asChild variant="outline">
+          <Link href={CAMP_GROUPS_PATH}>Camp groups</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href={ACTIVITIES_PATH}>Activities</Link>
+        </Button>
+      </nav>
     </section>
   );
 }
