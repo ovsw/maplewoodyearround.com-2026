@@ -19,6 +19,14 @@ export function isScheduleWeekday(value: unknown): value is ScheduleWeekday {
   return SCHEDULE_WEEKDAYS.includes(value as ScheduleWeekday);
 }
 
+/** The weekday at `now` in camp local time, or null on a weekend. */
+export function campWeekday(now: Date): ScheduleWeekday | null {
+  const name = new Intl.DateTimeFormat("en-US", { timeZone: CAMP_TIME_ZONE, weekday: "long" })
+    .format(now);
+  const found = SCHEDULE_WEEKDAYS.find((weekday) => weekdayLabels[weekday] === name);
+  return found ?? null;
+}
+
 /** A new day starts with eleven 30-minute slots from 9:30. */
 export const DEFAULT_DAY_START = 9 * 60 + 30;
 export const DEFAULT_SLOT_LENGTH = 30;
