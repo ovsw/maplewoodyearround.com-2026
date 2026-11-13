@@ -89,6 +89,58 @@ A person on a side's team, shown on that side's staff pages.
 **Leadership**:
 The staff members who run Maplewood as a whole. They have no side.
 
+## Camp operations
+
+**Camp HQ**:
+The staff-only part of the site where Maplewood runs Summer Camp day to day:
+group schedules, Club day signups and camper lists. Private; it is not part of
+the Website. It keeps its own records of Camp groups and activities, entered
+separately from the Website's content.
+_Avoid_: staff area, operations system
+
+**Club day**:
+The afternoon period when each camper leaves their Camp group for an activity
+chosen that morning. Each Camp group has one or more Club day periods.
+_Avoid_: club, flex time
+
+**Club day option**:
+An activity a Team can choose on a given weekday's Club day. Some are offered
+only on Club day. Each one needs a specialist.
+
+**Team**:
+A numbered set of Camp groups that share the same Club day options, from Team 1
+(youngest) to Team 4 (oldest). Leadership sets the Teams each summer. A single
+Camp group is never called a team.
+_Avoid_: age band, division
+
+**Exclusive activity**:
+A Summer activity that only one Camp group can have in a given time slot, for
+example archery.
+
+**Shared activity**:
+A Summer activity that many Camp groups can have in the same time slot, for
+example lunch or free swim.
+
+**Admin**:
+A staff member who runs Camp HQ: creates accounts, edits Assignments and
+changes settings. Front desk staff are Admins.
+
+**Senior staff**:
+A staff member who leads a Camp group or runs an activity as a specialist.
+Nobody can do either without an account. Each Camp group has one senior
+leader.
+_Avoid_: specialist (as a separate role)
+
+**Junior staff**:
+A staff member who helps a Camp group or an activity specialist. Floaters are
+Junior staff. They are recorded in Camp HQ, normally without an account; an
+Admin can give one as an exception.
+_Avoid_: floater (as a separate role)
+
+**Assignment**:
+The Camp group or activity a Senior or Junior staff member is working on now. An Admin can change it at any
+time. Nobody can have two jobs at the same time.
+
 ## Summer bus
 
 **Bus stop**:
