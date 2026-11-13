@@ -10,6 +10,7 @@ import { resolve } from "./presentation/resolve";
 import { openInPresentationAction } from "./presentation/open-in-presentation";
 import { isPresentationDocumentType } from "./presentation/routes";
 import { structure } from "./structure";
+import { copyDirectionsLinkAction } from "./actions/copy-directions-link";
 import {
   singletonDocumentActions,
   singletonDocumentTypes,
@@ -59,12 +60,15 @@ export default defineConfig({
   document: {
     // For singleton types, filter out actions that are not explicitly included
     // in the `singletonActions` list defined above
-    actions: (input, context) =>
-      singletonDocumentTypes.has(context.schemaType)
-        ? input.filter(({ action }) =>
-            action && singletonDocumentActions.has(action),
-          )
-        : input,
+    actions: (input, context) => {
+      if (singletonDocumentTypes.has(context.schemaType))
+        return input.filter(({ action }) =>
+          action && singletonDocumentActions.has(action),
+        );
+      if (context.schemaType === "busStop")
+        return [...input, copyDirectionsLinkAction];
+      return input;
+    },
     unstable_fieldActions: (input, context) =>
       isPresentationDocumentType(context.documentType)
         ? [openInPresentationAction, ...input]

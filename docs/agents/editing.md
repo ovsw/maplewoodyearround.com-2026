@@ -247,7 +247,10 @@ Rules:
   `facilityCategory`, `faqCategory`, `category`): the structure the content
   hangs on. Ask Ovi.
 - **Bus stops** (`busStop`): a stop's pin needs the map tool in Studio.
-  Clark may hide or show a stop; a new or moved stop goes to Ovi.
+  Clark may hide or show a stop; a new or moved stop goes to Ovi. To send a
+  family directions to a stop, staff open the stop and choose "Copy
+  directions link" in the menu next to Publish; the link opens Google Maps
+  at the pin and needs no login.
 - **Embeds and forms** (`embedSection`, the Cognito tour forms, the Airtable
   changes form, the Events Calendar on `/maplewood-main-calendar`, the
   newsletter form): code and outside services. Ovi.

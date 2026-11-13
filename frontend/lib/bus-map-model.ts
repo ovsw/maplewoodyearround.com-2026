@@ -32,8 +32,11 @@ export type BusStopPin = {
   address: string;
   town: string;
   position: BusMapPoint;
-  /** "View in Google Maps": the place at the pin's coordinates. */
-  googleMapsUrl: string;
+  /**
+   * "Get directions": driving directions to the pin's coordinates. The same
+   * link staff copy from the stop in Studio (studio/actions/directions-link.ts).
+   */
+  directionsUrl: string;
 };
 
 export type CampPin = {
@@ -70,10 +73,6 @@ function pointOf(
 
 const coordinates = ({ lat, lng }: BusMapPoint) => `${lat},${lng}`;
 
-export function googleMapsPlaceUrl(point: BusMapPoint): string {
-  return `https://www.google.com/maps/search/?api=1&query=${coordinates(point)}`;
-}
-
 export function googleMapsDirectionsUrl(point: BusMapPoint): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${coordinates(point)}`;
 }
@@ -89,7 +88,7 @@ function stopPin(stop: BusStopInput): BusStopPin | null {
     address: stop.address?.trim() ?? "",
     town: stop.town?.trim() ?? "",
     position,
-    googleMapsUrl: googleMapsPlaceUrl(position),
+    directionsUrl: googleMapsDirectionsUrl(position),
   };
 }
 
