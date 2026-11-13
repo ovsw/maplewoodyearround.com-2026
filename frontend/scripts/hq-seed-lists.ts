@@ -11,11 +11,21 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { groq } from "next-sanity";
+
 import { buildCampHqSeed, type WebsiteListItem } from "../lib/hq/db/seed-lists.ts";
 
-const QUERY = `{
-  "campGroups": *[_type == "campGroup"] | order(title) { "name": title, "grades": coalesce(grades[]->title, []) },
-  "activities": *[_type == "summerActivity"] | order(title) { "name": title, "grades": coalesce(grades[]->title, []) }
+const QUERY = groq`{
+  "campGroups": *[_type == "campGroup"]
+    | order(title) {
+      "name": title,
+      "grades": coalesce(grades[]->title, [])
+    },
+  "activities": *[_type == "summerActivity"]
+    | order(title) {
+      "name": title,
+      "grades": coalesce(grades[]->title, [])
+    }
 }`;
 
 type QueryResult = { campGroups: WebsiteListItem[]; activities: WebsiteListItem[] };
