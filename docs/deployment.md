@@ -55,6 +55,12 @@ Without both keys the Website builds and runs as before, and `/hq` shows
 "Camp HQ is not available". Production has no keys yet. A key change takes
 effect on the next deployment.
 
+Use two Clerk instances. Vercel Production gets the production instance's
+keys (`pk_live_`, `sk_live_`). Local work, Vercel Preview and the Release gate
+get the development instance's keys (`pk_test_`, `sk_test_`). The test users
+below sign in with a fixed code, so they exist only in the development
+instance; the script refuses an `sk_live_` key.
+
 There is no sign-up page; Clerk's sign-up mode is Restricted. Create the test
 users (one Admin, one group leader, `+clerk_test` emails, no passwords) with
 `pnpm --dir frontend hq:test-users`. It is safe to run again. The Camp HQ

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import { getCampHqClerkKeys } from "@/lib/hq/config";
 import { requireCampHqUserId } from "@/lib/hq/session";
 
 export const metadata: Metadata = { title: { absolute: "Camp HQ" } };
@@ -14,6 +15,8 @@ export default function CampHqHomePage() {
 }
 
 async function CampHqHome() {
+  // Without Clerk keys the layout shows "not available"; auth() would throw.
+  if (!getCampHqClerkKeys()) return null;
   await requireCampHqUserId();
   return (
     <section className="flex flex-col gap-3">

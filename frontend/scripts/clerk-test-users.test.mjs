@@ -64,6 +64,13 @@ test("reports Clerk's error message", async () => {
   );
 });
 
+test("refuses a production secret key", async () => {
+  await assert.rejects(
+    ensureClerkTestUsers({ secretKey: "sk_live_x", fetch: () => assert.fail("no request") }),
+    /production key/,
+  );
+});
+
 test("refuses to run without a secret key", async () => {
   await assert.rejects(ensureClerkTestUsers({ secretKey: "" }), /CLERK_SECRET_KEY is missing/);
 });

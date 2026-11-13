@@ -55,6 +55,12 @@ export async function ensureClerkTestUsers({
   users = campHqTestUsers,
 }) {
   if (!secretKey) throw new Error("CLERK_SECRET_KEY is missing.");
+  // Test users sign in with a fixed code, so they never go into production.
+  if (secretKey.startsWith("sk_live_")) {
+    throw new Error(
+      "CLERK_SECRET_KEY is a production key. Use the development instance's key.",
+    );
+  }
   const results = [];
   for (const user of users) {
     const query = new URLSearchParams({ email_address: user.emailAddress });
