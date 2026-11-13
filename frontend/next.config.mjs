@@ -24,6 +24,12 @@ const nextConfig = {
         missing: [{ type: "host", value: canonicalHost }],
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
+      // Camp HQ is staff-only on every host. The request proxy sets the same
+      // header on its own responses, such as the sign-in redirect.
+      {
+        source: "/hq/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
     ];
   },
   rewrites() {

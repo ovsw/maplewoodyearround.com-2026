@@ -40,6 +40,32 @@ Cloudflare finds suspicious gets a checkbox to click.
 Without these variables the form answers "Something went wrong" and sends
 nothing.
 
+## Camp HQ
+
+Camp HQ (`/hq`) signs staff in with Clerk. It needs two keys from the Clerk
+application's API keys page:
+
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` (sensitive).
+  Locally they live in the ignored `frontend/.env.local`; deployed, in the
+  Vercel project's environment variables. The Release gate's build job reads
+  the GitHub repository secret `CLERK_SECRET_KEY` and the repository variable
+  `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`.
+
+Without both keys the Website builds and runs as before, and `/hq` shows
+"Camp HQ is not available". Production has no keys yet. A key change takes
+effect on the next deployment.
+
+Use two Clerk instances. Vercel Production gets the production instance's
+keys (`pk_live_`, `sk_live_`). Local work, Vercel Preview and the Release gate
+get the development instance's keys (`pk_test_`, `sk_test_`). The test users
+below sign in with a fixed code, so they exist only in the development
+instance; the script refuses an `sk_live_` key.
+
+There is no sign-up page; Clerk's sign-up mode is Restricted. Create the test
+users (one Admin, one group leader, `+clerk_test` emails, no passwords) with
+`pnpm --dir frontend hq:test-users`. It is safe to run again. The Camp HQ
+Playwright test creates them too.
+
 ## Search parity
 
 `node scripts/seo-parity.mjs [origin]` compares the live Webflow site with the
