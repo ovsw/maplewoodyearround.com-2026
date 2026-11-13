@@ -25,7 +25,7 @@ test.describe("Camp HQ with sign-in", () => {
     await ensureClerkTestUsers({ secretKey: process.env.CLERK_SECRET_KEY });
   });
 
-  test("a test user signs in through Clerk's testing mode and reaches the Camp HQ home", async ({
+  test("the test leader signs in through Clerk's testing mode and sees their name and role", async ({
     page,
   }) => {
     const response = await page.goto("/hq");
@@ -35,10 +35,26 @@ test.describe("Camp HQ with sign-in", () => {
     const leader = campHqTestUsers.find(({ role }) => role === "Group leader")!;
     await clerk.signIn({ page, emailAddress: leader.emailAddress });
 
+    // The local sample data links the test leader as Senior staff.
     await page.goto("/hq");
     await expect(page).toHaveURL(/\/hq$/);
-    await expect(page.getByText("Nothing to show here yet.")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Hello, Sample Leader" }),
+    ).toBeVisible();
+    await expect(page.getByText("Your role: Senior staff")).toBeVisible();
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+  });
+
+  test("the test admin sees the Admin role", async ({ page }) => {
+    await page.goto("/hq/sign-in");
+    const admin = campHqTestUsers.find(({ role }) => role === "Admin")!;
+    await clerk.signIn({ page, emailAddress: admin.emailAddress });
+
+    await page.goto("/hq");
+    await expect(
+      page.getByRole("heading", { name: "Hello, Sample Admin" }),
+    ).toBeVisible();
+    await expect(page.getByText("Your role: Admin")).toBeVisible();
   });
 });
 

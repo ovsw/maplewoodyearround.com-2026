@@ -66,6 +66,53 @@ users (one Admin, one group leader, `+clerk_test` emails, no passwords) with
 `pnpm --dir frontend hq:test-users`. It is safe to run again. The Camp HQ
 Playwright test creates them too.
 
+### Camp HQ database
+
+Camp HQ keeps its data in Postgres through Drizzle. The schema is
+`frontend/lib/hq/db/schema.ts`; the SQL migrations in
+`frontend/lib/hq/db/migrations` are kept in the repo. After a schema change,
+run `pnpm --dir frontend hq:db:generate` and commit the new migration. Never
+edit a migration by hand.
+
+Pages and server actions reach the database only through the Camp HQ
+operations module (`frontend/lib/hq/operations.ts`). Every operation takes the
+acting person and the current time and checks the role itself. Clerk only
+proves who is signed in; the role (Admin or Senior staff) comes from the staff
+member record linked to the Clerk user id. A signed-in person with no staff
+record is told to ask an Admin.
+
+Which database Camp HQ uses:
+
+- **Local development** (and `next start` on your machine or in CI): a PGlite
+  Postgres inside the worktree, in the ignored `frontend/.hq-data` folder. It
+  applies the migrations and loads the sample data when it opens. The sample
+  data makes the Clerk test admin an Admin and the test leader a Senior staff
+  member (it looks them up, and creates them when missing, with a
+  development `sk_test_` key). Delete the folder to start again. PGlite allows
+  one process at a time: stop the dev server before running a Camp HQ command
+  against it.
+- **Vercel** (previews and production): the Neon database in `DATABASE_URL`.
+  Migrations never run at request time. Without `DATABASE_URL`, `/hq` says
+  Camp HQ's database is not set up.
+- `CAMP_HQ_DATABASE=neon` in `frontend/.env.local` switches local development
+  to the Neon database in `DATABASE_URL`; `CAMP_HQ_DATABASE=local` forces the
+  local one. Do not point it at the shared dev database while Camp HQ is being
+  built.
+
+Apply the migrations to a Neon database on purpose with
+`pnpm --dir frontend hq:db:migrate`. It targets `DATABASE_URL_UNPOOLED`, or
+`DATABASE_URL`, prints the host and changes nothing; run it again with
+`--yes` to apply.
+
+Make the first Admin by the email of their Clerk account:
+
+- Local database: `pnpm --dir frontend hq:make-admin someone@example.com`
+- Neon: `CAMP_HQ_DATABASE=neon pnpm --dir frontend hq:make-admin someone@example.com`
+
+The person must already exist in the Clerk instance that `CLERK_SECRET_KEY`
+belongs to. The command creates their staff record (Senior staff, Admin role)
+or makes an existing one an Admin. It is safe to run again.
+
 ## Search parity
 
 `node scripts/seo-parity.mjs [origin]` compares the live Webflow site with the

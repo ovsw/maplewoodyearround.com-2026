@@ -14,6 +14,9 @@ function requiredEnvironmentValue(name) {
 const nextConfig = {
   cacheComponents: true,
   cacheLife: { default: sanity },
+  // Camp HQ's local database (PGlite) loads its own WebAssembly files, so
+  // Node requires it as it is instead of bundling it.
+  serverExternalPackages: ["@electric-sql/pglite"],
   headers() {
     // Only the canonical host may be indexed. Previews, local servers and the
     // Vercel URLs of a production deployment all send noindex.

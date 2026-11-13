@@ -54,6 +54,9 @@ studio/backups/
 /.worktree-ports.json
 /.reference-comparisons/
 
+# Camp HQ local database (PGlite), one per worktree
+.hq-data/
+
 # Parallel agent worktrees (nested checkouts, never tracked)
 .claude/worktrees/
 
