@@ -63,7 +63,7 @@ describe("buildBusMapModel", () => {
       address: "Plainville, MA 02356",
       town: "Plainville",
       position: { lat: 42.028885, lng: -71.309013 },
-      googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=42.028885,-71.309013",
+      directionsUrl: "https://www.google.com/maps/dir/?api=1&destination=42.028885,-71.309013",
     });
     expect(model.camp).toEqual({
       name: "Maplewood Day Camp and Enrichment Center",

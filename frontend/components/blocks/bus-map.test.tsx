@@ -193,7 +193,7 @@ describe("BusStopMap", () => {
     ]);
   });
 
-  it("opens a popup with the name, the address and a Google Maps link to the pin", async () => {
+  it("opens a popup with the name, the address and a directions link to the pin", async () => {
     const view = viewport();
     const { drawn, libraries } = fakeGoogle();
     render(
@@ -211,9 +211,9 @@ describe("BusStopMap", () => {
     expect(popup.textContent).toContain("Gavins Pond Soccer Fields");
     expect(popup.textContent).toContain("120 Gavins Pond Rd, Sharon, MA 02067");
     const link = popup.querySelector("a");
-    expect(link?.textContent).toBe("View in Google Maps");
+    expect(link?.textContent).toBe("Get directions");
     expect(link?.getAttribute("href")).toBe(
-      "https://www.google.com/maps/search/?api=1&query=42.084084,-71.212801",
+      "https://www.google.com/maps/dir/?api=1&destination=42.084084,-71.212801",
     );
     expect(link?.getAttribute("rel")).toContain("noopener");
   });

@@ -101,7 +101,7 @@ function popup({ name, address, href, link }: PopupText): HTMLElement {
 }
 
 const stopPopup = (stop: BusStopPin) =>
-  popup({ name: stop.name, address: stop.address, href: stop.googleMapsUrl, link: "View in Google Maps" });
+  popup({ name: stop.name, address: stop.address, href: stop.directionsUrl, link: "Get directions" });
 
 const campPopup = (camp: CampPin) =>
   popup({ name: camp.name, address: camp.address, href: camp.directionsUrl, link: "Get directions" });
