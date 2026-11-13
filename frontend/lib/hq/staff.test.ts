@@ -185,6 +185,43 @@ describe("creating an account", () => {
     });
   });
 
+  it("links an account with two invited emails to one staff member only", async () => {
+    test.fakeAccounts.refuseDirectCreation();
+    const rowan = await test.campHq.addStaffMember(asAdmin, { name: "Rowan Birch", kind: "senior" });
+    const sage = await test.campHq.addStaffMember(asAdmin, { name: "Sage Willow", kind: "senior" });
+    await test.campHq.createAccount(asAdmin, rowan.staffMemberId, "rowan@example.com");
+    await test.campHq.createAccount(asAdmin, sage.staffMemberId, "sage@example.com");
+
+    const newAccount: CampHqActor = { type: "account", clerkUserId: "user_two_emails" };
+    const person = await test.campHq.acceptInvitation(as(newAccount), [
+      "rowan@example.com",
+      "sage@example.com",
+    ]);
+
+    expect(person).toMatchObject({ role: "senior_staff" });
+    const staff = await test.campHq.listStaff(asAdmin);
+    expect(staff.filter((entry) => entry.account?.status === "active")).toHaveLength(2);
+    expect(staff.filter((entry) => entry.account?.status === "invited")).toHaveLength(1);
+  });
+
+  it("allows sign-in again when it links an account that was switched off", async () => {
+    const rowan = await addWithAccount("Rowan Birch", "rowan@example.com");
+    await test.campHq.switchAccountOff(asAdmin, rowan.staffMemberId);
+    await test.campHq.removeStaffMember(asAdmin, rowan.staffMemberId);
+    expect(test.fakeAccounts.canSignIn(rowan.actor.clerkUserId)).toBe(false);
+
+    const { staffMemberId } = await test.campHq.addStaffMember(asAdmin, {
+      name: "Rowan Birch",
+      kind: "senior",
+    });
+    await test.campHq.createAccount(asAdmin, staffMemberId, "rowan@example.com");
+
+    expect(test.fakeAccounts.canSignIn(rowan.actor.clerkUserId)).toBe(true);
+    await expect(entryFor(staffMemberId)).resolves.toMatchObject({
+      account: { status: "active" },
+    });
+  });
+
   it("refuses a second account, an email in use and an invalid email", async () => {
     const rowan = await addWithAccount("Rowan Birch", "rowan@example.com");
     const { staffMemberId } = await test.campHq.addStaffMember(asAdmin, {

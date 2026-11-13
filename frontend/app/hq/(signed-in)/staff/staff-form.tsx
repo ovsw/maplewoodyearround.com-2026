@@ -45,10 +45,13 @@ export function StaffForm({
         {children}
       </fieldset>
       <p
-        role={state?.error ? "alert" : "status"}
-        className={cn("text-sm", state?.error ? "text-destructive" : "text-muted-foreground")}
+        role={!pending && state?.error ? "alert" : "status"}
+        className={cn(
+          "text-sm",
+          !pending && state?.error ? "text-destructive" : "text-muted-foreground",
+        )}
       >
-        {state?.error ?? state?.ok ?? ""}
+        {pending ? "Saving…" : (state?.error ?? state?.ok ?? "")}
       </p>
     </form>
   );

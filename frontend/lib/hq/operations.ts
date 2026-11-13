@@ -245,12 +245,29 @@ export function createCampHqOperations(
       if (existing) return existing;
       const emails = verifiedEmails.map((email) => email.trim().toLowerCase());
       if (emails.length === 0) return null;
-      const [linked] = await db
-        .update(staffMembers)
-        .set({ clerkUserId: actor.clerkUserId, role: "senior_staff", updatedAt: now })
-        .where(and(inArray(staffMembers.accountEmail, emails), isNull(staffMembers.clerkUserId)))
-        .returning();
-      if (!linked?.role) return null;
+      // An account can have several verified emails, each invited for a
+      // different staff member. It links to one of them only: one account, one
+      // staff member.
+      const linked = await db.transaction(async (tx) => {
+        const [invited] = await tx
+          .select({ id: staffMembers.id })
+          .from(staffMembers)
+          .where(
+            and(inArray(staffMembers.accountEmail, emails), isNull(staffMembers.clerkUserId)),
+          )
+          .orderBy(asc(staffMembers.createdAt), asc(staffMembers.id))
+          .limit(1)
+          .for("update");
+        if (!invited) return null;
+        const [row] = await tx
+          .update(staffMembers)
+          .set({ clerkUserId: actor.clerkUserId, role: "senior_staff", updatedAt: now })
+          .where(eq(staffMembers.id, invited.id))
+          .returning();
+        return row ?? null;
+      });
+      // A sign-in running at the same moment may have linked it already.
+      if (!linked?.role) return findPerson(actor);
       return {
         staffMemberId: linked.id,
         name: linked.name,
@@ -358,7 +375,7 @@ export function createCampHqOperations(
 
       const result = await service.createAccount({ email: cleaned, name: row.name });
 
-      return db.transaction(async (tx) => {
+      const linked = await db.transaction(async (tx) => {
         const current = await lockStaffMember(tx, staffMemberId);
         if (current.clerkUserId) {
           throw new CampHqRefusal("has-account", `${current.name} already has an account.`);
@@ -368,7 +385,7 @@ export function createCampHqOperations(
             .update(staffMembers)
             .set({ accountEmail: cleaned, updatedAt: now })
             .where(eq(staffMembers.id, staffMemberId));
-          return { status: "invited" as const };
+          return null;
         }
         const [linkedElsewhere] = await tx
           .select({ name: staffMembers.name })
@@ -381,18 +398,29 @@ export function createCampHqOperations(
             `The account for ${cleaned} already belongs to ${linkedElsewhere.name}.`,
           );
         }
+        // Linked switched off until sign-in is allowed: an existing account may
+        // still be blocked from an earlier switch-off. If allowing sign-in
+        // fails, the Admin sees it switched off and can switch it on.
         await tx
           .update(staffMembers)
           .set({
             accountEmail: cleaned,
             clerkUserId: result.clerkUserId,
             role: "senior_staff",
-            accountSwitchedOff: false,
+            accountSwitchedOff: true,
             updatedAt: now,
           })
           .where(eq(staffMembers.id, staffMemberId));
-        return { status: "created" as const };
+        return result.clerkUserId;
       });
+      if (!linked) return { status: "invited" };
+
+      await service.setSignInAllowed(linked, true);
+      await db
+        .update(staffMembers)
+        .set({ accountSwitchedOff: false, updatedAt: now })
+        .where(and(eq(staffMembers.id, staffMemberId), eq(staffMembers.clerkUserId, linked)));
+      return { status: "created" };
     },
 
     /** Stops a person signing in. The last Admin cannot be switched off. */
