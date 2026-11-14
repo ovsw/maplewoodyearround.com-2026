@@ -43,9 +43,13 @@ test.describe("Camp HQ with sign-in", () => {
     ).toBeVisible();
     await expect(page.getByText("Your role: Senior staff")).toBeVisible();
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    // They land on their own Assignment.
+    await expect(page.getByRole("heading", { name: "My Assignment" })).toBeVisible();
 
-    // Staff management is for Admins only.
+    // Staff management and Assignments are for Admins only.
     await page.goto("/hq/staff");
+    await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
+    await page.goto("/hq/assignments");
     await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
   });
 
@@ -59,6 +63,12 @@ test.describe("Camp HQ with sign-in", () => {
       page.getByRole("heading", { name: "Hello, Sample Admin" }),
     ).toBeVisible();
     await expect(page.getByText("Your role: Admin")).toBeVisible();
+
+    // The Admin sees every Assignment and the gaps.
+    await page.getByRole("link", { name: "Assignments" }).click();
+    await expect(page.getByRole("heading", { name: "Assignments", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Gaps" })).toBeVisible();
+    await page.goto("/hq");
 
     // The Admin adds an invented Junior staff member, then removes them.
     await page.getByRole("link", { name: "Staff and accounts" }).click();
