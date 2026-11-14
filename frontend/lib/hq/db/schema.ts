@@ -6,8 +6,11 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  date,
   foreignKey,
   index,
+  integer,
+  jsonb,
   pgEnum,
   pgTable,
   primaryKey,
@@ -210,4 +213,71 @@ export const juniorPlacements = pgTable(
     index("junior_placements_camp_group").on(table.campGroupId),
     index("junior_placements_club_day_activity").on(table.clubDayActivityId),
   ],
+);
+
+// Campers come only from CampMinder, through the "load campers" operation (see
+// lib/hq/campers.ts). Camp HQ has no way to edit them by hand.
+
+/** A child at Summer Camp, as CampMinder knows them. */
+export const campers = pgTable("campers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** The camper's id in CampMinder (or the file it came from). */
+  sourceId: text("source_id").notNull().unique(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+});
+
+/**
+ * One day of a camper's enrolment: their Camp group that day, and whether they
+ * are expected. The group is held per day, so a child can change group mid-week.
+ */
+export const camperDays = pgTable(
+  "camper_days",
+  {
+    camperId: uuid("camper_id")
+      .notNull()
+      .references(() => campers.id, { onDelete: "cascade" }),
+    /** The camp-local date. */
+    date: date("date", { mode: "string" }).notNull(),
+    campGroupId: uuid("camp_group_id")
+      .notNull()
+      .references(() => campGroups.id),
+    expected: boolean("expected").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.camperId, table.date] }),
+    index("camper_days_date_group").on(table.date, table.campGroupId),
+    index("camper_days_camp_group").on(table.campGroupId),
+  ],
+);
+
+/** A row of a camper load that could not be used, and why. */
+export type CamperLoadErrorRecord = {
+  /** The row in the file, counting the header as row 1; null when not from a row. */
+  row: number | null;
+  camperId: string | null;
+  reason: string;
+};
+
+/** One run of "load campers": where it came from, when, and what it changed. */
+export const camperLoads = pgTable(
+  "camper_loads",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Where the list came from, e.g. "File upload: campers.csv". */
+    source: text("source").notNull(),
+    loadedAt: timestamp("loaded_at", { withTimezone: true }).notNull(),
+    /** The Admin who loaded it; null for a command or a removed staff member. */
+    loadedBy: uuid("loaded_by").references(() => staffMembers.id, { onDelete: "set null" }),
+    rowCount: integer("row_count").notNull(),
+    added: integer("added").notNull(),
+    changed: integer("changed").notNull(),
+    removed: integer("removed").notNull(),
+    unchanged: integer("unchanged").notNull(),
+    /** True when campers missing from the list were kept because some rows could not be read. */
+    removalsSkipped: boolean("removals_skipped").notNull(),
+    errors: jsonb("errors").$type<CamperLoadErrorRecord[]>().notNull(),
+  },
+  (table) => [index("camper_loads_loaded_at").on(table.loadedAt)],
 );
