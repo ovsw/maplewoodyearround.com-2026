@@ -19,7 +19,14 @@ import { requireCampHqActor } from "@/lib/hq/session";
 
 import { ASSIGNMENTS_PATH } from "./assignments/paths";
 import { CAMPERS_PATH, groupCampersPath } from "./campers/paths";
-import { CLUB_DAY_MISSING_PATH, CLUB_DAY_PATH, groupClubDayPath } from "./club-day/paths";
+import {
+  CLUB_DAY_MISSING_PATH,
+  CLUB_DAY_PATH,
+  CLUB_DAY_ROSTERS_PATH,
+  MY_CLUB_DAY_ROSTERS_PATH,
+  groupClubDayPath,
+} from "./club-day/paths";
+import { FRONT_DESK_PATH } from "./front-desk/paths";
 import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 import { STAFF_PATH } from "./staff/paths";
 import {
@@ -149,6 +156,12 @@ async function CampHqHome() {
               <Link href={CLUB_DAY_MISSING_PATH}>Club day signups</Link>
             </Button>
             <Button asChild variant="outline">
+              <Link href={CLUB_DAY_ROSTERS_PATH}>Club day rosters</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href={FRONT_DESK_PATH}>Find a child</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href={CAMPERS_PATH}>Camper list</Link>
             </Button>
             <Button asChild variant="outline">
@@ -197,9 +210,14 @@ function MyAssignmentCard({ assignment, isAdmin }: { assignment: MyAssignment; i
             You are the specialist for{" "}
             <strong>{listNames(assignment.activities.map((activity) => activity.name))}</strong>.
           </p>
-          <Button asChild className="self-start">
-            <Link href={MY_ACTIVITIES_PATH}>Who comes to me today</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={MY_ACTIVITIES_PATH}>Who comes to me today</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href={MY_CLUB_DAY_ROSTERS_PATH}>My Club day rosters</Link>
+            </Button>
+          </div>
         </>
       );
       break;
