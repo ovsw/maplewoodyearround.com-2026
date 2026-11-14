@@ -3,6 +3,15 @@
 // Any signed-in person can read the lists; only Admins can change them.
 import { and, asc, eq, ne, sql } from "drizzle-orm";
 
+import {
+  loadActivityUses,
+  loadGroupClubDayPeriods,
+  loadSpecialists,
+  loadTeamOptions,
+  lockClashRules,
+  optionUse,
+  refuseUseClashes,
+} from "./clash-rules.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { activities, campGroups } from "./db/schema.ts";
 import { isCampHqGrade, sortGrades, type CampHqGrade } from "./grades.ts";
@@ -203,6 +212,29 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
     }
   }
 
+  /**
+   * Refuses moving a Camp group to `team` when that Team's Club day options,
+   * used during the group's Club day periods, break the clash rules.
+   */
+  async function refuseTeamOptionClashes(tx: CampHqDb, groupId: string, team: number | null) {
+    if (team === null) return;
+    const periods = await loadGroupClubDayPeriods(tx, groupId);
+    const proposed = [];
+    for (const period of periods) {
+      for (const option of await loadTeamOptions(tx, team, period.weekday)) {
+        proposed.push(optionUse(option, period));
+      }
+    }
+    if (proposed.length === 0) return;
+    const uses = await loadActivityUses(tx);
+    refuseUseClashes({
+      proposed,
+      // The group's option uses under its old Team go away.
+      existing: uses.filter((use) => !(use.option && use.campGroupId === groupId)),
+      specialistOf: await loadSpecialists(tx),
+    });
+  }
+
   /** Removes a record after checking every place it may be used. */
   async function removeUnlessUsed(
     checks: CampHqUsageCheck[],
@@ -299,11 +331,25 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
       };
       await refuseTakenName(campGroups, name, "a Camp group", id);
       const [row] = await writeNamed(name, "a Camp group", () =>
-        db
-          .update(campGroups)
-          .set({ ...values, updatedAt: now })
-          .where(eq(campGroups.id, id))
-          .returning(),
+        db.transaction(async (transaction) => {
+          const tx = transaction as unknown as CampHqDb;
+          await lockClashRules(tx);
+          const [current] = await tx
+            .select({ team: campGroups.team })
+            .from(campGroups)
+            .where(eq(campGroups.id, id))
+            .for("update");
+          if (!current) notFound("Camp group");
+          if (current.team !== team) {
+            // The group's Club day periods take the new Team's options.
+            await refuseTeamOptionClashes(tx, id, team);
+          }
+          return tx
+            .update(campGroups)
+            .set({ ...values, updatedAt: now })
+            .where(eq(campGroups.id, id))
+            .returning();
+        }),
       );
       if (!row) notFound("Camp group");
       return toCampGroup(row);
@@ -372,23 +418,46 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
         kind: input.kind === undefined ? existing.kind : cleanKind(input.kind),
         clubOnly: input.clubOnly === undefined ? existing.clubOnly : input.clubOnly === true,
       };
-      if (values.clubOnly && !existing.clubOnly) {
-        const booked = await activityOnGroupSchedules(db, id);
-        if (booked.length > 0) {
-          throw new CampHqRefusal(
-            "in-use",
-            `${existing.name} is booked on Group schedules, so it cannot be made Club day only. Remove those bookings first.`,
-            booked,
-          );
-        }
-      }
       await refuseTakenName(activities, name, "an activity", id);
       const [row] = await writeNamed(name, "an activity", () =>
-        db
-          .update(activities)
-          .set({ ...values, updatedAt: now })
-          .where(eq(activities.id, id))
-          .returning(),
+        // Under the clash lock, so no booking or option can slip in between the
+        // checks below and the write.
+        db.transaction(async (transaction) => {
+          const tx = transaction as unknown as CampHqDb;
+          await lockClashRules(tx);
+          const [current] = await tx
+            .select()
+            .from(activities)
+            .where(eq(activities.id, id))
+            .for("update");
+          if (!current) notFound("activity");
+          if (values.clubOnly && !current.clubOnly) {
+            const booked = await activityOnGroupSchedules(tx, id);
+            if (booked.length > 0) {
+              throw new CampHqRefusal(
+                "in-use",
+                `${current.name} is booked on Group schedules, so it cannot be made Club day only. Remove those bookings first.`,
+                booked,
+              );
+            }
+          }
+          if (values.kind === "exclusive" && current.kind !== "exclusive") {
+            // Shared uses were never checked: check them all as Exclusive now.
+            const uses = await loadActivityUses(tx);
+            refuseUseClashes({
+              proposed: uses
+                .filter((use) => use.activityId === id)
+                .map((use) => ({ ...use, exclusive: true })),
+              existing: uses.filter((use) => use.activityId !== id),
+              specialistOf: await loadSpecialists(tx),
+            });
+          }
+          return tx
+            .update(activities)
+            .set({ ...values, updatedAt: now })
+            .where(eq(activities.id, id))
+            .returning();
+        }),
       );
       if (!row) notFound("activity");
       return toActivity(row);

@@ -381,6 +381,37 @@ describe("the provisional Club day overlap rule", () => {
 
     expect(refused.other).toMatchObject({ name: "Herons" });
   });
+
+  it("refuses moving a Camp group to a Team whose option clashes with a booking", async () => {
+    const setup = await start();
+    const { campHq, admin, otters, falcons, archery } = setup;
+    await makeClubDay(setup, otters.id, MONDAY, "10:00");
+    await addOption(setup, 4, MONDAY, archery.id);
+    await book(setup, falcons.id, MONDAY, "10:00", archery.id);
+    const values = { name: "Otters", grades: ["grade_3"] };
+
+    const refused = await refusal(campHq.updateCampGroup(admin, otters.id, { ...values, team: 4 }));
+
+    expect(refused.reason).toBe("club-day-clash");
+    expect(refused.other).toMatchObject({ name: "Falcons" });
+    expect((await campHq.getCampGroup(admin, otters.id)).team).toBe(2);
+    await campHq.updateCampGroup(admin, otters.id, { ...values, team: 3 });
+  });
+
+  it("refuses making a Shared activity Exclusive while it is booked during its own option", async () => {
+    const setup = await start();
+    const { campHq, admin, otters, falcons, crafts } = setup;
+    await makeClubDay(setup, otters.id, MONDAY, "10:00");
+    await addOption(setup, 2, MONDAY, crafts.id);
+    await book(setup, falcons.id, MONDAY, "10:00", crafts.id);
+
+    const refused = await refusal(
+      campHq.updateActivity(admin, crafts.id, { name: "Crafts", grades: crafts.grades, kind: "exclusive" }),
+    );
+
+    expect(refused.reason).toBe("club-day-clash");
+    expect((await campHq.getActivity(admin, crafts.id)).kind).toBe("shared");
+  });
 });
 
 describe("one specialist in one place at a time", () => {
@@ -487,5 +518,20 @@ describe("one specialist in one place at a time", () => {
       replacing: setup.specialist.staffMemberId,
     });
     await book(setup, herons.id, MONDAY, "10:00", setup.climbing.id);
+  });
+
+  it("refuses making a Shared activity Exclusive when it puts the specialist in two places", async () => {
+    const setup = await withSpecialist();
+    const { campHq, admin, otters, falcons, archery, crafts } = setup;
+    await campHq.setActivitySpecialist(admin, crafts.id, setup.specialist.staffMemberId);
+    await book(setup, otters.id, MONDAY, "10:00", archery.id);
+    await book(setup, falcons.id, MONDAY, "10:00", crafts.id);
+
+    const refused = await refusal(
+      campHq.updateActivity(admin, crafts.id, { name: "Crafts", grades: crafts.grades, kind: "exclusive" }),
+    );
+
+    expect(refused.reason).toBe("specialist-clash");
+    expect(refused.other).toMatchObject({ kind: "specialist", name: "Sasha Reed" });
   });
 });

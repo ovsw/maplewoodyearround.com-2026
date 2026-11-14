@@ -177,6 +177,23 @@ export async function loadClubDayPeriods(
     .orderBy(asc(scheduleSlots.startMinute), asc(sql`lower(${campGroups.name})`));
 }
 
+/** Every Club day period of one Camp group, on all weekdays. */
+export async function loadGroupClubDayPeriods(tx: CampHqDb, campGroupId: string): Promise<SlotRef[]> {
+  return tx
+    .select({
+      slotId: scheduleSlots.id,
+      weekday: scheduleSlots.weekday,
+      start: scheduleSlots.startMinute,
+      end: scheduleSlots.endMinute,
+      campGroupId: campGroups.id,
+      campGroupName: campGroups.name,
+    })
+    .from(scheduleSlots)
+    .innerJoin(campGroups, eq(campGroups.id, scheduleSlots.campGroupId))
+    .where(and(eq(scheduleSlots.campGroupId, campGroupId), eq(scheduleSlots.isClubDay, true)))
+    .orderBy(asc(scheduleSlots.weekday), asc(scheduleSlots.startMinute));
+}
+
 /** The Club day options of a Team on a weekday. */
 export async function loadTeamOptions(
   tx: CampHqDb,

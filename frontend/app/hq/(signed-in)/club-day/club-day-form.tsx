@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { startTransition, useActionState, useEffect, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -25,11 +25,25 @@ export function ClubDayForm({
     clubDayAction,
     null,
   );
+  const formRef = useRef<HTMLFormElement>(null);
   const failed = !pending && Boolean(state?.error);
   const message = pending ? "Saving…" : (state?.error ?? state?.ok ?? "");
 
+  // React clears a form after its action, even after a refusal. Submitting by
+  // hand keeps what the Admin typed, so a refusal can be corrected; the form is
+  // cleared only after a save, as before.
+  useEffect(() => {
+    if (state?.ok) formRef.current?.reset();
+  }, [state]);
+
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    startTransition(() => formAction(data));
+  }
+
   return (
-    <form action={formAction} className="flex flex-col gap-2">
+    <form ref={formRef} action={formAction} onSubmit={submit} className="flex flex-col gap-2">
       <input type="hidden" name="intent" value={intent} />
       {Object.entries(hidden).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
