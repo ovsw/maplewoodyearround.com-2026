@@ -22,6 +22,13 @@
       "when": 1794613199206,
       "tag": "0002_camp_hq_staff_accounts",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794614237733,
+      "tag": "0003_camp_hq_assignments",
+      "breakpoints": true
     }
   ]
 }

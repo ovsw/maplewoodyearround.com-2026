@@ -7,6 +7,7 @@ import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
 import type { CampHqAccounts } from "./accounts.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
+import { createAssignmentOperations } from "./assignments.ts";
 import { createListOperations } from "./lists.ts";
 import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
 
@@ -45,7 +46,9 @@ export type CampHqRefusalReason =
   | "last-admin"
   | "accounts-unavailable"
   | "name-taken"
-  | "in-use";
+  | "in-use"
+  | "two-jobs"
+  | "confirm-replace";
 
 /**
  * Thrown when Camp HQ refuses an operation. `reason` says why; `usedIn` lists
@@ -243,6 +246,7 @@ export function createCampHqOperations(
 
   return {
     ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
+    ...createAssignmentOperations({ db, requirePerson, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {

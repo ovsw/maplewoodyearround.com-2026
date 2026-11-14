@@ -6,6 +6,7 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  index,
   pgEnum,
   pgTable,
   smallint,
@@ -99,4 +100,55 @@ export const activities = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
   },
   (table) => [uniqueIndex("activities_name_unique").on(sql`lower(${table.name})`)],
+);
+
+// Assignments: who works where now. A Camp group or an activity that is still
+// in an Assignment cannot be removed (see lib/hq/usage.ts); removing a staff
+// member removes their Assignment.
+
+/** The leader of a Camp group: one per group, one group per leader. */
+export const groupLeaders = pgTable("group_leaders", {
+  campGroupId: uuid("camp_group_id")
+    .primaryKey()
+    .references(() => campGroups.id),
+  staffMemberId: uuid("staff_member_id")
+    .notNull()
+    .unique()
+    .references(() => staffMembers.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+});
+
+/** The specialist who runs an activity: one per activity; one person can run several. */
+export const activitySpecialists = pgTable(
+  "activity_specialists",
+  {
+    activityId: uuid("activity_id")
+      .primaryKey()
+      .references(() => activities.id),
+    staffMemberId: uuid("staff_member_id")
+      .notNull()
+      .references(() => staffMembers.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [index("activity_specialists_staff_member").on(table.staffMemberId)],
+);
+
+/** The Camp group a Junior staff member helps, and their optional Club day activity. */
+export const juniorPlacements = pgTable(
+  "junior_placements",
+  {
+    staffMemberId: uuid("staff_member_id")
+      .primaryKey()
+      .references(() => staffMembers.id, { onDelete: "cascade" }),
+    campGroupId: uuid("camp_group_id")
+      .notNull()
+      .references(() => campGroups.id),
+    clubDayActivityId: uuid("club_day_activity_id").references(() => activities.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    index("junior_placements_camp_group").on(table.campGroupId),
+    index("junior_placements_club_day_activity").on(table.clubDayActivityId),
+  ],
 );
