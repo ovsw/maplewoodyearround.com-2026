@@ -323,6 +323,35 @@ export const clubDayOptions = pgTable(
 );
 
 /**
+ * A camper's Club day choice for one period of one day. `period` counts the
+ * Club day periods of the camper's Camp group that day, in time order, from 1.
+ * Capacity is counted per option, per period, per date.
+ */
+export const clubDayPicks = pgTable(
+  "club_day_picks",
+  {
+    camperId: uuid("camper_id")
+      .notNull()
+      .references(() => campers.id, { onDelete: "cascade" }),
+    /** The camp-local date. */
+    date: date("date", { mode: "string" }).notNull(),
+    period: smallint("period").notNull(),
+    optionId: uuid("option_id")
+      .notNull()
+      .references(() => clubDayOptions.id, { onDelete: "restrict" }),
+    /** The staff member who entered the pick last; null after they are removed. */
+    enteredBy: uuid("entered_by").references(() => staffMembers.id, { onDelete: "set null" }),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.camperId, table.date, table.period] }),
+    index("club_day_picks_option_date").on(table.optionId, table.date, table.period),
+    index("club_day_picks_date").on(table.date),
+    check("club_day_picks_period", sql`${table.period} >= 1`),
+  ],
+);
+
+/**
  * Camp HQ's Club day settings: one row, id 1. Times are minutes after midnight
  * in camp local time. With no row, the defaults in lib/hq/club-day.ts apply.
  */

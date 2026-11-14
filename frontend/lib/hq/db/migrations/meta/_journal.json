@@ -50,6 +50,13 @@
       "when": 1794624568782,
       "tag": "0006_camp_hq_campers",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794625151726,
+      "tag": "0007_camp_hq_club_day_picks",
+      "breakpoints": true
     }
   ]
 }

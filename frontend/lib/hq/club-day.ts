@@ -17,7 +17,7 @@ import {
   refuseUseClashes,
 } from "./clash-rules.ts";
 import type { CampHqDb } from "./db/database.ts";
-import { activities, clubDayOptions, clubDaySettings } from "./db/schema.ts";
+import { activities, clubDayOptions, clubDayPicks, clubDaySettings } from "./db/schema.ts";
 import { CAMP_HQ_TEAMS, type Activity } from "./lists.ts";
 import { CampHqRefusal, type CampHqActor, type CampHqRequest } from "./operations.ts";
 import {
@@ -156,18 +156,21 @@ function toActivity(row: ActivityRow): Activity {
   };
 }
 
+/** When signups open and lock: the saved settings, or the defaults. */
+export async function readClubDaySettings(tx: CampHqDb): Promise<ClubDaySettings> {
+  const [row] = await tx.select().from(clubDaySettings).where(eq(clubDaySettings.id, 1)).limit(1);
+  return row
+    ? { signupOpen: row.signupOpenMinute, signupLock: row.signupLockMinute }
+    : { signupOpen: DEFAULT_SIGNUP_OPEN, signupLock: DEFAULT_SIGNUP_LOCK };
+}
+
 export function createClubDayOperations({ db, requirePerson, requireAdmin }: ClubDayDeps) {
   async function requireReader(actor: CampHqActor) {
     if (actor.type === "command-line") return;
     await requirePerson(actor);
   }
 
-  async function readSettings(tx: CampHqDb): Promise<ClubDaySettings> {
-    const [row] = await tx.select().from(clubDaySettings).where(eq(clubDaySettings.id, 1)).limit(1);
-    return row
-      ? { signupOpen: row.signupOpenMinute, signupLock: row.signupLockMinute }
-      : { signupOpen: DEFAULT_SIGNUP_OPEN, signupLock: DEFAULT_SIGNUP_LOCK };
-  }
+  const readSettings = readClubDaySettings;
 
   async function findOption(tx: CampHqDb, id: string) {
     if (typeof id !== "string" || !UUID.test(id)) return undefined;
@@ -297,12 +300,32 @@ export function createClubDayOperations({ db, requirePerson, requireAdmin }: Clu
       return toOption(row, found.activity);
     },
 
-    /** Removes a Club day option. */
+    /** Removes a Club day option. Refused while a child has it as a pick. */
     async removeClubDayOption({ actor }: CampHqRequest, optionId: string): Promise<void> {
       await requireAdmin(actor);
       const found = await findOption(db, optionId);
       if (!found) notFound("Club day option");
-      await db.delete(clubDayOptions).where(eq(clubDayOptions.id, found.option.id));
+      await db.transaction(async (transaction) => {
+        const tx = transaction as unknown as CampHqDb;
+        // Locking the option keeps a pick from being added while it is removed.
+        await tx
+          .select({ id: clubDayOptions.id })
+          .from(clubDayOptions)
+          .where(eq(clubDayOptions.id, found.option.id))
+          .for("update");
+        const [picked] = await tx
+          .select({ count: sql<number>`count(*)::int` })
+          .from(clubDayPicks)
+          .where(eq(clubDayPicks.optionId, found.option.id));
+        if (picked && picked.count > 0) {
+          throw new CampHqRefusal(
+            "in-use",
+            `${found.activity.name} cannot be removed: ${picked.count === 1 ? "1 child has" : `${picked.count} children have`} it as a Club day pick.`,
+            ["Club day picks"],
+          );
+        }
+        await tx.delete(clubDayOptions).where(eq(clubDayOptions.id, found.option.id));
+      });
     },
 
     /** Sets when Club day signups open and lock each day, camp local time. */

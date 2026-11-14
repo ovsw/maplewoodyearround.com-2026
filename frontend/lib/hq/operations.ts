@@ -10,6 +10,7 @@ import { staffMembers } from "./db/schema.ts";
 import { createAssignmentOperations } from "./assignments.ts";
 import { createCamperOperations } from "./campers.ts";
 import { createClubDayOperations } from "./club-day.ts";
+import { createClubDaySignupOperations } from "./club-day-signups.ts";
 import { createListOperations } from "./lists.ts";
 import { createScheduleViewOperations } from "./schedule-views.ts";
 import { createScheduleOperations } from "./schedules.ts";
@@ -60,7 +61,13 @@ export type CampHqRefusalReason =
   | "specialist-clash"
   | "club-day-only"
   | "option-exists"
-  | "not-your-group";
+  | "not-your-group"
+  | "signups-not-open"
+  | "signups-locked"
+  | "not-today"
+  | "not-expected"
+  | "option-full"
+  | "group-limit";
 
 /**
  * The other side of a refused change: the Camp group that has the booking or
@@ -283,6 +290,7 @@ export function createCampHqOperations(
     ...createClubDayOperations({ db, requirePerson, requireAdmin }),
     ...createScheduleViewOperations({ db, requirePerson }),
     ...createCamperOperations({ db, requirePerson, requireAdmin }),
+    ...createClubDaySignupOperations({ db, requirePerson, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {
