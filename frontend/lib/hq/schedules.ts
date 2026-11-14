@@ -115,7 +115,7 @@ function describeDay(weekday: number) {
   return weekdayLabels[weekday as ScheduleWeekday];
 }
 
-function toSlot(row: SlotRow, activity: ActivityRow | null): ScheduleSlot {
+export function toSlot(row: SlotRow, activity: ActivityRow | null): ScheduleSlot {
   const content: ScheduleSlotContent = row.isClubDay
     ? { type: "club-day" }
     : activity

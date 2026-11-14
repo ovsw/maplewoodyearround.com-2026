@@ -117,7 +117,7 @@ function postgresErrorCode(error: unknown): string | undefined {
 const UNIQUE_VIOLATION = "23505";
 const FOREIGN_KEY_VIOLATION = "23503";
 
-function toCampGroup(row: typeof campGroups.$inferSelect): CampGroup {
+export function toCampGroup(row: typeof campGroups.$inferSelect): CampGroup {
   return {
     id: row.id,
     name: row.name,
