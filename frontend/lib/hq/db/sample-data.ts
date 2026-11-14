@@ -8,7 +8,7 @@ import type { PgTable } from "drizzle-orm/pg-core";
 
 import { addDays, campDate, weekStart } from "../camp-dates.ts";
 import type { CamperLoadRow } from "../campers.ts";
-import { createCampHqOperations } from "../operations.ts";
+import { CampHqRefusal, createCampHqOperations } from "../operations.ts";
 import type { CampHqDb } from "./database.ts";
 import {
   activities,
@@ -205,18 +205,27 @@ async function loadSampleClubDay(db: CampHqDb, now: Date) {
   const activityId = (name: string) => activityRows.find((row) => row.name === name)?.id;
 
   if ((await countOf(db, clubDayOptions)) === 0) {
-    for (const weekday of [1, 2, 3, 4, 5]) {
-      for (const option of sampleClubDayOptions) {
-        const id = activityId(option.activity);
-        if (!id) continue;
-        await campHq.addClubDayOption(request, {
-          team: group.team,
-          weekday,
-          activityId: id,
-          maxPerPeriod: option.maxPerPeriod,
-        });
+    // All or nothing, so a failed start leaves the table empty for the next try.
+    await db.transaction(async (transaction) => {
+      const inTransaction = createCampHqOperations(transaction as unknown as CampHqDb);
+      for (const weekday of [1, 2, 3, 4, 5]) {
+        for (const option of sampleClubDayOptions) {
+          const id = activityId(option.activity);
+          if (!id) continue;
+          try {
+            await inTransaction.addClubDayOption(request, {
+              team: group.team,
+              weekday,
+              activityId: id,
+              maxPerPeriod: option.maxPerPeriod,
+            });
+          } catch (error) {
+            // An option that clashes with an Admin's own setup is left out.
+            if (!(error instanceof CampHqRefusal)) throw error;
+          }
+        }
       }
-    }
+    });
   }
 
   const [leader] = await db

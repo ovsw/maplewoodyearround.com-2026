@@ -51,6 +51,7 @@ export default defineConfig({
     url: baseURL,
     env: {
       PORT: String(port),
+      CAMP_HQ_DATABASE: "local",
       CAMP_HQ_PGLITE_DIR: process.env.CAMP_HQ_PGLITE_DIR ?? "",
       CAMP_HQ_TEST_CLOCK_FILE: process.env.CAMP_HQ_TEST_CLOCK_FILE ?? "",
     },

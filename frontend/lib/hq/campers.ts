@@ -470,7 +470,8 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
      * Clears a past summer's camper data on purpose: every camper day and Club
      * day pick before `before`, the campers left with no day, and the records
      * of loads made before it (they can name children). The newest load record
-     * stays while any camper does, so lists still say when they were loaded.
+     * stays while any camper does, so lists still say when they were loaded;
+     * when it is older than `before`, its row details are cleared.
      * Admins only, after typing the confirmation word. `before` cannot be
      * later than today.
      */
@@ -519,7 +520,14 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
           for (const row of rows) stillHere.add(row.camperId);
         }
         const gone = touched.filter((id) => !stillHere.has(id));
+        // Picks of removed campers on later days go with them (cascade).
+        let cascadedPicks = 0;
         for (const ids of chunks(gone)) {
+          const [{ count }] = await tx
+            .select({ count: sql<number>`count(*)::int` })
+            .from(clubDayPicks)
+            .where(inArray(clubDayPicks.camperId, ids));
+          cascadedPicks += count;
           await tx.delete(campers).where(inArray(campers.id, ids));
         }
 
@@ -530,19 +538,24 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
           .select({ id: camperLoads.id, loadedAt: camperLoads.loadedAt })
           .from(camperLoads)
           .orderBy(desc(camperLoads.loadedAt), desc(camperLoads.id));
+        const isOld = (load: { loadedAt: Date }) => campDate(load.loadedAt) < before;
+        const retained = remaining > 0 ? loads[0] : undefined;
         const oldLoads = loads
-          .filter((load, index) => !(remaining > 0 && index === 0))
-          .filter((load) => campDate(load.loadedAt) < before)
+          .filter((load) => load !== retained && isOld(load))
           .map((load) => load.id);
         for (const ids of chunks(oldLoads)) {
           await tx.delete(camperLoads).where(inArray(camperLoads.id, ids));
+        }
+        if (retained && isOld(retained)) {
+          // Kept only for its time: its row details can name children.
+          await tx.update(camperLoads).set({ errors: [] }).where(eq(camperLoads.id, retained.id));
         }
 
         return {
           before,
           campers: gone.length,
           camperDays: days.length,
-          clubDayPicks: picks.length,
+          clubDayPicks: picks.length + cascadedPicks,
           camperLoads: oldLoads.length,
         };
       });

@@ -119,6 +119,35 @@ describe("clearing a past summer", () => {
     expect(await test.campHq.listCamperLoads(later)).toEqual([]);
   });
 
+  it("counts the later picks of a cleared camper", async () => {
+    const [option] = (await test.db.select().from(clubDayPicks)).map((pick) => pick.optionId);
+    await test.db.insert(clubDayPicks).values({
+      camperId: await camperIdOf("Pat"),
+      date: "2027-07-06",
+      period: 1,
+      optionId: option,
+      updatedAt: TEST_NOW,
+    });
+    const cleared = await test.campHq.clearCamperDataBefore(asAdmin, {
+      before: "2027-01-01",
+      confirmation: "CLEAR",
+    });
+    expect(cleared).toMatchObject({ campers: 1, clubDayPicks: 2 });
+    expect(await test.db.select().from(clubDayPicks)).toHaveLength(1);
+  });
+
+  it("clears the row details of the load record it keeps, when that load is older", async () => {
+    await test.campHq.loadCampers(as(admin, new Date("2027-07-05T15:00:00.000Z")), {
+      source: "2027 list, fixed",
+      rows,
+      errors: [{ row: 9, camperId: "S-9", reason: 'This row names the camper "Kim Example".' }],
+    });
+    await test.campHq.clearCamperDataBefore(asAdmin, { before: "2027-07-06", confirmation: "CLEAR" });
+    const loads = await test.campHq.listCamperLoads(asAdmin);
+    expect(loads).toHaveLength(1);
+    expect(loads[0]).toMatchObject({ source: "2027 list, fixed", errors: [], campersKept: 0 });
+  });
+
   it("refuses without the typed confirmation, and clears nothing", async () => {
     for (const confirmation of ["", "clear please", "yes"]) {
       await expect(
