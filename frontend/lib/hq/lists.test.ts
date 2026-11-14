@@ -189,7 +189,13 @@ describe("activities", () => {
         grades: ["grade_6"],
         kind: "shared",
       }),
-    ).resolves.toEqual({ id: activity.id, name: "Canoeing", grades: ["grade_6"], kind: "shared" });
+    ).resolves.toEqual({
+      id: activity.id,
+      name: "Canoeing",
+      grades: ["grade_6"],
+      kind: "shared",
+      clubOnly: false,
+    });
   });
 
   it("lets an Admin remove an activity that is not used anywhere", async () => {

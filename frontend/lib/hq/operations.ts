@@ -8,6 +8,7 @@ import type { CampHqAccounts } from "./accounts.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
 import { createAssignmentOperations } from "./assignments.ts";
+import { createClubDayOperations } from "./club-day.ts";
 import { createListOperations } from "./lists.ts";
 import { createScheduleOperations } from "./schedules.ts";
 import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
@@ -52,10 +53,19 @@ export type CampHqRefusalReason =
   | "confirm-replace"
   | "clash"
   | "grade-not-allowed"
-  | "slot-overlap";
+  | "slot-overlap"
+  | "club-day-clash"
+  | "specialist-clash"
+  | "club-day-only"
+  | "option-exists";
 
-/** The other side of a refused booking, such as the Camp group that has it. */
-export type CampHqOtherParty = { kind: "camp-group"; id: string; name: string };
+/**
+ * The other side of a refused change: the Camp group that has the booking or
+ * the Club day period, or the specialist who would be needed in two places.
+ */
+export type CampHqOtherParty =
+  | { kind: "camp-group"; id: string; name: string }
+  | { kind: "specialist"; id: string; name: string };
 
 /**
  * Thrown when Camp HQ refuses an operation. `reason` says why; `usedIn` lists
@@ -267,6 +277,7 @@ export function createCampHqOperations(
     ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
     ...createAssignmentOperations({ db, requirePerson, requireAdmin }),
     ...createScheduleOperations({ db, requirePerson, requireAdmin }),
+    ...createClubDayOperations({ db, requirePerson, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {

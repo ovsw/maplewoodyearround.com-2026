@@ -312,6 +312,7 @@ describe("gaps", () => {
     expect(gaps).toEqual({
       campGroupsWithoutLeader: [{ id: otters, name: "Otters" }],
       activitiesWithoutSpecialist: [{ id: archery, name: "Archery" }],
+      clubDayOptionsWithoutSpecialist: [],
     });
     expect(candidates).toEqual([
       { id: admin.staffMemberId, name: "Avery Pine", job: null },

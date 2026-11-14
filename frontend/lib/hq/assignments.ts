@@ -4,15 +4,24 @@
 // A Senior staff member leads one Camp group or runs one or more activities as
 // the specialist. A Junior staff member helps one Camp group and may have a
 // Club day activity. Nobody has two jobs at once, and only a person with an
-// active account can lead or be a specialist. Only Admins change Assignments;
-// anyone signed in can see their own.
+// active account can lead or be a specialist. A specialist cannot be given an
+// activity that is in use while one of their other activities is (see
+// clash-rules.ts). Only Admins change Assignments; anyone signed in can see
+// their own.
 import { asc, eq, sql } from "drizzle-orm";
 
+import {
+  loadActivityUses,
+  loadSpecialists,
+  lockClashRules,
+  refuseUseClashes,
+} from "./clash-rules.ts";
 import type { CampHqDb } from "./db/database.ts";
 import {
   activities,
   activitySpecialists,
   campGroups,
+  clubDayOptions,
   groupLeaders,
   juniorPlacements,
   staffMembers,
@@ -23,6 +32,7 @@ import {
   type CampHqPerson,
   type CampHqRequest,
 } from "./operations.ts";
+import { weekdayLabels, type ScheduleWeekday } from "./schedule-times.ts";
 
 export type NamedRef = { id: string; name: string };
 
@@ -50,6 +60,8 @@ export type AssignmentBoard = {
   gaps: {
     campGroupsWithoutLeader: NamedRef[];
     activitiesWithoutSpecialist: NamedRef[];
+    /** Club day options whose activity has no specialist; `name` says which Team and day. */
+    clubDayOptionsWithoutSpecialist: NamedRef[];
   };
 };
 
@@ -225,6 +237,7 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
     ): Promise<void> {
       await requireAdmin(actor);
       await db.transaction(async (tx) => {
+        await lockClashRules(tx as unknown as CampHqDb);
         const person = staffMemberId === null ? null : await lockStaff(tx, staffMemberId);
         const activity = await lockActivity(tx, activityId);
         if (person === null) {
@@ -243,6 +256,16 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
         if (jobs.helps) {
           twoJobs(`${person.name} helps ${jobs.helps.name} as Junior staff. Clear that Assignment first.`);
         }
+
+        // The person cannot run this activity while another of theirs is in use.
+        const uses = await loadActivityUses(tx as unknown as CampHqDb);
+        const specialistOf = await loadSpecialists(tx as unknown as CampHqDb);
+        specialistOf.set(activity.id, { id: person.id, name: person.name });
+        refuseUseClashes({
+          proposed: uses.filter((use) => use.activityId === activity.id),
+          existing: uses.filter((use) => use.activityId !== activity.id),
+          specialistOf,
+        });
 
         const [current] = await tx
           .select({ id: staffMembers.id, name: staffMembers.name })
@@ -357,13 +380,28 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
     /** Every Assignment, the people who can be given one, and the gaps. Admins only. */
     async getAssignmentBoard({ actor }: CampHqRequest): Promise<AssignmentBoard> {
       await requireAdmin(actor);
-      const [staff, groups, acts, leaders, specialists, placements] = await Promise.all([
+      const [staff, groups, acts, leaders, specialists, placements, options] = await Promise.all([
         db.select().from(staffMembers).orderBy(asc(sql`lower(${staffMembers.name})`)),
         db.select().from(campGroups).orderBy(asc(sql`lower(${campGroups.name})`)),
         db.select().from(activities).orderBy(asc(sql`lower(${activities.name})`)),
         db.select().from(groupLeaders),
         db.select().from(activitySpecialists),
         db.select().from(juniorPlacements),
+        db
+          .select({
+            id: clubDayOptions.id,
+            team: clubDayOptions.team,
+            weekday: clubDayOptions.weekday,
+            activityId: clubDayOptions.activityId,
+            activityName: activities.name,
+          })
+          .from(clubDayOptions)
+          .innerJoin(activities, eq(activities.id, clubDayOptions.activityId))
+          .orderBy(
+            asc(clubDayOptions.team),
+            asc(clubDayOptions.weekday),
+            asc(sql`lower(${activities.name})`),
+          ),
       ]);
       const staffById = new Map(staff.map((row) => [row.id, row]));
       const ref = (id: string): NamedRef => ({ id, name: staffById.get(id)?.name ?? "" });
@@ -433,6 +471,12 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
           activitiesWithoutSpecialist: boardActivities
             .filter((act) => !act.specialist)
             .map(({ id, name }) => ({ id, name })),
+          clubDayOptionsWithoutSpecialist: options
+            .filter((option) => !specialistOf.has(option.activityId))
+            .map((option) => ({
+              id: option.id,
+              name: `${option.activityName} (Team ${option.team} ${weekdayLabels[option.weekday as ScheduleWeekday]})`,
+            })),
         },
       };
     },

@@ -97,8 +97,14 @@ export async function saveActivity(
     name: text(formData, "name"),
     grades: texts(formData, "grades"),
     kind: text(formData, "kind"),
+    clubOnly: text(formData, "clubOnly"),
   };
-  const input = { name: values.name, grades: values.grades, kind: values.kind || undefined };
+  const input = {
+    name: values.name,
+    grades: values.grades,
+    kind: values.kind || undefined,
+    clubOnly: values.clubOnly === "1",
+  };
   const refused = await run((campHq, request) =>
     id ? campHq.updateActivity(request, id, input) : campHq.addActivity(request, input),
   );
