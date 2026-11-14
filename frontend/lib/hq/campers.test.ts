@@ -313,7 +313,13 @@ describe("who can do what", () => {
 
   it("offers no way to edit campers by hand", () => {
     const camperOperations = Object.keys(test.campHq).filter((name) => /camper/i.test(name));
-    expect(camperOperations.sort()).toEqual(["getGroupCamperList", "listCamperLoads", "loadCampers"]);
+    // Clearing a past summer (#153) only removes days before a date; it never edits a camper.
+    expect(camperOperations.sort()).toEqual([
+      "clearCamperDataBefore",
+      "getGroupCamperList",
+      "listCamperLoads",
+      "loadCampers",
+    ]);
   });
 
   it("refuses to remove a Camp group the camper list still uses", async () => {
