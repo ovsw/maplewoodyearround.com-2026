@@ -459,7 +459,7 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
             .select()
             .from(activities)
             .where(eq(activities.id, activityId))
-            .limit(1);
+            .for("update");
           if (!found) notFound("activity");
           const missing = gradesNotAllowed(group, found);
           if (missing.length > 0) {

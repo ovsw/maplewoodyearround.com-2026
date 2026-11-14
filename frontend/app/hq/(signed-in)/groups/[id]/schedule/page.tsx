@@ -153,6 +153,7 @@ async function GroupSchedule({
         <>
           <h2 className="text-title">Add a slot on {weekdayLabels[weekday]}</h2>
           <AddSlotForm
+            key={`${schedule.group.id}:${weekday}`}
             groupId={schedule.group.id}
             weekday={weekday}
             start={slotTimeValue(nextStart)}
