@@ -7,6 +7,7 @@ import {
   CampHqDatabaseUnavailable,
   getCampHqOperations,
 } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import { getCampHqClerkKeys } from "@/lib/hq/config";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
@@ -35,7 +36,7 @@ async function loadBoard(): Promise<AssignmentsState> {
   const actor = await requireCampHqActor();
   try {
     const campHq = await getCampHqOperations();
-    return { kind: "board", board: await campHq.getAssignmentBoard({ actor, now: new Date() }) };
+    return { kind: "board", board: await campHq.getAssignmentBoard({ actor, now: campHqNow() }) };
   } catch (error) {
     if (isCampHqRefusal(error)) return { kind: "refused", message: error.message };
     if (error instanceof CampHqDatabaseUnavailable) return { kind: "no-database" };

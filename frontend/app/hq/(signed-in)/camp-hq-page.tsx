@@ -4,6 +4,7 @@ import {
   CampHqDatabaseUnavailable,
   getCampHqOperations,
 } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import { getCampHqClerkKeys } from "@/lib/hq/config";
 import {
   isCampHqRefusal,
@@ -31,7 +32,7 @@ export async function loadCampHqPage(): Promise<CampHqPageState> {
   // Without Clerk keys the layout shows "not available"; auth() would throw.
   if (!getCampHqClerkKeys()) return { kind: "no-keys" };
   const actor = await requireCampHqActor();
-  const request = { actor, now: new Date() };
+  const request = { actor, now: campHqNow() };
   try {
     const campHq = await getCampHqOperations();
     const person = await campHq.getSignedInPerson(request);

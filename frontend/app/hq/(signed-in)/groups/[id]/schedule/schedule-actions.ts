@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { CampHqDatabaseUnavailable, getCampHqOperations } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import {
   isCampHqRefusal,
   type CampHqOperations,
@@ -29,7 +30,7 @@ async function run(
   const actor = await requireCampHqActor();
   try {
     const campHq = await getCampHqOperations();
-    await operation(campHq, { actor, now: new Date() });
+    await operation(campHq, { actor, now: campHqNow() });
     return null;
   } catch (error) {
     if (isCampHqRefusal(error)) {

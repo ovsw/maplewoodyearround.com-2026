@@ -9,6 +9,7 @@ import {
   CampHqDatabaseUnavailable,
   getCampHqOperations,
 } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import { getCampHqClerkKeys } from "@/lib/hq/config";
 import {
   campHqRoleLabels,
@@ -62,7 +63,7 @@ async function verifiedEmails() {
 
 async function loadHome(): Promise<HomeState> {
   const actor = await requireCampHqActor();
-  const now = new Date();
+  const now = campHqNow();
   try {
     const campHq = await getCampHqOperations();
     let person: CampHqPerson | null;

@@ -17,7 +17,9 @@
 //   mid-week is in the right group on each day.
 // - One "expected today" query (expectedCampersOn) is the only source for
 //   lists of children.
-import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+// - Nothing is ever cleared on its own. An Admin clears a past summer on
+//   purpose (clearCamperDataBefore), after typing a confirmation.
+import { and, asc, desc, eq, inArray, lt, sql } from "drizzle-orm";
 
 import { campDate, isCampDate, weekEnd } from "./camp-dates.ts";
 import type { CampHqDb } from "./db/database.ts";
@@ -26,6 +28,7 @@ import {
   camperLoads,
   campers,
   campGroups,
+  clubDayPicks,
   groupLeaders,
   staffMembers,
   type CamperLoadErrorRecord,
@@ -99,6 +102,27 @@ export type GroupCamperList = {
   campers: ExpectedCamper[];
   /** When the camper list was last loaded; null before the first load. */
   lastLoadedAt: Date | null;
+};
+
+/** What an Admin types to confirm clearing a past summer. */
+export const CLEAR_CONFIRMATION_WORD = "CLEAR";
+
+export type ClearCamperDataInput = {
+  /** The first camp-local day to keep, "YYYY-MM-DD". Everything before it is cleared. */
+  before: string;
+  /** Must be CLEAR_CONFIRMATION_WORD. */
+  confirmation: string;
+};
+
+/** What clearing a past summer removed. */
+export type CamperDataCleared = {
+  before: string;
+  /** Campers with no day left on or after `before`. */
+  campers: number;
+  camperDays: number;
+  clubDayPicks: number;
+  /** Records of camper loads made before `before`. */
+  camperLoads: number;
 };
 
 type CamperDeps = {
@@ -440,6 +464,88 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
         errors: load.errors,
         campersKept: campersKept(load.errors),
       }));
+    },
+
+    /**
+     * Clears a past summer's camper data on purpose: every camper day and Club
+     * day pick before `before`, the campers left with no day, and the records
+     * of loads made before it (they can name children). The newest load record
+     * stays while any camper does, so lists still say when they were loaded.
+     * Admins only, after typing the confirmation word. `before` cannot be
+     * later than today.
+     */
+    async clearCamperDataBefore(
+      { actor, now }: CampHqRequest,
+      input: ClearCamperDataInput,
+    ): Promise<CamperDataCleared> {
+      await requireAdmin(actor);
+      const before = input?.before;
+      if (!isCampDate(before)) {
+        throw new CampHqRefusal("invalid-input", "Choose a date. Nothing was cleared.");
+      }
+      if (before > campDate(now)) {
+        throw new CampHqRefusal(
+          "invalid-input",
+          "Choose today or an earlier date: only past days can be cleared. Nothing was cleared.",
+        );
+      }
+      if (String(input?.confirmation ?? "").trim() !== CLEAR_CONFIRMATION_WORD) {
+        throw new CampHqRefusal(
+          "invalid-input",
+          `Type ${CLEAR_CONFIRMATION_WORD} to confirm. Nothing was cleared.`,
+        );
+      }
+
+      return db.transaction(async (tx) => {
+        // Waits for a camper load running at the same time, and blocks new ones.
+        await tx.execute(sql`select pg_advisory_xact_lock(hashtext('camp-hq-camper-load'))`);
+
+        const picks = await tx
+          .delete(clubDayPicks)
+          .where(lt(clubDayPicks.date, before))
+          .returning({ camperId: clubDayPicks.camperId });
+        const days = await tx
+          .delete(camperDays)
+          .where(lt(camperDays.date, before))
+          .returning({ camperId: camperDays.camperId });
+
+        const touched = [...new Set(days.map((day) => day.camperId))];
+        const stillHere = new Set<string>();
+        for (const ids of chunks(touched)) {
+          const rows = await tx
+            .selectDistinct({ camperId: camperDays.camperId })
+            .from(camperDays)
+            .where(inArray(camperDays.camperId, ids));
+          for (const row of rows) stillHere.add(row.camperId);
+        }
+        const gone = touched.filter((id) => !stillHere.has(id));
+        for (const ids of chunks(gone)) {
+          await tx.delete(campers).where(inArray(campers.id, ids));
+        }
+
+        const [{ remaining }] = await tx
+          .select({ remaining: sql<number>`count(*)::int` })
+          .from(campers);
+        const loads = await tx
+          .select({ id: camperLoads.id, loadedAt: camperLoads.loadedAt })
+          .from(camperLoads)
+          .orderBy(desc(camperLoads.loadedAt), desc(camperLoads.id));
+        const oldLoads = loads
+          .filter((load, index) => !(remaining > 0 && index === 0))
+          .filter((load) => campDate(load.loadedAt) < before)
+          .map((load) => load.id);
+        for (const ids of chunks(oldLoads)) {
+          await tx.delete(camperLoads).where(inArray(camperLoads.id, ids));
+        }
+
+        return {
+          before,
+          campers: gone.length,
+          camperDays: days.length,
+          clubDayPicks: picks.length,
+          camperLoads: oldLoads.length,
+        };
+      });
     },
 
     /**

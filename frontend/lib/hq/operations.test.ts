@@ -137,4 +137,33 @@ describe("local sample data", () => {
     expect(list.campers.every((camper) => camper.name.endsWith("(sample)"))).toBe(true);
     expect(list.campers.some((camper) => camper.finalWeek)).toBe(true);
   });
+
+  it("gives the test leader a group with a Club day ready for signups, once", async () => {
+    const accounts = { admin: "user_sample_admin", leader: "user_sample_leader" };
+    await loadSampleData(test.db, { now: TEST_NOW, accounts });
+    await loadSampleData(test.db, { now: TEST_NOW, accounts });
+
+    // 10:00 AM camp time on the same Tuesday: signups are open.
+    const leader = {
+      actor: { type: "account", clerkUserId: accounts.leader } as const,
+      now: new Date("2027-07-06T14:00:00.000Z"),
+    };
+    const assignment = await test.campHq.getMyAssignment(leader);
+    expect(assignment).toMatchObject({ kind: "leader", campGroup: { name: "Angels" } });
+    if (assignment.kind !== "leader") return;
+
+    const signups = await test.campHq.getClubDaySignups(leader, assignment.campGroup.id);
+    expect(signups.window).toBe("open");
+    expect(signups.canEdit).toBe(true);
+    expect(signups.periods).toMatchObject([{ period: 1, start: 11 * 60 + 30, end: 12 * 60 }]);
+    expect(signups.options.map((option) => option.activity.name)).toEqual([
+      "Archery",
+      "Ceramics",
+      "Drama",
+    ]);
+    expect(signups.campers.length).toBeGreaterThan(0);
+
+    const setup = await test.campHq.getClubDaySetup({ actor: commandLine, now: TEST_NOW });
+    expect(setup.options).toHaveLength(15);
+  });
 });

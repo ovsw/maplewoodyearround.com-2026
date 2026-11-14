@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { campHqNow } from "@/lib/hq/clock";
 import { CAMP_HQ_PATH } from "@/lib/hq/config";
 import { getCampHqOperations } from "@/lib/hq/camp-hq";
 import { isCampHqRefusal } from "@/lib/hq/operations";
@@ -32,7 +33,7 @@ export async function assignmentAction(
   _previous: AssignmentActionState,
   formData: FormData,
 ): Promise<AssignmentActionState> {
-  const request = { actor: await requireCampHqActor(), now: new Date() };
+  const request = { actor: await requireCampHqActor(), now: campHqNow() };
   const campHq = await getCampHqOperations();
   const replace = field(formData, "replace") === "1";
   // After a confirmation, the person asked about is sent back on its own.

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { formatCampDateTime } from "@/lib/hq/camp-dates";
+import { campDate, formatCampDateTime } from "@/lib/hq/camp-dates";
 import { CAMPER_CSV_COLUMNS } from "@/lib/hq/camper-csv";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { ClearCamperDataForm } from "./clear-form";
 import { CamperLoadErrors } from "./load-report";
 import { toReportView } from "./paths";
 import { CamperUploadForm } from "./upload-form";
@@ -141,6 +142,8 @@ async function Campers() {
           </div>
         )}
       </section>
+
+      <ClearCamperDataForm today={campDate(request.now)} />
     </section>
   );
 }

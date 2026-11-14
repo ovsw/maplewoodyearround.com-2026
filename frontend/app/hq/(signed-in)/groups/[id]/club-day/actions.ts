@@ -5,6 +5,7 @@
 import { revalidatePath } from "next/cache";
 
 import { CampHqDatabaseUnavailable, getCampHqOperations } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import type { ClubDayPickInput } from "@/lib/hq/club-day-signups";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
@@ -15,7 +16,7 @@ export type PickActionResult = { error?: string };
 
 /** Enters, changes or clears one child's pick for one period. */
 export async function setPickAction(input: ClubDayPickInput): Promise<PickActionResult> {
-  const request = { actor: await requireCampHqActor(), now: new Date() };
+  const request = { actor: await requireCampHqActor(), now: campHqNow() };
   try {
     const campHq = await getCampHqOperations();
     await campHq.setClubDayPick(request, input);

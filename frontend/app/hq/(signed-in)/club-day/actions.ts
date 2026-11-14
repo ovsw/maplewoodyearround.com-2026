@@ -5,6 +5,7 @@
 import { revalidatePath } from "next/cache";
 
 import { CampHqDatabaseUnavailable, getCampHqOperations } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
 
@@ -22,7 +23,7 @@ export async function clubDayAction(
   _previous: ClubDayActionState,
   formData: FormData,
 ): Promise<ClubDayActionState> {
-  const request = { actor: await requireCampHqActor(), now: new Date() };
+  const request = { actor: await requireCampHqActor(), now: campHqNow() };
   const capacity = {
     maxPerPeriod: field(formData, "maxPerPeriod"),
     maxPerGroup: field(formData, "maxPerGroup"),
