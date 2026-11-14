@@ -43,6 +43,10 @@ test.describe("Camp HQ with sign-in", () => {
     ).toBeVisible();
     await expect(page.getByText("Your role: Senior staff")).toBeVisible();
     await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+
+    // Staff management is for Admins only.
+    await page.goto("/hq/staff");
+    await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
   });
 
   test("the test admin sees the Admin role", async ({ page }) => {
@@ -55,6 +59,21 @@ test.describe("Camp HQ with sign-in", () => {
       page.getByRole("heading", { name: "Hello, Sample Admin" }),
     ).toBeVisible();
     await expect(page.getByText("Your role: Admin")).toBeVisible();
+
+    // The Admin adds an invented Junior staff member, then removes them.
+    await page.getByRole("link", { name: "Staff and accounts" }).click();
+    await expect(page.getByRole("heading", { name: "Staff and accounts" })).toBeVisible();
+    const name = `Sample Junior E2E ${Date.now()}`;
+    const addForm = page.locator("form", { has: page.getByRole("button", { name: "Add", exact: true }) });
+    await addForm.getByLabel("Name").fill(name);
+    await addForm.getByLabel("Staff").selectOption("junior");
+    await addForm.getByRole("button", { name: "Add", exact: true }).click();
+    const row = page.getByRole("listitem").filter({ hasText: name });
+    await expect(row.getByText("Junior staff · No account")).toBeVisible();
+
+    page.once("dialog", (dialog) => dialog.accept());
+    await row.getByRole("button", { name: "Remove", exact: true }).click();
+    await expect(row).toHaveCount(0);
   });
 });
 

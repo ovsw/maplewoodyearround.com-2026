@@ -19,8 +19,15 @@
     {
       "idx": 2,
       "version": "7",
-      "when": 1794613093776,
-      "tag": "0002_camp_hq_group_schedules",
+      "when": 1794613199206,
+      "tag": "0002_camp_hq_staff_accounts",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794614473041,
+      "tag": "0003_camp_hq_group_schedules",
       "breakpoints": true
     }
   ]
