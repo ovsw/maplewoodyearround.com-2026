@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
+import { AutoRefresh } from "../auto-refresh";
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { LocationValue, locationKeys, locationLabels } from "../schedule-view-parts";
+import { SCHEDULE_REFRESH_MS } from "../views-paths";
 
 export const metadata: Metadata = { title: "Group locations" };
 
@@ -22,6 +24,7 @@ async function GroupLocations() {
 
   return (
     <section className="flex flex-col gap-6">
+      <AutoRefresh intervalMs={SCHEDULE_REFRESH_MS} />
       <BackLink href="/hq">Camp HQ</BackLink>
       <h1 className="text-title-lg">Group locations</h1>
       {groups.length === 0 ? (
