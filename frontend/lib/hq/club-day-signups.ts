@@ -184,6 +184,19 @@ function expectedPick(date: string) {
   );
 }
 
+/**
+ * Joins a pick to its option only while that option is one of the camper's
+ * group's Team's options on `weekday`. Needs `camperDays` joined first. A pick
+ * left behind when a child moves group, or a group moves Team, holds no place.
+ */
+function teamOptionPick(weekday: ScheduleWeekday) {
+  return and(
+    eq(clubDayOptions.id, clubDayPicks.optionId),
+    eq(clubDayOptions.team, campGroups.team),
+    eq(clubDayOptions.weekday, weekday),
+  );
+}
+
 export function createClubDaySignupOperations({ db, requirePerson, requireAdmin }: SignupDeps) {
   /** The person, or null for a trusted command, which acts as an Admin. */
   async function findActor(actor: CampHqActor) {
@@ -218,8 +231,16 @@ export function createClubDaySignupOperations({ db, requirePerson, requireAdmin 
   }
 
   /** Taken places per option and period on `date`, in total and for one group. */
-  async function countPlaces(tx: CampHqDb, date: string, optionIds: string[], campGroupId: string) {
-    if (optionIds.length === 0) return new Map<string, { taken: number; takenByGroup: number }>();
+  async function countPlaces(
+    tx: CampHqDb,
+    date: string,
+    weekday: ScheduleWeekday | null,
+    optionIds: string[],
+    campGroupId: string,
+  ) {
+    if (weekday === null || optionIds.length === 0) {
+      return new Map<string, { taken: number; takenByGroup: number }>();
+    }
     const rows = await tx
       .select({
         optionId: clubDayPicks.optionId,
@@ -229,6 +250,8 @@ export function createClubDaySignupOperations({ db, requirePerson, requireAdmin 
       })
       .from(clubDayPicks)
       .innerJoin(camperDays, expectedPick(date))
+      .innerJoin(campGroups, eq(campGroups.id, camperDays.campGroupId))
+      .innerJoin(clubDayOptions, teamOptionPick(weekday))
       .where(inArray(clubDayPicks.optionId, optionIds))
       .groupBy(clubDayPicks.optionId, clubDayPicks.period);
     return new Map(
@@ -278,6 +301,7 @@ export function createClubDaySignupOperations({ db, requirePerson, requireAdmin 
       const places = await countPlaces(
         db,
         date,
+        clock.weekday,
         optionRows.map(({ option }) => option.id),
         group.id,
       );
@@ -492,6 +516,8 @@ export function createClubDaySignupOperations({ db, requirePerson, requireAdmin 
           })
           .from(clubDayPicks)
           .innerJoin(camperDays, expectedPick(date))
+          .innerJoin(campGroups, eq(campGroups.id, camperDays.campGroupId))
+          .innerJoin(clubDayOptions, teamOptionPick(option.weekday))
           .where(
             and(
               eq(clubDayPicks.optionId, option.id),
@@ -557,14 +583,7 @@ export function createClubDaySignupOperations({ db, requirePerson, requireAdmin 
         .from(clubDayPicks)
         .innerJoin(camperDays, expectedPick(date))
         .innerJoin(campGroups, eq(campGroups.id, camperDays.campGroupId))
-        .innerJoin(
-          clubDayOptions,
-          and(
-            eq(clubDayOptions.id, clubDayPicks.optionId),
-            eq(clubDayOptions.team, campGroups.team),
-            eq(clubDayOptions.weekday, clock.weekday),
-          ),
-        );
+        .innerJoin(clubDayOptions, teamOptionPick(clock.weekday));
       const picked = new Set(pickRows.map((row) => `${row.camperId}:${row.period}`));
 
       const byGroup = new Map<string, MissingPicks["groups"][number]>();

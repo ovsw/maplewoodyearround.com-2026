@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, useTransition } from "react";
+import { startTransition, useId, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { matchesCamperName } from "@/lib/hq/camper-search";
@@ -13,11 +13,41 @@ import { setPickAction } from "./actions";
 const selectClassName =
   "border-input flex min-h-(--control-height) w-full min-w-48 rounded-control border bg-background px-4 py-3 text-base focus-field disabled:opacity-60";
 
+/** A pick being saved, or the refusal of the last save, for one child and period. */
+type SaveState = { saving: string | null; error: string | null };
+
+const cellKey = (camperId: string, period: number) => `${camperId}:${period}`;
+
 /** The children of the group with a pick for each period, and a name search. */
 export function SignupBoard({ signups }: { signups: ClubDaySignups }) {
   const [search, setSearch] = useState("");
+  // Kept here, not in each picker, so a save finishing while its child is
+  // filtered out by the search still shows its refusal when they come back.
+  const [saves, setSaves] = useState<Record<string, SaveState>>({});
   const searchId = useId();
   const shown = signups.campers.filter((camper) => matchesCamperName(camper.name, search));
+
+  async function save(camperId: string, period: number, optionId: string) {
+    const key = cellKey(camperId, period);
+    if (saves[key]?.saving != null) return;
+    setSaves((all) => ({ ...all, [key]: { saving: optionId, error: null } }));
+    let error: string | null = null;
+    try {
+      const result = await setPickAction({
+        camperId,
+        date: signups.date,
+        period,
+        optionId: optionId || null,
+      });
+      error = result.error ?? null;
+    } catch {
+      error = "The pick could not be saved. Try again.";
+    }
+    // Lands with the refreshed page, so the saved pick shows without a flicker.
+    startTransition(() => {
+      setSaves((all) => ({ ...all, [key]: { saving: null, error } }));
+    });
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -70,13 +100,13 @@ export function SignupBoard({ signups }: { signups: ClubDaySignups }) {
                     <td key={period.period} className="py-2 pr-4">
                       {signups.canEdit ? (
                         <PickSelect
-                          // A refresh that brings another saved pick starts the select afresh.
-                          key={camper.picks[index] ?? ""}
                           signups={signups}
                           camper={camper}
                           period={period.period}
                           current={camper.picks[index]}
                           periodIndex={index}
+                          state={saves[cellKey(camper.id, period.period)]}
+                          onChange={(optionId) => save(camper.id, period.period, optionId)}
                         />
                       ) : (
                         <span className="inline-flex min-h-11 items-center text-lg">
@@ -104,7 +134,8 @@ function optionName(signups: ClubDaySignups, optionId: string | null) {
 
 /**
  * One child's pick for one period. Saves as soon as it changes; a refusal is
- * shown under it and the saved pick comes back.
+ * shown under it and the saved pick comes back. It stays enabled while saving
+ * so keyboard focus is kept, and ignores changes until the save finishes.
  */
 function PickSelect({
   signups,
@@ -112,34 +143,21 @@ function PickSelect({
   period,
   periodIndex,
   current,
+  state,
+  onChange,
 }: {
   signups: ClubDaySignups;
   camper: SignupCamper;
   period: number;
   periodIndex: number;
   current: string | null;
+  state: SaveState | undefined;
+  onChange: (optionId: string) => void;
 }) {
-  const [value, setValue] = useState(current ?? "");
-  const [error, setError] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
   const errorId = useId();
-
-  function change(next: string) {
-    setValue(next);
-    setError(null);
-    startTransition(async () => {
-      const result = await setPickAction({
-        camperId: camper.id,
-        date: signups.date,
-        period,
-        optionId: next || null,
-      });
-      if (result.error) {
-        setError(result.error);
-        setValue(current ?? "");
-      }
-    });
-  }
+  const pending = state?.saving != null;
+  const error = state?.error ?? null;
+  const value = state?.saving ?? current ?? "";
 
   return (
     <div className="flex flex-col gap-1">
@@ -147,10 +165,12 @@ function PickSelect({
         aria-label={`${camper.name}, period ${period}`}
         aria-describedby={error ? errorId : undefined}
         aria-invalid={error ? true : undefined}
+        aria-busy={pending || undefined}
         className={selectClassName}
         value={value}
-        disabled={pending}
-        onChange={(event) => change(event.target.value)}
+        onChange={(event) => {
+          if (!pending) onChange(event.target.value);
+        }}
       >
         <option value="">No pick yet</option>
         {signups.options.map((option) => {

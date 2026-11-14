@@ -305,6 +305,25 @@ describe("capacity", () => {
     expect(placesOf(view, archery)?.[0]).toMatchObject({ taken: 1, left: 1 });
   });
 
+  it("frees the place of a child who moves to a group of another Team", async () => {
+    await pick(rowan, "Ava Brookfield", 1, archery);
+    await pick(sky, "Dara Quill", 1, archery);
+    // Ava moves to Falcons (Team 4); her Archery pick stays but holds no place.
+    await test.campHq.loadCampers(as(admin), {
+      source: "Sample test list",
+      rows: [
+        day("C1", "Ava Brookfield", TODAY, "Falcons"),
+        day("C2", "Ben Okafor", TODAY, "Otters"),
+        day("C4", "Dara Quill", TODAY, "Herons"),
+      ],
+    });
+
+    await pick(rowan, "Ben Okafor", 1, archery);
+
+    const view = await signups(rowan, otters);
+    expect(placesOf(view, archery)?.[0]).toMatchObject({ taken: 2, takenByGroup: 1, left: 0 });
+  });
+
   it("gives the last place to one of two leaders picking at the same moment, and refuses the other", async () => {
     await pick(rowan, "Ava Brookfield", 1, archery);
 
