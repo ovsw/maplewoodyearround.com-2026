@@ -175,6 +175,7 @@ async function Assignments() {
                   <label className="flex flex-col gap-1.5">
                     <span className="text-sm font-medium">Helps Camp group</span>
                     <select
+                      key={junior.campGroupId ?? ""}
                       name="campGroupId"
                       defaultValue={junior.campGroupId ?? ""}
                       className={selectClassName}
@@ -190,6 +191,7 @@ async function Assignments() {
                   <label className="flex flex-col gap-1.5">
                     <span className="text-sm font-medium">Club day activity (optional)</span>
                     <select
+                      key={junior.clubDayActivityId ?? ""}
                       name="clubDayActivityId"
                       defaultValue={junior.clubDayActivityId ?? ""}
                       className={selectClassName}
@@ -279,8 +281,14 @@ function PersonSelect({
     current && !candidates.some((person) => person.id === current.id)
       ? [{ ...current, job: "no active account" }, ...candidates]
       : candidates;
+  // Keyed by the saved person so the select shows a change made elsewhere.
   return (
-    <select name="staffMemberId" defaultValue={current?.id ?? ""} className={selectClassName}>
+    <select
+      key={current?.id ?? ""}
+      name="staffMemberId"
+      defaultValue={current?.id ?? ""}
+      className={selectClassName}
+    >
       <option value="">{noneLabel}</option>
       {options.map((person) => (
         <option key={person.id} value={person.id}>

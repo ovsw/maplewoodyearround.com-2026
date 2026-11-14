@@ -74,16 +74,36 @@ describe("leaders", () => {
     ).rejects.toMatchObject({
       reason: "confirm-replace",
       message: "Rowan Birch leads Eagles. Replace Rowan Birch with Sky Maple?",
+      incumbentId: rowan.staffMemberId,
     });
     expect((await board()).campGroups.find((g) => g.id === eagles)?.leader?.name).toBe(
       "Rowan Birch",
     );
 
-    await test.campHq.setGroupLeader(asAdmin, eagles, sky.staffMemberId, { replace: true });
+    await test.campHq.setGroupLeader(asAdmin, eagles, sky.staffMemberId, {
+      replacing: rowan.staffMemberId,
+    });
     expect((await board()).campGroups.find((g) => g.id === eagles)?.leader?.name).toBe(
       "Sky Maple",
     );
     await expect(test.campHq.getMyAssignment(as(rowan))).resolves.toEqual({ kind: "none" });
+  });
+
+  it("asks again when the leader changed after the Admin confirmed", async () => {
+    const rowan = await test.addAccountHolder("Rowan Birch", "senior_staff");
+    const sky = await test.addAccountHolder("Sky Maple", "senior_staff");
+    const quinn = await test.addAccountHolder("Quinn Alder", "senior_staff");
+    await test.campHq.setGroupLeader(asAdmin, eagles, quinn.staffMemberId);
+
+    // The Admin agreed to replace Rowan, but Quinn leads Eagles now.
+    await expect(
+      test.campHq.setGroupLeader(asAdmin, eagles, sky.staffMemberId, {
+        replacing: rowan.staffMemberId,
+      }),
+    ).rejects.toMatchObject({ reason: "confirm-replace", incumbentId: quinn.staffMemberId });
+    expect((await board()).campGroups.find((g) => g.id === eagles)?.leader?.name).toBe(
+      "Quinn Alder",
+    );
   });
 });
 
@@ -115,10 +135,15 @@ describe("specialists", () => {
 
     await expect(
       test.campHq.setActivitySpecialist(asAdmin, archery, sky.staffMemberId),
+    ).rejects.toMatchObject({ reason: "confirm-replace", incumbentId: quinn.staffMemberId });
+    await expect(
+      test.campHq.setActivitySpecialist(asAdmin, archery, sky.staffMemberId, {
+        replacing: sky.staffMemberId,
+      }),
     ).rejects.toMatchObject({ reason: "confirm-replace" });
 
     await test.campHq.setActivitySpecialist(asAdmin, archery, sky.staffMemberId, {
-      replace: true,
+      replacing: quinn.staffMemberId,
     });
     expect((await board()).activities.find((a) => a.id === archery)?.specialist?.name).toBe(
       "Sky Maple",
@@ -224,7 +249,7 @@ describe("two jobs at once", () => {
     await test.campHq.setGroupLeader(asAdmin, eagles, rowan.staffMemberId);
 
     await expect(
-      test.campHq.setGroupLeader(asAdmin, otters, rowan.staffMemberId, { replace: true }),
+      test.campHq.setGroupLeader(asAdmin, otters, rowan.staffMemberId),
     ).rejects.toMatchObject({
       reason: "two-jobs",
       message: "Rowan Birch already leads Eagles. Clear that Assignment first.",

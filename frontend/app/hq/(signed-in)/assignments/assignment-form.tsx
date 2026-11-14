@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -27,10 +27,20 @@ export function AssignmentForm({
     assignmentAction,
     null,
   );
+  // A confirmation is for the selection it was asked about. Changing a field
+  // withdraws it, so the Admin has to Save again before replacing.
+  const [withdrawn, setWithdrawn] = useState<AssignmentActionState>(null);
+  const confirm = !pending && state?.confirm && withdrawn !== state ? state.confirm : null;
   const message = pending ? "Saving…" : (state?.error ?? state?.ok ?? "");
 
   return (
-    <form action={formAction} className="flex flex-col gap-2">
+    <form
+      action={formAction}
+      onChange={() => {
+        if (state?.confirm) setWithdrawn(state);
+      }}
+      className="flex flex-col gap-2"
+    >
       <input type="hidden" name="intent" value={intent} />
       {Object.entries(hidden).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
@@ -38,17 +48,14 @@ export function AssignmentForm({
       <fieldset disabled={pending} className={cn("flex flex-wrap items-end gap-3", className)}>
         {children}
       </fieldset>
-      {!pending && state?.confirm ? (
+      {confirm ? (
         <div
           role="alert"
           className="flex flex-wrap items-center gap-3 rounded-control border border-border bg-muted p-3"
         >
-          <p className="text-sm">{state.confirm.message}</p>
-          <input
-            type="hidden"
-            name="confirmedStaffMemberId"
-            value={state.confirm.staffMemberId}
-          />
+          <p className="text-sm">{confirm.message}</p>
+          <input type="hidden" name="confirmedStaffMemberId" value={confirm.staffMemberId} />
+          <input type="hidden" name="replacingStaffMemberId" value={confirm.incumbentId} />
           <Button type="submit" name="replace" value="1" variant="outline">
             Replace
           </Button>

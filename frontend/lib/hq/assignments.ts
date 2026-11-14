@@ -154,22 +154,24 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
     /**
      * Makes a person the leader of a Camp group, or clears the leader when
      * `staffMemberId` is null. A group that already has a different leader is
-     * only changed with `replace: true`, after the Admin confirms.
+     * only changed with `replacing` set to that leader's id, after the Admin
+     * confirms; if the leader changed since, the Admin is asked again.
      */
     async setGroupLeader(
       { actor, now }: CampHqRequest,
       campGroupId: string,
       staffMemberId: string | null,
-      { replace = false }: { replace?: boolean } = {},
+      { replacing = null }: { replacing?: string | null } = {},
     ): Promise<void> {
       await requireAdmin(actor);
       await db.transaction(async (tx) => {
+        // Every setter locks the staff member before the group or activity.
+        const person = staffMemberId === null ? null : await lockStaff(tx, staffMemberId);
         const group = await lockCampGroup(tx, campGroupId);
-        if (staffMemberId === null) {
+        if (person === null) {
           await tx.delete(groupLeaders).where(eq(groupLeaders.campGroupId, group.id));
           return;
         }
-        const person = await lockStaff(tx, staffMemberId);
         requireActiveAccount(person, "lead a Camp group");
 
         const jobs = await currentJobs(tx, person.id);
@@ -187,15 +189,17 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
         }
 
         const [current] = await tx
-          .select({ name: staffMembers.name })
+          .select({ id: staffMembers.id, name: staffMembers.name })
           .from(groupLeaders)
           .innerJoin(staffMembers, eq(staffMembers.id, groupLeaders.staffMemberId))
           .where(eq(groupLeaders.campGroupId, group.id))
           .limit(1);
-        if (current && !replace) {
+        if (current && current.id !== replacing) {
           throw new CampHqRefusal(
             "confirm-replace",
             `${current.name} leads ${group.name}. Replace ${current.name} with ${person.name}?`,
+            [],
+            current.id,
           );
         }
         await tx.delete(groupLeaders).where(eq(groupLeaders.campGroupId, group.id));
@@ -209,22 +213,23 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
      * Makes a person the specialist for an activity, or clears it when
      * `staffMemberId` is null. One person can run several activities. An
      * activity that already has a different specialist is only changed with
-     * `replace: true`, after the Admin confirms.
+     * `replacing` set to that specialist's id, after the Admin confirms; if
+     * the specialist changed since, the Admin is asked again.
      */
     async setActivitySpecialist(
       { actor, now }: CampHqRequest,
       activityId: string,
       staffMemberId: string | null,
-      { replace = false }: { replace?: boolean } = {},
+      { replacing = null }: { replacing?: string | null } = {},
     ): Promise<void> {
       await requireAdmin(actor);
       await db.transaction(async (tx) => {
+        const person = staffMemberId === null ? null : await lockStaff(tx, staffMemberId);
         const activity = await lockActivity(tx, activityId);
-        if (staffMemberId === null) {
+        if (person === null) {
           await tx.delete(activitySpecialists).where(eq(activitySpecialists.activityId, activity.id));
           return;
         }
-        const person = await lockStaff(tx, staffMemberId);
         requireActiveAccount(person, "be a specialist");
 
         const jobs = await currentJobs(tx, person.id);
@@ -239,15 +244,17 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
         }
 
         const [current] = await tx
-          .select({ name: staffMembers.name })
+          .select({ id: staffMembers.id, name: staffMembers.name })
           .from(activitySpecialists)
           .innerJoin(staffMembers, eq(staffMembers.id, activitySpecialists.staffMemberId))
           .where(eq(activitySpecialists.activityId, activity.id))
           .limit(1);
-        if (current && !replace) {
+        if (current && current.id !== replacing) {
           throw new CampHqRefusal(
             "confirm-replace",
             `${current.name} is the specialist for ${activity.name}. Replace ${current.name} with ${person.name}?`,
+            [],
+            current.id,
           );
         }
         await tx.delete(activitySpecialists).where(eq(activitySpecialists.activityId, activity.id));

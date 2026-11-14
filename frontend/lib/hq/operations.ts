@@ -57,12 +57,20 @@ export type CampHqRefusalReason =
 export class CampHqRefusal extends Error {
   readonly reason: CampHqRefusalReason;
   readonly usedIn: string[];
+  /** With "confirm-replace": the staff member who would be replaced. */
+  readonly incumbentId: string | null;
 
-  constructor(reason: CampHqRefusalReason, message: string, usedIn: string[] = []) {
+  constructor(
+    reason: CampHqRefusalReason,
+    message: string,
+    usedIn: string[] = [],
+    incumbentId: string | null = null,
+  ) {
     super(message);
     this.name = "CampHqRefusal";
     this.reason = reason;
     this.usedIn = usedIn;
+    this.incumbentId = incumbentId;
   }
 }
 

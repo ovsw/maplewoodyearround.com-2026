@@ -12,8 +12,11 @@ import { ASSIGNMENTS_PATH } from "./paths";
 export type AssignmentActionState = {
   ok?: string;
   error?: string;
-  /** Asked before replacing a leader or specialist; sent back with `replace`. */
-  confirm?: { message: string; staffMemberId: string };
+  /**
+   * Asked before replacing a leader or specialist; sent back with `replace`.
+   * `incumbentId` is the person the Admin agreed to replace.
+   */
+  confirm?: { message: string; staffMemberId: string; incumbentId: string };
 } | null;
 
 function field(formData: FormData, name: string) {
@@ -35,12 +38,14 @@ export async function assignmentAction(
   // After a confirmation, the person asked about is sent back on its own.
   const staffMemberId =
     field(formData, replace ? "confirmedStaffMemberId" : "staffMemberId") || null;
+  // Only the person the Admin agreed to replace can be replaced.
+  const replacing = replace ? field(formData, "replacingStaffMemberId") || null : null;
 
   try {
     switch (field(formData, "intent")) {
       case "set-leader":
         await campHq.setGroupLeader(request, field(formData, "campGroupId"), staffMemberId, {
-          replace,
+          replacing,
         });
         break;
       case "set-specialist":
@@ -48,7 +53,7 @@ export async function assignmentAction(
           request,
           field(formData, "activityId"),
           staffMemberId,
-          { replace },
+          { replacing },
         );
         break;
       case "set-junior":
@@ -67,8 +72,10 @@ export async function assignmentAction(
     revalidatePath(CAMP_HQ_PATH);
     return { ok: "Saved." };
   } catch (error) {
-    if (isCampHqRefusal(error, "confirm-replace") && staffMemberId) {
-      return { confirm: { message: error.message, staffMemberId } };
+    if (isCampHqRefusal(error, "confirm-replace") && staffMemberId && error.incumbentId) {
+      return {
+        confirm: { message: error.message, staffMemberId, incumbentId: error.incumbentId },
+      };
     }
     if (isCampHqRefusal(error)) {
       revalidatePath(ASSIGNMENTS_PATH);
