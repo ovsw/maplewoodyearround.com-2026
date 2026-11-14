@@ -27,6 +27,43 @@ export function campWeekday(now: Date): ScheduleWeekday | null {
   return found ?? null;
 }
 
+/** The camp local weekday (null on a weekend) and minutes after midnight at `now`. */
+export type CampClock = { weekday: ScheduleWeekday | null; minute: number };
+
+const campClockFormat = new Intl.DateTimeFormat("en-US", {
+  timeZone: CAMP_TIME_ZONE,
+  weekday: "long",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+export function campClock(now: Date): CampClock {
+  const parts = campClockFormat.formatToParts(now);
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((entry) => entry.type === type)?.value ?? "";
+  const name = part("weekday");
+  const weekday = SCHEDULE_WEEKDAYS.find((day) => weekdayLabels[day] === name) ?? null;
+  return { weekday, minute: (Number(part("hour")) % 24) * 60 + Number(part("minute")) };
+}
+
+/**
+ * True when the slot is running at the camp clock: same weekday, started, not
+ * yet ended. A slot ends at its end minute, so at 10:00 the 9:30 to 10:00 slot
+ * is over and the 10:00 slot is current.
+ */
+export function isCurrentSlot(
+  slot: { weekday: number; start: number; end: number },
+  clock: CampClock,
+) {
+  return (
+    clock.weekday !== null &&
+    slot.weekday === clock.weekday &&
+    slot.start <= clock.minute &&
+    clock.minute < slot.end
+  );
+}
+
 /** A new day starts with eleven 30-minute slots from 9:30. */
 export const DEFAULT_DAY_START = 9 * 60 + 30;
 export const DEFAULT_SLOT_LENGTH = 30;
