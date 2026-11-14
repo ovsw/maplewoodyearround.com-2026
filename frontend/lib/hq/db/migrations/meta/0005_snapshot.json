@@ -1,5 +1,5 @@
 {
-  "id": "2d931e00-66d1-4730-b504-5e6b90c50950",
+  "id": "d9bc5086-818a-46ac-addf-dccef5fde09c",
   "prevId": "5e3a2b6c-517f-49fe-bb03-fc6440ed8933",
   "version": "7",
   "dialect": "postgresql",
@@ -35,6 +35,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'exclusive'"
+        },
+        "club_only": {
+          "name": "club_only",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "created_at": {
           "name": "created_at",
@@ -254,117 +261,8 @@
       },
       "isRLSEnabled": false
     },
-    "public.camper_days": {
-      "name": "camper_days",
-      "schema": "",
-      "columns": {
-        "camper_id": {
-          "name": "camper_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "date": {
-          "name": "date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "camp_group_id": {
-          "name": "camp_group_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "expected": {
-          "name": "expected",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "camper_days_date_group": {
-          "name": "camper_days_date_group",
-          "columns": [
-            {
-              "expression": "date",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "camp_group_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "camper_days_camp_group": {
-          "name": "camper_days_camp_group",
-          "columns": [
-            {
-              "expression": "camp_group_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "camper_days_camper_id_campers_id_fk": {
-          "name": "camper_days_camper_id_campers_id_fk",
-          "tableFrom": "camper_days",
-          "tableTo": "campers",
-          "columnsFrom": [
-            "camper_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "camper_days_camp_group_id_camp_groups_id_fk": {
-          "name": "camper_days_camp_group_id_camp_groups_id_fk",
-          "tableFrom": "camper_days",
-          "tableTo": "camp_groups",
-          "columnsFrom": [
-            "camp_group_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "camper_days_camper_id_date_pk": {
-          "name": "camper_days_camper_id_date_pk",
-          "columns": [
-            "camper_id",
-            "date"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.camper_loads": {
-      "name": "camper_loads",
+    "public.club_day_options": {
+      "name": "club_day_options",
       "schema": "",
       "columns": {
         "id": {
@@ -374,127 +272,35 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "source": {
-          "name": "source",
-          "type": "text",
+        "team": {
+          "name": "team",
+          "type": "smallint",
           "primaryKey": false,
           "notNull": true
         },
-        "loaded_at": {
-          "name": "loaded_at",
-          "type": "timestamp with time zone",
+        "weekday": {
+          "name": "weekday",
+          "type": "smallint",
           "primaryKey": false,
           "notNull": true
         },
-        "loaded_by": {
-          "name": "loaded_by",
+        "activity_id": {
+          "name": "activity_id",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_per_period": {
+          "name": "max_per_period",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_per_group": {
+          "name": "max_per_group",
+          "type": "smallint",
           "primaryKey": false,
           "notNull": false
-        },
-        "row_count": {
-          "name": "row_count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "added": {
-          "name": "added",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "changed": {
-          "name": "changed",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "removed": {
-          "name": "removed",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "unchanged": {
-          "name": "unchanged",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "removals_skipped": {
-          "name": "removals_skipped",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "errors": {
-          "name": "errors",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "camper_loads_loaded_at": {
-          "name": "camper_loads_loaded_at",
-          "columns": [
-            {
-              "expression": "loaded_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "camper_loads_loaded_by_staff_members_id_fk": {
-          "name": "camper_loads_loaded_by_staff_members_id_fk",
-          "tableFrom": "camper_loads",
-          "tableTo": "staff_members",
-          "columnsFrom": [
-            "loaded_by"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.campers": {
-      "name": "campers",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "source_id": {
-          "name": "source_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -509,20 +315,133 @@
           "notNull": true
         }
       },
+      "indexes": {
+        "club_day_options_unique": {
+          "name": "club_day_options_unique",
+          "columns": [
+            {
+              "expression": "team",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "weekday",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "activity_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "club_day_options_activity": {
+          "name": "club_day_options_activity",
+          "columns": [
+            {
+              "expression": "activity_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "club_day_options_activity_id_activities_id_fk": {
+          "name": "club_day_options_activity_id_activities_id_fk",
+          "tableFrom": "club_day_options",
+          "tableTo": "activities",
+          "columnsFrom": [
+            "activity_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "club_day_options_team_range": {
+          "name": "club_day_options_team_range",
+          "value": "\"club_day_options\".\"team\" between 1 and 4"
+        },
+        "club_day_options_weekday_range": {
+          "name": "club_day_options_weekday_range",
+          "value": "\"club_day_options\".\"weekday\" between 1 and 5"
+        },
+        "club_day_options_max_per_period": {
+          "name": "club_day_options_max_per_period",
+          "value": "\"club_day_options\".\"max_per_period\" > 0"
+        },
+        "club_day_options_max_per_group": {
+          "name": "club_day_options_max_per_group",
+          "value": "\"club_day_options\".\"max_per_group\" is null or (\"club_day_options\".\"max_per_group\" > 0 and \"club_day_options\".\"max_per_group\" <= \"club_day_options\".\"max_per_period\")"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.club_day_settings": {
+      "name": "club_day_settings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "smallint",
+          "primaryKey": true,
+          "notNull": true,
+          "default": 1
+        },
+        "signup_open_minute": {
+          "name": "signup_open_minute",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signup_lock_minute": {
+          "name": "signup_lock_minute",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "campers_source_id_unique": {
-          "name": "campers_source_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "source_id"
-          ]
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "club_day_settings_one_row": {
+          "name": "club_day_settings_one_row",
+          "value": "\"club_day_settings\".\"id\" = 1"
+        },
+        "club_day_settings_window": {
+          "name": "club_day_settings_window",
+          "value": "\"club_day_settings\".\"signup_open_minute\" >= 0 and \"club_day_settings\".\"signup_lock_minute\" <= 1440 and \"club_day_settings\".\"signup_open_minute\" < \"club_day_settings\".\"signup_lock_minute\""
         }
       },
-      "policies": {},
-      "checkConstraints": {},
       "isRLSEnabled": false
     },
     "public.group_leaders": {

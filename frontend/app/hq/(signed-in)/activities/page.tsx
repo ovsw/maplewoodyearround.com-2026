@@ -67,7 +67,10 @@ async function Activities() {
                       activity.name
                     )}
                   </th>
-                  <td className="py-3 pr-4">{activityKindLabels[activity.kind]}</td>
+                  <td className="py-3 pr-4">
+                    {activityKindLabels[activity.kind]}
+                    {activity.clubOnly ? ", Club day only" : ""}
+                  </td>
                   <td className="py-3">{formatGrades(activity.grades)}</td>
                 </tr>
               ))}

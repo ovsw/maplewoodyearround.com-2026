@@ -101,6 +101,8 @@ export const activities = pgTable(
     /** The grades the activity is allowed for. */
     grades: grade("grades").array().notNull(),
     kind: activityKind("kind").notNull().default("exclusive"),
+    /** True for an activity offered only on Club day: never booked on a Group schedule. */
+    clubOnly: boolean("club_only").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
   },
@@ -280,4 +282,63 @@ export const camperLoads = pgTable(
     errors: jsonb("errors").$type<CamperLoadErrorRecord[]>().notNull(),
   },
   (table) => [index("camper_loads_loaded_at").on(table.loadedAt)],
+);
+
+// Club day: the options each Team has on each weekday, and when signups open
+// and lock.
+
+/**
+ * An activity a Team can choose on one weekday's Club day. It is in use during
+ * every Club day period of that Team's Camp groups on that weekday.
+ */
+export const clubDayOptions = pgTable(
+  "club_day_options",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Team 1 (youngest) to Team 4 (oldest). */
+    team: smallint("team").notNull(),
+    /** 1 Monday to 5 Friday. */
+    weekday: smallint("weekday").notNull(),
+    activityId: uuid("activity_id")
+      .notNull()
+      .references(() => activities.id, { onDelete: "restrict" }),
+    /** The most children the option takes in one Club day period. */
+    maxPerPeriod: smallint("max_per_period").notNull(),
+    /** The most children from one Camp group per period; null (the default) means no limit. */
+    maxPerGroup: smallint("max_per_group"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("club_day_options_unique").on(table.team, table.weekday, table.activityId),
+    index("club_day_options_activity").on(table.activityId),
+    check("club_day_options_team_range", sql`${table.team} between 1 and 4`),
+    check("club_day_options_weekday_range", sql`${table.weekday} between 1 and 5`),
+    check("club_day_options_max_per_period", sql`${table.maxPerPeriod} > 0`),
+    check(
+      "club_day_options_max_per_group",
+      sql`${table.maxPerGroup} is null or (${table.maxPerGroup} > 0 and ${table.maxPerGroup} <= ${table.maxPerPeriod})`,
+    ),
+  ],
+);
+
+/**
+ * Camp HQ's Club day settings: one row, id 1. Times are minutes after midnight
+ * in camp local time. With no row, the defaults in lib/hq/club-day.ts apply.
+ */
+export const clubDaySettings = pgTable(
+  "club_day_settings",
+  {
+    id: smallint("id").primaryKey().default(1),
+    signupOpenMinute: smallint("signup_open_minute").notNull(),
+    signupLockMinute: smallint("signup_lock_minute").notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    check("club_day_settings_one_row", sql`${table.id} = 1`),
+    check(
+      "club_day_settings_window",
+      sql`${table.signupOpenMinute} >= 0 and ${table.signupLockMinute} <= 1440 and ${table.signupOpenMinute} < ${table.signupLockMinute}`,
+    ),
+  ],
 );

@@ -184,6 +184,7 @@ export type ActivityFormValues = {
   name: string;
   grades: string[];
   kind: "exclusive" | "shared";
+  clubOnly: boolean;
 };
 
 export function ActivityForm({ activity }: { activity: ActivityFormValues }) {
@@ -192,6 +193,7 @@ export function ActivityForm({ activity }: { activity: ActivityFormValues }) {
     name: activity.name,
     grades: activity.grades,
     kind: activity.kind,
+    clubOnly: activity.clubOnly ? "1" : "",
   };
 
   return (
@@ -216,6 +218,18 @@ export function ActivityForm({ activity }: { activity: ActivityFormValues }) {
             value="shared"
             label="Shared: many Camp groups at once"
             defaultChecked={pick(values, "kind") === "shared"}
+          />
+        </div>
+      </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 text-label">Club day</legend>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Choice
+            type="checkbox"
+            name="clubOnly"
+            value="1"
+            label="Offered only on Club day, never on a Group schedule"
+            defaultChecked={pick(values, "clubOnly") === "1"}
           />
         </div>
       </fieldset>

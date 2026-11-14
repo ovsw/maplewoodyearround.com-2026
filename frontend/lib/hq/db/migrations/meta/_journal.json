@@ -40,8 +40,15 @@
     {
       "idx": 5,
       "version": "7",
-      "when": 1794617733267,
-      "tag": "0005_camp_hq_campers",
+      "when": 1794617718302,
+      "tag": "0005_camp_hq_club_day",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794624568782,
+      "tag": "0006_camp_hq_campers",
       "breakpoints": true
     }
   ]
