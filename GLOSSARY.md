@@ -107,6 +107,13 @@ _Avoid_: club, flex time
 An activity a Team can choose on a given weekday's Club day. Some are offered
 only on Club day. Each one needs a specialist.
 
+**Club day pick**:
+A camper's Club day option for one Club day period of one day, entered by the
+group leader that morning while signups are open. Periods are numbered in time
+order for each Camp group; all groups of a Team share each option's places in
+period 1, period 2 and so on.
+_Avoid_: signup (for a single pick), choice
+
 **Team**:
 A numbered set of Camp groups that share the same Club day options, from Team 1
 (youngest) to Team 4 (oldest). Leadership sets the Teams each summer. A single
@@ -140,6 +147,15 @@ _Avoid_: floater (as a separate role)
 **Assignment**:
 The Camp group or activity a Senior or Junior staff member is working on now. An Admin can change it at any
 time. Nobody can have two jobs at the same time.
+
+**Camper list**:
+The children at Summer Camp, loaded from CampMinder. Camp HQ never edits it by
+hand; attendance is corrected in CampMinder and loaded again.
+_Avoid_: roster (for the camper list)
+
+**Camper day**:
+One day of a camper's enrolment: their Camp group that day and whether they
+are expected. A child can change Camp group mid-week.
 
 ## Summer bus
 

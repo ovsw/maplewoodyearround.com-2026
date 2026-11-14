@@ -40,6 +40,87 @@ Cloudflare finds suspicious gets a checkbox to click.
 Without these variables the form answers "Something went wrong" and sends
 nothing.
 
+## Camp HQ
+
+Camp HQ (`/hq`) signs staff in with Clerk. It needs two keys from the Clerk
+application's API keys page:
+
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` (sensitive).
+  Locally they live in the ignored `frontend/.env.local`; deployed, in the
+  Vercel project's environment variables. The Release gate's build job reads
+  the GitHub repository secret `CLERK_SECRET_KEY` and the repository variable
+  `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`.
+
+Without both keys the Website builds and runs as before, and `/hq` shows
+"Camp HQ is not available". Production has no keys yet. A key change takes
+effect on the next deployment.
+
+Use two Clerk instances. Vercel Production gets the production instance's
+keys (`pk_live_`, `sk_live_`). Local work, Vercel Preview and the Release gate
+get the development instance's keys (`pk_test_`, `sk_test_`). The test users
+below sign in with a fixed code, so they exist only in the development
+instance; the script refuses an `sk_live_` key.
+
+There is no sign-up page; Clerk's sign-up mode is Restricted. Create the test
+users (one Admin, one group leader, `+clerk_test` emails, no passwords) with
+`pnpm --dir frontend hq:test-users`. It is safe to run again. The Camp HQ
+Playwright test creates them too.
+
+### Camp HQ database
+
+Camp HQ keeps its data in Postgres through Drizzle. The schema is
+`frontend/lib/hq/db/schema.ts`; the SQL migrations in
+`frontend/lib/hq/db/migrations` are kept in the repo. After a schema change,
+run `pnpm --dir frontend hq:db:generate` and commit the new migration. Never
+edit a migration by hand.
+
+Pages and server actions reach the database only through the Camp HQ
+operations module (`frontend/lib/hq/operations.ts`). Every operation takes the
+acting person and the current time and checks the role itself. Clerk only
+proves who is signed in; the role (Admin or Senior staff) comes from the staff
+member record linked to the Clerk user id. A signed-in person with no staff
+record is told to ask an Admin.
+
+Which database Camp HQ uses:
+
+- **Local development** (and `next start` on your machine or in CI): a PGlite
+  Postgres inside the worktree, in the ignored `frontend/.hq-data` folder. It
+  applies the migrations and loads the sample data when it opens. The sample
+  data makes the Clerk test admin an Admin and the test leader a Senior staff
+  member (it looks them up, and creates them when missing, with a
+  development `sk_test_` key). It also loads the Camp groups and activities
+  from the committed `frontend/lib/hq/db/seed-lists.json` (their Teams are
+  sample). `pnpm --dir frontend hq:seed-lists` rebuilds that file from the
+  Website's published content; Camp HQ never reads the Website at run time.
+  Delete the folder to start again. PGlite allows
+  one process at a time: stop the dev server before running a Camp HQ command
+  against it.
+- **Vercel** (previews and production): the Neon database in `DATABASE_URL`.
+  Migrations never run at request time. Without `DATABASE_URL`, `/hq` says
+  Camp HQ's database is not set up.
+- `CAMP_HQ_DATABASE=neon` in `frontend/.env.local` switches local development
+  to the Neon database in `DATABASE_URL`; `CAMP_HQ_DATABASE=local` forces the
+  local one. The Neon database in `frontend/.env.local` is the shared dev
+  database that previews use.
+
+Apply the migrations to a Neon database on purpose with
+`pnpm --dir frontend hq:db:migrate`. It targets `DATABASE_URL_UNPOOLED`, or
+`DATABASE_URL`, prints the host and changes nothing; run it again with
+`--yes` to apply. Then `pnpm --dir frontend hq:db:sample --yes` loads the
+sample data into the shared dev database, so the test admin and test leader
+can sign in on a preview (code `424242`). It is for the dev database only and
+refuses a production Clerk key. `docs/camp-hq/README.md` covers running Camp
+HQ, the test users and the camper file.
+
+Make the first Admin by the email of their Clerk account:
+
+- Local database: `pnpm --dir frontend hq:make-admin someone@example.com`
+- Neon: `CAMP_HQ_DATABASE=neon pnpm --dir frontend hq:make-admin someone@example.com`
+
+The person must already exist in the Clerk instance that `CLERK_SECRET_KEY`
+belongs to. The command creates their staff record (Senior staff, Admin role)
+or makes an existing one an Admin. It is safe to run again.
+
 ## Search parity
 
 `node scripts/seo-parity.mjs [origin]` compares the live Webflow site with the

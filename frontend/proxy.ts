@@ -9,7 +9,9 @@ import {
   ELIGIBLE_BLOG_POSTS_COUNT_QUERY,
 } from "@/sanity/queries/blog-index";
 import type { ELIGIBLE_BLOG_POSTS_COUNT_QUERY_RESULT } from "@/sanity.types";
-import { NextRequest, NextResponse } from "next/server";
+import { isCampHqPath } from "@/lib/hq/config";
+import { campHqProxy } from "@/lib/hq/proxy";
+import { NextRequest, NextResponse, type NextFetchEvent } from "next/server";
 
 const BLOG_POST_COUNT_TTL_MS = 60_000;
 
@@ -106,7 +108,11 @@ function hasValidatedDraftMode(request: NextRequest) {
   );
 }
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest, event?: NextFetchEvent) {
+  if (isCampHqPath(request.nextUrl.pathname)) {
+    return campHqProxy(request, event);
+  }
+
   if (!request.nextUrl.pathname.startsWith("/blog/")) {
     return NextResponse.next();
   }

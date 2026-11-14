@@ -14,6 +14,9 @@ function requiredEnvironmentValue(name) {
 const nextConfig = {
   cacheComponents: true,
   cacheLife: { default: sanity },
+  // Camp HQ's local database (PGlite) loads its own WebAssembly files, so
+  // Node requires it as it is instead of bundling it.
+  serverExternalPackages: ["@electric-sql/pglite"],
   headers() {
     // Only the canonical host may be indexed. Previews, local servers and the
     // Vercel URLs of a production deployment all send noindex.
@@ -23,6 +26,12 @@ const nextConfig = {
         source: "/:path*",
         missing: [{ type: "host", value: canonicalHost }],
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      // Camp HQ is staff-only on every host. The request proxy sets the same
+      // header on its own responses, such as the sign-in redirect.
+      {
+        source: "/hq/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
     ];
   },

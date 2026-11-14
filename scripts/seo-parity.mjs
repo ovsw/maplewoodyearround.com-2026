@@ -123,6 +123,9 @@ async function fetchPage(url) {
   return {status: response.status, tags: html ? readSeoTags(html) : {jsonLdTypes: []}, robotsHeader: response.headers.get('x-robots-tag')};
 }
 
+/** Directives the new site adds on purpose: Camp HQ is staff-only. */
+export const addedRobotsDirectives = ['disallow: /hq'];
+
 /** robots.txt directives, compared without case or order. */
 export function robotsDirectives(text) {
   return text.split('\n')
@@ -147,7 +150,9 @@ export async function compareSite(newOrigin, livePaths) {
     [liveOrigin, newOrigin].map(async (origin) => robotsDirectives(await fetchText(`${origin}/robots.txt`))),
   );
   for (const line of liveRobots) if (!newRobots.includes(line)) differences.push({field: 'robots.txt', live: line, next: null});
-  for (const line of newRobots) if (!liveRobots.includes(line)) differences.push({field: 'robots.txt', live: null, next: line});
+  for (const line of newRobots) {
+    if (!liveRobots.includes(line) && !addedRobotsDirectives.includes(line)) differences.push({field: 'robots.txt', live: null, next: line});
+  }
 
   const locations = sitemapLocations(await fetchText(`${newOrigin}/sitemap.xml`));
   const expected = new Set([...livePaths, ...policyPaths].map(expectedCanonical));
