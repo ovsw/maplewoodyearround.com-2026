@@ -2,6 +2,8 @@
 // migrations applied, and the operations module on top of it, with a fake
 // sign-in service. Tests call the operations the way a page would; `db` is
 // only for arranging starting data.
+import { vi } from "vitest";
+
 import { openPgliteDatabase } from "../db/database.ts";
 import { staffMembers } from "../db/schema.ts";
 import { campHqSeed, loadSeedLists } from "../db/seed-lists.ts";
@@ -12,6 +14,11 @@ import {
 } from "../operations.ts";
 
 import { createFakeAccounts } from "./fake-accounts.ts";
+
+// Every test opens a fresh database and applies every migration. On a busy
+// machine (the release suite runs tests beside type checks and lint) that can
+// take longer than Vitest's default 5 seconds.
+vi.setConfig({ testTimeout: 30_000 });
 
 export const TEST_NOW = new Date("2027-07-06T13:00:00.000Z");
 
