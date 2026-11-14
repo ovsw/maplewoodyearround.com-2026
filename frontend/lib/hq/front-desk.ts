@@ -37,6 +37,8 @@ type NamedRef = { id: string; name: string };
 export type ChildWhereabouts =
   /** Before the group's first slot, after its last, or at a weekend. */
   | { kind: "outside-hours"; dayStart: number | null; dayEnd: number | null }
+  /** A weekday, but the group's Group schedule has no slots for it. */
+  | { kind: "no-schedule" }
   /** Inside the group's day, but no activity is booked right now. */
   | { kind: "nothing-booked" }
   | {
@@ -181,9 +183,8 @@ export function createFrontDeskOperations({ db, requireAdmin }: FrontDeskDeps) {
         const slots = slotRows.filter(({ slot }) => slot.campGroupId === campGroupId);
         const dayStart = slots.length > 0 ? Math.min(...slots.map(({ slot }) => slot.startMinute)) : null;
         const dayEnd = slots.length > 0 ? Math.max(...slots.map(({ slot }) => slot.endMinute)) : null;
-        if (clock.weekday === null || dayStart === null || dayEnd === null) {
-          return { kind: "outside-hours", dayStart, dayEnd };
-        }
+        if (clock.weekday === null) return { kind: "outside-hours", dayStart, dayEnd };
+        if (dayStart === null || dayEnd === null) return { kind: "no-schedule" };
         if (clock.minute < dayStart || clock.minute >= dayEnd) {
           return { kind: "outside-hours", dayStart, dayEnd };
         }

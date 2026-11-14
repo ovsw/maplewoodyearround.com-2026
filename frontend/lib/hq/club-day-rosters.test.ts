@@ -2,6 +2,7 @@
 // Club day rosters and the front desk lookup (#152), called the way a page
 // would: as a given person, at a given time. Every child, group and staff
 // member here is invented.
+import { and, eq } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import type { CamperLoadRow } from "./campers";
@@ -13,7 +14,7 @@ import {
   type CampHqRefusal,
   type CampHqRequest,
 } from "./operations";
-import { campers, clubDayPicks } from "./db/schema";
+import { campers, clubDayPicks, scheduleSlots } from "./db/schema";
 import { createCampHqTestDatabase } from "./test/camp-hq-test-database";
 
 type TestDatabase = Awaited<ReturnType<typeof createCampHqTestDatabase>>;
@@ -388,6 +389,16 @@ describe("the front desk lookup", () => {
     expect(after.expected && after.where).toEqual(hours);
     // Cleo is not expected on Saturday at all.
     expect(weekend.expected).toBe(false);
+  });
+
+  it("says when the group has no schedule today", async () => {
+    await test.db
+      .delete(scheduleSlots)
+      .where(and(eq(scheduleSlots.campGroupId, falcons), eq(scheduleSlots.weekday, TUESDAY)));
+
+    const [gus] = await lookUp("gus", MORNING);
+
+    expect(gus.expected && gus.where).toEqual({ kind: "no-schedule" });
   });
 
   it("says plainly when a child is not expected today", async () => {

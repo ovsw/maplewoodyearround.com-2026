@@ -128,6 +128,12 @@ function Whereabouts({ where, groupName }: { where: ChildWhereabouts; groupName:
           .
         </p>
       );
+    case "no-schedule":
+      return (
+        <p className="text-lg">
+          {groupName} has no schedule for today. Ask the group&apos;s leader where they are.
+        </p>
+      );
     case "nothing-booked":
       return (
         <p className="text-lg">

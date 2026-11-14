@@ -65,10 +65,10 @@ export function RosterSheet({ roster, date }: { roster: ClubDayRoster; date: str
           <tbody>
             {roster.campers.map((camper, index) => (
               <tr key={camper.id} className="border-b border-border print:break-inside-avoid">
-                <td className="py-2 pr-3 text-muted-foreground print:text-foreground">{index + 1}</td>
-                <td className="py-2 pr-3 text-lg font-semibold">{camper.name}</td>
-                <td className="py-2 pr-3">{camper.campGroup.name}</td>
-                <td className="py-2">{camper.finalWeek ? "★ Final week" : ""}</td>
+                <td className="py-2 pr-3 text-muted-foreground print:py-1 print:text-foreground">{index + 1}</td>
+                <td className="py-2 pr-3 text-lg font-semibold print:py-1 print:text-base">{camper.name}</td>
+                <td className="py-2 pr-3 print:py-1">{camper.campGroup.name}</td>
+                <td className="py-2 print:py-1">{camper.finalWeek ? "★ Final week" : ""}</td>
               </tr>
             ))}
           </tbody>
