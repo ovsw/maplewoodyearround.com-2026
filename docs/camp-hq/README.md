@@ -109,3 +109,17 @@ day and Club day pick before that date, the campers left with no day, and the
 records of loads made before it (they can name children). The newest load
 record stays while any camper does. The date cannot be later than today, and
 clearing cannot be undone.
+
+## Editable tables
+
+Admin screens edit in the table itself: click a cell, type or pick a value,
+and it saves. The shared table is in
+`frontend/app/hq/(signed-in)/editable-table/`. A screen passes plain rows and
+column definitions whose `save` calls a server action; the action returns a
+`CellResult`, and a refusal's reason shows in the cell, which goes back to its
+old value. The rules stay in `frontend/lib/hq`.
+
+The Group schedule is the first screen that uses it
+(`groups/[id]/schedule/schedule-table.tsx`). The cell types so far are time
+and dropdown. To add one (text, multi-pick, checkbox), add a member to
+`EditableColumn` in `types.ts` and its cell in `cells.tsx`.

@@ -10,16 +10,16 @@ import {
   campWeekday,
   formatSlotRange,
   isScheduleWeekday,
-  slotTimeValue,
   weekdayLabels,
   type ScheduleWeekday,
 } from "@/lib/hq/schedule-times";
-import type { ScheduleSlot } from "@/lib/hq/schedules";
+import type { DayChoices, ScheduleSlot } from "@/lib/hq/schedules";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../../camp-hq-page";
 import { CAMP_GROUPS_PATH } from "../../../lists-paths";
-import { AddSlotForm, RemoveSlotForm } from "./schedule-forms";
-import { scheduleDayPath, scheduleSlotPath } from "./schedule-paths";
+import type { EditableOption } from "../../../editable-table/types";
+import { scheduleDayPath } from "./schedule-paths";
+import { ScheduleTable, type ScheduleRow } from "./schedule-table";
 
 export const metadata: Metadata = { title: "Group schedule" };
 
@@ -34,10 +34,37 @@ export default function GroupSchedulePage({
   );
 }
 
-function slotLabel(slot: ScheduleSlot) {
-  if (slot.content.type === "club-day") return "Club day period";
-  if (slot.content.type === "activity") return slot.content.activity.name;
-  return "Empty";
+function slotChoice(slot: ScheduleSlot) {
+  return slot.content.type === "activity" ? `activity:${slot.content.activity.id}` : slot.content.type;
+}
+
+/** What one slot can hold: nothing, a Club day period, or an activity allowed for the group. */
+function slotOptions(slot: ScheduleSlot, { activities, bookedBy }: DayChoices): EditableOption[] {
+  const options: EditableOption[] = [
+    { value: "empty", label: "Empty" },
+    { value: "club-day", label: "Club day period" },
+    ...activities.map((activity) => {
+      const booking = bookedBy[slot.id]?.[activity.id];
+      return {
+        value: `activity:${activity.id}`,
+        label: activity.name,
+        group: "Activities",
+        unavailable: booking
+          ? `${booking.campGroupName} have it ${formatSlotRange(booking.start, booking.end)}`
+          : undefined,
+      };
+    }),
+  ];
+  // Keep the slot's current activity visible even if the group's grades changed since.
+  const current = slotChoice(slot);
+  if (slot.content.type === "activity" && !options.some((option) => option.value === current)) {
+    options.push({
+      value: current,
+      label: `${slot.content.activity.name} (not allowed for these grades)`,
+      group: "Activities",
+    });
+  }
+  return options;
 }
 
 async function GroupSchedule({
@@ -56,7 +83,7 @@ async function GroupSchedule({
     ? asked
     : (campWeekday(request.now) ?? 1);
 
-  const schedule = await campHq.getGroupSchedule(request, id).catch((error: unknown) => {
+  const schedule = await campHq.getDayChoices(request, id, weekday).catch((error: unknown) => {
     if (isCampHqRefusal(error, "not-found")) return null;
     throw error;
   });
@@ -70,9 +97,13 @@ async function GroupSchedule({
     );
   }
 
-  const slots = schedule.days.find((day) => day.weekday === weekday)?.slots ?? [];
-  const lastEnd = slots.at(-1)?.end ?? 9 * 60 + 30;
-  const nextStart = Math.min(lastEnd, 23 * 60);
+  const rows: ScheduleRow[] = schedule.slots.map((slot) => ({
+    id: slot.id,
+    start: slot.start,
+    end: slot.end,
+    choice: slotChoice(slot),
+    options: slotOptions(slot, schedule),
+  }));
 
   return (
     <section className="flex flex-col gap-6">
@@ -99,70 +130,20 @@ async function GroupSchedule({
       </nav>
 
       <h2 className="text-title">{weekdayLabels[weekday]}</h2>
-      {slots.length === 0 ? (
-        <p className="text-muted-foreground">This day has no slots.</p>
-      ) : (
-        <table className="w-full max-w-4xl border-collapse text-left">
-          <thead>
-            <tr className="border-b border-border text-label">
-              <th scope="col" className="py-3 pr-4">Time</th>
-              <th scope="col" className="py-3 pr-4">Activity</th>
-              {isAdmin ? (
-                <th scope="col" className="py-3">
-                  <span className="sr-only">Changes</span>
-                </th>
-              ) : null}
-            </tr>
-          </thead>
-          <tbody>
-            {slots.map((slot) => {
-              const times = formatSlotRange(slot.start, slot.end);
-              return (
-                <tr key={slot.id} className="border-b border-border align-middle">
-                  <th scope="row" className="py-3 pr-4 font-normal whitespace-nowrap">
-                    {times}
-                  </th>
-                  <td
-                    className={`py-3 pr-4 ${slot.content.type === "empty" ? "text-muted-foreground" : "font-semibold"}`}
-                  >
-                    {slotLabel(slot)}
-                  </td>
-                  {isAdmin ? (
-                    <td className="py-2">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button asChild variant="outline">
-                          <Link
-                            href={scheduleSlotPath(schedule.group.id, slot.id)}
-                            aria-label={`Change the ${times} slot`}
-                          >
-                            Change
-                          </Link>
-                        </Button>
-                        <RemoveSlotForm slotId={slot.id} weekday={weekday} label={times} />
-                      </div>
-                    </td>
-                  ) : null}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
-
-      {isAdmin ? (
-        <>
-          <h2 className="text-title">Add a slot on {weekdayLabels[weekday]}</h2>
-          <AddSlotForm
-            key={`${schedule.group.id}:${weekday}`}
-            groupId={schedule.group.id}
-            weekday={weekday}
-            start={slotTimeValue(nextStart)}
-            end={slotTimeValue(nextStart + 30)}
-          />
-        </>
-      ) : (
-        <p className="text-muted-foreground">Only an Admin can change schedules.</p>
-      )}
+      <p className="max-w-3xl text-muted-foreground">
+        {isAdmin
+          ? `Click a time or an activity to change it. It saves by itself. Only activities allowed for the grades of ${schedule.group.name} are listed.`
+          : "Only an Admin can change schedules."}
+      </p>
+      <ScheduleTable
+        key={`${schedule.group.id}:${weekday}`}
+        groupId={schedule.group.id}
+        groupName={schedule.group.name}
+        weekday={weekday}
+        weekdayLabel={weekdayLabels[weekday]}
+        rows={rows}
+        readOnly={!isAdmin}
+      />
     </section>
   );
 }
