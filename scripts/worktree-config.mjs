@@ -7,6 +7,11 @@ import path from "node:path";
 import { promisify } from "node:util";
 
 export const HOST = "127.0.0.1";
+// The Website dev server listens on "localhost", not HOST. With
+// `next dev --hostname 127.0.0.1`, Next treats a proxy rewrite to the request's
+// own URL as a call to another server and times out. Camp HQ's sign-in check
+// (Clerk) makes that rewrite on every /hq request.
+export const WEBSITE_HOST = "localhost";
 export const SLOT_COUNT = 10;
 export const FRONTEND_BASE_PORT = 3000;
 export const STUDIO_BASE_PORT = 3333;
@@ -134,7 +139,15 @@ async function saveState(runtimeFile, state) {
   }
 }
 
-export async function isPortAvailable(port, host = HOST) {
+export async function isPortAvailable(port, host) {
+  if (host === undefined) {
+    // The Studio listens on HOST and the Website on WEBSITE_HOST, which can be
+    // different addresses (127.0.0.1 and ::1). A port is free when both are.
+    const results = await Promise.all(
+      [HOST, WEBSITE_HOST].map((each) => isPortAvailable(port, each)),
+    );
+    return results.every(Boolean);
+  }
   return new Promise((resolve, reject) => {
     const server = net.createServer();
     server.unref();

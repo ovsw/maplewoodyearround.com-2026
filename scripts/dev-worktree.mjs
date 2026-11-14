@@ -3,7 +3,7 @@
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { allocatePorts, HOST } from "./worktree-config.mjs";
+import { allocatePorts, HOST, WEBSITE_HOST } from "./worktree-config.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -58,7 +58,7 @@ async function main() {
         "next",
         "dev",
         "--hostname",
-        HOST,
+        WEBSITE_HOST,
         "--port",
         String(ports.frontendPort),
       ],

@@ -14,6 +14,7 @@ test("repeated interrupts still stop both child groups and release the reservati
   writeFileSync(path.join(root, "scripts/worktree-config.mjs"), `
     import { writeFile } from 'node:fs/promises';
     export const HOST = '127.0.0.1';
+    export const WEBSITE_HOST = 'localhost';
     export async function allocatePorts() {
       return { slot: 0, frontendPort: 3000, studioPort: 3333,
         release: () => writeFile(${JSON.stringify(path.join(root, "released"))}, 'released') };

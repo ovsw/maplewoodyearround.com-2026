@@ -41,7 +41,8 @@ const portsFile = path.join(root, ".worktree-ports.json");
 const ports = existsSync(portsFile)
   ? JSON.parse(readFileSync(portsFile, "utf8"))
   : { frontendPort: 3000, studioPort: 3333 };
-const frontend = `http://127.0.0.1:${ports.frontendPort}`;
+// `pnpm dev:worktree` serves the Website on localhost and the Studio on 127.0.0.1.
+const frontend = `http://localhost:${ports.frontendPort}`;
 const studio = `http://127.0.0.1:${ports.studioPort}`;
 
 // Resolve packages the way the frontend does, so pnpm's strict layout works.

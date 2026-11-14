@@ -168,7 +168,7 @@ export async function compare(route, origin, storageState) {
       if (error.code !== 'ENOENT') throw error;
       return {frontendPort: 3000};
     });
-    origin = `http://127.0.0.1:${ports.frontendPort}`;
+    origin = `http://localhost:${ports.frontendPort}`;
   }
   const base = new URL(origin);
   if (!['http:', 'https:'].includes(base.protocol) || base.username || base.password || base.search || base.hash || base.pathname !== '/') {
