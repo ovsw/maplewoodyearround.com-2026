@@ -12,7 +12,11 @@ import {
   type CampHqOperations,
   type CampHqRequest,
 } from "@/lib/hq/operations";
-import type { SlotContentInput, SlotTimesInput } from "@/lib/hq/schedules";
+import type {
+  SlotContentInput,
+  SlotTimesChange,
+  SlotTimesInput,
+} from "@/lib/hq/schedules";
 import { requireCampHqActor } from "@/lib/hq/session";
 
 import type { CellResult } from "../../../editable-table/types";
@@ -73,10 +77,11 @@ export async function addScheduleSlot(
   );
 }
 
+/** Changes one time of a slot, or both. The time left out keeps its stored value. */
 export async function changeScheduleSlotTimes(
   slotId: string,
   weekday: number,
-  times: SlotTimesInput,
+  times: SlotTimesChange,
 ): Promise<CellResult> {
   return run(weekday, (campHq, request) =>
     campHq.changeScheduleSlotTimes(request, slotId, times),

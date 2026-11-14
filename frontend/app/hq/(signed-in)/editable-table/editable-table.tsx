@@ -97,6 +97,8 @@ function BlankRow<Row>({
       setDraft({});
       setRefused(null);
     } else {
+      // Leaving the row or pressing Enter again tries once more.
+      setChanged(true);
       setRefused(result);
     }
   }

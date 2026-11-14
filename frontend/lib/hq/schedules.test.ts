@@ -382,6 +382,35 @@ describe("Exclusive activities", () => {
   });
 });
 
+describe("changing one time of a slot", () => {
+  it("keeps the stored value of the time left out", async () => {
+    const setup = await start();
+    const slot = await slotAt(setup, setup.otters.id, 1, "9:30");
+
+    await setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { start: "09:40" });
+    const changed = await setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, {
+      end: "09:55",
+    });
+
+    expect([changed.start, changed.end]).toEqual([580, 595]);
+  });
+
+  it("checks the changed time against the stored one and the other slots", async () => {
+    const setup = await start();
+    const slot = await slotAt(setup, setup.otters.id, 1, "9:30");
+
+    const tooLate = await refusal(
+      setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { start: "10:00" }),
+    );
+    const overlap = await refusal(
+      setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { end: "10:15" }),
+    );
+
+    expect(tooLate.message).toBe("The slot must end after it starts.");
+    expect(overlap.reason).toBe("slot-overlap");
+  });
+});
+
 describe("the choices for a whole day", () => {
   it("lists the day's slots and the activities allowed for the group's grades", async () => {
     const setup = await start();

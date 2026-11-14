@@ -52,6 +52,9 @@ function useCellSave<Value>(value: Value, save: (next: Value) => Promise<CellRes
     return () => clearTimeout(timer);
   }, [status]);
 
+  // The stored value moved on: the pending value was confirmed or replaced, so
+  // drop it. It must not come back if the stored value returns to the old one.
+  if (pending && !Object.is(pending.over, value)) setPending(null);
   const shown = pending && Object.is(pending.over, value) ? pending.value : value;
 
   async function commit(next: Value) {
@@ -223,7 +226,11 @@ export function SelectCell({
           </button>
         </PopoverTrigger>
         <PopoverContent id={listId} align="start" className="w-(--radix-popover-trigger-width) min-w-80 p-0">
-          <Command>
+          <Command
+            filter={(_value, search, keywords) =>
+              (keywords ?? []).join(" ").toLowerCase().includes(search.trim().toLowerCase()) ? 1 : 0
+            }
+          >
             <CommandInput placeholder={searchPlaceholder} />
             <CommandList>
               <CommandEmpty>Nothing matches.</CommandEmpty>
@@ -232,7 +239,8 @@ export function SelectCell({
                   {group.options.map((option) => (
                     <CommandItem
                       key={option.value}
-                      value={option.label}
+                      value={option.value}
+                      keywords={[option.label]}
                       disabled={Boolean(option.unavailable)}
                       onSelect={() => {
                         setOpen(false);

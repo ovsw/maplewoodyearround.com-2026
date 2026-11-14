@@ -35,6 +35,7 @@ import {
   formatSlotRange,
   isScheduleWeekday,
   parseSlotTime,
+  slotTimeValue,
   weekdayLabels,
   type ScheduleWeekday,
 } from "./schedule-times.ts";
@@ -99,6 +100,9 @@ export type DayChoices = {
 };
 
 export type SlotTimesInput = { start: string; end: string };
+
+/** A change of a slot's times. A time left out keeps its stored value. */
+export type SlotTimesChange = { start?: string; end?: string };
 
 export type SlotContentInput =
   | { type: "empty" }
@@ -529,18 +533,29 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
       });
     },
 
-    /** Changes a slot's start and end. A booked Exclusive activity is checked again. */
+    /**
+     * Changes a slot's start, its end, or both. A time left out keeps the value
+     * stored when the change runs, so two changes of one slot, one of each
+     * time, both hold. A booked Exclusive activity is checked again.
+     */
     async changeScheduleSlotTimes(
       { actor, now }: CampHqRequest,
       slotId: string,
-      input: SlotTimesInput,
+      input: SlotTimesChange,
     ): Promise<ScheduleSlot> {
       await requireAdmin(actor);
-      const times = cleanTimes(input);
+      // Both times given: refuse a bad time before looking for the slot.
+      if (input?.start != null && input?.end != null) {
+        cleanTimes({ start: input.start, end: input.end });
+      }
       return db.transaction(async (transaction) => {
         const tx = transaction as unknown as CampHqDb;
         await lockClashRules(tx);
         const { slot, group } = await slotForChange(tx, slotId);
+        const times = cleanTimes({
+          start: input?.start ?? slotTimeValue(slot.startMinute),
+          end: input?.end ?? slotTimeValue(slot.endMinute),
+        });
         await refuseOwnOverlap(tx, group.id, slot.weekday, times, slot.id);
         const activity = slot.activityId
           ? await refuseClash(tx, slot.activityId, group.id, slot.weekday, times)

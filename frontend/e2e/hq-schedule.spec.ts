@@ -24,14 +24,17 @@ const hasClerkKeys = Boolean(
 const leader = campHqTestUsers.find(({ role }) => role === "Group leader")!;
 const admin = campHqTestUsers.find(({ role }) => role === "Admin")!;
 
-/** Opens the Friday schedule of the Camp group at this place in the list of groups. */
-async function openFriday(page: Page, place: number) {
+/** A retry in the same run takes a day the earlier attempt left untouched. */
+const DAYS = ["Friday", "Thursday", "Wednesday"];
+
+/** Opens one day of the schedule of the Camp group at this place in the list of groups. */
+async function openDay(page: Page, place: number, day: string) {
   await page.goto("/hq/groups");
   const link = page.getByRole("link", { name: /^Schedule of / }).nth(place);
   const name = (await link.getAttribute("aria-label"))!.replace("Schedule of ", "");
   await link.click();
-  await page.getByRole("link", { name: "Friday" }).click();
-  await expect(page.getByRole("heading", { name: "Friday" })).toBeVisible();
+  await page.getByRole("link", { name: day }).click();
+  await expect(page.getByRole("heading", { name: day })).toBeVisible();
   return name;
 }
 
@@ -50,13 +53,14 @@ test.describe("Camp HQ: the Group schedule table", () => {
     await ensureClerkTestUsers({ secretKey: process.env.CLERK_SECRET_KEY });
   });
 
-  test("an Admin edits a day in the rows; a leader sees it read-only", async ({ page }) => {
+  test("an Admin edits a day in the rows; a leader sees it read-only", async ({ page }, testInfo) => {
     test.setTimeout(120_000);
+    const day = DAYS[testInfo.retry % DAYS.length];
     await page.goto("/hq/sign-in");
     await clerk.signIn({ page, emailAddress: admin.emailAddress });
 
-    const first = await openFriday(page, 0);
-    const table = page.getByRole("table", { name: `Friday schedule of ${first}` });
+    const first = await openDay(page, 0, day);
+    const table = page.getByRole("table", { name: `${day} schedule of ${first}` });
 
     await test.step("picking an activity saves it", async () => {
       await pickActivity(page, "2:00 PM to 2:30 PM", "Archery");
@@ -102,7 +106,7 @@ test.describe("Camp HQ: the Group schedule table", () => {
     });
 
     await test.step("another group sees the Exclusive activity greyed out, with who has it", async () => {
-      await openFriday(page, 1);
+      await openDay(page, 1, day);
       await page
         .getByRole("combobox", { name: "Activity of the 2:00 PM to 2:30 PM slot" })
         .click();
@@ -116,7 +120,7 @@ test.describe("Camp HQ: the Group schedule table", () => {
       await clerk.signOut({ page });
       await page.goto("/hq/sign-in");
       await clerk.signIn({ page, emailAddress: leader.emailAddress });
-      await openFriday(page, 0);
+      await openDay(page, 0, day);
       await expect(page.getByText("Only an Admin can change schedules.")).toBeVisible();
       await expect(table.getByRole("row", { name: /2:00 PM 2:20 PM Archery/ })).toBeVisible();
       await expect(table.getByRole("combobox")).toHaveCount(0);

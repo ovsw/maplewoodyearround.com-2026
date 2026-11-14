@@ -62,8 +62,8 @@ export function ScheduleTable({
       className: "w-56",
       value: (row) => slotTimeValue(row.start),
       display: (row) => formatSlotTime(row.start),
-      save: (row, start) =>
-        changeScheduleSlotTimes(row.id, weekday, { start, end: slotTimeValue(row.end) }),
+      // Only the edited time is sent; the server keeps the other as stored.
+      save: (row, start) => changeScheduleSlotTimes(row.id, weekday, { start }),
     },
     {
       id: "end",
@@ -72,8 +72,7 @@ export function ScheduleTable({
       className: "w-56",
       value: (row) => slotTimeValue(row.end),
       display: (row) => formatSlotTime(row.end),
-      save: (row, end) =>
-        changeScheduleSlotTimes(row.id, weekday, { start: slotTimeValue(row.start), end }),
+      save: (row, end) => changeScheduleSlotTimes(row.id, weekday, { end }),
     },
     {
       id: "activity",
