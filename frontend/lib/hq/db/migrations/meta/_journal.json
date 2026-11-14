@@ -26,8 +26,15 @@
     {
       "idx": 3,
       "version": "7",
-      "when": 1794614237733,
-      "tag": "0003_camp_hq_assignments",
+      "when": 1794614473041,
+      "tag": "0003_camp_hq_group_schedules",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794617020744,
+      "tag": "0004_camp_hq_assignments",
       "breakpoints": true
     }
   ]

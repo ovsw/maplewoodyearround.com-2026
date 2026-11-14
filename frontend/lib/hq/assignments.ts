@@ -199,6 +199,7 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
             "confirm-replace",
             `${current.name} leads ${group.name}. Replace ${current.name} with ${person.name}?`,
             [],
+            undefined,
             current.id,
           );
         }
@@ -254,6 +255,7 @@ export function createAssignmentOperations({ db, requirePerson, requireAdmin }: 
             "confirm-replace",
             `${current.name} is the specialist for ${activity.name}. Replace ${current.name} with ${person.name}?`,
             [],
+            undefined,
             current.id,
           );
         }

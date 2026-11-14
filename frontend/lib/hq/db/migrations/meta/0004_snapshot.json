@@ -1,0 +1,794 @@
+{
+  "id": "5e3a2b6c-517f-49fe-bb03-fc6440ed8933",
+  "prevId": "ac5c8066-f6e2-4029-862a-3c3c97fb5ba9",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.activities": {
+      "name": "activities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grades": {
+          "name": "grades",
+          "type": "grade[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "activity_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'exclusive'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "activities_name_unique": {
+          "name": "activities_name_unique",
+          "columns": [
+            {
+              "expression": "lower(\"name\")",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.activity_specialists": {
+      "name": "activity_specialists",
+      "schema": "",
+      "columns": {
+        "activity_id": {
+          "name": "activity_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "staff_member_id": {
+          "name": "staff_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "activity_specialists_staff_member": {
+          "name": "activity_specialists_staff_member",
+          "columns": [
+            {
+              "expression": "staff_member_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "activity_specialists_activity_id_activities_id_fk": {
+          "name": "activity_specialists_activity_id_activities_id_fk",
+          "tableFrom": "activity_specialists",
+          "tableTo": "activities",
+          "columnsFrom": [
+            "activity_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "activity_specialists_staff_member_id_staff_members_id_fk": {
+          "name": "activity_specialists_staff_member_id_staff_members_id_fk",
+          "tableFrom": "activity_specialists",
+          "tableTo": "staff_members",
+          "columnsFrom": [
+            "staff_member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.camp_groups": {
+      "name": "camp_groups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grades": {
+          "name": "grades",
+          "type": "grade[]",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team": {
+          "name": "team",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "team_is_sample": {
+          "name": "team_is_sample",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "change_location": {
+          "name": "change_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "free_swim_location": {
+          "name": "free_swim_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "lunch_location": {
+          "name": "lunch_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "swim_lessons_location": {
+          "name": "swim_lessons_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "camp_groups_name_unique": {
+          "name": "camp_groups_name_unique",
+          "columns": [
+            {
+              "expression": "lower(\"name\")",
+              "asc": true,
+              "isExpression": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "camp_groups_team_range": {
+          "name": "camp_groups_team_range",
+          "value": "\"camp_groups\".\"team\" between 1 and 4"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.group_leaders": {
+      "name": "group_leaders",
+      "schema": "",
+      "columns": {
+        "camp_group_id": {
+          "name": "camp_group_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "staff_member_id": {
+          "name": "staff_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "group_leaders_camp_group_id_camp_groups_id_fk": {
+          "name": "group_leaders_camp_group_id_camp_groups_id_fk",
+          "tableFrom": "group_leaders",
+          "tableTo": "camp_groups",
+          "columnsFrom": [
+            "camp_group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "group_leaders_staff_member_id_staff_members_id_fk": {
+          "name": "group_leaders_staff_member_id_staff_members_id_fk",
+          "tableFrom": "group_leaders",
+          "tableTo": "staff_members",
+          "columnsFrom": [
+            "staff_member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "group_leaders_staff_member_id_unique": {
+          "name": "group_leaders_staff_member_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "staff_member_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.junior_placements": {
+      "name": "junior_placements",
+      "schema": "",
+      "columns": {
+        "staff_member_id": {
+          "name": "staff_member_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "camp_group_id": {
+          "name": "camp_group_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "club_day_activity_id": {
+          "name": "club_day_activity_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "junior_placements_camp_group": {
+          "name": "junior_placements_camp_group",
+          "columns": [
+            {
+              "expression": "camp_group_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "junior_placements_club_day_activity": {
+          "name": "junior_placements_club_day_activity",
+          "columns": [
+            {
+              "expression": "club_day_activity_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "junior_placements_staff_member_id_staff_members_id_fk": {
+          "name": "junior_placements_staff_member_id_staff_members_id_fk",
+          "tableFrom": "junior_placements",
+          "tableTo": "staff_members",
+          "columnsFrom": [
+            "staff_member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "junior_placements_camp_group_id_camp_groups_id_fk": {
+          "name": "junior_placements_camp_group_id_camp_groups_id_fk",
+          "tableFrom": "junior_placements",
+          "tableTo": "camp_groups",
+          "columnsFrom": [
+            "camp_group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "junior_placements_club_day_activity_id_activities_id_fk": {
+          "name": "junior_placements_club_day_activity_id_activities_id_fk",
+          "tableFrom": "junior_placements",
+          "tableTo": "activities",
+          "columnsFrom": [
+            "club_day_activity_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.schedule_days": {
+      "name": "schedule_days",
+      "schema": "",
+      "columns": {
+        "camp_group_id": {
+          "name": "camp_group_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weekday": {
+          "name": "weekday",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "schedule_days_camp_group_id_camp_groups_id_fk": {
+          "name": "schedule_days_camp_group_id_camp_groups_id_fk",
+          "tableFrom": "schedule_days",
+          "tableTo": "camp_groups",
+          "columnsFrom": [
+            "camp_group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "schedule_days_camp_group_id_weekday_pk": {
+          "name": "schedule_days_camp_group_id_weekday_pk",
+          "columns": [
+            "camp_group_id",
+            "weekday"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "schedule_days_weekday_range": {
+          "name": "schedule_days_weekday_range",
+          "value": "\"schedule_days\".\"weekday\" between 1 and 5"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.schedule_slots": {
+      "name": "schedule_slots",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "camp_group_id": {
+          "name": "camp_group_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weekday": {
+          "name": "weekday",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_minute": {
+          "name": "start_minute",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_minute": {
+          "name": "end_minute",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "activity_id": {
+          "name": "activity_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_club_day": {
+          "name": "is_club_day",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "schedule_slots_day_index": {
+          "name": "schedule_slots_day_index",
+          "columns": [
+            {
+              "expression": "camp_group_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "weekday",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "schedule_slots_activity_index": {
+          "name": "schedule_slots_activity_index",
+          "columns": [
+            {
+              "expression": "activity_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "weekday",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "schedule_slots_activity_id_activities_id_fk": {
+          "name": "schedule_slots_activity_id_activities_id_fk",
+          "tableFrom": "schedule_slots",
+          "tableTo": "activities",
+          "columnsFrom": [
+            "activity_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "schedule_slots_day_fk": {
+          "name": "schedule_slots_day_fk",
+          "tableFrom": "schedule_slots",
+          "tableTo": "schedule_days",
+          "columnsFrom": [
+            "camp_group_id",
+            "weekday"
+          ],
+          "columnsTo": [
+            "camp_group_id",
+            "weekday"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "schedule_slots_times": {
+          "name": "schedule_slots_times",
+          "value": "\"schedule_slots\".\"start_minute\" >= 0 and \"schedule_slots\".\"end_minute\" <= 1440 and \"schedule_slots\".\"start_minute\" < \"schedule_slots\".\"end_minute\""
+        },
+        "schedule_slots_one_use": {
+          "name": "schedule_slots_one_use",
+          "value": "not (\"schedule_slots\".\"is_club_day\" and \"schedule_slots\".\"activity_id\" is not null)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.staff_members": {
+      "name": "staff_members",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "staff_kind",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clerk_user_id": {
+          "name": "clerk_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "account_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "account_email": {
+          "name": "account_email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "account_switched_off": {
+          "name": "account_switched_off",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "staff_members_clerk_user_id_unique": {
+          "name": "staff_members_clerk_user_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "clerk_user_id"
+          ]
+        },
+        "staff_members_account_email_unique": {
+          "name": "staff_members_account_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "account_email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "staff_members_role_needs_account": {
+          "name": "staff_members_role_needs_account",
+          "value": "(\"staff_members\".\"clerk_user_id\" is null) = (\"staff_members\".\"role\" is null)"
+        },
+        "staff_members_switched_off_needs_account": {
+          "name": "staff_members_switched_off_needs_account",
+          "value": "not \"staff_members\".\"account_switched_off\" or \"staff_members\".\"clerk_user_id\" is not null"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.account_role": {
+      "name": "account_role",
+      "schema": "public",
+      "values": [
+        "admin",
+        "senior_staff"
+      ]
+    },
+    "public.activity_kind": {
+      "name": "activity_kind",
+      "schema": "public",
+      "values": [
+        "exclusive",
+        "shared"
+      ]
+    },
+    "public.grade": {
+      "name": "grade",
+      "schema": "public",
+      "values": [
+        "preschool",
+        "kindergarten",
+        "grade_1",
+        "grade_2",
+        "grade_3",
+        "grade_4",
+        "grade_5",
+        "grade_6",
+        "grade_7",
+        "grade_8",
+        "grade_9"
+      ]
+    },
+    "public.staff_kind": {
+      "name": "staff_kind",
+      "schema": "public",
+      "values": [
+        "senior",
+        "junior"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
