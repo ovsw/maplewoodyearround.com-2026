@@ -2,7 +2,11 @@
 // that is still used is refused with these descriptions. Each later feature
 // that refers to a group or an activity (Assignments, schedules, Club day
 // options) adds its check here.
+import { asc, eq, sql } from "drizzle-orm";
+
 import type { CampHqDb } from "./db/database.ts";
+import { campGroups, scheduleSlots } from "./db/schema.ts";
+import { formatSlotRange, weekdayLabels, type ScheduleWeekday } from "./schedule-times.ts";
 
 /** Returns one plain description per place the record is used, e.g. "Schedule of Knights, Monday 9:00". */
 export type CampHqUsageCheck = (db: CampHqDb, id: string) => Promise<string[]>;
@@ -12,7 +16,34 @@ export type CampHqUsageChecks = {
   activity: CampHqUsageCheck[];
 };
 
+/**
+ * Where an activity is booked on a Group schedule, e.g. "Schedule of Knights,
+ * Monday 9:30 AM to 10:00 AM". A Camp group's own schedule is removed with it,
+ * so it is not a use of the group.
+ */
+export const activityOnGroupSchedules: CampHqUsageCheck = async (db, activityId) => {
+  const rows = await db
+    .select({
+      groupName: campGroups.name,
+      weekday: scheduleSlots.weekday,
+      start: scheduleSlots.startMinute,
+      end: scheduleSlots.endMinute,
+    })
+    .from(scheduleSlots)
+    .innerJoin(campGroups, eq(campGroups.id, scheduleSlots.campGroupId))
+    .where(eq(scheduleSlots.activityId, activityId))
+    .orderBy(
+      asc(sql`lower(${campGroups.name})`),
+      asc(scheduleSlots.weekday),
+      asc(scheduleSlots.startMinute),
+    );
+  return rows.map(
+    (row) =>
+      `Schedule of ${row.groupName}, ${weekdayLabels[row.weekday as ScheduleWeekday]} ${formatSlotRange(row.start, row.end)}`,
+  );
+};
+
 export const campHqUsageChecks: CampHqUsageChecks = {
   campGroup: [],
-  activity: [],
+  activity: [activityOnGroupSchedules],
 };

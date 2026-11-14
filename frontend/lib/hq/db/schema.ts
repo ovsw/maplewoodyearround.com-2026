@@ -6,8 +6,11 @@ import { sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  foreignKey,
+  index,
   pgEnum,
   pgTable,
+  primaryKey,
   smallint,
   text,
   timestamp,
@@ -99,4 +102,61 @@ export const activities = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
   },
   (table) => [uniqueIndex("activities_name_unique").on(sql`lower(${table.name})`)],
+);
+
+/**
+ * One weekday (1 Monday to 5 Friday) of a Camp group's weekly Group schedule.
+ * The row exists once the day has been started with its default slots, so a
+ * day whose slots were all removed stays empty.
+ */
+export const scheduleDays = pgTable(
+  "schedule_days",
+  {
+    campGroupId: uuid("camp_group_id")
+      .notNull()
+      .references(() => campGroups.id, { onDelete: "cascade" }),
+    weekday: smallint("weekday").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.campGroupId, table.weekday] }),
+    check("schedule_days_weekday_range", sql`${table.weekday} between 1 and 5`),
+  ],
+);
+
+/**
+ * A slot in a Camp group's day. Times are minutes after midnight in camp local
+ * time (America/New_York). A slot holds one activity, is a Club day period, or
+ * is empty.
+ */
+export const scheduleSlots = pgTable(
+  "schedule_slots",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    campGroupId: uuid("camp_group_id").notNull(),
+    weekday: smallint("weekday").notNull(),
+    startMinute: smallint("start_minute").notNull(),
+    endMinute: smallint("end_minute").notNull(),
+    activityId: uuid("activity_id").references(() => activities.id, { onDelete: "restrict" }),
+    isClubDay: boolean("is_club_day").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.campGroupId, table.weekday],
+      foreignColumns: [scheduleDays.campGroupId, scheduleDays.weekday],
+      name: "schedule_slots_day_fk",
+    }).onDelete("cascade"),
+    index("schedule_slots_day_index").on(table.campGroupId, table.weekday),
+    index("schedule_slots_activity_index").on(table.activityId, table.weekday),
+    check(
+      "schedule_slots_times",
+      sql`${table.startMinute} >= 0 and ${table.endMinute} <= 1440 and ${table.startMinute} < ${table.endMinute}`,
+    ),
+    check(
+      "schedule_slots_one_use",
+      sql`not (${table.isClubDay} and ${table.activityId} is not null)`,
+    ),
+  ],
 );

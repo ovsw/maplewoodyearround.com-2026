@@ -8,6 +8,7 @@ import type { CampHqAccounts } from "./accounts.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
 import { createListOperations } from "./lists.ts";
+import { createScheduleOperations } from "./schedules.ts";
 import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
 
 /** Who is acting: a signed-in account, or a trusted command run by hand. */
@@ -45,21 +46,35 @@ export type CampHqRefusalReason =
   | "last-admin"
   | "accounts-unavailable"
   | "name-taken"
-  | "in-use";
+  | "in-use"
+  | "clash"
+  | "grade-not-allowed"
+  | "slot-overlap";
+
+/** The other side of a refused booking, such as the Camp group that has it. */
+export type CampHqOtherParty = { kind: "camp-group"; id: string; name: string };
 
 /**
  * Thrown when Camp HQ refuses an operation. `reason` says why; `usedIn` lists
- * where a record is still used when removing it is refused.
+ * where a record is still used when removing it is refused; `other` names the
+ * other side of a clash.
  */
 export class CampHqRefusal extends Error {
   readonly reason: CampHqRefusalReason;
   readonly usedIn: string[];
+  readonly other: CampHqOtherParty | undefined;
 
-  constructor(reason: CampHqRefusalReason, message: string, usedIn: string[] = []) {
+  constructor(
+    reason: CampHqRefusalReason,
+    message: string,
+    usedIn: string[] = [],
+    other?: CampHqOtherParty,
+  ) {
     super(message);
     this.name = "CampHqRefusal";
     this.reason = reason;
     this.usedIn = usedIn;
+    this.other = other;
   }
 }
 
@@ -243,6 +258,7 @@ export function createCampHqOperations(
 
   return {
     ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
+    ...createScheduleOperations({ db, requirePerson, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {

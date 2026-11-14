@@ -55,7 +55,8 @@ async function CampGroups() {
                 <th scope="col" className="py-3 pr-4">Change</th>
                 <th scope="col" className="py-3 pr-4">Free swim</th>
                 <th scope="col" className="py-3 pr-4">Lunch</th>
-                <th scope="col" className="py-3">Swim lessons</th>
+                <th scope="col" className="py-3 pr-4">Swim lessons</th>
+                <th scope="col" className="py-3">Schedule</th>
               </tr>
             </thead>
             <tbody>
@@ -83,7 +84,16 @@ async function CampGroups() {
                   <td className="py-3 pr-4">{group.locations.change}</td>
                   <td className="py-3 pr-4">{group.locations.freeSwim}</td>
                   <td className="py-3 pr-4">{group.locations.lunch}</td>
-                  <td className="py-3">{group.locations.swimLessons}</td>
+                  <td className="py-3 pr-4">{group.locations.swimLessons}</td>
+                  <td className="py-3">
+                    <Link
+                      href={`${CAMP_GROUPS_PATH}/${group.id}/schedule`}
+                      className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
+                      aria-label={`Schedule of ${group.name}`}
+                    >
+                      Schedule
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
