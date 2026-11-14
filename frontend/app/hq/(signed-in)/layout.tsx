@@ -12,7 +12,7 @@ export default function CampHqSignedInLayout({
 }) {
   return (
     <>
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-border bg-card print:hidden">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
           <Link
             href={CAMP_HQ_PATH}
@@ -23,7 +23,7 @@ export default function CampHqSignedInLayout({
           <CampHqSignOutButton />
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
+      <main className="mx-auto max-w-6xl px-6 py-8 print:max-w-none print:p-0">{children}</main>
     </>
   );
 }

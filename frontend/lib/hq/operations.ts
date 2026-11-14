@@ -10,7 +10,9 @@ import { staffMembers } from "./db/schema.ts";
 import { createAssignmentOperations } from "./assignments.ts";
 import { createCamperOperations } from "./campers.ts";
 import { createClubDayOperations } from "./club-day.ts";
+import { createClubDayRosterOperations } from "./club-day-rosters.ts";
 import { createClubDaySignupOperations } from "./club-day-signups.ts";
+import { createFrontDeskOperations } from "./front-desk.ts";
 import { createListOperations } from "./lists.ts";
 import { createScheduleViewOperations } from "./schedule-views.ts";
 import { createScheduleOperations } from "./schedules.ts";
@@ -291,6 +293,8 @@ export function createCampHqOperations(
     ...createScheduleViewOperations({ db, requirePerson }),
     ...createCamperOperations({ db, requirePerson, requireAdmin }),
     ...createClubDaySignupOperations({ db, requirePerson, requireAdmin }),
+    ...createClubDayRosterOperations({ db, requirePerson, requireAdmin }),
+    ...createFrontDeskOperations({ db, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {

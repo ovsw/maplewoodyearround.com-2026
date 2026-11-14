@@ -9,7 +9,7 @@ import { formatSlotTime } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../../auto-refresh";
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../camp-hq-page";
-import { SIGNUP_REFRESH_MS, groupClubDayPath } from "../paths";
+import { CLUB_DAY_ROSTERS_PATH, SIGNUP_REFRESH_MS, groupClubDayPath } from "../paths";
 
 export const metadata: Metadata = { title: "Children with no Club day pick" };
 
@@ -60,6 +60,9 @@ async function MissingPicksView() {
         <h1 className="text-title-lg">Children with no Club day pick</h1>
         <p className="text-lg">{formatCampDate(missing.date)}</p>
         <p className="text-muted-foreground">{windowText(missing)}</p>
+        <Link href={CLUB_DAY_ROSTERS_PATH} className={linkClassName}>
+          Today&apos;s Club day rosters
+        </Link>
       </div>
 
       {total === 0 ? (

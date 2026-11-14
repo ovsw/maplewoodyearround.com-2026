@@ -6,6 +6,7 @@ import { formatSlotRange, weekdayLabels } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../auto-refresh";
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { MY_CLUB_DAY_ROSTERS_PATH } from "../club-day/paths";
 import { SCHEDULE_REFRESH_MS, byActivityPath } from "../views-paths";
 import { VisitList } from "../visit-list";
 
@@ -63,7 +64,13 @@ async function MyActivities() {
         ))
       )}
 
-      <p>
+      <p className="flex flex-wrap gap-x-6">
+        <Link
+          href={MY_CLUB_DAY_ROSTERS_PATH}
+          className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
+        >
+          My Club day rosters
+        </Link>
         <Link
           href={byActivityPath()}
           className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
