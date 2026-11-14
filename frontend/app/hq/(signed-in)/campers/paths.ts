@@ -1,5 +1,5 @@
 import { CAMP_HQ_PATH } from "@/lib/hq/config";
-import type { CamperLoadReport } from "@/lib/hq/campers";
+import type { CamperDataCleared, CamperLoadReport } from "@/lib/hq/campers";
 
 /** Where an Admin loads the camper list. */
 export const CAMPERS_PATH = `${CAMP_HQ_PATH}/campers`;
@@ -23,3 +23,5 @@ export type CamperUploadState = { error?: string; report?: CamperLoadReportView 
 export function toReportView(report: CamperLoadReport): CamperLoadReportView {
   return { ...report, loadedAt: report.loadedAt.toISOString() };
 }
+
+export type ClearCamperDataState = { error?: string; cleared?: CamperDataCleared };

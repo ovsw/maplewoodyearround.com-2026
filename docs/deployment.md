@@ -100,13 +100,17 @@ Which database Camp HQ uses:
   Camp HQ's database is not set up.
 - `CAMP_HQ_DATABASE=neon` in `frontend/.env.local` switches local development
   to the Neon database in `DATABASE_URL`; `CAMP_HQ_DATABASE=local` forces the
-  local one. Do not point it at the shared dev database while Camp HQ is being
-  built.
+  local one. The Neon database in `frontend/.env.local` is the shared dev
+  database that previews use.
 
 Apply the migrations to a Neon database on purpose with
 `pnpm --dir frontend hq:db:migrate`. It targets `DATABASE_URL_UNPOOLED`, or
 `DATABASE_URL`, prints the host and changes nothing; run it again with
-`--yes` to apply.
+`--yes` to apply. Then `pnpm --dir frontend hq:db:sample --yes` loads the
+sample data into the shared dev database, so the test admin and test leader
+can sign in on a preview (code `424242`). It is for the dev database only and
+refuses a production Clerk key. `docs/camp-hq/README.md` covers running Camp
+HQ, the test users and the camper file.
 
 Make the first Admin by the email of their Clerk account:
 

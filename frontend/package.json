@@ -14,10 +14,11 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:smoke": "playwright test e2e/site.spec.ts e2e/hq.spec.ts",
+    "test:smoke": "playwright test e2e/site.spec.ts e2e/hq.spec.ts e2e/hq-day.spec.ts",
     "hq:test-users": "node --env-file-if-exists=.env.local scripts/clerk-test-users.mjs",
     "hq:db:generate": "drizzle-kit generate",
     "hq:db:migrate": "node --env-file-if-exists=.env.local scripts/hq-db-migrate.ts",
+    "hq:db:sample": "node --env-file-if-exists=.env.local scripts/hq-db-sample.ts",
     "hq:make-admin": "node --env-file-if-exists=.env.local scripts/hq-make-admin.ts",
     "hq:seed-lists": "node --env-file-if-exists=.env.local scripts/hq-seed-lists.ts",
     "shot": "node scripts/shot.mjs"

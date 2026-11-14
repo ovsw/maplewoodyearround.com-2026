@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { getCampHqOperations } from "@/lib/hq/camp-hq";
 import { ClerkRequestFailed } from "@/lib/hq/clerk-accounts";
+import { campHqNow } from "@/lib/hq/clock";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
 
@@ -24,7 +25,7 @@ export async function staffAction(
   _previous: StaffActionState,
   formData: FormData,
 ): Promise<StaffActionState> {
-  const request = { actor: await requireCampHqActor(), now: new Date() };
+  const request = { actor: await requireCampHqActor(), now: campHqNow() };
   const campHq = await getCampHqOperations();
   const id = field(formData, "staffMemberId");
 

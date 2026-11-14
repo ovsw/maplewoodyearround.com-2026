@@ -6,6 +6,8 @@ import {
   ensureClerkTestUsers,
 } from "../../../scripts/clerk-test-users.mjs";
 
+import { campHqNow } from "../clock.ts";
+
 import { campHqLocalDataDir, openPgliteDatabase } from "./database.ts";
 import { loadSampleData, type SampleAccounts } from "./sample-data.ts";
 
@@ -15,7 +17,7 @@ type Env = Record<string, string | undefined>;
  * Finds (and creates when missing) the Clerk test users so the sample data can
  * link them. Without a development Clerk key the sample people stay unlinked.
  */
-async function findSampleAccounts(env: Env): Promise<SampleAccounts> {
+export async function findSampleAccounts(env: Env): Promise<SampleAccounts> {
   const secretKey = env.CLERK_SECRET_KEY;
   if (!secretKey?.startsWith("sk_test_")) return {};
   try {
@@ -34,7 +36,7 @@ async function findSampleAccounts(env: Env): Promise<SampleAccounts> {
 
 export async function openLocalCampHqDatabase({
   env = process.env,
-  now = new Date(),
+  now = campHqNow(env),
 }: { env?: Env; now?: Date } = {}) {
   const database = await openPgliteDatabase(campHqLocalDataDir(env));
   try {

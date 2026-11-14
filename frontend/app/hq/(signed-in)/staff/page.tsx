@@ -7,6 +7,7 @@ import {
   CampHqDatabaseUnavailable,
   getCampHqOperations,
 } from "@/lib/hq/camp-hq";
+import { campHqNow } from "@/lib/hq/clock";
 import { getCampHqClerkKeys } from "@/lib/hq/config";
 import {
   campHqRoleLabels,
@@ -41,7 +42,7 @@ async function loadStaff(): Promise<StaffState> {
   const actor = await requireCampHqActor();
   try {
     const campHq = await getCampHqOperations();
-    return { kind: "staff", staff: await campHq.listStaff({ actor, now: new Date() }) };
+    return { kind: "staff", staff: await campHq.listStaff({ actor, now: campHqNow() }) };
   } catch (error) {
     if (isCampHqRefusal(error)) return { kind: "refused", message: error.message };
     if (error instanceof CampHqDatabaseUnavailable) return { kind: "no-database" };
