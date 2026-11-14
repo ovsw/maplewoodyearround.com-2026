@@ -7,6 +7,7 @@ import { and, asc, eq, inArray, isNull, sql } from "drizzle-orm";
 import type { CampHqAccounts } from "./accounts.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
+import { createAssignmentOperations } from "./assignments.ts";
 import { createListOperations } from "./lists.ts";
 import { createScheduleOperations } from "./schedules.ts";
 import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
@@ -47,6 +48,8 @@ export type CampHqRefusalReason =
   | "accounts-unavailable"
   | "name-taken"
   | "in-use"
+  | "two-jobs"
+  | "confirm-replace"
   | "clash"
   | "grade-not-allowed"
   | "slot-overlap";
@@ -63,18 +66,22 @@ export class CampHqRefusal extends Error {
   readonly reason: CampHqRefusalReason;
   readonly usedIn: string[];
   readonly other: CampHqOtherParty | undefined;
+  /** With "confirm-replace": the staff member who would be replaced. */
+  readonly incumbentId: string | null;
 
   constructor(
     reason: CampHqRefusalReason,
     message: string,
     usedIn: string[] = [],
     other?: CampHqOtherParty,
+    incumbentId: string | null = null,
   ) {
     super(message);
     this.name = "CampHqRefusal";
     this.reason = reason;
     this.usedIn = usedIn;
     this.other = other;
+    this.incumbentId = incumbentId;
   }
 }
 
@@ -258,6 +265,7 @@ export function createCampHqOperations(
 
   return {
     ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
+    ...createAssignmentOperations({ db, requirePerson, requireAdmin }),
     ...createScheduleOperations({ db, requirePerson, requireAdmin }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
