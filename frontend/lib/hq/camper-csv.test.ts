@@ -20,6 +20,14 @@ describe("parseCsv", () => {
       { row: 2, error: "A quoted value is not closed." },
     ]);
   });
+
+  it("reports text after a closing quote instead of joining it to the value", () => {
+    expect(parseCsv('a,b\n"C-1001"x,y\n"C-1002" ,z\n')).toEqual([
+      { row: 1, fields: ["a", "b"] },
+      { row: 2, error: "A quoted value is followed by more text." },
+      { row: 3, fields: ["C-1002", "z"] },
+    ]);
+  });
 });
 
 describe("readCamperCsv", () => {

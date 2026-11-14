@@ -236,6 +236,30 @@ describe("rows that cannot be used", () => {
     expect(await names(eagles)).toContain("Dara Quill");
   });
 
+  it("keeps a camper's other days when a row cannot be matched to a camper", async () => {
+    await upload("clean.csv");
+    // Ava's Wednesday lost its camper id, so it cannot be matched to her.
+    const text = fixture("clean.csv").replace(
+      "C-1001,Ava Brookfield,2027-07-07,Eagles",
+      ",Ava Brookfield,2027-07-07,Eagles",
+    );
+    const report = await test.campHq.loadCampers(asAdmin, fromFile("edited.csv", text));
+    expect(report).toMatchObject({ removed: 0, removalsSkipped: true });
+    expect(await names(eagles, as(admin, WEDNESDAY))).toContain("Ava Brookfield");
+  });
+
+  it("removes nobody when no camper in the file can be loaded", async () => {
+    await upload("clean.csv");
+    const text = [
+      "Camper ID,Name,Date,Camp group,Expected",
+      "C-2002,Kit Vale,2027-07-06,Eagles,yes",
+      "C-2002,Kit Vale,2027-07-06,Otters,yes",
+    ].join("\n");
+    const report = await test.campHq.loadCampers(asAdmin, fromFile("conflicts.csv", text));
+    expect(report).toMatchObject({ added: 0, removed: 0, removalsSkipped: true });
+    expect(await names(eagles)).toContain("Dara Quill");
+  });
+
   it("refuses a camper with two different names or two different rows for one day", async () => {
     const text = [
       "Camper ID,Name,Date,Camp group,Expected",

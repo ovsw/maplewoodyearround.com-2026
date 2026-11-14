@@ -38,6 +38,8 @@ export function parseCsv(text: string): CsvRecord[] {
     const fields: string[] = [];
     let field = "";
     let quoted = false;
+    // True after a closing quote, until the next comma or line end.
+    let closed = false;
     let error: string | null = null;
 
     while (index < source.length) {
@@ -48,6 +50,7 @@ export function parseCsv(text: string): CsvRecord[] {
           index += 2;
         } else if (char === '"') {
           quoted = false;
+          closed = true;
           index += 1;
         } else {
           if (char === "\n") line += 1;
@@ -56,13 +59,18 @@ export function parseCsv(text: string): CsvRecord[] {
         }
         continue;
       }
-      if (char === '"' && field.trim() === "") {
+      if (closed && char !== "," && char !== "\r" && char !== "\n" && char.trim() !== "") {
+        // Text after a closing quote, such as "C-1001"x, is never part of the value.
+        error ??= "A quoted value is followed by more text.";
+        index += 1;
+      } else if (char === '"' && field.trim() === "") {
         quoted = true;
         field = "";
         index += 1;
       } else if (char === ",") {
         fields.push(field);
         field = "";
+        closed = false;
         index += 1;
       } else if (char === "\r" && source[index + 1] === "\n") {
         index += 1;
@@ -75,7 +83,7 @@ export function parseCsv(text: string): CsvRecord[] {
         index += 1;
       }
     }
-    if (quoted) error = "A quoted value is not closed.";
+    if (quoted) error ??= "A quoted value is not closed.";
     fields.push(field);
 
     if (error) records.push({ row: startLine, error });

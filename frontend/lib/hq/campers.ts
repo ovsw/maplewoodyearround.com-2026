@@ -290,8 +290,11 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
 
         // A camper with any row Camp HQ could not use is left as it was.
         const kept = new Set(errors.flatMap((error) => (error.camperId ? [error.camperId] : [])));
+        // A row that names no camper could belong to anyone, so nobody is
+        // removed and nobody loses a day the file leaves out.
+        const unmatchedRows = errors.some((error) => error.camperId === null);
         const removalsSkipped =
-          errors.some((error) => error.camperId === null) || inFile.size === 0;
+          unmatchedRows || ![...inFile.keys()].some((sourceId) => !kept.has(sourceId));
 
         const existing = await tx.select().from(campers);
         const existingBySource = new Map(existing.map((row) => [row.sourceId, row]));
@@ -323,6 +326,12 @@ export function createCamperOperations({ db, requirePerson, requireAdmin }: Camp
           } else {
             camperUuid = current.id;
             const currentDays = daysByCamper.get(current.id) ?? new Map<string, DayValue>();
+            if (unmatchedRows) {
+              // Keep the days the file leaves out; the file's own days win.
+              for (const [date, day] of currentDays) {
+                if (!camper.days.has(date)) camper.days.set(date, { ...day, row: null });
+              }
+            }
             const sameDays =
               currentDays.size === camper.days.size &&
               [...camper.days].every(([date, day]) => {

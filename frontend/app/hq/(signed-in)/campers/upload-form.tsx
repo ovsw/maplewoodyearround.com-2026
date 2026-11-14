@@ -33,7 +33,8 @@ export function CamperUploadForm() {
         </label>
         {tooLarge ? (
           <p role="alert" className="font-semibold">
-            The file is larger than 1 MB. Split it or ask for help before loading it.
+            The file is larger than 1 MB. Ask for help before loading it: each load replaces the
+            whole camper list, so it cannot be loaded in parts.
           </p>
         ) : null}
         <div>

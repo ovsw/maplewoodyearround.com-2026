@@ -34,8 +34,9 @@ The file is limited to 1 MB.
 - A row naming a Camp group Camp HQ does not know is reported, never guessed.
 - A camper with any row that cannot be used (unknown group, bad date, a
   second name, two different rows for one day) is left exactly as before.
-- When a row cannot be matched to a camper, or no row could be read, nobody
-  is removed.
+- When a row cannot be matched to a camper, nobody is removed and no camper
+  loses a day the file leaves out. When no camper could be loaded, nobody is
+  removed.
 - Every load is recorded with its source, time, counts and the rows that could
   not be read, and the report lists campers added, changed and removed.
 

@@ -2,13 +2,13 @@
 // named "Sample …" or marked "(sample)". It never goes to Neon. The Camp groups
 // and activities come from the committed seed file (seed-lists.json); their
 // Teams are sample.
-import { and, asc, between, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, between, eq, isNull, notLike, sql } from "drizzle-orm";
 
 import { addDays, campDate, weekStart } from "../camp-dates.ts";
 import type { CamperLoadRow } from "../campers.ts";
 import { createCampHqOperations } from "../operations.ts";
 import type { CampHqDb } from "./database.ts";
-import { camperDays, campGroups, staffMembers } from "./schema.ts";
+import { camperDays, campers, campGroups, staffMembers } from "./schema.ts";
 import { campHqSeed, loadSeedLists } from "./seed-lists.ts";
 
 const SAMPLE_ADMIN_ID = "00000000-0000-4000-8000-000000000001";
@@ -84,6 +84,8 @@ const sampleCamperNames = [
   ["Sol", "Bishop"],
 ] as const;
 
+const SAMPLE_CAMPER_PREFIX = "SAMPLE-";
+
 /**
  * Loads invented campers for the current camp week (Monday to Friday) into the
  * first three Camp groups, through the "load campers" operation, when nobody
@@ -99,6 +101,12 @@ async function loadSampleCampers(db: CampHqDb, now: Date) {
     .from(camperDays)
     .where(between(camperDays.date, monday, friday));
   if (count > 0) return;
+  // The load replaces the whole list, so never replace an uploaded one.
+  const [{ uploaded }] = await db
+    .select({ uploaded: sql<number>`count(*)::int` })
+    .from(campers)
+    .where(notLike(campers.sourceId, `${SAMPLE_CAMPER_PREFIX}%`));
+  if (uploaded > 0) return;
   const groups = await db
     .select({ name: campGroups.name })
     .from(campGroups)
@@ -112,7 +120,7 @@ async function loadSampleCampers(db: CampHqDb, now: Date) {
   groups.forEach((group, groupIndex) => {
     for (let index = 0; index < 6; index += 1) {
       const [first, last] = sampleCamperNames[groupIndex * 6 + index];
-      const camperId = `SAMPLE-${groupIndex + 1}${index + 1}`;
+      const camperId = `${SAMPLE_CAMPER_PREFIX}${groupIndex + 1}${index + 1}`;
       const name = `${first} ${last} (sample)`;
       const dates = index % 2 === 0 ? [...thisWeek, ...nextWeek] : thisWeek;
       for (const date of dates) {
