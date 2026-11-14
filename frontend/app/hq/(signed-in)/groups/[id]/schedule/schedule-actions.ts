@@ -35,7 +35,11 @@ async function run(
     if (isCampHqRefusal(error)) {
       return {
         error: error.message,
-        other: error.other ? { id: error.other.id, name: error.other.name, weekday } : undefined,
+        // Only a Camp group has a schedule to open; a specialist is named in the message.
+        other:
+          error.other?.kind === "camp-group"
+            ? { id: error.other.id, name: error.other.name, weekday }
+            : undefined,
       };
     }
     if (error instanceof CampHqDatabaseUnavailable) {

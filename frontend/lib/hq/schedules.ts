@@ -9,8 +9,21 @@
 //   that overlaps another group's booking of it is refused, naming that group.
 // - Shared activities are never checked.
 // - Back to back is not an overlap. A group's own slots cannot overlap.
+// - An activity offered only on Club day cannot be booked.
+// - The Club day and specialist rules in clash-rules.ts, including the
+//   provisional Club day overlap rule, apply to every booking and to every
+//   Club day period.
 import { and, asc, eq, gt, inArray, lt, ne, sql } from "drizzle-orm";
 
+import {
+  bookingUse,
+  loadActivityUses,
+  loadSpecialists,
+  loadTeamOptions,
+  lockClashRules,
+  optionUse,
+  refuseUseClashes,
+} from "./clash-rules.ts";
 import type { CampHqDb } from "./db/database.ts";
 import { activities, campGroups, scheduleDays, scheduleSlots } from "./db/schema.ts";
 import { campHqGradeLabels, sortGrades, type CampHqGrade } from "./grades.ts";
@@ -136,7 +149,13 @@ function toGroup(row: GroupRow): GroupSchedule["group"] {
 }
 
 function toActivity(row: ActivityRow): Activity {
-  return { id: row.id, name: row.name, grades: sortGrades(row.grades), kind: row.kind };
+  return {
+    id: row.id,
+    name: row.name,
+    grades: sortGrades(row.grades),
+    kind: row.kind,
+    clubOnly: row.clubOnly,
+  };
 }
 
 /** The group's grades that the activity is not allowed for. */
@@ -287,6 +306,39 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
     return activity;
   }
 
+  /**
+   * Refuses what the slot would hold at these times when it breaks the Club day
+   * or specialist rules: its booking, or, for a Club day period, every Club day
+   * option of the group's Team on that weekday.
+   */
+  async function refuseSlotUseClashes(
+    tx: CampHqDb,
+    slot: SlotRow,
+    group: GroupRow,
+    times: { start: number; end: number },
+    activity: ActivityRow | null,
+    isClubDay: boolean,
+  ) {
+    const ref = {
+      slotId: slot.id,
+      campGroupId: group.id,
+      campGroupName: group.name,
+      weekday: slot.weekday,
+      start: times.start,
+      end: times.end,
+    };
+    const proposed = activity
+      ? [bookingUse(activity, ref)]
+      : isClubDay
+        ? (await loadTeamOptions(tx, group.team, slot.weekday)).map((option) => optionUse(option, ref))
+        : [];
+    if (proposed.length === 0) return;
+    const existing = (await loadActivityUses(tx, slot.weekday)).filter(
+      (use) => use.slotId !== slot.id,
+    );
+    refuseUseClashes({ proposed, existing, specialistOf: await loadSpecialists(tx) });
+  }
+
   async function readSchedule(groupId: string, now: Date): Promise<GroupSchedule> {
     return db.transaction(async (transaction) => {
       const tx = transaction as unknown as CampHqDb;
@@ -334,7 +386,8 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
     },
 
     /**
-     * What a slot can hold: the activities allowed for the group's grades, each
+     * What a slot can hold: the activities allowed for the group's grades
+     * (never those offered only on Club day), each
      * marked with the other group's booking when it is an Exclusive activity
      * that group has at an overlapping time.
      */
@@ -350,7 +403,9 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
           ? db.select().from(activities).where(eq(activities.id, slot.activityId)).limit(1)
           : Promise.resolve([]),
       ]);
-      const allowed = activityRows.filter((activity) => gradesNotAllowed(group, activity).length === 0);
+      const allowed = activityRows.filter(
+        (activity) => !activity.clubOnly && gradesNotAllowed(group, activity).length === 0,
+      );
       const exclusiveIds = allowed.filter((a) => a.kind === "exclusive").map((a) => a.id);
       const bookings = await overlappingBookings(db, exclusiveIds, group.id, slot.weekday, {
         start: slot.startMinute,
@@ -419,11 +474,13 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
       const times = cleanTimes(input);
       return db.transaction(async (transaction) => {
         const tx = transaction as unknown as CampHqDb;
+        await lockClashRules(tx);
         const { slot, group } = await slotForChange(tx, slotId);
         await refuseOwnOverlap(tx, group.id, slot.weekday, times, slot.id);
         const activity = slot.activityId
           ? await refuseClash(tx, slot.activityId, group.id, slot.weekday, times)
           : null;
+        await refuseSlotUseClashes(tx, slot, group, times, activity, slot.isClubDay);
         const [row] = await tx
           .update(scheduleSlots)
           .set({ startMinute: times.start, endMinute: times.end, updatedAt: now })
@@ -450,6 +507,7 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
       }
       return db.transaction(async (transaction) => {
         const tx = transaction as unknown as CampHqDb;
+        await lockClashRules(tx);
         const { slot, group } = await slotForChange(tx, slotId);
         let activity: ActivityRow | null = null;
         if (content.type === "activity") {
@@ -461,6 +519,12 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
             .where(eq(activities.id, activityId))
             .for("update");
           if (!found) notFound("activity");
+          if (found.clubOnly) {
+            throw new CampHqRefusal(
+              "club-day-only",
+              `${found.name} is offered only on Club day, so it cannot be booked on a Group schedule.`,
+            );
+          }
           const missing = gradesNotAllowed(group, found);
           if (missing.length > 0) {
             throw new CampHqRefusal(
@@ -473,6 +537,14 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
             end: slot.endMinute,
           });
         }
+        await refuseSlotUseClashes(
+          tx,
+          slot,
+          group,
+          { start: slot.startMinute, end: slot.endMinute },
+          activity,
+          content.type === "club-day",
+        );
         const [row] = await tx
           .update(scheduleSlots)
           .set({

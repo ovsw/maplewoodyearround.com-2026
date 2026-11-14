@@ -8,6 +8,7 @@ import type { CampHqDb } from "./db/database.ts";
 import {
   activitySpecialists,
   campGroups,
+  clubDayOptions,
   groupLeaders,
   juniorPlacements,
   scheduleSlots,
@@ -88,7 +89,20 @@ export const activityOnGroupSchedules: CampHqUsageCheck = async (db, activityId)
   );
 };
 
+/** Where an activity is a Club day option, e.g. "Club day option for Team 2, Monday". */
+const clubDayOptionUsage: CampHqUsageCheck = async (db, activityId) => {
+  const rows = await db
+    .select({ team: clubDayOptions.team, weekday: clubDayOptions.weekday })
+    .from(clubDayOptions)
+    .where(eq(clubDayOptions.activityId, activityId))
+    .orderBy(asc(clubDayOptions.team), asc(clubDayOptions.weekday));
+  return rows.map(
+    (row) =>
+      `Club day option for Team ${row.team}, ${weekdayLabels[row.weekday as ScheduleWeekday]}`,
+  );
+};
+
 export const campHqUsageChecks: CampHqUsageChecks = {
   campGroup: [groupLeaderUsage, groupHelperUsage],
-  activity: [specialistUsage, clubDayHelperUsage, activityOnGroupSchedules],
+  activity: [specialistUsage, clubDayHelperUsage, activityOnGroupSchedules, clubDayOptionUsage],
 };

@@ -18,6 +18,7 @@ import {
 import { requireCampHqActor } from "@/lib/hq/session";
 
 import { ASSIGNMENTS_PATH } from "./assignments/paths";
+import { CLUB_DAY_PATH } from "./club-day/paths";
 import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 import { STAFF_PATH } from "./staff/paths";
 import {
@@ -139,6 +140,9 @@ async function CampHqHome() {
           <>
             <Button asChild variant="outline">
               <Link href={ASSIGNMENTS_PATH}>Assignments</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href={CLUB_DAY_PATH}>Club day</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href={STAFF_PATH}>Staff and accounts</Link>

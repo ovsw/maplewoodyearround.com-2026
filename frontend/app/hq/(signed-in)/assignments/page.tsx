@@ -91,6 +91,11 @@ async function Assignments() {
             items={gaps.activitiesWithoutSpecialist}
             none="Every activity has a specialist."
           />
+          <GapList
+            title="Club day options without a specialist"
+            items={gaps.clubDayOptionsWithoutSpecialist}
+            none="Every Club day option has a specialist."
+          />
         </div>
         {board.withoutActiveAccount.length > 0 ? (
           <p role="alert" className="text-sm text-destructive">

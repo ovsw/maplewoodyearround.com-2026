@@ -36,6 +36,13 @@
       "when": 1794617020744,
       "tag": "0004_camp_hq_assignments",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794617718302,
+      "tag": "0005_camp_hq_club_day",
+      "breakpoints": true
     }
   ]
 }

@@ -207,13 +207,15 @@ describe("a group leader's view", () => {
 
   it("shows an Admin's change on the next read", async () => {
     const setup = await start();
-    await setup.campHq.setScheduleSlotContent(setup.admin, setup.slots.ottersPottery, {
+    // Archery's slot: Canoeing shares Archery's specialist, who is busy with
+    // Herons from 10:00, so the 9:30 slot is the one Canoeing can take.
+    await setup.campHq.setScheduleSlotContent(setup.admin, setup.slots.ottersArchery, {
       type: "activity",
       activityId: setup.canoeing.id,
     });
 
     const view = await setup.campHq.getLeaderView(setup.leader, setup.otters.id);
-    const slot = view.days[1].slots.find((entry) => entry.id === setup.slots.ottersPottery);
+    const slot = view.days[1].slots.find((entry) => entry.id === setup.slots.ottersArchery);
     expect(slot?.content).toMatchObject({ type: "activity", activity: { name: "Canoeing" } });
   });
 });
