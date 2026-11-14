@@ -18,6 +18,7 @@ import {
 import { requireCampHqActor } from "@/lib/hq/session";
 
 import { ASSIGNMENTS_PATH } from "./assignments/paths";
+import { CAMPERS_PATH, groupCampersPath } from "./campers/paths";
 import { CLUB_DAY_PATH } from "./club-day/paths";
 import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 import { STAFF_PATH } from "./staff/paths";
@@ -145,6 +146,9 @@ async function CampHqHome() {
               <Link href={CLUB_DAY_PATH}>Club day</Link>
             </Button>
             <Button asChild variant="outline">
+              <Link href={CAMPERS_PATH}>Camper list</Link>
+            </Button>
+            <Button asChild variant="outline">
               <Link href={STAFF_PATH}>Staff and accounts</Link>
             </Button>
           </>
@@ -169,9 +173,14 @@ function MyAssignmentCard({ assignment, isAdmin }: { assignment: MyAssignment; i
           <p className="text-lg">
             You lead <strong>{assignment.campGroup.name}</strong>.
           </p>
-          <Button asChild className="self-start">
-            <Link href={leaderViewPath(assignment.campGroup.id)}>Today&apos;s schedule</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href={leaderViewPath(assignment.campGroup.id)}>Today&apos;s schedule</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href={groupCampersPath(assignment.campGroup.id)}>Campers expected today</Link>
+            </Button>
+          </div>
         </>
       );
       break;

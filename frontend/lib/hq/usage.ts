@@ -7,6 +7,7 @@ import { asc, eq, sql } from "drizzle-orm";
 import type { CampHqDb } from "./db/database.ts";
 import {
   activitySpecialists,
+  camperDays,
   campGroups,
   clubDayOptions,
   groupLeaders,
@@ -63,6 +64,22 @@ const clubDayHelperUsage: CampHqUsageCheck = async (db, activityId) => {
 };
 
 /**
+ * Campers the camper list puts in the group on some day. Camp HQ cannot edit
+ * campers, so the group stays until a camper file without it is loaded.
+ */
+const camperListUsage: CampHqUsageCheck = async (db, campGroupId) => {
+  const [row] = await db
+    .select({ count: sql<number>`count(distinct ${camperDays.camperId})::int` })
+    .from(camperDays)
+    .where(eq(camperDays.campGroupId, campGroupId));
+  const count = row?.count ?? 0;
+  if (count === 0) return [];
+  return [
+    `Camper list: ${count === 1 ? "1 camper is" : `${count} campers are`} in this group on some days. Load a camper file without this group first.`,
+  ];
+};
+
+/**
  * Where an activity is booked on a Group schedule, e.g. "Schedule of Knights,
  * Monday 9:30 AM to 10:00 AM". A Camp group's own schedule is removed with it,
  * so it is not a use of the group.
@@ -103,6 +120,6 @@ const clubDayOptionUsage: CampHqUsageCheck = async (db, activityId) => {
 };
 
 export const campHqUsageChecks: CampHqUsageChecks = {
-  campGroup: [groupLeaderUsage, groupHelperUsage],
+  campGroup: [groupLeaderUsage, groupHelperUsage, camperListUsage],
   activity: [specialistUsage, clubDayHelperUsage, activityOnGroupSchedules, clubDayOptionUsage],
 };

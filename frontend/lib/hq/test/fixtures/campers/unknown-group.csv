@@ -1,0 +1,25 @@
+Camper ID,Name,Date,Camp group,Expected
+C-1001,Ava Brookfield,2027-07-05,Eagles,yes
+C-1001,Ava Brookfield,2027-07-06,Eagles,yes
+C-1001,Ava Brookfield,2027-07-07,Eagles,yes
+C-1001,Ava Brookfield,2027-07-08,Eagles,yes
+C-1001,Ava Brookfield,2027-07-09,Eagles,yes
+C-1001,Ava Brookfield,2027-07-12,Eagles,yes
+C-1001,Ava Brookfield,2027-07-13,Eagles,yes
+C-1002,Ben Okafor,2027-07-05,Eagles,yes
+C-1002,Ben Okafor,2027-07-06,Eagles,no
+C-1002,Ben Okafor,2027-07-07,Eagles,yes
+C-1002,Ben Okafor,2027-07-08,Eagles,yes
+C-1002,Ben Okafor,2027-07-09,Eagles,yes
+C-1003,Cleo Marsh,2027-07-05,Otters,yes
+C-1003,Cleo Marsh,2027-07-06,Otters,yes
+C-1003,Cleo Marsh,2027-07-07,Otters,yes
+C-1003,Cleo Marsh,2027-07-08,Otters,yes
+C-1003,Cleo Marsh,2027-07-09,Otters,yes
+C-1004,Dara Quill,2027-07-05,Eagles,yes
+C-1004,Dara Quill,2027-07-06,Eagles,yes
+C-1004,Dara Quill,2027-07-07,Eagles,yes
+C-1004,Dara Quill,2027-07-08,Eagles,yes
+C-1004,Dara Quill,2027-07-09,Eagles,yes
+C-1004,Dara Quill,2027-07-12,Eagles,no
+C-1006,Finn Harlow,2027-07-06,Falcons,yes

@@ -141,6 +141,15 @@ _Avoid_: floater (as a separate role)
 The Camp group or activity a Senior or Junior staff member is working on now. An Admin can change it at any
 time. Nobody can have two jobs at the same time.
 
+**Camper list**:
+The children at Summer Camp, loaded from CampMinder. Camp HQ never edits it by
+hand; attendance is corrected in CampMinder and loaded again.
+_Avoid_: roster (for the camper list)
+
+**Camper day**:
+One day of a camper's enrolment: their Camp group that day and whether they
+are expected. A child can change Camp group mid-week.
+
 ## Summer bus
 
 **Bus stop**:

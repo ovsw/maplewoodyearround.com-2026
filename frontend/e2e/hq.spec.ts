@@ -84,6 +84,28 @@ test.describe("Camp HQ with sign-in", () => {
     page.once("dialog", (dialog) => dialog.accept());
     await row.getByRole("button", { name: "Remove", exact: true }).click();
     await expect(row).toHaveCount(0);
+
+    // The Admin uploads a camper file. Its only row names an unknown Camp
+    // group, so the report shows it and the camper list stays as it was.
+    await page.goto("/hq");
+    await page.getByRole("link", { name: "Camper list" }).click();
+    await expect(page.getByRole("heading", { name: "Camper list", level: 1 })).toBeVisible();
+    await page.getByLabel("Camper file (.csv)").setInputFiles({
+      name: "campers-e2e.csv",
+      mimeType: "text/csv",
+      buffer: Buffer.from(
+        "Camper ID,Name,Date,Camp group,Expected\nE2E-1,Sample E2E Camper,2027-07-06,No Such Group,yes\n",
+      ),
+    });
+    await page.getByRole("button", { name: "Load campers" }).click();
+    const report = page.getByRole("region", { name: "Load report" });
+    await expect(report.getByText('Camp HQ has no Camp group named "No Such Group"')).toBeVisible();
+    await expect(report.getByText("Nobody was removed")).toBeVisible();
+
+    // Any group's list of children expected today is open to the Admin.
+    await page.goto("/hq/groups");
+    await page.getByRole("link", { name: /^Campers expected today in / }).first().click();
+    await expect(page.getByRole("heading", { name: /^Campers today: / })).toBeVisible();
   });
 });
 
