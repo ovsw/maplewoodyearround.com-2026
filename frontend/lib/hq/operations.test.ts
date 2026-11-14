@@ -121,4 +121,20 @@ describe("local sample data", () => {
       }),
     ).resolves.toMatchObject({ name: "Sample Leader", role: "senior_staff" });
   });
+
+  it("includes invented campers for the current week, loaded once", async () => {
+    const asCommand = { actor: { type: "command-line" } as const, now: TEST_NOW };
+    await loadSampleData(test.db, { now: TEST_NOW });
+    await loadSampleData(test.db, { now: TEST_NOW });
+
+    const loads = await test.campHq.listCamperLoads(asCommand);
+    expect(loads).toHaveLength(1);
+    expect(loads[0]).toMatchObject({ added: 18, errors: [] });
+
+    const [group] = await test.campHq.listCampGroups(asCommand);
+    const list = await test.campHq.getGroupCamperList(asCommand, group.id);
+    expect(list.campers.length).toBeGreaterThan(0);
+    expect(list.campers.every((camper) => camper.name.endsWith("(sample)"))).toBe(true);
+    expect(list.campers.some((camper) => camper.finalWeek)).toBe(true);
+  });
 });

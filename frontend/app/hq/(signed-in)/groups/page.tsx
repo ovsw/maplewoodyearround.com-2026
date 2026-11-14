@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { formatGrades } from "@/lib/hq/grades";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { groupCampersPath } from "../campers/paths";
 import { CAMP_GROUPS_PATH } from "../lists-paths";
 
 export const metadata: Metadata = { title: "Camp groups" };
@@ -56,7 +57,10 @@ async function CampGroups() {
                 <th scope="col" className="py-3 pr-4">Free swim</th>
                 <th scope="col" className="py-3 pr-4">Lunch</th>
                 <th scope="col" className="py-3 pr-4">Swim lessons</th>
-                <th scope="col" className="py-3">Schedule</th>
+                <th scope="col" className="py-3 pr-4">Schedule</th>
+                {isAdmin ? (
+                  <th scope="col" className="py-3">Campers</th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -85,7 +89,7 @@ async function CampGroups() {
                   <td className="py-3 pr-4">{group.locations.freeSwim}</td>
                   <td className="py-3 pr-4">{group.locations.lunch}</td>
                   <td className="py-3 pr-4">{group.locations.swimLessons}</td>
-                  <td className="py-3">
+                  <td className="py-3 pr-4">
                     <Link
                       href={`${CAMP_GROUPS_PATH}/${group.id}/schedule`}
                       className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
@@ -94,6 +98,17 @@ async function CampGroups() {
                       Schedule
                     </Link>
                   </td>
+                  {isAdmin ? (
+                    <td className="py-3">
+                      <Link
+                        href={groupCampersPath(group.id)}
+                        className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4 whitespace-nowrap"
+                        aria-label={`Campers expected today in ${group.name}`}
+                      >
+                        Today
+                      </Link>
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>
