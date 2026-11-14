@@ -382,6 +382,128 @@ describe("Exclusive activities", () => {
   });
 });
 
+describe("changing one time of a slot", () => {
+  it("keeps the stored value of the time left out", async () => {
+    const setup = await start();
+    const slot = await slotAt(setup, setup.otters.id, 1, "9:30");
+
+    await setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { start: "09:40" });
+    const changed = await setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, {
+      end: "09:55",
+    });
+
+    expect([changed.start, changed.end]).toEqual([580, 595]);
+  });
+
+  it("checks the changed time against the stored one and the other slots", async () => {
+    const setup = await start();
+    const slot = await slotAt(setup, setup.otters.id, 1, "9:30");
+
+    const tooLate = await refusal(
+      setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { start: "10:00" }),
+    );
+    const overlap = await refusal(
+      setup.campHq.changeScheduleSlotTimes(setup.admin, slot.id, { end: "10:15" }),
+    );
+
+    expect(tooLate.message).toBe("The slot must end after it starts.");
+    expect(overlap.reason).toBe("slot-overlap");
+  });
+});
+
+describe("the choices for a whole day", () => {
+  it("lists the day's slots and the activities allowed for the group's grades", async () => {
+    const setup = await start();
+
+    const choices = await setup.campHq.getDayChoices(setup.admin, setup.otters.id, 1);
+
+    expect(choices.group.name).toBe("Otters");
+    expect(choices.weekday).toBe(1);
+    expect(choices.slots).toEqual((await day(setup, setup.otters.id, 1)).slots);
+    expect(choices.activities.map((activity) => activity.name)).toEqual(["Archery", "Lunch"]);
+  });
+
+  it("marks an Exclusive activity only on the slots another group's booking overlaps", async () => {
+    const setup = await start();
+    const theirs = await slotAt(setup, setup.otters.id, 1, "9:30");
+    const next = await slotAt(setup, setup.otters.id, 1, "10:00");
+    await setup.campHq.removeScheduleSlot(setup.admin, next.id);
+    await setup.campHq.changeScheduleSlotTimes(setup.admin, theirs.id, {
+      start: "9:45",
+      end: "10:15",
+    });
+    await setup.campHq.setScheduleSlotContent(setup.admin, theirs.id, {
+      type: "activity",
+      activityId: setup.archery.id,
+    });
+
+    const { slots, bookedBy } = await setup.campHq.getDayChoices(setup.admin, setup.herons.id, 1);
+
+    const booking = {
+      campGroupId: setup.otters.id,
+      campGroupName: "Otters",
+      weekday: 1,
+      start: 585,
+      end: 615,
+    };
+    const at = (start: number) => bookedBy[slots.find((slot) => slot.start === start)!.id];
+    expect(at(570)).toEqual({ [setup.archery.id]: booking });
+    expect(at(600)).toEqual({ [setup.archery.id]: booking });
+    expect(at(630)).toEqual({});
+  });
+
+  it("agrees with the choices of each single slot", async () => {
+    const setup = await start();
+    const theirs = await slotAt(setup, setup.otters.id, 1, "9:30");
+    await setup.campHq.setScheduleSlotContent(setup.admin, theirs.id, {
+      type: "activity",
+      activityId: setup.archery.id,
+    });
+
+    const dayChoices = await setup.campHq.getDayChoices(setup.admin, setup.herons.id, 1);
+
+    for (const slot of dayChoices.slots) {
+      const { choices } = await setup.campHq.getSlotChoices(setup.admin, slot.id);
+      expect(dayChoices.activities).toEqual(choices.map((choice) => choice.activity));
+      for (const { activity, bookedBy } of choices) {
+        expect(dayChoices.bookedBy[slot.id][activity.id] ?? null).toEqual(bookedBy);
+      }
+    }
+  });
+
+  it("does not mark the group's own booking or another weekday's", async () => {
+    const setup = await start();
+    const own = await slotAt(setup, setup.herons.id, 1, "9:30");
+    await setup.campHq.setScheduleSlotContent(setup.admin, own.id, {
+      type: "activity",
+      activityId: setup.archery.id,
+    });
+    const tuesday = await slotAt(setup, setup.otters.id, 2, "9:30");
+    await setup.campHq.setScheduleSlotContent(setup.admin, tuesday.id, {
+      type: "activity",
+      activityId: setup.archery.id,
+    });
+
+    const { bookedBy } = await setup.campHq.getDayChoices(setup.admin, setup.herons.id, 1);
+
+    expect(Object.values(bookedBy).every((taken) => Object.keys(taken).length === 0)).toBe(true);
+  });
+
+  it("can be read by any signed-in person and refuses a missing group or a weekend", async () => {
+    const setup = await start();
+
+    await expect(
+      setup.campHq.getDayChoices(setup.leader, setup.otters.id, 1),
+    ).resolves.toBeTruthy();
+    expect(
+      (await refusal(setup.campHq.getDayChoices(setup.admin, crypto.randomUUID(), 1))).reason,
+    ).toBe("not-found");
+    expect(
+      (await refusal(setup.campHq.getDayChoices(setup.admin, setup.otters.id, 6))).reason,
+    ).toBe("invalid-input");
+  });
+});
+
 describe("Shared activities", () => {
   it("can be booked by many groups at the same time", async () => {
     const setup = await start();
