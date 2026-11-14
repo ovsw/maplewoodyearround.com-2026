@@ -7,6 +7,7 @@ import { formatGrades } from "@/lib/hq/grades";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { CAMP_GROUPS_PATH } from "../lists-paths";
+import { leaderViewPath } from "../views-paths";
 
 export const metadata: Metadata = { title: "Camp groups" };
 
@@ -85,7 +86,7 @@ async function CampGroups() {
                   <td className="py-3 pr-4">{group.locations.freeSwim}</td>
                   <td className="py-3 pr-4">{group.locations.lunch}</td>
                   <td className="py-3 pr-4">{group.locations.swimLessons}</td>
-                  <td className="py-3">
+                  <td className="py-3 whitespace-nowrap">
                     <Link
                       href={`${CAMP_GROUPS_PATH}/${group.id}/schedule`}
                       className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
@@ -93,6 +94,15 @@ async function CampGroups() {
                     >
                       Schedule
                     </Link>
+                    {isAdmin ? (
+                      <Link
+                        href={leaderViewPath(group.id)}
+                        className="focus-ring ml-4 inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
+                        aria-label={`Leader view of ${group.name}`}
+                      >
+                        Leader view
+                      </Link>
+                    ) : null}
                   </td>
                 </tr>
               ))}

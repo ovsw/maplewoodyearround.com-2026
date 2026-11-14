@@ -20,6 +20,12 @@ import { requireCampHqActor } from "@/lib/hq/session";
 import { ASSIGNMENTS_PATH } from "./assignments/paths";
 import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
 import { STAFF_PATH } from "./staff/paths";
+import {
+  LOCATIONS_PATH,
+  MY_ACTIVITIES_PATH,
+  byActivityPath,
+  leaderViewPath,
+} from "./views-paths";
 
 export const metadata: Metadata = { title: { absolute: "Camp HQ" } };
 
@@ -118,6 +124,12 @@ async function CampHqHome() {
       <MyAssignmentCard assignment={assignment} isAdmin={person.role === "admin"} />
       <nav aria-label="Camp HQ lists" className="mt-3 flex flex-wrap gap-3">
         <Button asChild variant="outline">
+          <Link href={byActivityPath()}>Where groups are</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href={LOCATIONS_PATH}>Group locations</Link>
+        </Button>
+        <Button asChild variant="outline">
           <Link href={CAMP_GROUPS_PATH}>Camp groups</Link>
         </Button>
         <Button asChild variant="outline">
@@ -149,17 +161,27 @@ function MyAssignmentCard({ assignment, isAdmin }: { assignment: MyAssignment; i
   switch (assignment.kind) {
     case "leader":
       body = (
-        <p className="text-lg">
-          You lead <strong>{assignment.campGroup.name}</strong>.
-        </p>
+        <>
+          <p className="text-lg">
+            You lead <strong>{assignment.campGroup.name}</strong>.
+          </p>
+          <Button asChild className="self-start">
+            <Link href={leaderViewPath(assignment.campGroup.id)}>Today&apos;s schedule</Link>
+          </Button>
+        </>
       );
       break;
     case "specialist":
       body = (
-        <p className="text-lg">
-          You are the specialist for{" "}
-          <strong>{listNames(assignment.activities.map((activity) => activity.name))}</strong>.
-        </p>
+        <>
+          <p className="text-lg">
+            You are the specialist for{" "}
+            <strong>{listNames(assignment.activities.map((activity) => activity.name))}</strong>.
+          </p>
+          <Button asChild className="self-start">
+            <Link href={MY_ACTIVITIES_PATH}>Who comes to me today</Link>
+          </Button>
+        </>
       );
       break;
     case "helper":

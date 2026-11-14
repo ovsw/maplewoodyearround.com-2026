@@ -9,6 +9,7 @@ import type { CampHqDb } from "./db/database.ts";
 import { staffMembers } from "./db/schema.ts";
 import { createAssignmentOperations } from "./assignments.ts";
 import { createListOperations } from "./lists.ts";
+import { createScheduleViewOperations } from "./schedule-views.ts";
 import { createScheduleOperations } from "./schedules.ts";
 import { campHqUsageChecks, type CampHqUsageChecks } from "./usage.ts";
 
@@ -52,7 +53,8 @@ export type CampHqRefusalReason =
   | "confirm-replace"
   | "clash"
   | "grade-not-allowed"
-  | "slot-overlap";
+  | "slot-overlap"
+  | "not-your-group";
 
 /** The other side of a refused booking, such as the Camp group that has it. */
 export type CampHqOtherParty = { kind: "camp-group"; id: string; name: string };
@@ -267,6 +269,7 @@ export function createCampHqOperations(
     ...createListOperations({ db, requirePerson, requireAdmin, usageChecks }),
     ...createAssignmentOperations({ db, requirePerson, requireAdmin }),
     ...createScheduleOperations({ db, requirePerson, requireAdmin }),
+    ...createScheduleViewOperations({ db, requirePerson }),
 
     /** The signed-in person and their role, or a "no-staff-record" refusal. */
     async getSignedInPerson({ actor }: CampHqRequest): Promise<CampHqPerson> {
