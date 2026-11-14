@@ -83,6 +83,21 @@ export type SlotChoices = {
   choices: ActivityChoice[];
 };
 
+/** What every slot of one day of a Camp group can hold. */
+export type DayChoices = {
+  group: GroupSchedule["group"];
+  weekday: ScheduleWeekday;
+  /** The day's slots, in time order. */
+  slots: ScheduleSlot[];
+  /** The activities allowed for the group's grades, by name. */
+  activities: Activity[];
+  /**
+   * By slot id, then activity id: the other group's booking of an Exclusive
+   * activity that overlaps that slot. An activity that is free has no entry.
+   */
+  bookedBy: Record<string, Record<string, ScheduleBooking>>;
+};
+
 export type SlotTimesInput = { start: string; end: string };
 
 export type SlotContentInput =
@@ -430,6 +445,56 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
           bookedBy: bookedBy.get(activity.id) ?? null,
         })),
       };
+    },
+
+    /**
+     * What each slot of one day can hold, in one read: getSlotChoices for the
+     * whole day. A weekday that was never started gets the default slots first.
+     */
+    async getDayChoices(
+      { actor, now }: CampHqRequest,
+      groupId: string,
+      weekday: number,
+    ): Promise<DayChoices> {
+      await requireReader(actor);
+      const day = cleanWeekday(weekday);
+      const schedule = await readSchedule(groupId, now);
+      const { group } = schedule;
+      const slots = schedule.days.find((entry) => entry.weekday === day)?.slots ?? [];
+      const activityRows = await db
+        .select()
+        .from(activities)
+        .orderBy(asc(sql`lower(${activities.name})`));
+      const allowed = activityRows.filter(
+        (activity) =>
+          !activity.clubOnly && group.grades.every((grade) => activity.grades.includes(grade)),
+      );
+      const exclusiveIds = allowed.filter((a) => a.kind === "exclusive").map((a) => a.id);
+      // One read for the whole day; each slot then keeps its earliest overlap.
+      const bookings =
+        slots.length === 0
+          ? []
+          : await overlappingBookings(db, exclusiveIds, group.id, day, {
+              start: Math.min(...slots.map((slot) => slot.start)),
+              end: Math.max(...slots.map((slot) => slot.end)),
+            });
+      const bookedBy: DayChoices["bookedBy"] = {};
+      for (const slot of slots) {
+        const taken: Record<string, ScheduleBooking> = {};
+        for (const booking of bookings) {
+          if (!booking.activityId || taken[booking.activityId]) continue;
+          if (booking.start >= slot.end || booking.end <= slot.start) continue;
+          taken[booking.activityId] = {
+            campGroupId: booking.campGroupId,
+            campGroupName: booking.campGroupName,
+            weekday: day,
+            start: booking.start,
+            end: booking.end,
+          };
+        }
+        bookedBy[slot.id] = taken;
+      }
+      return { group, weekday: day, slots, activities: allowed.map(toActivity), bookedBy };
     },
 
     /** Adds an empty slot to one weekday of the group's schedule. */
