@@ -42,6 +42,9 @@ describe("Camp HQ route protection", () => {
         );
         expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
       },
+      // The first case loads the proxy and Clerk from scratch, which takes
+      // more than five seconds while the whole suite runs at once.
+      20_000,
     );
 
     test("lets a signed-out visitor open the sign-in page", async () => {

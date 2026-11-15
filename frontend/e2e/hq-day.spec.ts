@@ -88,7 +88,8 @@ test.describe("Camp HQ: one whole day", () => {
       const avaRow = page.getByRole("row", { name: /Ava Brookfield \(sample\)/ });
       await expect(avaRow.getByText("Archery")).toBeVisible();
 
-      await page.getByRole("button", { name: "Sign out" }).click();
+      await page.getByRole("button", { name: /^Account: / }).click();
+      await page.getByRole("menuitem", { name: "Sign out" }).click();
       await expect(page).toHaveURL(/\/hq\/sign-in/);
     });
 

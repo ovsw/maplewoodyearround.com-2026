@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { ActivitiesTable, type ActivityRow } from "./activities-table";
 
 export const metadata: Metadata = { title: "Configure Activities" };
@@ -39,7 +39,6 @@ async function Activities() {
 
   return (
     <section className="flex flex-col gap-6">
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Configure Activities</h1>
         <p className="max-w-3xl text-muted-foreground">

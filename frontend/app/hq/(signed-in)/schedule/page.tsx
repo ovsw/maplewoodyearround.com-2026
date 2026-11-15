@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { campClock, weekdayLabels } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../auto-refresh";
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { WeekdayNav, chosenWeekday } from "../schedule-view-parts";
 import { SCHEDULE_REFRESH_MS, byActivityPath, groupsSchedulePath } from "../views-paths";
 import { GroupsScheduleTable, type BoardActivity, type BoardGroup } from "./groups-schedule-table";
@@ -57,7 +57,6 @@ async function GroupsSchedule({
     <section className="flex flex-col gap-6">
       {/* An Admin's table is being edited: it reads again after each save instead. */}
       {isAdmin ? null : <AutoRefresh intervalMs={SCHEDULE_REFRESH_MS} />}
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Groups Schedule</h1>
         <p className="max-w-3xl text-muted-foreground">

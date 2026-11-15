@@ -8,7 +8,7 @@ import type { ChildLookup, ChildLookupResult, ChildWhereabouts } from "@/lib/hq/
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import { formatSlotRange } from "@/lib/hq/schedule-times";
 
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { FRONT_DESK_PATH } from "./paths";
 
 export const metadata: Metadata = { title: "Find a child" };
@@ -39,7 +39,6 @@ async function FrontDesk({
     if (!isCampHqRefusal(error)) throw error;
     return (
       <section className="flex max-w-xl flex-col gap-3">
-        <BackLink href="/hq">Camp HQ</BackLink>
         <p className="text-muted-foreground">{error.message}</p>
       </section>
     );
@@ -47,7 +46,6 @@ async function FrontDesk({
 
   return (
     <section className="flex flex-col gap-6">
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex max-w-3xl flex-col gap-1">
         <h1 className="text-title-lg">Find a child</h1>
         <p className="text-lg">{formatCampDate(lookup.date)}</p>

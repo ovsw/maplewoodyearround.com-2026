@@ -50,9 +50,7 @@ async function LeaderView({
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const back = isAdmin ? (
     <BackLink href={CAMP_GROUPS_PATH}>Configure Groups</BackLink>
-  ) : (
-    <BackLink href="/hq">Camp HQ</BackLink>
-  );
+  ) : null;
 
   const view = await campHq.getLeaderView(request, id).catch((error: unknown) => {
     if (isCampHqRefusal(error, "not-found") || isCampHqRefusal(error, "not-your-group")) {

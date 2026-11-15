@@ -62,6 +62,16 @@
   --color-accent: color-mix(in oklab, var(--neutral-link) 8%, transparent);
   --color-accent-foreground: var(--neutral-ink);
 
+  /* The Camp HQ app sidebar (shadcn Sidebar). */
+  --color-sidebar: color-mix(in oklab, var(--neutral-ink) 3%, var(--neutral-surface-white));
+  --color-sidebar-foreground: var(--neutral-ink);
+  --color-sidebar-primary: var(--maplewood-green);
+  --color-sidebar-primary-foreground: #fff;
+  --color-sidebar-accent: color-mix(in oklab, var(--maplewood-green) 10%, var(--neutral-surface-white));
+  --color-sidebar-accent-foreground: var(--neutral-ink);
+  --color-sidebar-border: color-mix(in oklab, var(--neutral-ink) 12%, transparent);
+  --color-sidebar-ring: var(--maplewood-focus);
+
   --color-primary: var(--maplewood-green);
   --color-primary-foreground: #fff;
   --color-primary-hover: var(--maplewood-green-dark);

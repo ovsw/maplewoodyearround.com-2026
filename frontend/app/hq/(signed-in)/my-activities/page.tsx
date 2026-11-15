@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { formatSlotRange, weekdayLabels } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../auto-refresh";
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { MY_CLUB_DAY_ROSTERS_PATH } from "../club-day/paths";
 import { SCHEDULE_REFRESH_MS, byActivityPath } from "../views-paths";
 import { VisitList } from "../visit-list";
@@ -29,7 +29,6 @@ async function MyActivities() {
   return (
     <section className="flex flex-col gap-6">
       <AutoRefresh intervalMs={SCHEDULE_REFRESH_MS} />
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">
           My activities{day.today ? `, ${weekdayLabels[day.today]}` : ""}

@@ -4,9 +4,9 @@ import { Suspense } from "react";
 import { campClock, formatSlotRange, weekdayLabels } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../auto-refresh";
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { WeekdayNav, chosenWeekday } from "../schedule-view-parts";
-import { SCHEDULE_REFRESH_MS, byActivityPath, groupsSchedulePath } from "../views-paths";
+import { SCHEDULE_REFRESH_MS, byActivityPath } from "../views-paths";
 import { VisitList } from "../visit-list";
 
 export const metadata: Metadata = { title: "Schedule by activity" };
@@ -38,7 +38,6 @@ async function ByActivity({
   return (
     <section className="flex flex-col gap-6">
       <AutoRefresh intervalMs={SCHEDULE_REFRESH_MS} />
-      <BackLink href={groupsSchedulePath(weekday)}>Groups Schedule</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Schedule by activity</h1>
         <p className="text-muted-foreground">

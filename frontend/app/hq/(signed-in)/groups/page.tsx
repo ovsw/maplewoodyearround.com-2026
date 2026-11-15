@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { CAMP_HQ_TEAMS } from "@/lib/hq/lists";
 import { campClock } from "@/lib/hq/schedule-times";
 
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { GroupsTable, type GroupRow } from "./groups-table";
 
 export const metadata: Metadata = { title: "Configure Groups" };
@@ -32,7 +32,6 @@ async function CampGroups() {
 
   return (
     <section className="flex flex-col gap-6">
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Configure Groups</h1>
         <p className="max-w-3xl text-muted-foreground">

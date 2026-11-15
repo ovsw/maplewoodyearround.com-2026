@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { campDate, formatCampDateTime } from "@/lib/hq/camp-dates";
 import { CAMPER_CSV_COLUMNS } from "@/lib/hq/camper-csv";
 
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { ClearCamperDataForm } from "./clear-form";
 import { CamperLoadErrors } from "./load-report";
 import { toReportView } from "./paths";
@@ -36,7 +36,6 @@ async function Campers() {
   if (!isAdmin) {
     return (
       <section className="flex flex-col gap-6">
-        <BackLink href="/hq">Camp HQ</BackLink>
         <p className="text-muted-foreground">Only an Admin can load the camper list.</p>
       </section>
     );
@@ -47,7 +46,6 @@ async function Campers() {
 
   return (
     <section className="flex flex-col gap-8">
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex max-w-3xl flex-col gap-2">
         <h1 className="text-title-lg">Camper list</h1>
         <p className="text-muted-foreground">

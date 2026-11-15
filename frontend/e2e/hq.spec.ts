@@ -42,7 +42,10 @@ test.describe("Camp HQ with sign-in", () => {
       page.getByRole("heading", { name: "Hello, Sample Leader" }),
     ).toBeVisible();
     await expect(page.getByText("Your role: Senior staff")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    // The sidebar keeps the main menu and the account menu in view.
+    await expect(page.getByRole("button", { name: "Account: Sample Leader" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Groups Schedule" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Staff and accounts" })).toHaveCount(0);
     // They land on their own Assignment.
     await expect(page.getByRole("heading", { name: "My Assignment" })).toBeVisible();
 
@@ -66,10 +69,13 @@ test.describe("Camp HQ with sign-in", () => {
     await page.getByRole("link", { name: "Configure Groups" }).click();
     await expect(page.getByRole("heading", { name: "Configure Groups", level: 1 })).toBeVisible();
     await expect(page.getByRole("columnheader", { name: "Leader" })).toBeVisible();
-    await page.goto("/hq");
+    // The sidebar moves between pages without going back to Home.
     await page.getByRole("link", { name: "Configure Activities" }).click();
     await expect(page.getByRole("columnheader", { name: "Specialist" })).toBeVisible();
-    await page.goto("/hq");
+    await expect(page.getByRole("link", { name: "Configure Activities" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
 
     // The Admin adds an invented Junior staff member, then removes them.
     await page.getByRole("link", { name: "Staff and accounts" }).click();
