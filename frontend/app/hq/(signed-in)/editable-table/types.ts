@@ -1,5 +1,6 @@
 // Types of the Camp HQ editable table. No "use client" here, so server actions
 // can return a CellResult.
+import type { ReactNode } from "react";
 
 /** What saving a cell or a row came to. A refusal carries the reason to show. */
 export type CellResult =
@@ -14,6 +15,10 @@ export type EditableOption = {
   group?: string;
   /** Why the choice cannot be picked. It stays in the list, greyed out, with this text. */
   unavailable?: string;
+  /** A note beside a choice that can be picked, for example what the person does now. */
+  note?: string;
+  /** Shows the picked choice in a muted colour, for a choice that means "nothing". */
+  muted?: boolean;
 };
 
 type Column<Row, Type extends string, Value> = {
@@ -23,22 +28,41 @@ type Column<Row, Type extends string, Value> = {
   /** Classes for the column's cells, for example a width. */
   className?: string;
   value: (row: Row) => Value;
-  /** The text shown when the table is read-only. */
+  /** The text shown when the cell cannot be edited. */
   display: (row: Row) => string;
+  /** False shows this row's cell as text. Left out, every row's cell is editable. */
+  editable?: (row: Row) => boolean;
   /** Saves the cell. A refusal puts the cell back to its old value. */
   save: (row: Row, value: Value) => Promise<CellResult>;
 };
 
+type Choices<Row> = {
+  options: (row: Row) => EditableOption[];
+  searchPlaceholder?: string;
+};
+
 /**
- * A column of an editable table, by cell type. To add a cell type (text,
- * multi-pick, checkbox), add a member here and its cell in cells.tsx.
+ * A column of an editable table, by cell type. To add a cell type, add a
+ * member here and its cell in cells.tsx.
  */
 export type EditableColumn<Row> =
   | Column<Row, "time", string>
-  | (Column<Row, "select", string> & {
-      options: (row: Row) => EditableOption[];
-      searchPlaceholder?: string;
-    });
+  | (Column<Row, "text", string> & { placeholder?: string; maxLength?: number })
+  | (Column<Row, "select", string> & Choices<Row>)
+  | (Column<Row, "multi", string[]> &
+      Choices<Row> & {
+        /** What the closed cell shows for the picked values. Left out: their labels. */
+        summary?: (values: string[]) => string;
+      })
+  | Column<Row, "checkbox", boolean>
+  /** Anything that is not edited in place, for example links to other screens. */
+  | {
+      id: string;
+      header: string;
+      type: "custom";
+      className?: string;
+      render: (row: Row) => ReactNode;
+    };
 
 /** The blank row at the bottom of the table that adds a row. */
 export type AddRow = {
@@ -46,8 +70,13 @@ export type AddRow = {
   label: string;
   /** Shown in the cells the blank row does not fill in. */
   hint: string;
-  /** The ids of the columns the blank row fills in, each a "time" column. */
+  /**
+   * The ids of the columns the blank row fills in: time, text, select or multi
+   * columns. A multi column's choices are kept as one comma-separated string.
+   */
   columns: string[];
+  /** The choices of a select or multi column in the blank row. */
+  options?: Record<string, EditableOption[]>;
   /** Lets one cell fill in another, for example the end from the start. */
   fill?: (draft: Record<string, string>, changed: string) => Record<string, string>;
   isComplete: (draft: Record<string, string>) => boolean;

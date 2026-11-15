@@ -3,56 +3,31 @@
 // Server actions for the Group schedule table. Each saves one cell or one row
 // and returns what the cell shows. They only call the Camp HQ operations
 // module, which decides who may change what and refuses clashes.
-import { revalidatePath } from "next/cache";
-
-import { CampHqDatabaseUnavailable, getCampHqOperations } from "@/lib/hq/camp-hq";
-import { campHqNow } from "@/lib/hq/clock";
-import {
-  isCampHqRefusal,
-  type CampHqOperations,
-  type CampHqRequest,
-} from "@/lib/hq/operations";
 import type {
   SlotContentInput,
   SlotTimesChange,
   SlotTimesInput,
 } from "@/lib/hq/schedules";
-import { requireCampHqActor } from "@/lib/hq/session";
+import type { CampHqOperations, CampHqRequest } from "@/lib/hq/operations";
 
+import { runCell } from "../../../cell-run";
 import type { CellResult } from "../../../editable-table/types";
-import { SCHEDULE_PAGES, scheduleDayPath } from "./schedule-paths";
+import { scheduleDayPath } from "./schedule-paths";
 
-/** Runs one operation; a refusal comes back as the reason for the cell. */
-async function run(
+/** Runs one operation; a clash links to the other group's schedule of that day. */
+function run(
   weekday: number,
   operation: (campHq: CampHqOperations, request: CampHqRequest) => Promise<unknown>,
 ): Promise<CellResult> {
-  const actor = await requireCampHqActor();
-  try {
-    const campHq = await getCampHqOperations();
-    await operation(campHq, { actor, now: campHqNow() });
-  } catch (error) {
-    if (isCampHqRefusal(error)) {
-      return {
-        ok: false,
-        error: error.message,
-        // Only a Camp group has a schedule to open; a specialist is named in the message.
-        link:
-          error.other?.kind === "camp-group"
-            ? {
-                href: scheduleDayPath(error.other.id, weekday),
-                label: `Open the schedule of ${error.other.name}`,
-              }
-            : undefined,
-      };
-    }
-    if (error instanceof CampHqDatabaseUnavailable) {
-      return { ok: false, error: "Camp HQ's database is not available. Nothing was saved." };
-    }
-    throw error;
-  }
-  revalidatePath(SCHEDULE_PAGES, "layout");
-  return { ok: true };
+  // Only a Camp group has a schedule to open; a specialist is named in the message.
+  return runCell(operation, (refusal) =>
+    refusal.other?.kind === "camp-group"
+      ? {
+          href: scheduleDayPath(refusal.other.id, weekday),
+          label: `Open the schedule of ${refusal.other.name}`,
+        }
+      : undefined,
+  );
 }
 
 /** The choice of a slot: "empty", "club-day" or "activity:<id>". */
@@ -104,7 +79,10 @@ export async function removeScheduleSlot(slotId: string, weekday: number): Promi
   return run(weekday, (campHq, request) => campHq.removeScheduleSlot(request, slotId));
 }
 
-/** Undo of a removal: the slot again, at the same times and with what it held. */
+/**
+ * A slot at these times holding this choice: the undo of a removal, and a
+ * period picked on the Groups Schedule for a group that had no slot then.
+ */
 export async function restoreScheduleSlot(
   groupId: string,
   weekday: number,
@@ -122,5 +100,5 @@ export async function restoreScheduleSlot(
     campHq.setScheduleSlotContent(request, slotId, content),
   );
   if (filled.ok) return filled;
-  return { ...filled, error: `The slot is back, but empty. ${filled.error}` };
+  return { ...filled, error: `The slot is there, but empty. ${filled.error}` };
 }

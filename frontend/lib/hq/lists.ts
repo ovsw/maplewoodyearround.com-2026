@@ -48,6 +48,9 @@ export type CampGroupInput = {
   locations?: Partial<CampGroupLocations>;
 };
 
+/** A change of a Camp group. Anything left out keeps its stored value. */
+export type CampGroupChange = Partial<CampGroupInput>;
+
 export type ActivityKind = (typeof activities.$inferSelect)["kind"];
 
 export const activityKindLabels: Record<ActivityKind, string> = {
@@ -72,6 +75,9 @@ export type ActivityInput = {
   /** Defaults to false on a new activity; left as it is on a change when omitted. */
   clubOnly?: boolean;
 };
+
+/** A change of an activity. Anything left out keeps its stored value. */
+export type ActivityChange = Partial<ActivityInput>;
 
 const NAME_MAX = 80;
 const LOCATION_MAX = 200;
@@ -306,47 +312,57 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
     },
 
     /**
-     * Renames a Camp group and sets its grades, Team and locations. A sample
-     * Team stops being sample once an Admin changes it.
+     * Changes a Camp group: its name, grades, Team and locations. Anything left
+     * out keeps its stored value, so one cell of a table can be saved by
+     * itself. A sample Team stops being sample once an Admin changes it.
      */
     async updateCampGroup(
       { actor, now }: CampHqRequest,
       id: string,
-      input: CampGroupInput,
+      input: CampGroupChange,
     ): Promise<CampGroup> {
       await requireAdmin(actor);
       const existing = await findGroupRow(id);
       if (!existing) notFound("Camp group");
-      const name = cleanName(input.name, "Camp group");
-      const team = cleanTeam(input.team);
-      const values = {
-        name,
-        grades: cleanGrades(input.grades, "Camp group"),
-        team,
-        teamIsSample: existing.teamIsSample && team === existing.team,
-        changeLocation: cleanLocation(input.locations?.change),
-        freeSwimLocation: cleanLocation(input.locations?.freeSwim),
-        lunchLocation: cleanLocation(input.locations?.lunch),
-        swimLessonsLocation: cleanLocation(input.locations?.swimLessons),
+      const name = input.name === undefined ? undefined : cleanName(input.name, "Camp group");
+      const grades = input.grades === undefined ? undefined : cleanGrades(input.grades, "Camp group");
+      const team = input.team === undefined ? undefined : cleanTeam(input.team);
+      const location = (value: unknown) => (value === undefined ? undefined : cleanLocation(value));
+      const locations = {
+        changeLocation: location(input.locations?.change),
+        freeSwimLocation: location(input.locations?.freeSwim),
+        lunchLocation: location(input.locations?.lunch),
+        swimLessonsLocation: location(input.locations?.swimLessons),
       };
-      await refuseTakenName(campGroups, name, "a Camp group", id);
-      const [row] = await writeNamed(name, "a Camp group", () =>
+      if (name !== undefined) await refuseTakenName(campGroups, name, "a Camp group", id);
+      const [row] = await writeNamed(name ?? existing.name, "a Camp group", () =>
         db.transaction(async (transaction) => {
           const tx = transaction as unknown as CampHqDb;
           await lockClashRules(tx);
           const [current] = await tx
-            .select({ team: campGroups.team })
+            .select()
             .from(campGroups)
             .where(eq(campGroups.id, id))
             .for("update");
           if (!current) notFound("Camp group");
-          if (current.team !== team) {
+          const nextTeam = team ?? current.team;
+          if (current.team !== nextTeam) {
             // The group's Club day periods take the new Team's options.
-            await refuseTeamOptionClashes(tx, id, team);
+            await refuseTeamOptionClashes(tx, id, nextTeam);
           }
           return tx
             .update(campGroups)
-            .set({ ...values, updatedAt: now })
+            .set({
+              name: name ?? current.name,
+              grades: grades ?? current.grades,
+              team: nextTeam,
+              teamIsSample: current.teamIsSample && nextTeam === current.team,
+              changeLocation: locations.changeLocation ?? current.changeLocation,
+              freeSwimLocation: locations.freeSwimLocation ?? current.freeSwimLocation,
+              lunchLocation: locations.lunchLocation ?? current.lunchLocation,
+              swimLessonsLocation: locations.swimLessonsLocation ?? current.swimLessonsLocation,
+              updatedAt: now,
+            })
             .where(eq(campGroups.id, id))
             .returning();
         }),
@@ -400,26 +416,24 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
     },
 
     /**
-     * Renames an activity and sets its grades, whether it is exclusive or
-     * shared, and whether it is offered only on Club day.
+     * Changes an activity: its name, grades, whether it is exclusive or shared,
+     * and whether it is offered only on Club day. Anything left out keeps its
+     * stored value, so one cell of a table can be saved by itself.
      */
     async updateActivity(
       { actor, now }: CampHqRequest,
       id: string,
-      input: ActivityInput,
+      input: ActivityChange,
     ): Promise<Activity> {
       await requireAdmin(actor);
       const existing = await findActivityRow(id);
       if (!existing) notFound("activity");
-      const name = cleanName(input.name, "activity");
-      const values = {
-        name,
-        grades: cleanGrades(input.grades, "activity"),
-        kind: input.kind === undefined ? existing.kind : cleanKind(input.kind),
-        clubOnly: input.clubOnly === undefined ? existing.clubOnly : input.clubOnly === true,
-      };
-      await refuseTakenName(activities, name, "an activity", id);
-      const [row] = await writeNamed(name, "an activity", () =>
+      const name = input.name === undefined ? undefined : cleanName(input.name, "activity");
+      const grades = input.grades === undefined ? undefined : cleanGrades(input.grades, "activity");
+      const kind = input.kind === undefined ? undefined : cleanKind(input.kind);
+      const clubOnly = input.clubOnly === undefined ? undefined : input.clubOnly === true;
+      if (name !== undefined) await refuseTakenName(activities, name, "an activity", id);
+      const [row] = await writeNamed(name ?? existing.name, "an activity", () =>
         // Under the clash lock, so no booking or option can slip in between the
         // checks below and the write.
         db.transaction(async (transaction) => {
@@ -431,6 +445,12 @@ export function createListOperations({ db, requirePerson, requireAdmin, usageChe
             .where(eq(activities.id, id))
             .for("update");
           if (!current) notFound("activity");
+          const values = {
+            name: name ?? current.name,
+            grades: grades ?? current.grades,
+            kind: kind ?? current.kind,
+            clubOnly: clubOnly ?? current.clubOnly,
+          };
           if (values.clubOnly && !current.clubOnly) {
             const booked = await activityOnGroupSchedules(tx, id);
             if (booked.length > 0) {

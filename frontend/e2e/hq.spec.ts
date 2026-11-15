@@ -46,10 +46,8 @@ test.describe("Camp HQ with sign-in", () => {
     // They land on their own Assignment.
     await expect(page.getByRole("heading", { name: "My Assignment" })).toBeVisible();
 
-    // Staff management and Assignments are for Admins only.
+    // Staff management is for Admins only.
     await page.goto("/hq/staff");
-    await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
-    await page.goto("/hq/assignments");
     await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
   });
 
@@ -64,10 +62,13 @@ test.describe("Camp HQ with sign-in", () => {
     ).toBeVisible();
     await expect(page.getByText("Your role: Admin")).toBeVisible();
 
-    // The Admin sees every Assignment and the gaps.
-    await page.getByRole("link", { name: "Assignments" }).click();
-    await expect(page.getByRole("heading", { name: "Assignments", level: 1 })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Gaps" })).toBeVisible();
+    // The Admin sees who leads each Camp group and who runs each activity.
+    await page.getByRole("link", { name: "Configure Groups" }).click();
+    await expect(page.getByRole("heading", { name: "Configure Groups", level: 1 })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Leader" })).toBeVisible();
+    await page.goto("/hq");
+    await page.getByRole("link", { name: "Configure Activities" }).click();
+    await expect(page.getByRole("columnheader", { name: "Specialist" })).toBeVisible();
     await page.goto("/hq");
 
     // The Admin adds an invented Junior staff member, then removes them.

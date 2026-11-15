@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import type { CampGroupLocations } from "@/lib/hq/lists";
 import {
   SCHEDULE_WEEKDAYS,
   isScheduleWeekday,
   weekdayLabels,
   type ScheduleWeekday,
 } from "@/lib/hq/schedule-times";
+
+export { locationKeys, locationLabels } from "./location-labels";
 
 /** The weekday asked for in `?day=`, else today, else Monday at a weekend. */
 export function chosenWeekday(
@@ -41,15 +42,6 @@ export function WeekdayNav({
     </nav>
   );
 }
-
-export const locationLabels: Record<keyof CampGroupLocations, string> = {
-  change: "Change",
-  freeSwim: "Free swim",
-  lunch: "Lunch",
-  swimLessons: "Swim lessons",
-};
-
-export const locationKeys = Object.keys(locationLabels) as (keyof CampGroupLocations)[];
 
 /** A location, or a muted "Not set" when the Admin left it empty. */
 export function LocationValue({ value }: { value: string }) {

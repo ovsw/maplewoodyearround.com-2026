@@ -16,6 +16,7 @@ import {
 } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
 
+import { JuniorsTable, type JuniorRow } from "./juniors-table";
 import { StaffForm } from "./staff-form";
 
 export const metadata: Metadata = { title: "Staff and accounts" };
@@ -34,7 +35,13 @@ export default function StaffPage() {
 }
 
 type StaffState =
-  | { kind: "staff"; staff: StaffListEntry[] }
+  | {
+      kind: "staff";
+      staff: StaffListEntry[];
+      juniors: JuniorRow[];
+      campGroups: { id: string; name: string }[];
+      activities: { id: string; name: string }[];
+    }
   | { kind: "refused"; message: string }
   | { kind: "no-database" };
 
@@ -42,7 +49,18 @@ async function loadStaff(): Promise<StaffState> {
   const actor = await requireCampHqActor();
   try {
     const campHq = await getCampHqOperations();
-    return { kind: "staff", staff: await campHq.listStaff({ actor, now: campHqNow() }) };
+    const request = { actor, now: campHqNow() };
+    const [staff, board] = await Promise.all([
+      campHq.listStaff(request),
+      campHq.getAssignmentBoard(request),
+    ]);
+    return {
+      kind: "staff",
+      staff,
+      juniors: board.juniors,
+      campGroups: board.campGroups.map(({ id, name }) => ({ id, name })),
+      activities: board.activities.map(({ id, name }) => ({ id, name })),
+    };
   } catch (error) {
     if (isCampHqRefusal(error)) return { kind: "refused", message: error.message };
     if (error instanceof CampHqDatabaseUnavailable) return { kind: "no-database" };
@@ -88,6 +106,21 @@ async function Staff() {
           <Button type="submit">Add</Button>
         </StaffForm>
       </section>
+
+      {state.juniors.length > 0 ? (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-label">Junior staff: who they help</h2>
+          <p className="max-w-3xl text-muted-foreground">
+            Click a cell to change it. It saves by itself. Leaders are set on Configure Groups
+            and specialists on Configure Activities.
+          </p>
+          <JuniorsTable
+            rows={state.juniors}
+            campGroups={state.campGroups}
+            activities={state.activities}
+          />
+        </section>
+      ) : null}
 
       <section className="flex flex-col gap-3">
         <h2 className="text-label">

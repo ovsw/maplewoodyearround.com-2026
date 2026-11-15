@@ -49,7 +49,7 @@ async function LeaderView({
   const { campHq, request, isAdmin } = state.context;
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const back = isAdmin ? (
-    <BackLink href={CAMP_GROUPS_PATH}>Camp groups</BackLink>
+    <BackLink href={CAMP_GROUPS_PATH}>Configure Groups</BackLink>
   ) : (
     <BackLink href="/hq">Camp HQ</BackLink>
   );

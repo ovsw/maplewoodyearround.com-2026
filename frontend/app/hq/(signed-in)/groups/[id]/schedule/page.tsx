@@ -16,8 +16,8 @@ import {
 import type { DayChoices, ScheduleSlot } from "@/lib/hq/schedules";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../../camp-hq-page";
-import { CAMP_GROUPS_PATH } from "../../../lists-paths";
 import type { EditableOption } from "../../../editable-table/types";
+import { groupsSchedulePath } from "../../../views-paths";
 import { scheduleDayPath } from "./schedule-paths";
 import { ScheduleTable, type ScheduleRow } from "./schedule-table";
 
@@ -91,7 +91,7 @@ async function GroupSchedule({
   if (!schedule) {
     return (
       <section className="flex flex-col gap-6">
-        <BackLink href={CAMP_GROUPS_PATH}>Camp groups</BackLink>
+        <BackLink href={groupsSchedulePath(weekday)}>Groups Schedule</BackLink>
         <p className="text-muted-foreground">This Camp group no longer exists.</p>
       </section>
     );
@@ -107,7 +107,7 @@ async function GroupSchedule({
 
   return (
     <section className="flex flex-col gap-6">
-      <BackLink href={CAMP_GROUPS_PATH}>Camp groups</BackLink>
+      <BackLink href={groupsSchedulePath(weekday)}>Groups Schedule</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Schedule of {schedule.group.name}</h1>
         <p className="text-muted-foreground">

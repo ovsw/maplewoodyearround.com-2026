@@ -27,7 +27,7 @@ import {
 import type { CampHqDb } from "./db/database.ts";
 import { activities, campGroups, scheduleDays, scheduleSlots } from "./db/schema.ts";
 import { campHqGradeLabels, sortGrades, type CampHqGrade } from "./grades.ts";
-import type { Activity } from "./lists.ts";
+import { toCampGroup, type Activity, type CampGroupLocations } from "./lists.ts";
 import { CampHqRefusal, type CampHqActor, type CampHqRequest } from "./operations.ts";
 import {
   SCHEDULE_WEEKDAYS,
@@ -97,6 +97,19 @@ export type DayChoices = {
    * activity that overlaps that slot. An activity that is free has no entry.
    */
   bookedBy: Record<string, Record<string, ScheduleBooking>>;
+};
+
+/** One weekday of every Camp group, for the Groups Schedule table. */
+export type DayBoard = {
+  weekday: ScheduleWeekday;
+  /** Every Camp group, by name, with its slots of the day in time order. */
+  groups: {
+    group: GroupSchedule["group"];
+    locations: CampGroupLocations;
+    slots: ScheduleSlot[];
+  }[];
+  /** Every activity that can be booked on a Group schedule, by name. */
+  activities: Activity[];
 };
 
 export type SlotTimesInput = { start: string; end: string };
@@ -204,17 +217,23 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
    * Starts every weekday of the group that has not been started yet with the
    * default slots. Safe to run again or at the same time from two requests.
    */
-  async function startDays(tx: CampHqDb, groupId: string, now: Date) {
+  async function startDays(tx: CampHqDb, groupId: string | string[], now: Date) {
+    const groupIds = Array.isArray(groupId) ? groupId : [groupId];
+    if (groupIds.length === 0) return;
     const started = await tx
       .insert(scheduleDays)
-      .values(SCHEDULE_WEEKDAYS.map((weekday) => ({ campGroupId: groupId, weekday, createdAt: now })))
+      .values(
+        groupIds.flatMap((campGroupId) =>
+          SCHEDULE_WEEKDAYS.map((weekday) => ({ campGroupId, weekday, createdAt: now })),
+        ),
+      )
       .onConflictDoNothing()
-      .returning({ weekday: scheduleDays.weekday });
+      .returning({ campGroupId: scheduleDays.campGroupId, weekday: scheduleDays.weekday });
     if (started.length === 0) return;
     await tx.insert(scheduleSlots).values(
-      started.flatMap(({ weekday }) =>
+      started.flatMap(({ campGroupId, weekday }) =>
         defaultDaySlots().map(({ start, end }) => ({
-          campGroupId: groupId,
+          campGroupId,
           weekday,
           startMinute: start,
           endMinute: end,
@@ -499,6 +518,49 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
         bookedBy[slot.id] = taken;
       }
       return { group, weekday: day, slots, activities: allowed.map(toActivity), bookedBy };
+    },
+
+    /**
+     * One weekday of every Camp group: its slots and what they hold, with the
+     * activities that can be booked. A group whose week was never started gets
+     * the default slots first.
+     */
+    async getDayBoard({ actor, now }: CampHqRequest, weekday: number): Promise<DayBoard> {
+      await requireReader(actor);
+      const day = cleanWeekday(weekday);
+      return db.transaction(async (transaction) => {
+        const tx = transaction as unknown as CampHqDb;
+        const groupRows = await tx
+          .select()
+          .from(campGroups)
+          .orderBy(asc(sql`lower(${campGroups.name})`));
+        await startDays(
+          tx,
+          groupRows.map((group) => group.id),
+          now,
+        );
+        const slotRows = await tx
+          .select({ slot: scheduleSlots, activity: activities })
+          .from(scheduleSlots)
+          .leftJoin(activities, eq(activities.id, scheduleSlots.activityId))
+          .where(eq(scheduleSlots.weekday, day))
+          .orderBy(asc(scheduleSlots.startMinute));
+        const activityRows = await tx
+          .select()
+          .from(activities)
+          .where(eq(activities.clubOnly, false))
+          .orderBy(asc(sql`lower(${activities.name})`));
+        const slots = slotRows.map(({ slot, activity }) => toSlot(slot, activity));
+        return {
+          weekday: day,
+          groups: groupRows.map((group) => ({
+            group: toGroup(group),
+            locations: toCampGroup(group).locations,
+            slots: slots.filter((slot) => slot.campGroupId === group.id),
+          })),
+          activities: activityRows.map(toActivity),
+        };
+      });
     },
 
     /** Adds an empty slot to one weekday of the group's schedule. */
