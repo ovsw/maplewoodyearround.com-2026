@@ -338,7 +338,8 @@
 }
 
 @utility rounded-control {
-  border-radius: var(--radius-pill);
+  /* Camp HQ sets --radius-control so its data fields are not pills. */
+  border-radius: var(--radius-control, var(--radius-pill));
 }
 
 @utility typo-button {

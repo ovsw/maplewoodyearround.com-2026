@@ -22,7 +22,7 @@ export default function CampHqLayout({
   const keys = getCampHqClerkKeys();
 
   return (
-    <div className="field-white min-h-dvh bg-background text-foreground">
+    <div className="field-white min-h-dvh bg-background text-foreground [--radius-control:6px] [&_[data-slot=button]]:[--radius-control:var(--radius-pill)]">
       {keys ? (
         <ClerkProvider
           publishableKey={keys.publishableKey}
