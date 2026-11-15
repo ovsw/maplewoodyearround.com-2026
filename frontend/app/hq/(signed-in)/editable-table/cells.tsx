@@ -286,10 +286,19 @@ export function Picker({
           aria-controls={listId}
           aria-label={label}
           aria-invalid={invalid || undefined}
-          className={cn(editorClass, "flex flex-1 items-center justify-between gap-2", className)}
+          className={cn(
+            editorClass,
+            "group/picker flex flex-1 items-center justify-between gap-2",
+            className,
+          )}
         >
           <span className={cn("truncate", muted && "text-muted-foreground")}>{summary}</span>
-          <ChevronsUpDown aria-hidden className="size-4 shrink-0 opacity-50" />
+          {/* Shown when the row is pointed at, the cell has focus or its list is open,
+              so a table of dropdowns reads as data, not as a form. */}
+          <ChevronsUpDown
+            aria-hidden
+            className="size-4 shrink-0 opacity-0 transition-opacity group-hover/row:opacity-50 group-focus-visible/picker:opacity-50 group-aria-expanded/picker:opacity-50"
+          />
         </button>
       </PopoverTrigger>
       <PopoverContent id={listId} align="start" className="w-(--radix-popover-trigger-width) min-w-80 p-0">

@@ -237,7 +237,7 @@ function BlankRow<Row>({
     <>
       <TableRow
         aria-label={addRow.label}
-        className="hover:bg-transparent"
+        className="group/row hover:bg-transparent"
         onBlur={(event) => {
           if (pickerOpen.current) return;
           if (!event.currentTarget.contains(event.relatedTarget)) void save();
@@ -312,7 +312,10 @@ export function EditableTable<Row>({
   // The last column holds the row's actions, and the blank row's Add button.
   const hasActionsColumn = !readOnly && Boolean(removeRow || rowActions || addRow);
   // The first column stays in view while a wide table scrolls sideways.
-  const firstCellClass = wide ? "sticky left-0 z-10 bg-background" : undefined;
+  const firstCellClass = wide
+    ? // Opaque, so columns scrolling under it stay hidden; tinted with its row.
+      "sticky left-0 z-10 bg-background group-hover/row:bg-[color-mix(in_oklab,var(--color-muted)_50%,var(--color-background))]"
+    : undefined;
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -445,7 +448,7 @@ export function EditableTable<Row>({
             </TableHeader>
             <TableBody>
               {pageRows.map((row) => (
-                <TableRow key={row.id} className="align-top">
+                <TableRow key={row.id} className="group/row align-top">
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
                       key={cell.id}

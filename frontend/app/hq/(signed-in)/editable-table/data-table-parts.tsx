@@ -70,7 +70,7 @@ export function DataTableColumnHeader<TData, TValue>({
     <Button
       variant="ghost"
       size="sm"
-      className="-ml-2 flex h-8 items-center gap-1.5 px-2 text-sm font-medium text-foreground"
+      className="group/head -ml-2 flex h-8 items-center gap-1.5 px-2 text-sm font-medium text-foreground"
       onClick={() => column.toggleSorting(sorted === "asc")}
     >
       <span>{title}</span>
@@ -79,7 +79,7 @@ export function DataTableColumnHeader<TData, TValue>({
       ) : sorted === "asc" ? (
         <ArrowUp className="size-3.5" />
       ) : (
-        <ChevronsUpDown className="size-3.5 opacity-50" />
+        <ChevronsUpDown className="size-3.5 opacity-0 transition-opacity group-hover/head:opacity-50 group-focus-visible/head:opacity-50" />
       )}
     </Button>
   );

@@ -70,13 +70,13 @@ async function GroupsSchedule({
 
       <WeekdayNav weekday={weekday} today={today} hrefFor={groupsSchedulePath} />
 
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
+      <div className="flex flex-wrap items-baseline gap-4">
         <h2 className="text-title">
           {weekday === today ? `Today, ${weekdayLabels[weekday]}` : weekdayLabels[weekday]}
         </h2>
         <Link
           href={byActivityPath(weekday)}
-          className="focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4"
+          className="focus-ring inline-flex items-center rounded-control text-sm text-primary underline-offset-4 hover:underline"
         >
           See this day by activity
         </Link>

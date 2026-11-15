@@ -5,6 +5,17 @@
    components follow the visitor's OS setting and grey out fields and buttons. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Camp HQ's shadcn components expect a plain `border` to draw in the light
+   border colour, as in shadcn's own base styles, not Tailwind's default
+   currentColor. Base layer, so border-* classes still win. */
+@layer base {
+  .camp-hq *,
+  .camp-hq ::before,
+  .camp-hq ::after {
+    border-color: var(--color-border);
+  }
+}
+
 :root {
   --maplewood-green: #006601;
   --maplewood-green-dark: #004201;
@@ -408,18 +419,9 @@
   --color-secondary: color-mix(in oklab, var(--neutral-ink) 7%, var(--neutral-surface-white));
   --color-secondary-foreground: var(--neutral-ink);
   --color-accent: color-mix(in oklab, var(--neutral-ink) 5%, var(--neutral-surface-white));
+  --color-muted-foreground: color-mix(in oklab, var(--neutral-ink) 62%, var(--neutral-surface-white));
   font-size: 0.875rem;
   line-height: 1.45;
-}
-
-/* shadcn components expect a plain `border` to be the light border colour,
-   not Tailwind's default currentColor. Base layer, so border-* classes win. */
-@layer base {
-  .camp-hq *,
-  .camp-hq ::before,
-  .camp-hq ::after {
-    border-color: var(--color-border);
-  }
 }
 
 .camp-hq .text-title-lg {

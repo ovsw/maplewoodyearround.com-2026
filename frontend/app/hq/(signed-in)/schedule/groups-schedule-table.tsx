@@ -127,9 +127,9 @@ export function GroupsScheduleTable({
           <Link
             href={scheduleDayPath(group.id, weekday)}
             aria-label={`Schedule of ${group.name}`}
-            className="focus-ring flex min-h-8 flex-col justify-center rounded-control px-2"
+            className="group/name focus-ring flex min-h-8 flex-col justify-center rounded-control px-2"
           >
-            <span className="font-semibold text-primary underline underline-offset-4">{group.name}</span>
+            <span className="font-medium text-foreground underline-offset-4 group-hover/name:underline">{group.name}</span>
             <span className="text-xs text-muted-foreground">{formatGrades(group.grades)}</span>
           </Link>
         ),
