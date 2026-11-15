@@ -2,7 +2,8 @@
 
 // The cells of the Camp HQ editable table: each saves by itself, shows a small
 // "Saved" mark, and on a refusal shows the reason and goes back to its old value.
-import { Check, ChevronsUpDown, LoaderCircle } from "lucide-react";
+import { Check, ChevronsUpDown, Info, LoaderCircle, LocateFixed } from "lucide-react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
@@ -15,6 +16,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 import type { CellResult, EditableOption } from "./types";
@@ -256,6 +258,46 @@ type PickerProps = {
 };
 
 /** A searchable list of choices behind a button, for a cell or the blank row. */
+/**
+ * Shows who has a taken choice: their row in this table, lit up for a moment,
+ * or their page. Says whether there was anywhere to go.
+ */
+function showHolder(
+  holder: EditableOption["holder"],
+  router: ReturnType<typeof useRouter>,
+): boolean {
+  if (holder?.href) {
+    router.push(holder.href);
+    return true;
+  }
+  const row = holder?.rowId
+    ? document.querySelector<HTMLElement>(`[data-row-id="${CSS.escape(holder.rowId)}"]`)
+    : null;
+  if (!row) return false;
+  // After the list closes, bring the row into view and light it up.
+  requestAnimationFrame(() => {
+    row.scrollIntoView({ block: "center", behavior: "smooth" });
+    row.dataset.flash = "true";
+    window.setTimeout(() => delete row.dataset.flash, 1600);
+  });
+  return true;
+}
+
+/** The icon of a taken choice; its tooltip says who has it and when. */
+function TakenBy({ reason, canGo }: { reason: string; canGo: boolean }) {
+  const Icon = canGo ? LocateFixed : Info;
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span aria-hidden className="ml-auto inline-flex size-6 shrink-0 items-center justify-center text-muted-foreground">
+          <Icon className="size-3.5" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent side="right">{canGo ? `${reason}. Click to show them.` : reason}</TooltipContent>
+    </Tooltip>
+  );
+}
+
 export function Picker({
   label,
   options,
@@ -269,6 +311,7 @@ export function Picker({
   onPick,
   onOpenChange,
 }: PickerProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const listId = useId();
   const change = (next: boolean) => {
@@ -317,8 +360,13 @@ export function Picker({
                     key={option.value}
                     value={option.value}
                     keywords={[option.label]}
-                    disabled={Boolean(option.unavailable)}
+                    data-unavailable={option.unavailable ? "true" : undefined}
                     onSelect={() => {
+                      // A taken choice is never picked: choosing it shows who has it.
+                      if (option.unavailable) {
+                        if (showHolder(option.holder, router)) change(false);
+                        return;
+                      }
                       if (!keepOpen) change(false);
                       onPick(option.value);
                     }}
@@ -327,10 +375,20 @@ export function Picker({
                       aria-hidden
                       className={cn("size-4", picked.includes(option.value) ? "opacity-100" : "opacity-0")}
                     />
-                    <span>{option.label}</span>
-                    {option.unavailable || option.note ? (
-                      <span className="ml-auto pl-3 text-xs text-muted-foreground">
-                        {option.unavailable ?? option.note}
+                    <span className={cn("truncate", option.unavailable && "text-muted-foreground")}>
+                      {option.label}
+                    </span>
+                    {option.unavailable ? (
+                      <>
+                        <span className="sr-only">
+                          , not available: {option.unavailable}
+                          {option.holder ? ". Choose it to show them." : "."}
+                        </span>
+                        <TakenBy reason={option.unavailable} canGo={Boolean(option.holder)} />
+                      </>
+                    ) : option.note ? (
+                      <span className="ml-auto truncate pl-3 text-xs text-muted-foreground">
+                        {option.note}
                       </span>
                     ) : null}
                   </CommandItem>

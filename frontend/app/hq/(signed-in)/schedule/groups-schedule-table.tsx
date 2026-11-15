@@ -103,6 +103,7 @@ export function GroupsScheduleTable({
           unavailable: other
             ? `${other.groupName} have it ${formatSlotRange(other.start, other.end)}`
             : undefined,
+          holder: other ? { rowId: other.groupId } : undefined,
         });
       }
       // Keep what the slot holds visible even if the group's grades changed since.

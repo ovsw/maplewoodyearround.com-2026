@@ -314,7 +314,7 @@ export function EditableTable<Row>({
   // The first column stays in view while a wide table scrolls sideways.
   const firstCellClass = wide
     ? // Opaque, so columns scrolling under it stay hidden; tinted with its row.
-      "sticky left-0 z-10 bg-background group-hover/row:bg-[color-mix(in_oklab,var(--color-muted)_50%,var(--color-background))]"
+      "sticky left-0 z-10 bg-background transition-colors duration-700 group-hover/row:bg-[color-mix(in_oklab,var(--color-muted)_50%,var(--color-background))] group-data-[flash=true]/row:bg-amber-100"
     : undefined;
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -448,7 +448,11 @@ export function EditableTable<Row>({
             </TableHeader>
             <TableBody>
               {pageRows.map((row) => (
-                <TableRow key={row.id} className="group/row align-top">
+                <TableRow
+                  key={row.id}
+                  data-row-id={row.id}
+                  className="group/row align-top transition-colors duration-700 data-[flash=true]:bg-amber-100"
+                >
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
                       key={cell.id}

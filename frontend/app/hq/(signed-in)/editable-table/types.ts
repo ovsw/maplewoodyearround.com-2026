@@ -13,8 +13,10 @@ export type EditableOption = {
   label: string;
   /** Heading the choice is listed under. Choices keep the order they come in. */
   group?: string;
-  /** Why the choice cannot be picked. It stays in the list, greyed out, with this text. */
+  /** Why the choice cannot be picked. It stays in the list, greyed out; this shows as a tooltip. */
   unavailable?: string;
+  /** Who has a choice that cannot be picked: a row of this table to jump to, or a page to open. */
+  holder?: { rowId?: string; href?: string };
   /** A note beside a choice that can be picked, for example what the person does now. */
   note?: string;
   /** Shows the picked choice in a muted colour, for a choice that means "nothing". */

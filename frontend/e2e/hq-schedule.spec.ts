@@ -111,7 +111,7 @@ test.describe("Camp HQ: the Group schedule table", () => {
         .getByRole("combobox", { name: "Activity of the 2:00 PM to 2:30 PM slot" })
         .click();
       const taken = page.getByRole("option", { name: /Archery/ });
-      await expect(taken).toBeDisabled();
+      await expect(taken).toHaveAttribute("data-unavailable", "true");
       await expect(taken).toContainText(`${first} have it 2:00 PM to 2:20 PM`);
       await page.keyboard.press("Escape");
     });
@@ -169,14 +169,17 @@ test.describe("Camp HQ: the Group schedule table", () => {
       await expect(async () => {
         await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
         try {
-          await expect(taken).toBeDisabled({ timeout: 1_000 });
+          await expect(taken).toHaveAttribute("data-unavailable", "true", { timeout: 1_000 });
         } finally {
           await page.keyboard.press("Escape");
         }
       }).toPass();
       await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
       await expect(taken).toContainText(`${first} have it ${slot}`);
-      await page.keyboard.press("Escape");
+      // Choosing the taken activity shows the group that has it and changes nothing.
+      await taken.click();
+      await expect(board.locator("tr[data-flash=true]")).toContainText(first);
+      await expect(board.getByRole("combobox", { name: `${slot} of ${second}` })).not.toHaveText("Archery");
     });
 
     await test.step("a location is typed in the schedule and shows on Configure Groups", async () => {

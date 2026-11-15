@@ -50,6 +50,7 @@ function slotOptions(slot: ScheduleSlot, { activities, bookedBy }: DayChoices): 
         unavailable: booking
           ? `${booking.campGroupName} have it ${formatSlotRange(booking.start, booking.end)}`
           : undefined,
+        holder: booking ? { href: scheduleDayPath(booking.campGroupId, booking.weekday) } : undefined,
       };
     }),
   ];
