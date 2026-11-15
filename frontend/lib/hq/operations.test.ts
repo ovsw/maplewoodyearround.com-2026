@@ -122,6 +122,27 @@ describe("local sample data", () => {
     ).resolves.toMatchObject({ name: "Sample Leader", role: "senior_staff" });
   });
 
+  it("gives several Camp groups a schedule, without changing an Admin's own", async () => {
+    const asCommand = { actor: { type: "command-line" } as const, now: TEST_NOW };
+    await loadSampleData(test.db, { now: TEST_NOW });
+
+    const booked = async () =>
+      (await test.campHq.getDayBoard(asCommand, 3)).groups.map(
+        (entry) => entry.slots.filter((slot) => slot.content.type === "activity").length,
+      );
+    const first = await booked();
+    expect(first.filter((count) => count > 0)).toHaveLength(8);
+    // Lunch at noon, and the afternoon left empty to try things in.
+    const [angels] = (await test.campHq.getDayBoard(asCommand, 3)).groups;
+    expect(angels.slots.find((slot) => slot.start === 12 * 60)?.content).toMatchObject({
+      activity: { name: "Lunch" },
+    });
+    expect(angels.slots.filter((slot) => slot.start >= 14 * 60).every((slot) => slot.content.type === "empty")).toBe(true);
+
+    await loadSampleData(test.db, { now: TEST_NOW });
+    expect(await booked()).toEqual(first);
+  });
+
   it("includes invented campers for the current week, loaded once", async () => {
     const asCommand = { actor: { type: "command-line" } as const, now: TEST_NOW };
     await loadSampleData(test.db, { now: TEST_NOW });

@@ -42,14 +42,15 @@ test.describe("Camp HQ with sign-in", () => {
       page.getByRole("heading", { name: "Hello, Sample Leader" }),
     ).toBeVisible();
     await expect(page.getByText("Your role: Senior staff")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Sign out" })).toBeVisible();
+    // The sidebar keeps the main menu and the account menu in view.
+    await expect(page.getByRole("button", { name: "Account: Sample Leader" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Groups Schedule" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Staff and accounts" })).toHaveCount(0);
     // They land on their own Assignment.
     await expect(page.getByRole("heading", { name: "My Assignment" })).toBeVisible();
 
-    // Staff management and Assignments are for Admins only.
+    // Staff management is for Admins only.
     await page.goto("/hq/staff");
-    await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
-    await page.goto("/hq/assignments");
     await expect(page.getByText("Only an Admin can do this.")).toBeVisible();
   });
 
@@ -64,25 +65,34 @@ test.describe("Camp HQ with sign-in", () => {
     ).toBeVisible();
     await expect(page.getByText("Your role: Admin")).toBeVisible();
 
-    // The Admin sees every Assignment and the gaps.
-    await page.getByRole("link", { name: "Assignments" }).click();
-    await expect(page.getByRole("heading", { name: "Assignments", level: 1 })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Gaps" })).toBeVisible();
-    await page.goto("/hq");
+    // The Admin sees who leads each Camp group and who runs each activity.
+    await page.getByRole("link", { name: "Configure Groups" }).click();
+    await expect(page.getByRole("heading", { name: "Configure Groups", level: 1 })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "Leader" })).toBeVisible();
+    // The sidebar moves between pages without going back to Home.
+    await page.getByRole("link", { name: "Configure Activities" }).click();
+    await expect(page.getByRole("columnheader", { name: "Specialist" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Configure Activities" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
 
     // The Admin adds an invented Junior staff member, then removes them.
     await page.getByRole("link", { name: "Staff and accounts" }).click();
     await expect(page.getByRole("heading", { name: "Staff and accounts" })).toBeVisible();
     const name = `Sample Junior E2E ${Date.now()}`;
-    const addForm = page.locator("form", { has: page.getByRole("button", { name: "Add", exact: true }) });
-    await addForm.getByLabel("Name").fill(name);
-    await addForm.getByLabel("Staff").selectOption("junior");
-    await addForm.getByRole("button", { name: "Add", exact: true }).click();
-    const row = page.getByRole("listitem").filter({ hasText: name });
-    await expect(row.getByText("Junior staff · No account")).toBeVisible();
+    await page.getByLabel("Name, New staff member").fill(name);
+    await page.getByRole("combobox", { name: "Staff, New staff member" }).click();
+    await page.getByRole("option", { name: /Junior staff/ }).click();
+    await page.getByRole("button", { name: "Add: New staff member" }).click();
+    const row = page.getByRole("row").filter({ has: page.getByLabel(`Name of ${name}`) });
+    await expect(row.getByText("Junior staff")).toBeVisible();
+    await expect(row.getByText("No account")).toBeVisible();
 
-    page.once("dialog", (dialog) => dialog.accept());
-    await row.getByRole("button", { name: "Remove", exact: true }).click();
+    // Removing is in the row's menu and asks first.
+    await row.getByRole("button", { name: `Actions for ${name}` }).click();
+    await page.getByRole("menuitem", { name: "Remove from Camp HQ" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Remove", exact: true }).click();
     await expect(row).toHaveCount(0);
 
     // The Admin uploads a camper file. Its only row names an unknown Camp

@@ -1,6 +1,21 @@
 /* Maplewood tokens from the live Webflow reference. */
 @import "tailwindcss";
 
+/* The site has no dark theme. Without this, `dark:` classes in shadcn
+   components follow the visitor's OS setting and grey out fields and buttons. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Camp HQ's shadcn components expect a plain `border` to draw in the light
+   border colour, as in shadcn's own base styles, not Tailwind's default
+   currentColor. Base layer, so border-* classes still win. */
+@layer base {
+  .camp-hq *,
+  .camp-hq ::before,
+  .camp-hq ::after {
+    border-color: var(--color-border);
+  }
+}
+
 :root {
   --maplewood-green: #006601;
   --maplewood-green-dark: #004201;
@@ -61,6 +76,16 @@
   --color-emphasis: var(--neutral-link);
   --color-accent: color-mix(in oklab, var(--neutral-link) 8%, transparent);
   --color-accent-foreground: var(--neutral-ink);
+
+  /* The Camp HQ app sidebar (shadcn Sidebar). */
+  --color-sidebar: color-mix(in oklab, var(--neutral-ink) 3%, var(--neutral-surface-white));
+  --color-sidebar-foreground: var(--neutral-ink);
+  --color-sidebar-primary: var(--maplewood-green);
+  --color-sidebar-primary-foreground: #fff;
+  --color-sidebar-accent: color-mix(in oklab, var(--maplewood-green) 10%, var(--neutral-surface-white));
+  --color-sidebar-accent-foreground: var(--neutral-ink);
+  --color-sidebar-border: color-mix(in oklab, var(--neutral-ink) 12%, transparent);
+  --color-sidebar-ring: var(--maplewood-focus);
 
   --color-primary: var(--maplewood-green);
   --color-primary-foreground: #fff;
@@ -338,7 +363,8 @@
 }
 
 @utility rounded-control {
-  border-radius: var(--radius-pill);
+  /* Camp HQ sets --radius-control so its data fields are not pills. */
+  border-radius: var(--radius-control, var(--radius-pill));
 }
 
 @utility typo-button {
@@ -377,6 +403,33 @@
     outline: 2px solid var(--color-link);
     outline-offset: -1px;
   }
+}
+
+/* Camp HQ is a dense staff tool, not the marketing site: small radii, so
+   the stock shadcn controls in components/hq-ui keep their shape, and no pills. */
+.camp-hq {
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-control: 6px;
+  /* shadcn's neutral greys: row hover, filter badges, header tints. */
+  --color-muted: color-mix(in oklab, var(--neutral-ink) 4%, var(--neutral-surface-white));
+  --color-secondary: color-mix(in oklab, var(--neutral-ink) 7%, var(--neutral-surface-white));
+  --color-secondary-foreground: var(--neutral-ink);
+  --color-accent: color-mix(in oklab, var(--neutral-ink) 5%, var(--neutral-surface-white));
+  --color-muted-foreground: color-mix(in oklab, var(--neutral-ink) 62%, var(--neutral-surface-white));
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.camp-hq .text-title-lg {
+  font-size: 24px;
+}
+
+.camp-hq .text-title {
+  font-size: 18px;
 }
 
 @utility field-white {

@@ -3,7 +3,7 @@
 // database (previews) gets it only through `pnpm --dir frontend hq:db:sample`.
 // The Camp groups and activities come from the committed seed file
 // (seed-lists.json); their Teams, and the Club day setup below, are sample.
-import { and, asc, between, eq, inArray, isNull, notLike, sql } from "drizzle-orm";
+import { and, asc, between, eq, inArray, isNotNull, isNull, notLike, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 
 import { addDays, campDate, weekStart } from "../camp-dates.ts";
@@ -19,6 +19,7 @@ import {
   groupLeaders,
   juniorPlacements,
   scheduleDays,
+  scheduleSlots,
   staffMembers,
 } from "./schema.ts";
 import { campHqSeed, loadSeedLists } from "./seed-lists.ts";
@@ -75,6 +76,7 @@ export async function loadSampleData(
       .where(and(eq(staffMembers.id, id), isNull(staffMembers.clerkUserId)));
   }
   await loadSampleClubDay(db, now);
+  await loadSampleSchedules(db, now);
 }
 
 const sampleCamperNames = [
@@ -251,5 +253,71 @@ async function loadSampleClubDay(db: CampHqDb, now: Date) {
       campGroupId: group.id,
       clubDayActivityId: activityId("Archery") ?? null,
     });
+  }
+}
+
+/** How many Camp groups get a sample schedule, and until when in the day. */
+const SAMPLE_SCHEDULE_GROUPS = 8;
+const SAMPLE_SCHEDULE_END = 14 * 60;
+const SAMPLE_SCHEDULES_ENOUGH = 3;
+const SAMPLE_LUNCH_START = 12 * 60;
+
+/**
+ * SAMPLE schedules for the first Camp groups (by name), through the operations
+ * module, so the Groups Schedule has something to show: each morning and early
+ * afternoon slot gets an activity allowed for the group, with Lunch at noon.
+ * The later slots stay empty. A booking the rules refuse is left out. Loaded
+ * only while fewer than three groups have an activity booked, and only into
+ * groups with nothing booked, so an Admin's own schedules are never changed.
+ */
+async function loadSampleSchedules(db: CampHqDb, now: Date) {
+  const bookedRows = await db
+    .selectDistinct({ campGroupId: scheduleSlots.campGroupId })
+    .from(scheduleSlots)
+    .where(isNotNull(scheduleSlots.activityId));
+  if (bookedRows.length >= SAMPLE_SCHEDULES_ENOUGH) return;
+  const hasBookings = new Set(bookedRows.map((row) => row.campGroupId));
+  const campHq = createCampHqOperations(db);
+  const request = { actor: { type: "command-line" } as const, now };
+  // The Club day options stay free, so they never clash with a booking.
+  const reserved = new Set<string>(sampleClubDayOptions.map((option) => option.activity));
+
+  for (const weekday of [1, 2, 3, 4, 5]) {
+    const board = await campHq.getDayBoard(request, weekday);
+    const lunch = board.activities.find((activity) => activity.name === "Lunch");
+    const taken = new Set<string>();
+    for (const [groupIndex, entry] of board.groups.slice(0, SAMPLE_SCHEDULE_GROUPS).entries()) {
+      if (hasBookings.has(entry.group.id)) continue;
+      const allowed = board.activities.filter(
+        (activity) =>
+          activity.id !== lunch?.id &&
+          !reserved.has(activity.name) &&
+          entry.group.grades.every((grade) => activity.grades.includes(grade)),
+      );
+      const usedToday = new Set<string>();
+      for (const [slotIndex, slot] of entry.slots.entries()) {
+        if (slot.content.type !== "empty" || slot.start >= SAMPLE_SCHEDULE_END) continue;
+        let pick = slot.start === SAMPLE_LUNCH_START ? lunch : undefined;
+        // A different start for every group, day and slot, then the first one free.
+        const first = groupIndex * 7 + weekday * 3 + slotIndex * 5;
+        for (let step = 0; !pick && step < allowed.length; step += 1) {
+          const candidate = allowed[(first + step) % allowed.length];
+          if (usedToday.has(candidate.id)) continue;
+          if (candidate.kind === "exclusive" && taken.has(`${candidate.id}:${slot.start}`)) continue;
+          pick = candidate;
+        }
+        if (!pick) continue;
+        try {
+          await campHq.setScheduleSlotContent(request, slot.id, {
+            type: "activity",
+            activityId: pick.id,
+          });
+          taken.add(`${pick.id}:${slot.start}`);
+          usedToday.add(pick.id);
+        } catch (error) {
+          if (!(error instanceof CampHqRefusal)) throw error;
+        }
+      }
+    }
   }
 }

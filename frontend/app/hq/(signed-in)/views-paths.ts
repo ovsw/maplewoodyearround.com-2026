@@ -15,8 +15,11 @@ export function byActivityPath(weekday?: number) {
   return weekday === undefined ? path : `${path}?day=${weekday}`;
 }
 
-/** Every group's change, free swim, lunch and swim lesson locations. */
-export const LOCATIONS_PATH = `${CAMP_HQ_PATH}/locations`;
+/** Every Camp group's day in one table, optionally on one weekday. */
+export function groupsSchedulePath(weekday?: number) {
+  const path = `${CAMP_HQ_PATH}/schedule`;
+  return weekday === undefined ? path : `${path}?day=${weekday}`;
+}
 
 /** How often a schedule screen fetches again while it is open. */
 export const SCHEDULE_REFRESH_MS = 30_000;

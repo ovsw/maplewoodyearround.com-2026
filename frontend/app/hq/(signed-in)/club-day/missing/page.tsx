@@ -8,7 +8,7 @@ import { isCampHqRefusal } from "@/lib/hq/operations";
 import { formatSlotTime } from "@/lib/hq/schedule-times";
 
 import { AutoRefresh } from "../../auto-refresh";
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../../camp-hq-page";
 import { CLUB_DAY_ROSTERS_PATH, SIGNUP_REFRESH_MS, groupClubDayPath } from "../paths";
 
 export const metadata: Metadata = { title: "Children with no Club day pick" };
@@ -44,7 +44,6 @@ async function MissingPicksView() {
     if (!isCampHqRefusal(error)) throw error;
     return (
       <section className="flex max-w-xl flex-col gap-3">
-        <BackLink href="/hq">Camp HQ</BackLink>
         <p className="text-muted-foreground">{error.message}</p>
       </section>
     );
@@ -55,7 +54,6 @@ async function MissingPicksView() {
   return (
     <section className="flex flex-col gap-8">
       <AutoRefresh intervalMs={SIGNUP_REFRESH_MS} />
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex max-w-3xl flex-col gap-1">
         <h1 className="text-title-lg">Children with no Club day pick</h1>
         <p className="text-lg">{formatCampDate(missing.date)}</p>

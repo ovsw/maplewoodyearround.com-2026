@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { formatCampDate, formatCampDateTime } from "@/lib/hq/camp-dates";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 
-import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../../camp-hq-page";
+import { CampHqPageNotice, loadCampHqPage } from "../../../camp-hq-page";
 
 export const metadata: Metadata = { title: "Campers today" };
 
@@ -35,7 +35,6 @@ async function GroupCampers({ params }: { params: Promise<{ id: string }> }) {
   if (!list) {
     return (
       <section className="flex flex-col gap-6">
-        <BackLink href="/hq">Camp HQ</BackLink>
         <p className="text-muted-foreground">{refusal}</p>
       </section>
     );
@@ -45,7 +44,6 @@ async function GroupCampers({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <section className="flex flex-col gap-6">
-      <BackLink href="/hq">Camp HQ</BackLink>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg">Campers today: {list.campGroup.name}</h1>
         <p className="text-lg">{formatCampDate(list.date)}</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/hq-ui/button";
 
 /** Opens the browser's print dialog. Hidden on the printed page. */
 export function PrintButton({ children }: { children: React.ReactNode }) {

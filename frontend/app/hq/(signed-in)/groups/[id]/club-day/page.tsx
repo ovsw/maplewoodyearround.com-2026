@@ -29,9 +29,7 @@ async function ClubDaySignupsView({ params }: { params: Promise<{ id: string }> 
   const { id } = await params;
   const back = isAdmin ? (
     <BackLink href={CLUB_DAY_MISSING_PATH}>Children with no pick</BackLink>
-  ) : (
-    <BackLink href="/hq">Camp HQ</BackLink>
-  );
+  ) : null;
 
   const signups = await campHq.getClubDaySignups(request, id).catch((error: unknown) => {
     if (isCampHqRefusal(error, "not-found") || isCampHqRefusal(error, "not-your-group")) {

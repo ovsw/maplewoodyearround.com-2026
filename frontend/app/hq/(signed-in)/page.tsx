@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/hq-ui/button";
 import type { MyAssignment } from "@/lib/hq/assignments";
 import {
   CampHqDatabaseUnavailable,
@@ -18,24 +18,9 @@ import {
 } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
 
-import { ASSIGNMENTS_PATH } from "./assignments/paths";
-import { CAMPERS_PATH, groupCampersPath } from "./campers/paths";
-import {
-  CLUB_DAY_MISSING_PATH,
-  CLUB_DAY_PATH,
-  CLUB_DAY_ROSTERS_PATH,
-  MY_CLUB_DAY_ROSTERS_PATH,
-  groupClubDayPath,
-} from "./club-day/paths";
-import { FRONT_DESK_PATH } from "./front-desk/paths";
-import { ACTIVITIES_PATH, CAMP_GROUPS_PATH } from "./lists-paths";
-import { STAFF_PATH } from "./staff/paths";
-import {
-  LOCATIONS_PATH,
-  MY_ACTIVITIES_PATH,
-  byActivityPath,
-  leaderViewPath,
-} from "./views-paths";
+import { groupCampersPath } from "./campers/paths";
+import { MY_CLUB_DAY_ROSTERS_PATH, groupClubDayPath } from "./club-day/paths";
+import { MY_ACTIVITIES_PATH, leaderViewPath } from "./views-paths";
 
 export const metadata: Metadata = { title: { absolute: "Camp HQ" } };
 
@@ -132,45 +117,6 @@ async function CampHqHome() {
         Your role: <span className="text-foreground">{campHqRoleLabels[person.role]}</span>
       </p>
       <MyAssignmentCard assignment={assignment} isAdmin={person.role === "admin"} />
-      <nav aria-label="Camp HQ lists" className="mt-3 flex flex-wrap gap-3">
-        <Button asChild variant="outline">
-          <Link href={byActivityPath()}>Where groups are</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href={LOCATIONS_PATH}>Group locations</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href={CAMP_GROUPS_PATH}>Camp groups</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href={ACTIVITIES_PATH}>Activities</Link>
-        </Button>
-        {person.role === "admin" ? (
-          <>
-            <Button asChild variant="outline">
-              <Link href={ASSIGNMENTS_PATH}>Assignments</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={CLUB_DAY_PATH}>Club day</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={CLUB_DAY_MISSING_PATH}>Club day signups</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={CLUB_DAY_ROSTERS_PATH}>Club day rosters</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={FRONT_DESK_PATH}>Find a child</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={CAMPERS_PATH}>Camper list</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href={STAFF_PATH}>Staff and accounts</Link>
-            </Button>
-          </>
-        ) : null}
-      </nav>
     </section>
   );
 }
@@ -239,7 +185,7 @@ function MyAssignmentCard({ assignment, isAdmin }: { assignment: MyAssignment; i
       body = (
         <p className="text-muted-foreground">
           {isAdmin
-            ? "You have no Assignment. Set Assignments on the Assignments page."
+            ? "You have no Assignment. Set a leader on Configure Groups or a specialist on Configure Activities."
             : "You have no Assignment yet. Ask an Admin to give you one."}
         </p>
       );

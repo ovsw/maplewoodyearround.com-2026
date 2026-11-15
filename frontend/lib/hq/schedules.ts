@@ -27,7 +27,7 @@ import {
 import type { CampHqDb } from "./db/database.ts";
 import { activities, campGroups, scheduleDays, scheduleSlots } from "./db/schema.ts";
 import { campHqGradeLabels, sortGrades, type CampHqGrade } from "./grades.ts";
-import type { Activity } from "./lists.ts";
+import { toCampGroup, type Activity, type CampGroupLocations } from "./lists.ts";
 import { CampHqRefusal, type CampHqActor, type CampHqRequest } from "./operations.ts";
 import {
   SCHEDULE_WEEKDAYS,
@@ -35,6 +35,7 @@ import {
   formatSlotRange,
   isScheduleWeekday,
   parseSlotTime,
+  slotTimeValue,
   weekdayLabels,
   type ScheduleWeekday,
 } from "./schedule-times.ts";
@@ -83,7 +84,38 @@ export type SlotChoices = {
   choices: ActivityChoice[];
 };
 
+/** What every slot of one day of a Camp group can hold. */
+export type DayChoices = {
+  group: GroupSchedule["group"];
+  weekday: ScheduleWeekday;
+  /** The day's slots, in time order. */
+  slots: ScheduleSlot[];
+  /** The activities allowed for the group's grades, by name. */
+  activities: Activity[];
+  /**
+   * By slot id, then activity id: the other group's booking of an Exclusive
+   * activity that overlaps that slot. An activity that is free has no entry.
+   */
+  bookedBy: Record<string, Record<string, ScheduleBooking>>;
+};
+
+/** One weekday of every Camp group, for the Groups Schedule table. */
+export type DayBoard = {
+  weekday: ScheduleWeekday;
+  /** Every Camp group, by name, with its slots of the day in time order. */
+  groups: {
+    group: GroupSchedule["group"];
+    locations: CampGroupLocations;
+    slots: ScheduleSlot[];
+  }[];
+  /** Every activity that can be booked on a Group schedule, by name. */
+  activities: Activity[];
+};
+
 export type SlotTimesInput = { start: string; end: string };
+
+/** A change of a slot's times. A time left out keeps its stored value. */
+export type SlotTimesChange = { start?: string; end?: string };
 
 export type SlotContentInput =
   | { type: "empty" }
@@ -185,17 +217,23 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
    * Starts every weekday of the group that has not been started yet with the
    * default slots. Safe to run again or at the same time from two requests.
    */
-  async function startDays(tx: CampHqDb, groupId: string, now: Date) {
+  async function startDays(tx: CampHqDb, groupId: string | string[], now: Date) {
+    const groupIds = Array.isArray(groupId) ? groupId : [groupId];
+    if (groupIds.length === 0) return;
     const started = await tx
       .insert(scheduleDays)
-      .values(SCHEDULE_WEEKDAYS.map((weekday) => ({ campGroupId: groupId, weekday, createdAt: now })))
+      .values(
+        groupIds.flatMap((campGroupId) =>
+          SCHEDULE_WEEKDAYS.map((weekday) => ({ campGroupId, weekday, createdAt: now })),
+        ),
+      )
       .onConflictDoNothing()
-      .returning({ weekday: scheduleDays.weekday });
+      .returning({ campGroupId: scheduleDays.campGroupId, weekday: scheduleDays.weekday });
     if (started.length === 0) return;
     await tx.insert(scheduleSlots).values(
-      started.flatMap(({ weekday }) =>
+      started.flatMap(({ campGroupId, weekday }) =>
         defaultDaySlots().map(({ start, end }) => ({
-          campGroupId: groupId,
+          campGroupId,
           weekday,
           startMinute: start,
           endMinute: end,
@@ -432,6 +470,99 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
       };
     },
 
+    /**
+     * What each slot of one day can hold, in one read: getSlotChoices for the
+     * whole day. A weekday that was never started gets the default slots first.
+     */
+    async getDayChoices(
+      { actor, now }: CampHqRequest,
+      groupId: string,
+      weekday: number,
+    ): Promise<DayChoices> {
+      await requireReader(actor);
+      const day = cleanWeekday(weekday);
+      const schedule = await readSchedule(groupId, now);
+      const { group } = schedule;
+      const slots = schedule.days.find((entry) => entry.weekday === day)?.slots ?? [];
+      const activityRows = await db
+        .select()
+        .from(activities)
+        .orderBy(asc(sql`lower(${activities.name})`));
+      const allowed = activityRows.filter(
+        (activity) =>
+          !activity.clubOnly && group.grades.every((grade) => activity.grades.includes(grade)),
+      );
+      const exclusiveIds = allowed.filter((a) => a.kind === "exclusive").map((a) => a.id);
+      // One read for the whole day; each slot then keeps its earliest overlap.
+      const bookings =
+        slots.length === 0
+          ? []
+          : await overlappingBookings(db, exclusiveIds, group.id, day, {
+              start: Math.min(...slots.map((slot) => slot.start)),
+              end: Math.max(...slots.map((slot) => slot.end)),
+            });
+      const bookedBy: DayChoices["bookedBy"] = {};
+      for (const slot of slots) {
+        const taken: Record<string, ScheduleBooking> = {};
+        for (const booking of bookings) {
+          if (!booking.activityId || taken[booking.activityId]) continue;
+          if (booking.start >= slot.end || booking.end <= slot.start) continue;
+          taken[booking.activityId] = {
+            campGroupId: booking.campGroupId,
+            campGroupName: booking.campGroupName,
+            weekday: day,
+            start: booking.start,
+            end: booking.end,
+          };
+        }
+        bookedBy[slot.id] = taken;
+      }
+      return { group, weekday: day, slots, activities: allowed.map(toActivity), bookedBy };
+    },
+
+    /**
+     * One weekday of every Camp group: its slots and what they hold, with the
+     * activities that can be booked. A group whose week was never started gets
+     * the default slots first.
+     */
+    async getDayBoard({ actor, now }: CampHqRequest, weekday: number): Promise<DayBoard> {
+      await requireReader(actor);
+      const day = cleanWeekday(weekday);
+      return db.transaction(async (transaction) => {
+        const tx = transaction as unknown as CampHqDb;
+        const groupRows = await tx
+          .select()
+          .from(campGroups)
+          .orderBy(asc(sql`lower(${campGroups.name})`));
+        await startDays(
+          tx,
+          groupRows.map((group) => group.id),
+          now,
+        );
+        const slotRows = await tx
+          .select({ slot: scheduleSlots, activity: activities })
+          .from(scheduleSlots)
+          .leftJoin(activities, eq(activities.id, scheduleSlots.activityId))
+          .where(eq(scheduleSlots.weekday, day))
+          .orderBy(asc(scheduleSlots.startMinute));
+        const activityRows = await tx
+          .select()
+          .from(activities)
+          .where(eq(activities.clubOnly, false))
+          .orderBy(asc(sql`lower(${activities.name})`));
+        const slots = slotRows.map(({ slot, activity }) => toSlot(slot, activity));
+        return {
+          weekday: day,
+          groups: groupRows.map((group) => ({
+            group: toGroup(group),
+            locations: toCampGroup(group).locations,
+            slots: slots.filter((slot) => slot.campGroupId === group.id),
+          })),
+          activities: activityRows.map(toActivity),
+        };
+      });
+    },
+
     /** Adds an empty slot to one weekday of the group's schedule. */
     async addScheduleSlot(
       { actor, now }: CampHqRequest,
@@ -464,18 +595,29 @@ export function createScheduleOperations({ db, requirePerson, requireAdmin }: Sc
       });
     },
 
-    /** Changes a slot's start and end. A booked Exclusive activity is checked again. */
+    /**
+     * Changes a slot's start, its end, or both. A time left out keeps the value
+     * stored when the change runs, so two changes of one slot, one of each
+     * time, both hold. A booked Exclusive activity is checked again.
+     */
     async changeScheduleSlotTimes(
       { actor, now }: CampHqRequest,
       slotId: string,
-      input: SlotTimesInput,
+      input: SlotTimesChange,
     ): Promise<ScheduleSlot> {
       await requireAdmin(actor);
-      const times = cleanTimes(input);
+      // Both times given: refuse a bad time before looking for the slot.
+      if (input?.start != null && input?.end != null) {
+        cleanTimes({ start: input.start, end: input.end });
+      }
       return db.transaction(async (transaction) => {
         const tx = transaction as unknown as CampHqDb;
         await lockClashRules(tx);
         const { slot, group } = await slotForChange(tx, slotId);
+        const times = cleanTimes({
+          start: input?.start ?? slotTimeValue(slot.startMinute),
+          end: input?.end ?? slotTimeValue(slot.endMinute),
+        });
         await refuseOwnOverlap(tx, group.id, slot.weekday, times, slot.id);
         const activity = slot.activityId
           ? await refuseClash(tx, slot.activityId, group.id, slot.weekday, times)

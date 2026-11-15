@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/hq-ui/button";
 
 import { uploadCamperFile } from "./actions";
 import { CamperLoadSummary } from "./load-report";
