@@ -116,6 +116,7 @@ export function ScheduleTable({
   return (
     <EditableTable
       caption={`${weekdayLabel} schedule of ${groupName}`}
+      toolbar={false}
       rows={rows}
       rowId={(row) => row.id}
       rowLabel={slotName}

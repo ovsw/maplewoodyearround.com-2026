@@ -64,6 +64,7 @@ export function GroupsTable({
       id: "grades",
       header: "Grades",
       type: "multi",
+      filter: true,
       className: "w-56 min-w-56",
       searchPlaceholder: "Search grades",
       value: (row) => row.grades,
@@ -76,6 +77,7 @@ export function GroupsTable({
       id: "team",
       header: "Team",
       type: "select",
+      filter: true,
       className: "w-40 min-w-40",
       searchPlaceholder: "Search Teams",
       value: (row) => String(row.team),
@@ -94,6 +96,7 @@ export function GroupsTable({
             id: "leader",
             header: "Leader",
             type: "select",
+            filter: true,
             className: "w-60 min-w-60",
             searchPlaceholder: "Search staff",
             value: (row) => row.leader?.id ?? NOBODY,
@@ -172,6 +175,7 @@ export function GroupsTable({
   return (
     <EditableTable
       caption="Camp groups"
+      searchPlaceholder="Search Camp groups"
       rows={rows}
       rowId={(row) => row.id}
       rowLabel={(row) => row.name}

@@ -7,7 +7,19 @@
 // The screen that uses it passes plain rows and column definitions whose
 // `save` calls a server action; the rules stay on the server.
 import { LoaderCircle, Plus, Trash2 } from "lucide-react";
-import { useRef, useState, type ReactNode } from "react";
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type PaginationState,
+  type SortingState,
+  type VisibilityState,
+} from "@tanstack/react-table";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/hq-ui/button";
@@ -35,7 +47,17 @@ import {
   pickedSummary,
   togglePicked,
 } from "./cells";
-import type { AddRow, CellResult, EditableColumn, RemoveRow } from "./types";
+import {
+  DataTableColumnHeader,
+  DataTableFacetedFilter,
+  DataTablePagination,
+  DataTableSearch,
+  DataTableToolbar,
+  labelOf,
+  type ColumnMeta,
+  type FacetOption,
+} from "./data-table-parts";
+import type { AddRow, CellResult, EditableColumn, EditableOption, RemoveRow } from "./types";
 
 type EditableTableProps<Row> = {
   /** Names the table for screen readers. */
@@ -59,6 +81,10 @@ type EditableTableProps<Row> = {
    * only its tick.
    */
   wide?: boolean;
+  /** False hides the search, filters and column toggle, for a short table. */
+  toolbar?: boolean;
+  /** The quick search's placeholder, for example "Search Camp groups". */
+  searchPlaceholder?: string;
 };
 
 function EditableCell<Row>({
@@ -273,15 +299,60 @@ export function EditableTable<Row>({
   removeRow,
   rowActions,
   wide = false,
+  toolbar = true,
+  searchPlaceholder = "Search",
 }: EditableTableProps<Row>) {
   // Rows being removed disappear at once; a refused removal brings the row back.
   const [removing, setRemoving] = useState<ReadonlySet<string>>(new Set());
-  const visible = rows.filter((row) => !removing.has(rowId(row)));
+  const visible = useMemo(
+    () => rows.filter((row) => !removing.has(rowId(row))),
+    [rows, removing, rowId],
+  );
   const canRemove = !readOnly && Boolean(removeRow);
   // The last column holds the row's actions, and the blank row's Add button.
   const hasActionsColumn = !readOnly && Boolean(removeRow || rowActions || addRow);
   // The first column stays in view while a wide table scrolls sideways.
   const firstCellClass = wide ? "sticky left-0 z-10 bg-background" : undefined;
+
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 100 });
+
+  const tableColumns = useMemo(
+    () => columns.map((column, index) => toColumnDef(column, index)),
+    [columns],
+  );
+  const columnsById = useMemo(
+    () => new Map(columns.map((column) => [column.id, column])),
+    [columns],
+  );
+
+  // TanStack Table v8 returns a mutable object, so React Compiler leaves this
+  // component unmemoized, which is what it needs.
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const table = useReactTable({
+    data: visible,
+    columns: tableColumns,
+    getRowId: rowId,
+    state: { sorting, columnFilters, globalFilter, columnVisibility, pagination },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
+    globalFilterFn: (row, columnId, filter: string) =>
+      String(row.getValue(columnId) ?? "")
+        .toLowerCase()
+        .includes(filter.trim().toLowerCase()),
+    // A saved cell must not send the person back to page one.
+    autoResetPageIndex: false,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   if (rows.length === 0 && (readOnly || !addRow)) {
     return <p className="text-muted-foreground">{emptyText}</p>;
@@ -313,82 +384,226 @@ export function EditableTable<Row>({
     });
   }
 
+  const shownColumns = columns.filter((column) => table.getColumn(column.id)?.getIsVisible() !== false);
+  const pageRows = table.getRowModel().rows;
+  const filteredCount = table.getFilteredRowModel().rows.length;
+  // Search and filters only earn their place on a table with more than a screenful of rows.
+  const showToolbar = toolbar && visible.length > 8;
+  // Camp HQ lists are short; paging starts with the long ones.
+  const showPaging = visible.length > 100;
+  const facets = columns.flatMap((column) => facetOf(column, visible));
+
   return (
     <DenseTable value={wide}>
-      {/* A wide table takes the width of the window, not of the page's column. */}
-      <div className={wide ? "w-[calc(100cqw-3rem)]" : "max-w-4xl"}>
-        <Table className={cn("text-sm", wide ? "w-max min-w-full" : "table-fixed")}>
-          <caption className="sr-only">{caption}</caption>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              {columns.map((column, index) => (
-                <TableHead
-                  key={column.id}
-                  scope="col"
-                  className={cn("px-4", column.className, index === 0 && firstCellClass)}
-                >
-                  {column.header}
-                </TableHead>
+      <div className={wide ? "w-[calc(100cqw-3rem)]" : "max-w-5xl"}>
+        {showToolbar ? (
+          <DataTableToolbar table={table}>
+            <DataTableSearch table={table} placeholder={searchPlaceholder} />
+            {facets.map(({ id, title, options }) => {
+              const column = table.getColumn(id);
+              return column ? (
+                <DataTableFacetedFilter key={id} column={column} title={title} options={options} />
+              ) : null;
+            })}
+          </DataTableToolbar>
+        ) : null}
+        <div className="overflow-hidden rounded-md border">
+          <Table className={cn("text-sm", wide ? "w-max min-w-full" : "table-fixed")}>
+            <caption className="sr-only">{caption}</caption>
+            <TableHeader>
+              {table.getHeaderGroups().map((group) => (
+                <TableRow key={group.id} className="hover:bg-transparent">
+                  {group.headers.map((header, index) => (
+                    <TableHead
+                      key={header.id}
+                      scope="col"
+                      aria-sort={
+                        header.column.getIsSorted() === "asc"
+                          ? "ascending"
+                          : header.column.getIsSorted() === "desc"
+                            ? "descending"
+                            : undefined
+                      }
+                      className={cn(
+                        "px-3",
+                        (header.column.columnDef.meta as ColumnMeta | undefined)?.className,
+                        index === 0 && firstCellClass,
+                      )}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <DataTableColumnHeader column={header.column} title={labelOf(header.column)} />
+                      )}
+                    </TableHead>
+                  ))}
+                  {hasActionsColumn ? (
+                    <TableHead scope="col" className={rowActions && canRemove ? "w-20" : "w-12"}>
+                      <span className="sr-only">Actions</span>
+                    </TableHead>
+                  ) : null}
+                </TableRow>
               ))}
-              {hasActionsColumn ? (
-                <TableHead scope="col" className={rowActions && canRemove ? "w-20" : "w-12"}>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              ) : null}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {visible.map((row) => (
-              <TableRow key={rowId(row)} className="align-top hover:bg-transparent">
-                {columns.map((column, index) => (
+            </TableHeader>
+            <TableBody>
+              {pageRows.map((row) => (
+                <TableRow key={row.id} className="align-top">
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        "px-1 py-1 align-top",
+                        (cell.column.columnDef.meta as ColumnMeta | undefined)?.className,
+                        index === 0 && firstCellClass,
+                      )}
+                    >
+                      {/* Rendered directly, not through flexRender: a cell made anew on
+                          each render would lose what the person is typing. */}
+                      {renderCell(columnsById.get(cell.column.id)!, row.original, rowLabel, readOnly)}
+                    </TableCell>
+                  ))}
+                  {hasActionsColumn ? (
+                    <TableCell className="px-1 py-1 align-top">
+                      <div className="flex min-h-8 items-center justify-end gap-1">
+                        {rowActions?.(row.original)}
+                        {canRemove && removeRow ? (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label={removeRow.label(row.original)}
+                            onClick={() => void remove(row.original, removeRow)}
+                          >
+                            <Trash2 aria-hidden className="size-4" />
+                          </Button>
+                        ) : null}
+                      </div>
+                    </TableCell>
+                  ) : null}
+                </TableRow>
+              ))}
+              {visible.length > 0 && filteredCount === 0 ? (
+                <TableRow className="hover:bg-transparent">
                   <TableCell
-                    key={column.id}
-                    className={cn("align-top", column.className, index === 0 && firstCellClass)}
+                    colSpan={shownColumns.length + (hasActionsColumn ? 1 : 0)}
+                    className="h-16 text-center text-muted-foreground"
                   >
-                    {column.type === "custom" ? (
-                      column.render(row)
-                    ) : readOnly || column.editable?.(row) === false ? (
-                      <span className="flex min-h-8 items-center px-2">{column.display(row)}</span>
-                    ) : (
-                      <EditableCell
-                        column={column}
-                        row={row}
-                        label={`${column.header} of ${rowLabel(row)}`}
-                      />
-                    )}
+                    No rows match.
                   </TableCell>
-                ))}
-                {hasActionsColumn ? (
-                  <TableCell className="align-top">
-                    <div className="flex min-h-8 items-center justify-end gap-1">
-                      {rowActions?.(row)}
-                      {canRemove && removeRow ? (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label={removeRow.label(row)}
-                          onClick={() => void remove(row, removeRow)}
-                        >
-                          <Trash2 aria-hidden className="size-4" />
-                        </Button>
-                      ) : null}
-                    </div>
-                  </TableCell>
-                ) : null}
-              </TableRow>
-            ))}
-            {!readOnly && addRow ? (
-              <BlankRow
-                columns={columns}
-                addRow={addRow}
-                hasActionsColumn={hasActionsColumn}
-                firstCellClass={firstCellClass}
-              />
-            ) : null}
-          </TableBody>
-        </Table>
+                </TableRow>
+              ) : null}
+              {!readOnly && addRow ? (
+                <BlankRow
+                  columns={shownColumns}
+                  addRow={addRow}
+                  hasActionsColumn={hasActionsColumn}
+                  firstCellClass={firstCellClass}
+                />
+              ) : null}
+            </TableBody>
+          </Table>
+        </div>
+        {showPaging ? <DataTablePagination table={table} pageSizeOptions={[100, 200, 500]} /> : null}
       </div>
     </DenseTable>
   );
+}
+
+/** One cell: text, a custom cell, or the editor of its type. */
+function renderCell<Row>(
+  column: EditableColumn<Row>,
+  row: Row,
+  rowLabel: (row: Row) => string,
+  readOnly: boolean,
+) {
+  if (column.type === "custom") return column.render(row);
+  if (readOnly || column.editable?.(row) === false) {
+    return <span className="flex min-h-8 items-center px-2">{column.display(row)}</span>;
+  }
+  return <EditableCell column={column} row={row} label={`${column.header} of ${rowLabel(row)}`} />;
+}
+
+/** What a column sorts and searches by: the text it shows. */
+function sortKey<Row>(column: EditableColumn<Row>, row: Row): string | number {
+  switch (column.type) {
+    case "custom":
+      return column.sortValue?.(row) ?? column.searchText?.(row) ?? "";
+    case "time":
+      return column.value(row);
+    case "checkbox":
+      return column.value(row) ? 1 : 0;
+    default:
+      return column.display(row);
+  }
+}
+
+function toColumnDef<Row>(column: EditableColumn<Row>, index: number): ColumnDef<Row> {
+  const custom = column.type === "custom";
+  const canSort = custom ? Boolean(column.sortValue) : column.sortable !== false;
+  return {
+    id: column.id,
+    accessorFn: (row) => sortKey(column, row),
+    enableSorting: canSort,
+    sortingFn: column.type === "checkbox" ? "basic" : "text",
+    sortUndefined: "last",
+    enableHiding: index > 0 && column.header !== "",
+    enableGlobalFilter: !custom || Boolean(column.searchText || column.sortValue),
+    filterFn: (row, _id, picked: string[] | undefined) => {
+      if (!picked || picked.length === 0) return true;
+      const values = filterValues(column, row.original);
+      return values.some((value) => picked.includes(value));
+    },
+    meta: { label: column.header, className: column.className } satisfies ColumnMeta,
+  };
+}
+
+/** The values a row has in a filtered column. */
+function filterValues<Row>(column: EditableColumn<Row>, row: Row): string[] {
+  switch (column.type) {
+    case "custom":
+      return column.filter ? [column.filter.value(row)] : [];
+    case "multi":
+      return column.value(row);
+    case "checkbox":
+      return [column.value(row) ? "yes" : "no"];
+    default:
+      return [String(column.value(row))];
+  }
+}
+
+/** The toolbar filter of a column, with how many rows have each value. */
+function facetOf<Row>(
+  column: EditableColumn<Row>,
+  rows: Row[],
+): { id: string; title: string; options: FacetOption[] }[] {
+  let choices: EditableOption[];
+  if (column.type === "custom") {
+    if (!column.filter) return [];
+    choices = column.filter.options;
+  } else if (!column.filter) {
+    return [];
+  } else if (column.type === "checkbox") {
+    choices = [
+      { value: "yes", label: "Yes" },
+      { value: "no", label: "No" },
+    ];
+  } else if (column.type === "select" || column.type === "multi") {
+    // Every choice any row offers, once, in the order they come.
+    const seen = new Map<string, EditableOption>();
+    for (const row of rows) {
+      for (const option of column.options(row)) {
+        if (!seen.has(option.value)) seen.set(option.value, option);
+      }
+    }
+    choices = [...seen.values()];
+  } else {
+    return [];
+  }
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    for (const value of filterValues(column, row)) counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  const options = choices
+    .map((choice) => ({ value: choice.value, label: choice.label, count: counts.get(choice.value) ?? 0 }))
+    // A choice no row has is not worth filtering by.
+    .filter((option) => option.count > 0);
+  return options.length > 1 ? [{ id: column.id, title: column.header, options }] : [];
 }

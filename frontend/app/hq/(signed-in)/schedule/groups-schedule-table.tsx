@@ -122,6 +122,7 @@ export function GroupsScheduleTable({
         header: "Camp group",
         type: "custom",
         className: "w-48 min-w-48",
+        sortValue: (group) => group.name,
         render: (group) => (
           <Link
             href={scheduleDayPath(group.id, weekday)}
@@ -175,6 +176,7 @@ export function GroupsScheduleTable({
   return (
     <EditableTable
       caption={`${weekdayLabel} schedule of every Camp group`}
+      searchPlaceholder="Search Camp groups and activities"
       rows={groups}
       rowId={(group) => group.id}
       rowLabel={(group) => group.name}

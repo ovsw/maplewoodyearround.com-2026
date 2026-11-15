@@ -34,6 +34,10 @@ type Column<Row, Type extends string, Value> = {
   editable?: (row: Row) => boolean;
   /** Saves the cell. A refusal puts the cell back to its old value. */
   save: (row: Row, value: Value) => Promise<CellResult>;
+  /** False: the header does not sort. Left out, the column sorts by what it shows. */
+  sortable?: boolean;
+  /** Adds a filter by this column's values to the toolbar (dropdown and checkbox columns). */
+  filter?: boolean;
 };
 
 type Choices<Row> = {
@@ -62,6 +66,12 @@ export type EditableColumn<Row> =
       type: "custom";
       className?: string;
       render: (row: Row) => ReactNode;
+      /** What the header sorts by. Left out, the column does not sort. */
+      sortValue?: (row: Row) => string | number;
+      /** The text the quick search finds in this column. */
+      searchText?: (row: Row) => string;
+      /** Adds a filter to the toolbar, by these values. */
+      filter?: { options: EditableOption[]; value: (row: Row) => string };
     };
 
 /** The blank row at the bottom of the table that adds a row. */

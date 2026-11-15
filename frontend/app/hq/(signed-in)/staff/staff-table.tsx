@@ -229,6 +229,7 @@ export function StaffTable({ rows }: { rows: StaffListEntry[] }) {
       id: "kind",
       header: "Staff",
       type: "select",
+      filter: true,
       className: "w-36",
       // Senior or Junior is set when the person is added.
       editable: () => false,
@@ -241,12 +242,18 @@ export function StaffTable({ rows }: { rows: StaffListEntry[] }) {
       id: "account",
       header: "Account",
       type: "custom",
+      sortValue: (row) => row.account?.email ?? "",
+      filter: {
+        options: Object.entries(statusLook).map(([value, { label }]) => ({ value, label })),
+        value: (row) => row.account?.status ?? "none",
+      },
       render: (row) => <AccountCell row={row} />,
     },
     {
       id: "role",
       header: "Role",
       type: "select",
+      filter: true,
       className: "w-52",
       editable: (row) => row.account?.status === "active",
       value: (row) => row.account?.role ?? "",
@@ -259,6 +266,7 @@ export function StaffTable({ rows }: { rows: StaffListEntry[] }) {
   return (
     <EditableTable
       caption="Camp HQ staff and their accounts"
+      searchPlaceholder="Search staff"
       rows={rows}
       rowId={(row) => row.id}
       rowLabel={(row) => row.name}

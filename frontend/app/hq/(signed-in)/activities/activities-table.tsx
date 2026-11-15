@@ -51,6 +51,7 @@ export function ActivitiesTable({
       id: "grades",
       header: "Grades",
       type: "multi",
+      filter: true,
       className: "w-56 min-w-56",
       searchPlaceholder: "Search grades",
       value: (row) => row.grades,
@@ -63,6 +64,7 @@ export function ActivitiesTable({
       id: "kind",
       header: "Exclusive or shared",
       type: "select",
+      filter: true,
       className: "w-52 min-w-52",
       value: (row) => row.kind,
       display: (row) => (row.kind === "exclusive" ? "Exclusive" : "Shared"),
@@ -73,6 +75,7 @@ export function ActivitiesTable({
       id: "clubOnly",
       header: "Club day only",
       type: "checkbox",
+      filter: true,
       className: "w-40 min-w-40",
       value: (row) => row.clubOnly,
       display: (row) => (row.clubOnly ? "Yes" : "No"),
@@ -84,6 +87,7 @@ export function ActivitiesTable({
             id: "specialist",
             header: "Specialist",
             type: "select",
+            filter: true,
             className: "w-64 min-w-64",
             searchPlaceholder: "Search staff",
             value: (row) => row.specialist?.id ?? NOBODY,
@@ -124,6 +128,7 @@ export function ActivitiesTable({
   return (
     <EditableTable
       caption="Activities"
+      searchPlaceholder="Search activities"
       rows={rows}
       rowId={(row) => row.id}
       rowLabel={(row) => row.name}

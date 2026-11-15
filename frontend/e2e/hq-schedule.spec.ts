@@ -164,9 +164,17 @@ test.describe("Camp HQ: the Group schedule table", () => {
       await page.getByRole("option", { name: "Archery" }).first().click();
       await expect(board.getByRole("combobox", { name: `${slot} of ${first}` })).toHaveText("Archery");
 
-      await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
+      // The other groups' choices update once the page reads the saved schedule again.
       const taken = page.getByRole("option", { name: /Archery/ });
-      await expect(taken).toBeDisabled();
+      await expect(async () => {
+        await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
+        try {
+          await expect(taken).toBeDisabled({ timeout: 1_000 });
+        } finally {
+          await page.keyboard.press("Escape");
+        }
+      }).toPass();
+      await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
       await expect(taken).toContainText(`${first} have it ${slot}`);
       await page.keyboard.press("Escape");
     });
