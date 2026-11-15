@@ -67,3 +67,44 @@ export async function setJuniorPlacement(
 ): Promise<CellResult> {
   return runCell((campHq, request) => campHq.setJuniorPlacement(request, staffMemberId, placement));
 }
+
+export async function renameStaffMember(id: string, name: string): Promise<CellResult> {
+  return runCell((campHq, request) => campHq.renameStaffMember(request, id, name));
+}
+
+export async function addStaffMember(input: { name: string; kind: string }): Promise<CellResult> {
+  return runCell((campHq, request) => campHq.addStaffMember(request, input));
+}
+
+export async function removeStaffMember(id: string): Promise<CellResult> {
+  return runCell((campHq, request) => campHq.removeStaffMember(request, id));
+}
+
+export async function setStaffRole(id: string, role: string): Promise<CellResult> {
+  return runCell((campHq, request) => campHq.setRole(request, id, role));
+}
+
+export async function switchStaffAccount(id: string, on: boolean): Promise<CellResult> {
+  return runCell((campHq, request) =>
+    on ? campHq.switchAccountOn(request, id) : campHq.switchAccountOff(request, id),
+  );
+}
+
+/**
+ * Creates the account, or sends an invitation when the email has no Clerk
+ * user yet. `message` says which happened.
+ */
+export async function createStaffAccount(
+  id: string,
+  email: string,
+): Promise<CellResult & { message?: string }> {
+  let message = "";
+  const result = await runCell(async (campHq, request) => {
+    const { status } = await campHq.createAccount(request, id, email);
+    message =
+      status === "created"
+        ? "Account created. They can sign in with this email."
+        : "Invitation sent. The account links when they accept it and sign in.";
+  });
+  return result.ok ? { ...result, message } : result;
+}

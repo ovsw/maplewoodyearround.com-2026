@@ -1,6 +1,10 @@
 /* Maplewood tokens from the live Webflow reference. */
 @import "tailwindcss";
 
+/* The site has no dark theme. Without this, `dark:` classes in shadcn
+   components follow the visitor's OS setting and grey out fields and buttons. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --maplewood-green: #006601;
   --maplewood-green-dark: #004201;

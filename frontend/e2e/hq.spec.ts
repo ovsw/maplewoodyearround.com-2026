@@ -81,15 +81,18 @@ test.describe("Camp HQ with sign-in", () => {
     await page.getByRole("link", { name: "Staff and accounts" }).click();
     await expect(page.getByRole("heading", { name: "Staff and accounts" })).toBeVisible();
     const name = `Sample Junior E2E ${Date.now()}`;
-    const addForm = page.locator("form", { has: page.getByRole("button", { name: "Add", exact: true }) });
-    await addForm.getByLabel("Name").fill(name);
-    await addForm.getByLabel("Staff").selectOption("junior");
-    await addForm.getByRole("button", { name: "Add", exact: true }).click();
-    const row = page.getByRole("listitem").filter({ hasText: name });
-    await expect(row.getByText("Junior staff · No account")).toBeVisible();
+    await page.getByLabel("Name, New staff member").fill(name);
+    await page.getByRole("combobox", { name: "Staff, New staff member" }).click();
+    await page.getByRole("option", { name: /Junior staff/ }).click();
+    await page.getByRole("button", { name: "Add: New staff member" }).click();
+    const row = page.getByRole("row").filter({ has: page.getByLabel(`Name of ${name}`) });
+    await expect(row.getByText("Junior staff")).toBeVisible();
+    await expect(row.getByText("No account")).toBeVisible();
 
-    page.once("dialog", (dialog) => dialog.accept());
-    await row.getByRole("button", { name: "Remove", exact: true }).click();
+    // Removing is in the row's menu and asks first.
+    await row.getByRole("button", { name: `Actions for ${name}` }).click();
+    await page.getByRole("menuitem", { name: "Remove from Camp HQ" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Remove", exact: true }).click();
     await expect(row).toHaveCount(0);
 
     // The Admin uploads a camper file. Its only row names an unknown Camp

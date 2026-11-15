@@ -7,7 +7,7 @@
 // The screen that uses it passes plain rows and column definitions whose
 // `save` calls a server action; the rules stay on the server.
 import { LoaderCircle, Plus, Trash2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/hq-ui/button";
@@ -51,6 +51,8 @@ type EditableTableProps<Row> = {
   emptyText: string;
   addRow?: AddRow;
   removeRow?: RemoveRow<Row>;
+  /** More actions for a row, for example a menu, shown before its remove button. */
+  rowActions?: (row: Row) => ReactNode;
   /**
    * For a table with many columns: it scrolls sideways under its first column,
    * each column takes the width its class gives it, and the "Saved" mark is
@@ -113,12 +115,12 @@ function EditableCell<Row>({
 function BlankRow<Row>({
   columns,
   addRow,
-  hasRemoveColumn,
+  hasActionsColumn,
   firstCellClass,
 }: {
   columns: EditableColumn<Row>[];
   addRow: AddRow;
-  hasRemoveColumn: boolean;
+  hasActionsColumn: boolean;
   firstCellClass?: string;
 }) {
   const [draft, setDraft] = useState<Record<string, string>>({});
@@ -230,12 +232,18 @@ function BlankRow<Row>({
             </TableCell>
           );
         })}
-        {hasRemoveColumn ? (
+        {hasActionsColumn ? (
           <TableCell className="text-right">
             {saving ? (
               <LoaderCircle aria-hidden className="ml-auto size-4 animate-spin text-muted-foreground" />
             ) : complete && changed ? (
-              <Button type="button" variant="ghost" aria-label={`Add: ${addRow.label}`} onClick={() => void save()}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label={`Add: ${addRow.label}`}
+                onClick={() => void save()}
+              >
                 <Plus aria-hidden className="size-4" />
               </Button>
             ) : null}
@@ -244,7 +252,7 @@ function BlankRow<Row>({
       </TableRow>
       {refused ? (
         <TableRow className="hover:bg-transparent">
-          <TableCell colSpan={columns.length + (hasRemoveColumn ? 1 : 0)} className="pt-0">
+          <TableCell colSpan={columns.length + (hasActionsColumn ? 1 : 0)} className="pt-0">
             <Refusal error={refused.error} link={refused.link} />
           </TableCell>
         </TableRow>
@@ -263,12 +271,15 @@ export function EditableTable<Row>({
   emptyText,
   addRow,
   removeRow,
+  rowActions,
   wide = false,
 }: EditableTableProps<Row>) {
   // Rows being removed disappear at once; a refused removal brings the row back.
   const [removing, setRemoving] = useState<ReadonlySet<string>>(new Set());
   const visible = rows.filter((row) => !removing.has(rowId(row)));
   const canRemove = !readOnly && Boolean(removeRow);
+  // The last column holds the row's actions, and the blank row's Add button.
+  const hasActionsColumn = !readOnly && Boolean(removeRow || rowActions || addRow);
   // The first column stays in view while a wide table scrolls sideways.
   const firstCellClass = wide ? "sticky left-0 z-10 bg-background" : undefined;
 
@@ -319,9 +330,9 @@ export function EditableTable<Row>({
                   {column.header}
                 </TableHead>
               ))}
-              {canRemove ? (
-                <TableHead scope="col" className="w-12">
-                  <span className="sr-only">Remove</span>
+              {hasActionsColumn ? (
+                <TableHead scope="col" className={rowActions && canRemove ? "w-20" : "w-12"}>
+                  <span className="sr-only">Actions</span>
                 </TableHead>
               ) : null}
             </TableRow>
@@ -347,16 +358,22 @@ export function EditableTable<Row>({
                     )}
                   </TableCell>
                 ))}
-                {canRemove && removeRow ? (
-                  <TableCell className="text-right align-top">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      aria-label={removeRow.label(row)}
-                      onClick={() => void remove(row, removeRow)}
-                    >
-                      <Trash2 aria-hidden className="size-4" />
-                    </Button>
+                {hasActionsColumn ? (
+                  <TableCell className="align-top">
+                    <div className="flex min-h-8 items-center justify-end gap-1">
+                      {rowActions?.(row)}
+                      {canRemove && removeRow ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label={removeRow.label(row)}
+                          onClick={() => void remove(row, removeRow)}
+                        >
+                          <Trash2 aria-hidden className="size-4" />
+                        </Button>
+                      ) : null}
+                    </div>
                   </TableCell>
                 ) : null}
               </TableRow>
@@ -365,7 +382,7 @@ export function EditableTable<Row>({
               <BlankRow
                 columns={columns}
                 addRow={addRow}
-                hasRemoveColumn={canRemove}
+                hasActionsColumn={hasActionsColumn}
                 firstCellClass={firstCellClass}
               />
             ) : null}

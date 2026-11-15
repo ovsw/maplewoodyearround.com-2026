@@ -4,6 +4,7 @@
 import { revalidatePath } from "next/cache";
 
 import { CampHqDatabaseUnavailable, getCampHqOperations } from "@/lib/hq/camp-hq";
+import { ClerkRequestFailed } from "@/lib/hq/clerk-accounts";
 import { campHqNow } from "@/lib/hq/clock";
 import { CAMP_HQ_PATH } from "@/lib/hq/config";
 import {
@@ -38,6 +39,10 @@ export async function runCell(
     }
     if (error instanceof CampHqDatabaseUnavailable) {
       return { ok: false, error: "Camp HQ's database is not available. Nothing was saved." };
+    }
+    if (error instanceof ClerkRequestFailed || (error instanceof Error && error.name === "TimeoutError")) {
+      console.error(error);
+      return { ok: false, error: "Clerk, the sign-in service, did not accept the change. Try again." };
     }
     throw error;
   }
