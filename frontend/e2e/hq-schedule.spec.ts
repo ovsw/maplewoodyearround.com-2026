@@ -128,4 +128,95 @@ test.describe("Camp HQ: the Group schedule table", () => {
       await expect(page.getByRole("button", { name: /^Remove / })).toHaveCount(0);
     });
   });
+
+  test("an Admin edits every group's day and the Configure tables in place", async ({ page }, testInfo) => {
+    test.setTimeout(120_000);
+    // A retry in the same run takes a day the earlier attempt left untouched.
+    const day = ["Monday", "Tuesday"][testInfo.retry % 2];
+    const slot = "2:30 PM to 3:00 PM";
+    await page.goto("/hq/sign-in");
+    await clerk.signIn({ page, emailAddress: admin.emailAddress });
+
+    await page.goto("/hq");
+    await page.getByRole("link", { name: "Groups Schedule" }).click();
+    await page.getByRole("link", { name: day }).click();
+    const board = page.getByRole("table", { name: `${day} schedule of every Camp group` });
+    await expect(board).toBeVisible();
+    const names = await board.getByRole("link", { name: /^Schedule of / }).allTextContents();
+    expect(names.length).toBeGreaterThan(2);
+    const groupName = async (place: number) =>
+      (await board.getByRole("link", { name: /^Schedule of / }).nth(place).getAttribute("aria-label"))!.replace(
+        "Schedule of ",
+        "",
+      );
+    const first = await groupName(0);
+    const second = await groupName(1);
+
+    await test.step("several groups have a schedule to look at", async () => {
+      await expect(board.getByRole("combobox", { name: `12:00 PM to 12:30 PM of ${second}` })).toHaveText(
+        "Lunch",
+      );
+    });
+
+    await test.step("picking an activity for one group greys it out for the others", async () => {
+      await board.getByRole("combobox", { name: `${slot} of ${first}` }).click();
+      await page.getByPlaceholder("Search activities").fill("Archery");
+      await page.getByRole("option", { name: "Archery" }).first().click();
+      await expect(board.getByRole("combobox", { name: `${slot} of ${first}` })).toHaveText("Archery");
+
+      await board.getByRole("combobox", { name: `${slot} of ${second}` }).click();
+      const taken = page.getByRole("option", { name: /Archery/ });
+      await expect(taken).toBeDisabled();
+      await expect(taken).toContainText(`${first} have it ${slot}`);
+      await page.keyboard.press("Escape");
+    });
+
+    await test.step("a location is typed in the schedule and shows on Configure Groups", async () => {
+      const place = `Pavilion ${testInfo.retry + 1}`;
+      const lunch = board.getByLabel(`Lunch location of ${first}`);
+      await lunch.fill(place);
+      await lunch.blur();
+      await expect(board.getByText("Saved", { exact: true }).first()).toBeAttached();
+      await page.goto("/hq/groups");
+      await expect(page.getByLabel(`Lunch location of ${first}`)).toHaveValue(place);
+    });
+
+    await test.step("the blank row adds a Camp group; removing it can be undone", async () => {
+      const name = `Test Otters ${testInfo.retry + 1}`;
+      await page.getByLabel("Name, New Camp group").fill(name);
+      await page.getByRole("combobox", { name: "Grades, New Camp group" }).click();
+      await page.getByRole("option", { name: "3rd Grade" }).click();
+      await page.keyboard.press("Escape");
+      await page.getByRole("combobox", { name: "Team, New Camp group" }).click();
+      await page.getByRole("option", { name: "Team 3" }).click();
+      await page.getByRole("button", { name: "Add: New Camp group" }).click();
+      const added = page.getByLabel(`Name of ${name}`);
+      await expect(added).toHaveValue(name);
+
+      await page.getByRole("button", { name: `Remove ${name}` }).click();
+      await expect(added).toHaveCount(0);
+      await page.getByRole("button", { name: "Undo" }).click();
+      await expect(added).toHaveValue(name);
+      await page.getByRole("button", { name: `Remove ${name}` }).click();
+      await expect(added).toHaveCount(0);
+    });
+
+    await test.step("a group's leader is picked in its row", async () => {
+      await expect(page.getByRole("combobox", { name: `Leader of ${second}` })).toHaveText("No leader");
+      await page.getByRole("combobox", { name: `Leader of ${second}` }).click();
+      await expect(page.getByRole("option", { name: /No leader/ })).toBeVisible();
+      await page.keyboard.press("Escape");
+    });
+
+    await test.step("an activity is changed in its row", async () => {
+      await page.goto("/hq/activities");
+      const kind = page.getByRole("combobox", { name: "Exclusive or shared of Yoga" });
+      await kind.click();
+      await page.getByRole("option", { name: /Shared/ }).click();
+      await expect(kind).toHaveText("Shared");
+      await kind.click();
+      await page.getByRole("option", { name: /Exclusive/ }).click();
+      await expect(kind).toHaveText("Exclusive");
+    });
+  });
 });

@@ -119,7 +119,31 @@ column definitions whose `save` calls a server action; the action returns a
 `CellResult`, and a refusal's reason shows in the cell, which goes back to its
 old value. The rules stay in `frontend/lib/hq`.
 
-The Group schedule is the first screen that uses it
-(`groups/[id]/schedule/schedule-table.tsx`). The cell types so far are time
-and dropdown. To add one (text, multi-pick, checkbox), add a member to
-`EditableColumn` in `types.ts` and its cell in `cells.tsx`.
+The cell types are time, text, dropdown, multi-pick, checkbox, and "custom"
+for cells that are not edited (links). To add one, add a member to
+`EditableColumn` in `types.ts` and its cell in `cells.tsx`. A `wide` table
+takes the width of the window and scrolls sideways under its first column.
+
+The screens that use it:
+
+- **Groups Schedule** (`/hq/schedule`, `schedule/groups-schedule-table.tsx`):
+  one weekday of every Camp group, a row per group and a column per period,
+  then the group's four locations. Picking an activity in a cell saves it. An
+  Exclusive activity another group has at that time stays in the list, greyed
+  out. The group's name opens its own schedule.
+- **A group's schedule** (`groups/[id]/schedule/schedule-table.tsx`): the
+  place to change times, add a slot or remove one.
+- **Configure Groups** (`/hq/groups`): name, grades, Team, leader and
+  locations.
+- **Configure Activities** (`/hq/activities`): name, grades, exclusive or
+  shared, Club day only, and specialist.
+- **Staff and accounts**: the Camp group each Junior staff member helps and
+  their Club day activity.
+
+There is no separate Assignments or Group locations screen: a leader is a
+column of Configure Groups, a specialist a column of Configure Activities, and
+the locations are columns of the Groups Schedule and of Configure Groups.
+
+`updateCampGroup` and `updateActivity` take only the fields that change, so one
+cell saves by itself and never overwrites another. The local sample data gives
+the first eight Camp groups a schedule (`loadSampleSchedules`).

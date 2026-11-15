@@ -259,6 +259,7 @@ async function loadSampleClubDay(db: CampHqDb, now: Date) {
 /** How many Camp groups get a sample schedule, and until when in the day. */
 const SAMPLE_SCHEDULE_GROUPS = 8;
 const SAMPLE_SCHEDULE_END = 14 * 60;
+const SAMPLE_SCHEDULES_ENOUGH = 3;
 const SAMPLE_LUNCH_START = 12 * 60;
 
 /**
@@ -266,15 +267,16 @@ const SAMPLE_LUNCH_START = 12 * 60;
  * module, so the Groups Schedule has something to show: each morning and early
  * afternoon slot gets an activity allowed for the group, with Lunch at noon.
  * The later slots stay empty. A booking the rules refuse is left out. Loaded
- * only while no group has any activity booked, so an Admin's own schedules are
- * never changed.
+ * only while fewer than three groups have an activity booked, and only into
+ * groups with nothing booked, so an Admin's own schedules are never changed.
  */
 async function loadSampleSchedules(db: CampHqDb, now: Date) {
-  const [{ booked }] = await db
-    .select({ booked: sql<number>`count(*)::int` })
+  const bookedRows = await db
+    .selectDistinct({ campGroupId: scheduleSlots.campGroupId })
     .from(scheduleSlots)
     .where(isNotNull(scheduleSlots.activityId));
-  if (booked > 0) return;
+  if (bookedRows.length >= SAMPLE_SCHEDULES_ENOUGH) return;
+  const hasBookings = new Set(bookedRows.map((row) => row.campGroupId));
   const campHq = createCampHqOperations(db);
   const request = { actor: { type: "command-line" } as const, now };
   // The Club day options stay free, so they never clash with a booking.
@@ -285,6 +287,7 @@ async function loadSampleSchedules(db: CampHqDb, now: Date) {
     const lunch = board.activities.find((activity) => activity.name === "Lunch");
     const taken = new Set<string>();
     for (const [groupIndex, entry] of board.groups.slice(0, SAMPLE_SCHEDULE_GROUPS).entries()) {
+      if (hasBookings.has(entry.group.id)) continue;
       const allowed = board.activities.filter(
         (activity) =>
           activity.id !== lunch?.id &&

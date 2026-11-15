@@ -90,8 +90,32 @@ describe("Camp groups", () => {
       name: "River Otters",
       grades: ["grade_3", "grade_4"],
       team: 4,
-      locations: { change: "Cabin 5", freeSwim: "", lunch: "", swimLessons: "" },
+      // A location left out keeps its stored value.
+      locations: { ...newGroup.locations, change: "Cabin 5" },
     });
+  });
+
+  it("changes one field of a group and keeps the rest", async () => {
+    const { admin } = await start({ seedLists: false });
+    const group = await test.campHq.addCampGroup(admin, newGroup);
+
+    await test.campHq.updateCampGroup(admin, group.id, { locations: { lunch: "" } });
+    const updated = await test.campHq.updateCampGroup(admin, group.id, { team: 4 });
+
+    expect(updated).toEqual({
+      ...group,
+      team: 4,
+      locations: { ...group.locations, lunch: "" },
+    });
+  });
+
+  it("changes one field of an activity and keeps the rest", async () => {
+    const { admin } = await start({ seedLists: false });
+    const activity = await test.campHq.addActivity(admin, { name: "Canoe", grades: ["grade_4"] });
+
+    const updated = await test.campHq.updateActivity(admin, activity.id, { kind: "shared" });
+
+    expect(updated).toEqual({ ...activity, kind: "shared" });
   });
 
   it("keeps a sample Team marked as sample until an Admin changes it", async () => {

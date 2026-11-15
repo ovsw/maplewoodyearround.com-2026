@@ -28,7 +28,14 @@ async function Activities() {
     ...activity,
     specialist: specialistOf.get(activity.id) ?? null,
   }));
-  const optionsWithout = board?.gaps.clubDayOptionsWithoutSpecialist ?? [];
+  // "Archery (Team 4 Monday)" names the option; the activity is what needs a specialist.
+  const withoutSpecialist = [
+    ...new Set(
+      (board?.gaps.clubDayOptionsWithoutSpecialist ?? []).map((option) =>
+        option.name.replace(/ \([^)]*\)$/, ""),
+      ),
+    ),
+  ];
 
   return (
     <section className="flex flex-col gap-6">
@@ -43,9 +50,9 @@ async function Activities() {
             : "Only an Admin can change activities."}
         </p>
       </div>
-      {optionsWithout.length > 0 ? (
+      {withoutSpecialist.length > 0 ? (
         <p className="max-w-3xl text-muted-foreground">
-          Club day options without a specialist: {optionsWithout.map((option) => option.name).join(", ")}.
+          Club day options with no specialist yet: {withoutSpecialist.join(", ")}.
         </p>
       ) : null}
       <ActivitiesTable rows={rows} people={board?.candidates ?? null} readOnly={!isAdmin} />

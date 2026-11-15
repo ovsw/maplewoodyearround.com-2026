@@ -304,7 +304,8 @@ export function EditableTable<Row>({
 
   return (
     <DenseTable value={wide}>
-      <div className={wide ? undefined : "max-w-4xl"}>
+      {/* A wide table takes the width of the window, not of the page's column. */}
+      <div className={wide ? "relative left-1/2 w-[calc(100vw-3rem)] -translate-x-1/2" : "max-w-4xl"}>
         <Table className={cn("text-base", wide ? "w-max min-w-full" : "table-fixed")}>
           <caption className="sr-only">{caption}</caption>
           <TableHeader>

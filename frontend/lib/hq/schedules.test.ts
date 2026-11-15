@@ -411,6 +411,49 @@ describe("changing one time of a slot", () => {
   });
 });
 
+describe("one weekday of every Camp group", () => {
+  it("lists every group by name with its slots, locations and the bookable activities", async () => {
+    const setup = await start();
+    await setup.campHq.updateCampGroup(setup.admin, setup.otters.id, {
+      locations: { lunch: "Pavilion" },
+    });
+    await setup.campHq.addActivity(setup.admin, {
+      name: "Zip Line",
+      grades: ["grade_3"],
+      clubOnly: true,
+    });
+    const slot = await slotAt(setup, setup.otters.id, 2, "9:30");
+    await setup.campHq.setScheduleSlotContent(setup.admin, slot.id, {
+      type: "activity",
+      activityId: setup.archery.id,
+    });
+
+    // A reader who is not an Admin, and groups whose week was never opened.
+    const board = await setup.campHq.getDayBoard(setup.leader, 2);
+
+    expect(board.weekday).toBe(2);
+    expect(board.groups.map((entry) => entry.group.name)).toEqual(["Falcons", "Herons", "Otters"]);
+    expect(board.groups.every((entry) => entry.slots.length === 11)).toBe(true);
+    const otters = board.groups[2];
+    expect(otters.locations.lunch).toBe("Pavilion");
+    expect(otters.slots).toEqual((await day(setup, setup.otters.id, 2)).slots);
+    expect(otters.slots[0].content).toMatchObject({ type: "activity", activity: { name: "Archery" } });
+    // An activity offered only on Club day cannot be booked, so it is not listed.
+    expect(board.activities.map((activity) => activity.name)).toEqual([
+      "Archery",
+      "Climbing Wall",
+      "Lunch",
+    ]);
+  });
+
+  it("refuses a day that is not a weekday", async () => {
+    const setup = await start();
+    await expect(setup.campHq.getDayBoard(setup.admin, 6)).rejects.toMatchObject({
+      reason: "invalid-input",
+    });
+  });
+});
+
 describe("the choices for a whole day", () => {
   it("lists the day's slots and the activities allowed for the group's grades", async () => {
     const setup = await start();

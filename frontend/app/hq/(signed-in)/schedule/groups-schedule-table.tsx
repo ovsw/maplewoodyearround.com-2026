@@ -137,7 +137,7 @@ export function GroupsScheduleTable({
         id: `period-${period.start}-${period.end}`,
         header: formatSlotRange(period.start, period.end),
         type: "select",
-        className: "w-56 min-w-56",
+        className: "w-52 min-w-52",
         searchPlaceholder: "Search activities",
         value: (group) => slotAt(group, period)?.choice ?? NO_SLOT,
         display: (group) => {
