@@ -41,7 +41,7 @@ export function JuniorsTable({
       header: "Junior staff",
       type: "custom",
       className: "w-64",
-      render: (row) => <span className="flex min-h-10 items-center px-2 font-semibold">{row.name}</span>,
+      render: (row) => <span className="flex min-h-8 items-center px-2 font-medium">{row.name}</span>,
     },
     {
       id: "group",

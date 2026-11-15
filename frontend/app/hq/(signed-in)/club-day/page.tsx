@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/hq-ui/button";
+import { Input } from "@/components/hq-ui/input";
 import type { ClubDayOption, ClubDaySetup } from "@/lib/hq/club-day";
 import { MAX_OPTION_CAPACITY } from "@/lib/hq/club-day";
 import { CAMP_HQ_TEAMS } from "@/lib/hq/lists";
@@ -14,6 +14,8 @@ import {
   slotTimeValue,
   weekdayLabels,
 } from "@/lib/hq/schedule-times";
+import { nativeSelectClass } from "@/components/hq-ui/select-class";
+import { cn } from "@/lib/utils";
 
 import { CampHqPageNotice, loadCampHqPage } from "../camp-hq-page";
 import { ACTIVITIES_PATH } from "../lists-paths";
@@ -22,8 +24,7 @@ import { ClubDayForm } from "./club-day-form";
 
 export const metadata: Metadata = { title: "Club day" };
 
-const selectClassName =
-  "border-input flex min-h-(--control-height) min-w-40 rounded-control border bg-transparent px-4 py-3 text-base focus-field";
+const selectClassName = cn(nativeSelectClass, "min-w-40");
 const linkClassName =
   "focus-ring inline-flex min-h-11 items-center rounded-control text-primary underline underline-offset-4";
 

@@ -136,7 +136,7 @@ function CellFrame({ status, children }: { status: CellStatus; children: ReactNo
 
 /** How every editor looks: plain text until it is pointed at or focused. */
 export const editorClass =
-  "h-10 min-w-0 rounded-control border border-transparent bg-transparent px-2 text-left outline-none transition-colors hover:border-border focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30 aria-invalid:border-destructive/60";
+  "h-8 min-w-0 rounded-md border border-transparent bg-transparent px-2 text-left outline-none transition-colors hover:border-border focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30 aria-invalid:border-destructive/60";
 
 type CellProps<Value> = {
   /** Names the cell for screen readers, for example "Start of the 9:30 AM slot". */
@@ -210,7 +210,7 @@ export function CheckboxCell({ label, value, save }: CellProps<boolean>) {
   const cell = useCellSave(value, save);
   return (
     <CellFrame status={cell.status}>
-      <span className="flex h-10 items-center px-2">
+      <span className="flex h-8 items-center px-2">
         <input
           type="checkbox"
           aria-label={label}

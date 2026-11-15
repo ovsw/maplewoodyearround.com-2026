@@ -2,8 +2,8 @@
 
 import { useActionState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/hq-ui/button";
+import { Input } from "@/components/hq-ui/input";
 import { formatCampDate } from "@/lib/hq/camp-dates";
 import { CLEAR_CONFIRMATION_WORD } from "@/lib/hq/campers";
 

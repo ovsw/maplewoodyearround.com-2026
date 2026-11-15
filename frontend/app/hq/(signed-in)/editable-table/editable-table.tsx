@@ -10,7 +10,7 @@ import { LoaderCircle, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/hq-ui/button";
 import {
   Table,
   TableBody,
@@ -306,7 +306,7 @@ export function EditableTable<Row>({
     <DenseTable value={wide}>
       {/* A wide table takes the width of the window, not of the page's column. */}
       <div className={wide ? "w-[calc(100cqw-3rem)]" : "max-w-4xl"}>
-        <Table className={cn("text-base", wide ? "w-max min-w-full" : "table-fixed")}>
+        <Table className={cn("text-sm", wide ? "w-max min-w-full" : "table-fixed")}>
           <caption className="sr-only">{caption}</caption>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -337,7 +337,7 @@ export function EditableTable<Row>({
                     {column.type === "custom" ? (
                       column.render(row)
                     ) : readOnly || column.editable?.(row) === false ? (
-                      <span className="flex min-h-10 items-center px-2">{column.display(row)}</span>
+                      <span className="flex min-h-8 items-center px-2">{column.display(row)}</span>
                     ) : (
                       <EditableCell
                         column={column}

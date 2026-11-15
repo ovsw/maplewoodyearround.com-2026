@@ -2,16 +2,16 @@
 
 import { startTransition, useId, useState } from "react";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/hq-ui/input";
 import { matchesCamperName } from "@/lib/hq/camper-search";
 import type { ClubDaySignups, SignupCamper } from "@/lib/hq/club-day-signups";
 import { formatSlotRange } from "@/lib/hq/schedule-times";
 import { cn } from "@/lib/utils";
+import { nativeSelectClass } from "@/components/hq-ui/select-class";
 
 import { setPickAction } from "./actions";
 
-const selectClassName =
-  "border-input flex min-h-(--control-height) w-full min-w-48 rounded-control border bg-background px-4 py-3 text-base focus-field disabled:opacity-60";
+const selectClassName = cn(nativeSelectClass, "w-full min-w-48");
 
 /** A pick being saved, or the refusal of the last save, for one child and period. */
 type SaveState = { saving: string | null; error: string | null };

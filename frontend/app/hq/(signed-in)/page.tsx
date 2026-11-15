@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/hq-ui/button";
 import type { MyAssignment } from "@/lib/hq/assignments";
 import {
   CampHqDatabaseUnavailable,

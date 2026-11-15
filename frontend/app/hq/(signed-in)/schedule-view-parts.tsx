@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   SCHEDULE_WEEKDAYS,
   isScheduleWeekday,
@@ -19,26 +19,38 @@ export function chosenWeekday(
   return isScheduleWeekday(asked) ? asked : (today ?? 1);
 }
 
-/** Monday to Friday as five buttons; today is labelled. */
+/** Monday to Friday as a compact tab strip; today is labelled. */
 export function WeekdayNav({
   weekday,
-  today,
+  today = null,
   hrefFor,
 }: {
   weekday: ScheduleWeekday;
-  today: ScheduleWeekday | null;
+  today?: ScheduleWeekday | null;
   hrefFor: (weekday: ScheduleWeekday) => string;
 }) {
   return (
-    <nav aria-label="Weekdays" className="grid grid-cols-5 gap-2">
-      {SCHEDULE_WEEKDAYS.map((day) => (
-        <Button key={day} asChild variant={day === weekday ? "primary" : "outline"}>
-          <Link href={hrefFor(day)} aria-current={day === weekday ? "page" : undefined}>
+    <nav
+      aria-label="Weekdays"
+      className="inline-flex h-9 w-fit items-center gap-0.5 rounded-lg bg-foreground/5 p-[3px]"
+    >
+      {SCHEDULE_WEEKDAYS.map((day) => {
+        const current = day === weekday;
+        return (
+          <Link
+            key={day}
+            href={hrefFor(day)}
+            aria-current={current ? "page" : undefined}
+            className={cn(
+              "inline-flex h-full items-center rounded-md px-3 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50",
+              current && "bg-background text-foreground shadow-sm",
+            )}
+          >
             {weekdayLabels[day]}
             {day === today ? " (today)" : ""}
           </Link>
-        </Button>
-      ))}
+        );
+      })}
     </nav>
   );
 }

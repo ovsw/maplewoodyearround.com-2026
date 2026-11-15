@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
 import { formatGrades } from "@/lib/hq/grades";
 import { isCampHqRefusal } from "@/lib/hq/operations";
 import {
-  SCHEDULE_WEEKDAYS,
   campWeekday,
   formatSlotRange,
   isScheduleWeekday,
@@ -17,6 +14,7 @@ import type { DayChoices, ScheduleSlot } from "@/lib/hq/schedules";
 
 import { BackLink, CampHqPageNotice, loadCampHqPage } from "../../../camp-hq-page";
 import type { EditableOption } from "../../../editable-table/types";
+import { WeekdayNav } from "../../../schedule-view-parts";
 import { groupsSchedulePath } from "../../../views-paths";
 import { scheduleDayPath } from "./schedule-paths";
 import { ScheduleTable, type ScheduleRow } from "./schedule-table";
@@ -116,18 +114,10 @@ async function GroupSchedule({
         </p>
       </div>
 
-      <nav aria-label="Weekdays" className="grid grid-cols-5 gap-2">
-        {SCHEDULE_WEEKDAYS.map((day) => (
-          <Button key={day} asChild variant={day === weekday ? "primary" : "outline"}>
-            <Link
-              href={scheduleDayPath(schedule.group.id, day)}
-              aria-current={day === weekday ? "page" : undefined}
-            >
-              {weekdayLabels[day]}
-            </Link>
-          </Button>
-        ))}
-      </nav>
+      <WeekdayNav
+        weekday={weekday}
+        hrefFor={(day) => scheduleDayPath(schedule.group.id, day)}
+      />
 
       <h2 className="text-title">{weekdayLabels[weekday]}</h2>
       <p className="max-w-3xl text-muted-foreground">

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/hq-ui/button";
+import { Input } from "@/components/hq-ui/input";
 import {
   CampHqDatabaseUnavailable,
   getCampHqOperations,
@@ -15,6 +15,7 @@ import {
   type StaffListEntry,
 } from "@/lib/hq/operations";
 import { requireCampHqActor } from "@/lib/hq/session";
+import { nativeSelectClass } from "@/components/hq-ui/select-class";
 
 import { JuniorsTable, type JuniorRow } from "./juniors-table";
 import { StaffForm } from "./staff-form";
@@ -23,8 +24,7 @@ export const metadata: Metadata = { title: "Staff and accounts" };
 
 const kindLabels = { senior: "Senior staff", junior: "Junior staff" } as const;
 
-const selectClassName =
-  "border-input flex min-h-(--control-height) rounded-control border bg-transparent px-4 py-3 text-base focus-field";
+const selectClassName = nativeSelectClass;
 
 export default function StaffPage() {
   return (

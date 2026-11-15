@@ -390,6 +390,27 @@
   }
 }
 
+/* Camp HQ is a dense staff tool, not the marketing site: small radii, so
+   the stock shadcn controls in components/hq-ui keep their shape, and no pills. */
+.camp-hq {
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-control: 6px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.camp-hq .text-title-lg {
+  font-size: 24px;
+}
+
+.camp-hq .text-title {
+  font-size: 18px;
+}
+
 @utility field-white {
   --color-background: var(--neutral-surface-white);
   --color-foreground: var(--neutral-ink);

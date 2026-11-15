@@ -30,7 +30,7 @@ export type GroupRow = {
 const gradeOptions = campHqGrades.map(({ value, label }) => ({ value, label }));
 const summarizeGrades = (values: string[]) => formatGrades(values as CampHqGrade[]);
 const linkClass =
-  "focus-ring inline-flex min-h-10 items-center rounded-control text-primary underline underline-offset-4 whitespace-nowrap";
+  "focus-ring inline-flex min-h-8 items-center rounded-control text-primary underline underline-offset-4 whitespace-nowrap";
 
 export function GroupsTable({
   rows,
